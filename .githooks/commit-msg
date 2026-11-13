@@ -1,0 +1,18 @@
+#!/bin/sh
+# Strips assistant attribution from commit messages and rejects any leftover mention.
+msg_file="$1"
+tmp_file="$msg_file.tmp"
+
+grep -v -i -E \
+  -e '^[[:space:]]*Co-Authored-By:.*@anthropic\.com' \
+  -e '^[[:space:]]*Claude-Session:' \
+  -e 'Generated with' \
+  -e 'claude\.(ai|com)/(code|session)' \
+  "$msg_file" > "$tmp_file"
+mv "$tmp_file" "$msg_file"
+
+if grep -v '^#' "$msg_file" | grep -q -i -E 'anthropic|claude code|claude-session|chatgpt|openai|copilot|generated with|🤖'; then
+  echo "commit-msg: commit message still mentions an AI assistant. Remove it and try again." >&2
+  exit 1
+fi
+exit 0
