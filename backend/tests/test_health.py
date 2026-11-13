@@ -61,3 +61,19 @@ async def test_health_is_503_when_r_is_down(client: AsyncClient, stats_down: Non
 async def test_responses_carry_a_request_id(client: AsyncClient) -> None:
     r = await client.get("/api/v1/health/live")
     assert len(r.headers["X-Request-ID"]) == 32
+
+
+async def test_public_config_has_no_secrets(client: AsyncClient) -> None:
+    r = await client.get("/api/v1/public-config")
+    assert r.status_code == 200
+    body = r.json()
+    assert set(body) == {"turnstile_enabled", "turnstile_site_key", "terms_version", "pdf_max_size_mb"}
+    assert "secret" not in r.text.lower()
+
+
+def test_operation_ids_are_unique_route_names() -> None:
+    from app.main import app
+
+    ids = [op["operationId"] for path in app.openapi()["paths"].values() for op in path.values()]
+    assert len(ids) == len(set(ids))
+    assert "login" in ids

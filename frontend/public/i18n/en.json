@@ -1,0 +1,80 @@
+{
+  "app": {
+    "name": "RevisaMeta",
+    "tagline": "Systematic reviews and meta-analyses, step by step",
+    "beta": "Beta version, no availability guarantee. Keep copies of your work.",
+    "language": "Language",
+    "logout": "Sign out",
+    "skipToContent": "Skip to content"
+  },
+  "languages": {
+    "pt-BR": "Português",
+    "en": "English"
+  },
+  "common": {
+    "email": "E-mail",
+    "password": "Password",
+    "name": "Name",
+    "cancel": "Cancel",
+    "save": "Save",
+    "loading": "Loading…",
+    "networkError": "Could not reach the server. Check your connection and try again."
+  },
+  "login": {
+    "title": "Sign in",
+    "submit": "Sign in",
+    "noAccount": "No account yet?",
+    "createAccount": "Create account",
+    "sessionExpired": "Your session has expired. Please sign in again.",
+    "verified": "E-mail confirmed. You can sign in now."
+  },
+  "register": {
+    "title": "Create account",
+    "submit": "Create account",
+    "passwordHint": "At least 10 characters, with letters and numbers.",
+    "acceptTerms": "I have read and accept the terms of use and the privacy policy.",
+    "haveAccount": "Already have an account?",
+    "doneTitle": "Just confirm your e-mail",
+    "doneText": "We sent a link to {{email}}. Open it to activate your account. It is valid for 48 hours.",
+    "resend": "Resend e-mail",
+    "resent": "If there is a pending account with this e-mail, we sent a new link."
+  },
+  "verify": {
+    "title": "E-mail confirmation",
+    "working": "Confirming your e-mail…",
+    "missingToken": "This link is incomplete. Open the link exactly as it arrived in the e-mail."
+  },
+  "projects": {
+    "title": "My projects",
+    "empty": "No projects yet. Create the first one to start your review.",
+    "new": "New project",
+    "projectTitle": "Project title",
+    "question": "Research question",
+    "questionHint": "E.g.: do people operated before age 5 have better cognitive outcomes than those operated later?",
+    "deadline": "Deadline (e.g. abstract submission)",
+    "create": "Create project",
+    "roles": "Your roles",
+    "usage": "You use {{used}} of {{limit}} projects."
+  },
+  "roles": {
+    "admin": "Administrator",
+    "reviewer": "Reviewer",
+    "extractor": "Extractor",
+    "statistician": "Statistician",
+    "reader": "Reader"
+  },
+  "invitation": {
+    "title": "Project invitation",
+    "loading": "Checking the invitation…",
+    "text": "You were invited to the project \"{{project}}\" with the roles: {{roles}}.",
+    "accept": "Accept invitation"
+  },
+  "glossary": {
+    "systematicReview": "A study that gathers every study on a question, following a fixed and transparent method.",
+    "metaAnalysis": "The statistical part that combines the numbers of several studies into a single result."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "back": "Back to start"
+  }
+}

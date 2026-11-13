@@ -49,6 +49,8 @@ def create_app() -> FastAPI:
         docs_url=f"{API_PREFIX}/docs",
         redoc_url=None,
         lifespan=lifespan,
+        # Readable operation ids -> readable generated client (login, createProject...).
+        generate_unique_id_function=lambda route: route.name,
     )
 
     app.add_middleware(

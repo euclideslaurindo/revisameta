@@ -81,7 +81,7 @@ Antes de trabalhar em um módulo, leia o arquivo de `docs/` correspondente.
 ### 3.1 Decisão
 | Camada | Tecnologia | Motivo |
 |---|---|---|
-| Frontend | **Angular** (versão LTS atual), **PrimeNG** (tabelas com filtro, ordenação e rolagem virtual), **Transloco** (i18n pt-BR/en), `ngx-extended-pdf-viewer` (PDF.js) | Stack que o desenvolvedor domina; tabelas fortes para triagem e extração |
+| Frontend | **Angular 22**, **Angular Material/CDK** (*substitui o PrimeNG, que mudou para licença comercial; ver ADR-011*), **Transloco** (i18n pt-BR/en), `ngx-extended-pdf-viewer` (PDF.js) | Stack que o desenvolvedor domina; tabelas fortes para triagem e extração |
 | Backend | **Python 3.12 + FastAPI**, Pydantic v2, **SQLAlchemy 2.0 assíncrono (asyncpg)**, Alembic | Rápido de desenvolver; muito I/O; ecossistema forte para dados, PDFs, importação e IA |
 | Autenticação | JWT: access token curto **só em memória no front** + refresh token rotativo em **cookie httpOnly/Secure/SameSite**; senhas com **Argon2id** (`argon2-cffi`) | Evita tokens no localStorage |
 | Banco | **PostgreSQL 16** com `unaccent`, `pg_trgm` e busca textual (pt/en) | Relacional + JSONB + busca nas referências sem Elasticsearch |

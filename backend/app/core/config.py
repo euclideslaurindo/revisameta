@@ -59,6 +59,7 @@ class Settings(BaseSettings):
     smtp_tls: bool = False
 
     turnstile_enabled: bool = False
+    turnstile_site_key: str = ""
     turnstile_secret_key: str = ""
 
     quota_projects_per_user: int = 5

@@ -4,6 +4,7 @@ import logging
 from typing import Any
 
 from fastapi import APIRouter, Depends, Response
+from pydantic import BaseModel
 from redis.asyncio import Redis
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -15,6 +16,28 @@ from app.integrations.stats_client import StatsClient, get_stats_client
 
 logger = logging.getLogger(__name__)
 router = APIRouter(tags=["system"])
+
+
+class PublicConfig(BaseModel):
+    """What the browser needs before login (no secrets)."""
+
+    turnstile_enabled: bool
+    turnstile_site_key: str
+    terms_version: str
+    pdf_max_size_mb: int
+
+
+@router.get("/public-config")
+async def public_config() -> PublicConfig:
+    from app.modules.auth.service import TERMS_VERSION
+
+    settings = get_settings()
+    return PublicConfig(
+        turnstile_enabled=settings.turnstile_enabled,
+        turnstile_site_key=settings.turnstile_site_key if settings.turnstile_enabled else "",
+        terms_version=TERMS_VERSION,
+        pdf_max_size_mb=settings.pdf_max_size_mb,
+    )
 
 
 @router.get("/health/live")

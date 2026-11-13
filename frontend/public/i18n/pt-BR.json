@@ -1,0 +1,80 @@
+{
+  "app": {
+    "name": "RevisaMeta",
+    "tagline": "Revisões sistemáticas e meta-análises, passo a passo",
+    "beta": "Versão beta, sem garantia de disponibilidade. Guarde cópias do seu trabalho.",
+    "language": "Idioma",
+    "logout": "Sair",
+    "skipToContent": "Pular para o conteúdo"
+  },
+  "languages": {
+    "pt-BR": "Português",
+    "en": "English"
+  },
+  "common": {
+    "email": "E-mail",
+    "password": "Senha",
+    "name": "Nome",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "loading": "Carregando…",
+    "networkError": "Não foi possível falar com o servidor. Confira sua internet e tente de novo."
+  },
+  "login": {
+    "title": "Entrar",
+    "submit": "Entrar",
+    "noAccount": "Ainda não tem conta?",
+    "createAccount": "Criar conta",
+    "sessionExpired": "Sua sessão expirou. Entre novamente.",
+    "verified": "E-mail confirmado. Agora é só entrar."
+  },
+  "register": {
+    "title": "Criar conta",
+    "submit": "Criar conta",
+    "passwordHint": "Pelo menos 10 caracteres, com letras e números.",
+    "acceptTerms": "Li e aceito os termos de uso e a política de privacidade.",
+    "haveAccount": "Já tem conta?",
+    "doneTitle": "Falta só confirmar seu e-mail",
+    "doneText": "Enviamos um link para {{email}}. Abra o link para ativar sua conta. Ele vale por 48 horas.",
+    "resend": "Reenviar e-mail",
+    "resent": "Se houver uma conta pendente com este e-mail, enviamos um novo link."
+  },
+  "verify": {
+    "title": "Confirmação de e-mail",
+    "working": "Confirmando seu e-mail…",
+    "missingToken": "Este link está incompleto. Abra o link exatamente como chegou no e-mail."
+  },
+  "projects": {
+    "title": "Meus projetos",
+    "empty": "Nenhum projeto ainda. Crie o primeiro para começar sua revisão.",
+    "new": "Novo projeto",
+    "projectTitle": "Título do projeto",
+    "question": "Pergunta de pesquisa",
+    "questionHint": "Ex.: pessoas operadas antes dos 5 anos têm melhor desfecho cognitivo do que as operadas depois?",
+    "deadline": "Prazo (ex.: submissão do resumo)",
+    "create": "Criar projeto",
+    "roles": "Seus papéis",
+    "usage": "Você usa {{used}} de {{limit}} projetos."
+  },
+  "roles": {
+    "admin": "Administrador",
+    "reviewer": "Revisor",
+    "extractor": "Extrator",
+    "statistician": "Estatístico",
+    "reader": "Leitor"
+  },
+  "invitation": {
+    "title": "Convite para projeto",
+    "loading": "Verificando o convite…",
+    "text": "Você foi convidado para o projeto \"{{project}}\" com os papéis: {{roles}}.",
+    "accept": "Aceitar convite"
+  },
+  "glossary": {
+    "systematicReview": "Estudo que reúne todos os estudos sobre uma pergunta, seguindo um método fixo e transparente.",
+    "metaAnalysis": "Parte estatística que combina os números de vários estudos em um resultado único."
+  },
+  "notFound": {
+    "title": "Página não encontrada",
+    "back": "Voltar para o início"
+  }
+}
