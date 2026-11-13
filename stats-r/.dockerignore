@@ -1,0 +1,4 @@
+.Rhistory
+.RData
+renv/library/
+scripts/
