@@ -8,8 +8,12 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from app.core.config import get_settings
 from app.core.errors import register_error_handlers
 from app.core.logging import RequestIdMiddleware, configure_logging
+from app.core.rate_limit import limiter
 from app.db import models as _models  # noqa: F401 - register mappers and audit listener
 from app.db.session import dispose_engine
+from app.modules.auth.router import router as auth_router
+from app.modules.projects.router import router as projects_router
+from app.modules.quotas.router import router as quotas_router
 from app.modules.system.router import router as system_router
 
 API_PREFIX = "/api/v1"
@@ -49,8 +53,10 @@ def create_app() -> FastAPI:
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=hosts)
     app.add_middleware(RequestIdMiddleware)
 
+    app.state.limiter = limiter
     register_error_handlers(app)
-    app.include_router(system_router, prefix=API_PREFIX)
+    for router in (system_router, auth_router, projects_router, quotas_router):
+        app.include_router(router, prefix=API_PREFIX)
     return app
 
 
