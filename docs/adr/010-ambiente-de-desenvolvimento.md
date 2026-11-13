@@ -12,6 +12,7 @@ A máquina de desenvolvimento é Windows com Docker e Node, sem R, `uv`, `make` 
 - **Turnstile desligável** por `TURNSTILE_ENABLED`; o `.env.example` traz as chaves públicas de teste da Cloudflare.
 - **cloudflared** roda como container no `scripts/tunnel.sh`, sem instalar nada no Windows.
 - Angular na versão LTS vigente quando o projeto for criado.
+- **Testes do backend contra Postgres e Redis reais** de um perfil `test` do Compose (`postgres-test`, `redis-test`, banco em `tmpfs`), em vez de Testcontainers: no Windows, Testcontainers dentro de um container exigiria expor o socket do Docker. No CI, os mesmos serviços sobem como *service containers* do GitHub Actions. Todas as migrações rodam no início da suíte, como num deploy.
 
 ## Consequências
 - Para desenvolver, só é preciso ter Docker, Git e Node instalados.

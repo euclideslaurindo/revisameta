@@ -86,7 +86,7 @@ Antes de trabalhar em um módulo, leia o arquivo de `docs/` correspondente.
 | Autenticação | JWT: access token curto **só em memória no front** + refresh token rotativo em **cookie httpOnly/Secure/SameSite**; senhas com **Argon2id** (`argon2-cffi`) | Evita tokens no localStorage |
 | Banco | **PostgreSQL 16** com `unaccent`, `pg_trgm` e busca textual (pt/en) | Relacional + JSONB + busca nas referências sem Elasticsearch |
 | IDs | **UUID v7** | Ordenáveis por tempo, melhores para índices |
-| Armazenamento de arquivos | **MinIO** (compatível com S3) no Docker Compose | Upload direto em partes por URL assinada (10.7); migra para qualquer S3 sem mudar código |
+| Armazenamento de arquivos | **RustFS** (compatível com S3) no Docker Compose. *Substitui o MinIO, descontinuado em 2025; ver ADR-004* | Upload direto em partes por URL assinada (10.7); migra para qualquer S3 sem mudar código |
 | Estatística | **Serviço R** com `plumber` + `metafor` + `meta` + `robvis` (+ `irr` para kappa) | Padrão-ouro; evita reimplementar estatística |
 | Tarefas longas | Fila com **Redis + `arq`** (assíncrona, como o FastAPI) desde a Etapa 1 | Processamento de PDF, importações grandes, ZIPs, gráficos, IA |
 | Progresso em tempo real | **SSE** com **fallback automático para polling** | O túnel rápido da Cloudflare não suporta SSE (10.6) |
@@ -112,7 +112,7 @@ Antes de trabalhar em um módulo, leia o arquivo de `docs/` correspondente.
 | E-mail (convites, senha) | `fastapi-mail` ou SMTP simples |
 | Fila e tarefas | `arq` |
 | Rate limiting | `slowapi` |
-| Cliente S3/MinIO (URLs assinadas, multipart) | `boto3` ou `aioboto3` |
+| Cliente S3 (URLs assinadas, multipart) | `aioboto3` |
 | Validação do tipo real de arquivo | `python-magic` (libmagic) |
 | OCR de PDF escaneado (P2) | `ocrmypdf` |
 | Priorização de triagem (ML clássico, local e gratuito) | `scikit-learn` (TF-IDF + modelo linear), inspirado no ASReview |
@@ -142,7 +142,7 @@ revisameta/
 ├── .claude/settings.json         # configuração do Claude Code do projeto (attribution desligado, 14.1)
 ├── .githooks/commit-msg          # remove qualquer menção a IA dos commits (14.1)
 ├── docs/                         # especificação dividida + docs/adr/ + docs/deploy.md
-├── docker-compose.yml            # perfis: padrão e "lite"
+├── docker-compose.yml            # perfis: padrão (full), "lite" e "test"
 ├── Caddyfile
 ├── scripts/                      # backup.sh, restore.sh, setup-servidor.sh, tunnel.sh
 ├── .env.example
@@ -217,7 +217,7 @@ revisameta/
 - ADR-001: Backend em Python + FastAPI.
 - ADR-002: Toda estatística no serviço R (metafor/robvis).
 - ADR-003: Custo zero e implantação por fases (F0 túnel local → F1 Oracle/UFAPE → F2 paga); Vercel + Supabase rejeitados como plataforma principal.
-- ADR-004: Arquivos no MinIO com upload direto em partes e deduplicação por hash.
+- ADR-004: Arquivos em armazenamento S3 (RustFS, no lugar do MinIO descontinuado) com upload direto em partes e deduplicação por hash.
 - ADR-005: Fila `arq` + Redis; progresso por SSE com fallback de polling.
 - ADR-006: Autenticação (access token em memória, refresh em cookie httpOnly, Argon2id).
 - ADR-007: IA desligada por padrão, camada de provedores trocáveis, citação verificada e métricas de precisão.

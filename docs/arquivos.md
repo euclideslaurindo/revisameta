@@ -1,6 +1,8 @@
 # Arquivos grandes
 
 > Parte da especificação do RevisaMeta. Índice e regras gerais em [CLAUDE.md](../CLAUDE.md).
+>
+> **Nota:** onde este texto diz MinIO, leia RustFS. O MinIO foi descontinuado (repositório arquivado, imagem removida do Docker Hub); a troca está registrada no [ADR-004](adr/004-arquivos-s3-upload-em-partes.md).
 
 ### 10.7 Arquivos grandes
 - **Upload direto ao armazenamento:** o backend gera URLs assinadas e o navegador envia o arquivo **em partes** (multipart, ~8 a 16 MB por parte) direto ao MinIO, sem passar o arquivo pelo FastAPI. Se a conexão cair, o envio **retoma** das partes que faltam (`upload_session`).
