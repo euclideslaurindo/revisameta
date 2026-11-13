@@ -6,6 +6,7 @@ from typing import Any
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from slowapi.errors import RateLimitExceeded
 from sqlalchemy.orm.exc import StaleDataError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
@@ -86,6 +87,10 @@ def register_error_handlers(app: FastAPI) -> None:
     @app.exception_handler(AppError)
     async def _app_error(request: Request, exc: AppError) -> JSONResponse:
         return problem(request, exc.status_code, exc.code, **exc.params)
+
+    @app.exception_handler(RateLimitExceeded)
+    async def _rate_limited(request: Request, _exc: RateLimitExceeded) -> JSONResponse:
+        return problem(request, 429, "error.rate_limited")
 
     @app.exception_handler(StaleDataError)
     async def _stale(request: Request, _exc: StaleDataError) -> JSONResponse:

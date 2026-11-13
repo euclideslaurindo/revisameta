@@ -63,6 +63,7 @@ class Settings(BaseSettings):
     quota_storage_mb_per_user: int = 2048
 
     login_rate_limit: str = "10/minute"
+    register_rate_limit: str = "5/minute"
 
     @computed_field  # type: ignore[prop-decorator]
     @property
