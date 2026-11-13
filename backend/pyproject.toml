@@ -1,0 +1,68 @@
+[project]
+name = "revisameta-backend"
+version = "0.1.0"
+description = "RevisaMeta API"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "fastapi>=0.162",
+    "uvicorn[standard]>=0.54",
+    "pydantic-settings>=2.16",
+    "email-validator>=2.3",
+    "sqlalchemy[asyncio]>=2.0",
+    "asyncpg>=0.32",
+    "alembic>=1.20",
+    "uuid-utils>=1.2",        # UUID v7 (time-ordered ids)
+    "argon2-cffi>=25.1",      # Argon2id password hashing
+    "pyjwt>=2.15",            # access tokens
+    "httpx>=0.28",            # stats service and Turnstile clients
+    "arq>=0.28",              # background jobs
+    "redis>=5.0",
+    "aioboto3>=15.5",         # MinIO/S3: multipart uploads and signed URLs
+    "slowapi>=0.1.10",        # login rate limiting
+    "sse-starlette>=3.7",     # job progress via SSE
+    "aiosmtplib>=5.1",        # e-mail (verification, invitations)
+    "python-magic>=0.4.27",   # real file type detection (libmagic)
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2",
+    "pytest-asyncio>=1.5",
+    "pytest-cov>=7.1",
+    "ruff>=0.17",
+    "mypy>=2.4",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "N", "S", "ASYNC", "RUF", "SIM"]
+ignore = ["B008"]  # FastAPI's Depends() in defaults
+
+[tool.ruff.lint.isort]
+known-third-party = ["alembic"]
+
+[tool.ruff.lint.pep8-naming]
+classmethod-decorators = ["declared_attr", "declared_attr.directive"]
+
+[tool.ruff.lint.per-file-ignores]
+"alembic/versions/**" = ["E501"]
+"tests/**" = ["S101", "S105", "S106"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["pydantic.mypy"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
+testpaths = ["tests"]
+addopts = "--cov=app --cov-report=term-missing --cov-fail-under=80"
