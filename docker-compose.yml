@@ -53,6 +53,19 @@ services:
       start_period: 30s
     networks: [internal, edge]  # edge: outbound access (Turnstile, SMTP)
 
+  # Background jobs (PDF processing, imports, exports). See ADR-005.
+  worker:
+    build:
+      context: ./backend
+      target: runtime
+    restart: unless-stopped
+    <<: *backend-env
+    command: ["arq", "app.workers.main.WorkerSettings"]
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks: [internal]
+
   stats-r:
     build:
       context: ./stats-r
@@ -155,6 +168,22 @@ services:
     profiles: [test]
     networks: [internal]
 
+  storage-test:
+    image: rustfs/rustfs:1.0.5
+    profiles: [test]
+    environment:
+      RUSTFS_ACCESS_KEY: test-access
+      RUSTFS_SECRET_KEY: test-secret-key
+      RUSTFS_VOLUMES: /data
+      RUSTFS_CONSOLE_ENABLE: "false"
+    tmpfs: ["/data:mode=1777"]
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:9000/health"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    networks: [internal]
+
   backend-test:
     build:
       context: ./backend
@@ -169,7 +198,15 @@ services:
       REDIS_URL: redis://redis-test:6379/0
       JWT_SECRET: test-secret-not-for-production-use-0123456789
       STATS_R_URL: http://stats-r:8000
+      S3_ENDPOINT: http://storage-test:9000
+      S3_PUBLIC_ENDPOINT: http://storage-test:9000
+      S3_ACCESS_KEY: test-access
+      S3_SECRET_KEY: test-secret-key
+      S3_BUCKET: test-files
+      UPLOAD_PART_SIZE_MB: "5"
     depends_on:
+      storage-test:
+        condition: service_healthy
       postgres-test:
         condition: service_healthy
       redis-test:

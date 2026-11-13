@@ -43,6 +43,8 @@ class Settings(BaseSettings):
     s3_access_key: str = "revisameta"
     s3_secret_key: str = "change-me"  # noqa: S105
     s3_bucket: str = "revisameta-files"
+    s3_region: str = "us-east-1"
+    upload_session_ttl_hours: int = 24
     pdf_max_size_mb: int = 100
     upload_part_size_mb: int = 10
 

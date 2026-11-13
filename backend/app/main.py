@@ -1,3 +1,4 @@
+import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
@@ -11,10 +12,15 @@ from app.core.logging import RequestIdMiddleware, configure_logging
 from app.core.rate_limit import limiter
 from app.db import models as _models  # noqa: F401 - register mappers and audit listener
 from app.db.session import dispose_engine
+from app.integrations.storage import Storage
 from app.modules.auth.router import router as auth_router
+from app.modules.jobs.router import router as jobs_router
 from app.modules.projects.router import router as projects_router
 from app.modules.quotas.router import router as quotas_router
 from app.modules.system.router import router as system_router
+from app.modules.uploads.router import router as uploads_router
+
+logger = logging.getLogger(__name__)
 
 API_PREFIX = "/api/v1"
 
@@ -24,6 +30,10 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     settings = get_settings()
     if settings.is_production and settings.jwt_secret in ("", "change-me"):
         raise RuntimeError("JWT_SECRET must be set in production")
+    try:
+        await Storage().ensure_bucket()
+    except Exception as exc:  # storage may start later; uploads will report it
+        logger.warning("storage_bucket_check_failed", extra={"extra_fields": {"error": str(exc)}})
     yield
     await dispose_engine()
 
@@ -55,7 +65,14 @@ def create_app() -> FastAPI:
 
     app.state.limiter = limiter
     register_error_handlers(app)
-    for router in (system_router, auth_router, projects_router, quotas_router):
+    for router in (
+        system_router,
+        auth_router,
+        projects_router,
+        quotas_router,
+        uploads_router,
+        jobs_router,
+    ):
         app.include_router(router, prefix=API_PREFIX)
     return app
 

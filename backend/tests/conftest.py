@@ -127,3 +127,52 @@ def make_user(client: AsyncClient, outbox: InMemoryEmailSender):  # type: ignore
         return LoggedUser(id=r.json()["user"]["id"], email=email, token=r.json()["access_token"])
 
     return _make
+
+
+# ---- Storage and queue --------------------------------------------------------
+
+from typing import Any  # noqa: E402
+
+from app.integrations.queue import get_job_queue  # noqa: E402
+from app.integrations.storage import Storage, get_storage  # noqa: E402
+from app.modules.uploads.processing import process_upload  # noqa: E402
+
+
+class InlineQueue:
+    """Runs queued jobs immediately, exactly as the worker would."""
+
+    def __init__(self) -> None:
+        self.enqueued: list[tuple[str, dict[str, Any]]] = []
+
+    async def enqueue(self, function: str, **kwargs: Any) -> None:
+        import uuid
+
+        self.enqueued.append((function, kwargs))
+        assert function == "process_upload_task"
+        await process_upload(
+            get_sessionmaker(),
+            Storage(),
+            uuid.UUID(kwargs["upload_id"]),
+            uuid.UUID(kwargs["job_id"]),
+        )
+
+
+@pytest.fixture(scope="session", autouse=True)
+async def _bucket() -> None:
+    await Storage().ensure_bucket()
+
+
+@pytest.fixture
+def storage() -> Storage:
+    return Storage()
+
+
+@pytest.fixture(autouse=True)
+def queue() -> Any:
+    inline = InlineQueue()
+    fastapi_app.dependency_overrides[get_job_queue] = lambda: inline
+    yield inline
+    fastapi_app.dependency_overrides.pop(get_job_queue, None)
+
+
+_ = get_storage  # storage dependency is real in tests (RustFS from the test profile)

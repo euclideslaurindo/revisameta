@@ -9,6 +9,7 @@ import uuid
 from collections.abc import Callable, Coroutine
 from typing import Any
 
+import httpx
 import pytest
 from httpx import AsyncClient
 from sqlalchemy import update
@@ -35,6 +36,14 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
     ("POST", "/api/v1/projects/{project_id}/invitations", {"roles": ["admin"]}),
     ("GET", "/api/v1/projects/{project_id}/invitations", None),
     ("DELETE", "/api/v1/projects/{project_id}/invitations/{invitation_id}", None),
+    ("POST", "/api/v1/projects/{project_id}/uploads", {"filename": "a.pdf", "size_bytes": 10}),
+    ("GET", "/api/v1/projects/{project_id}/uploads/{upload_id}", None),
+    ("DELETE", "/api/v1/projects/{project_id}/uploads/{upload_id}", None),
+    ("POST", "/api/v1/projects/{project_id}/uploads/{upload_id}/parts", {"part_numbers": [1]}),
+    ("POST", "/api/v1/projects/{project_id}/uploads/{upload_id}/complete", None),
+    ("GET", "/api/v1/projects/{project_id}/uploads/{upload_id}/download-url", None),
+    ("GET", "/api/v1/projects/{project_id}/jobs/{job_id}", None),
+    ("GET", "/api/v1/projects/{project_id}/jobs/{job_id}/events", None),
 ]
 
 
@@ -65,10 +74,27 @@ async def _setup(client: AsyncClient, make_user: MakeUser) -> tuple[LoggedUser, 
             headers=owner.headers,
         )
     ).json()
+    base = f"/api/v1/projects/{project['id']}/uploads"
+    content = b"%PDF-1.7 " + b"0" * 100
+    upload = (
+        await client.post(
+            base, json={"filename": "a.pdf", "size_bytes": len(content)}, headers=owner.headers
+        )
+    ).json()
+    urls = (
+        await client.post(
+            f"{base}/{upload['id']}/parts", json={"part_numbers": [1]}, headers=owner.headers
+        )
+    ).json()
+    async with httpx.AsyncClient() as raw:
+        await raw.put(urls[0]["url"], content=content)
+    job = (await client.post(f"{base}/{upload['id']}/complete", headers=owner.headers)).json()
     ids = {
         "project_id": project["id"],
         "member_id": members[0]["id"],
         "invitation_id": invitation["id"],
+        "upload_id": upload["id"],
+        "job_id": job["id"],
     }
     return owner, ids
 
