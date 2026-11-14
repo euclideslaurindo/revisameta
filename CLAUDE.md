@@ -192,6 +192,9 @@ revisameta/
 - `make tunnel` — expõe o sistema local pelo Cloudflare Tunnel (10.6) *(adiado: fora da Etapa 0, ver docs/roteiro.md)*
 - `scripts/backup.sh` / `scripts/restore.sh <arquivo>` — backup criptografado e restauração (10.8); teste: `scripts/test-backup.sh`
 - `git config core.hooksPath .githooks` — ativa o hook de commits (rodar uma vez após clonar)
+- `scripts/check-commit-messages.sh` — confere se nenhuma mensagem de commit menciona IA (também roda no CI)
+- `scripts/test-backend.sh` / `scripts/test-stats-r.sh` — lint, tipos e testes dentro dos containers
+- `scripts/export-openapi.sh` — regenera o cliente da API do frontend a partir do backend
 
 ---
 

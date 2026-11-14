@@ -12,6 +12,19 @@ Docker Compose com todos os serviços (perfis padrão e `lite`), Caddy, FastAPI 
 
 > **Decisão (2026-11-13):** o Cloudflare Tunnel saiu da Etapa 0 por decisão do desenvolvedor. Ele volta quando houver sessões de teste com usuários fora deste computador (fase F0, ver `docs/deploy.md`). O fallback de polling do progresso continua implementado e testado.
 
+**Etapa 0 concluída em 2026-11-14.** Conferência dos critérios de saída:
+
+| Critério | Como foi verificado |
+|---|---|
+| `docker compose up` sobe tudo | 9 serviços saudáveis (caddy, backend, worker, stats-r ×2, postgres, redis, storage, mailpit); perfil `lite` com 1 processo R |
+| Login nos dois idiomas | Fluxo cadastro → e-mail → confirmação → login → projeto testado no navegador; troca para inglês mantida após recarregar |
+| `/health` do R com versões | R 4.6.2, metafor 5.2-1, meta 8.5-0, irr 0.85, robvis no commit `0c59cf1` |
+| Isolamento por projeto | `tests/test_isolation.py`: não membros (inclusive admin do sistema) recebem 404 em todas as rotas de projeto |
+| PDF de 100 MB retoma após queda | `tests/test_uploads.py::test_100mb_pdf_resumes_after_connection_drop` |
+| Commit sem menção a IA | Hook testado num clone (remove `Co-Authored-By`, barra menções); `scripts/check-commit-messages.sh` no CI |
+| Backup e restauração | `scripts/test-backup.sh`: estado após a restauração idêntico ao do backup |
+| CI rodando testes | GitHub Actions: backend, frontend, serviço R, auditorias de dependências, gitleaks e mensagens de commit |
+
 **Etapa 1 — Estudos, PDFs e extração (P0)**
 Cadastro e importação da lista final, upload e anotação de PDF, relatos agrupados, formulário padrão versionado com braços e desfechos por grupo, proteções anti-erro dos blocos A, C, D, F e G de 7.5.1, exportação XLSX/CSV com regra de consenso.
 *Saída:* a usuária cadastra 4 estudos reais com dados dos dois grupos sem planilha paralela; os testes de casos sintéticos de 7.5.1 (blocos A, C, D, F e G) passam.
