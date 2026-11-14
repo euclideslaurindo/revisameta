@@ -1,0 +1,29 @@
+{
+  "key": "generic",
+  "family": "generic",
+  "name": {
+    "pt-BR": "Genérico (configurável)",
+    "en": "Generic (configurable)"
+  },
+  "version": "1",
+  "citation": "",
+  "source_url": "",
+  "designs": [
+    "other"
+  ],
+  "scope": "study",
+  "answer_sets": {
+    "generic": [
+      "Y",
+      "PY",
+      "PN",
+      "N",
+      "NI",
+      "NA"
+    ]
+  },
+  "judgement": {
+    "kind": "group_rule"
+  },
+  "domains": []
+}

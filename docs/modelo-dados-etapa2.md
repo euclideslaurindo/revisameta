@@ -90,6 +90,11 @@ erDiagram
 7. **Importação da tabela consolidada** (migração): CSV/XLSX no formato do robvis (Study, D1…Dn, Overall, Weight) ou com mapeamento de colunas, prévia e erros por linha. Vira avaliação `imported` (sem perguntas sinalizadoras), marcada como tal em todas as telas e exportações.
 8. **Trava da etapa** reaproveita `stage_events` da Etapa 1 (estágio `risk_of_bias`).
 
+## Achados ao levantar a estrutura (passo 1)
+- **JBI revisado avalia por nível.** Nos checklists revisados (coorte 2025, ECR 2023, quase-experimental 2024, transversal 2026), cada pergunta tem um nível: estudo, desfecho ou resultado. Por isso a resposta (`rob_answers`) ganha `outcome_id` e `timepoint` opcionais: perguntas de nível "desfecho" são respondidas por desfecho, e as de nível "resultado", por desfecho e momento. Caso-controle e série de casos seguem o formato de 2020 (10 perguntas, todas por estudo).
+- **Algoritmos do ROBINS-I V2 são fluxogramas** (imagem) no documento oficial; serão transcritos domínio a domínio e testados com os exemplos do manual (passo 1b).
+- **O documento JBI proíbe reprodução** ("Unauthorized reproduction of this article is prohibited"): confirma que só a estrutura entra no sistema.
+
 ## Fora desta etapa
 - Kappa da avaliação de risco de viés é P1, mas sai quase de graça com o `/kappa` da Etapa 1; entra se couber.
 - Uso na meta-análise (sensibilidade sem alto risco, subgrupo por risco de viés) → Etapas 3 e 4. Forest plot com semáforo → Etapa 4.

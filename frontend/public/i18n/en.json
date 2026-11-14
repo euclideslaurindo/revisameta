@@ -82,7 +82,8 @@
     "arm": "Study group (arm): a set of participants the article describes separately, for example those operated before age 5.",
     "checks": "The system distrusts typed numbers and points out what looks wrong. Fix the value or, if it is right, write a short justification: it is recorded.",
     "agreement": "Shows how often the two extractors typed the same values. Low agreement means the extraction process is worth checking.",
-    "kappa": "Cohen's kappa measures agreement beyond what chance alone would give: 1 is full agreement; 0 is what luck would produce. Here it is computed only on category fields (dispersion type, final value or change, higher is better, adjusted), because it was made for categorical answers."
+    "kappa": "Cohen's kappa measures agreement beyond what chance alone would give: 1 is full agreement; 0 is what luck would produce. Here it is computed only on category fields (dispersion type, final value or change, higher is better, adjusted), because it was made for categorical answers.",
+    "riskOfBias": "Risk of bias is the chance that the way a study was done distorted its result. Each instrument assesses it by domains (for example, confounding or missing data), with questions that help judge each domain."
   },
   "notFound": {
     "title": "Page not found",
@@ -94,7 +95,8 @@
       "studies": "Studies",
       "pending": "Pending checks",
       "review": "Final review",
-      "export": "Export"
+      "export": "Export",
+      "rob": "Risk of bias"
     }
   },
   "protocol": {
@@ -562,6 +564,57 @@
     "errors": {
       "label": "Give the field a name.",
       "options": "A list of options needs at least two options."
+    }
+  },
+  "rob": {
+    "intro": "Choose the project's risk-of-bias instruments and set which instrument applies to each study. The system suggests and organizes; the judgement always belongs to the reviewers.",
+    "version": "version {{version}}",
+    "tools": {
+      "title": "Project instruments",
+      "empty": "No instrument enabled yet. An admin can enable one from the catalog below.",
+      "textsFilled": "Official wording pasted for {{filled}} of {{total}} questions.",
+      "pasteTexts": "Paste official wording",
+      "configure": "Configure domains and wording"
+    },
+    "catalog": {
+      "title": "Instrument catalog",
+      "hint": "The system ships each instrument's structure (domains, number of questions and answer options), not the official wording of the questions, which is copyrighted. If the group has permission, the admin pastes the wording from the official source.",
+      "size": "{{domains}} domain(s), {{questions}} question(s)",
+      "source": "Official source",
+      "enable": "Enable",
+      "allEnabled": "Every instrument in the catalog is already enabled."
+    },
+    "scope": {
+      "study": "assessed per study",
+      "result": "assessed per result (outcome and time point)"
+    },
+    "level": {
+      "study": "assessed for the study",
+      "outcome": "assessed per outcome",
+      "result": "assessed per result"
+    },
+    "texts": {
+      "title": "Official wording of the questions",
+      "hint": "Paste each question exactly as in the instrument's official source, respecting its license. Without wording, the assessment screen shows only the question number and domain.",
+      "question": "Question {{n}}",
+      "save": "Save wording"
+    },
+    "generic": {
+      "title": "Domains of the generic instrument",
+      "hint": "Name each domain and say how many questions it has. Possible answers are Yes, Probably yes, Probably no, No, No information and Not applicable.",
+      "domain": "Domain {{n}}",
+      "questions": "Questions",
+      "addDomain": "Add domain",
+      "save": "Save domains"
+    },
+    "study": {
+      "title": "Risk of bias",
+      "noTools": "The project has no risk-of-bias instruments yet.",
+      "goToTools": "Enable instruments",
+      "suggested": "Suggested by the study design: {{name}}. An admin must confirm it.",
+      "confirmed": "Instrument of this study: {{name}}.",
+      "choose": "Instrument",
+      "confirm": "Confirm instrument"
     }
   }
 }

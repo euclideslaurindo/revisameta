@@ -1,0 +1,147 @@
+{
+  "key": "jbi_cohort",
+  "family": "jbi",
+  "name": {
+    "pt-BR": "JBI – estudos de coorte",
+    "en": "JBI – cohort studies"
+  },
+  "version": "2025",
+  "citation": "Barker TH, Hasanoff S, Aromataris E, et al. The revised JBI critical appraisal tool for the assessment of risk of bias for cohort studies. JBI Evid Synth. 2025;23(3):441-53.",
+  "source_url": "https://jbi.global/critical-appraisal-tools",
+  "designs": [
+    "cohort_prospective",
+    "cohort_retrospective"
+  ],
+  "scope": "study",
+  "answer_sets": {
+    "jbi": [
+      "Y",
+      "N",
+      "U",
+      "NA"
+    ]
+  },
+  "judgement": {
+    "kind": "group_rule"
+  },
+  "domains": [
+    {
+      "key": "selection",
+      "name": {
+        "pt-BR": "Seleção e alocação",
+        "en": "Selection and allocation"
+      },
+      "questions": [
+        {
+          "key": "1",
+          "answers": "jbi",
+          "level": "study"
+        }
+      ]
+    },
+    {
+      "key": "exposure",
+      "name": {
+        "pt-BR": "Classificação da exposição",
+        "en": "Classification of the exposure"
+      },
+      "questions": [
+        {
+          "key": "2",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "3",
+          "answers": "jbi",
+          "level": "study"
+        }
+      ]
+    },
+    {
+      "key": "confounding",
+      "name": {
+        "pt-BR": "Fatores de confusão",
+        "en": "Confounding factors"
+      },
+      "questions": [
+        {
+          "key": "4",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "5",
+          "answers": "jbi",
+          "level": "outcome"
+        }
+      ]
+    },
+    {
+      "key": "temporal",
+      "name": {
+        "pt-BR": "Precedência temporal",
+        "en": "Temporal precedence"
+      },
+      "questions": [
+        {
+          "key": "6",
+          "answers": "jbi",
+          "level": "outcome"
+        }
+      ]
+    },
+    {
+      "key": "outcome",
+      "name": {
+        "pt-BR": "Avaliação, detecção e mensuração do desfecho",
+        "en": "Assessment, detection and measurement of the outcome"
+      },
+      "questions": [
+        {
+          "key": "7",
+          "answers": "jbi",
+          "level": "outcome"
+        },
+        {
+          "key": "8",
+          "answers": "jbi",
+          "level": "outcome"
+        }
+      ]
+    },
+    {
+      "key": "retention",
+      "name": {
+        "pt-BR": "Retenção dos participantes",
+        "en": "Participant retention"
+      },
+      "questions": [
+        {
+          "key": "9",
+          "answers": "jbi",
+          "level": "result"
+        },
+        {
+          "key": "10",
+          "answers": "jbi",
+          "level": "result"
+        }
+      ]
+    },
+    {
+      "key": "statistical",
+      "name": {
+        "pt-BR": "Validade da conclusão estatística",
+        "en": "Statistical conclusion validity"
+      },
+      "questions": [
+        {
+          "key": "11",
+          "answers": "jbi",
+          "level": "result"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,99 @@
+{
+  "key": "nos_cohort",
+  "family": "nos",
+  "name": {
+    "pt-BR": "Newcastle-Ottawa – coorte",
+    "en": "Newcastle-Ottawa – cohort"
+  },
+  "version": "original",
+  "citation": "Wells GA, Shea B, O'Connell D, et al. The Newcastle-Ottawa Scale (NOS) for assessing the quality of nonrandomised studies in meta-analyses. Ottawa Hospital Research Institute.",
+  "source_url": "https://www.ohri.ca/en/who-we-are/core-facilities-and-platforms/ottawa-methods-centre/newcastle-ottawa-scale",
+  "designs": [
+    "cohort_prospective",
+    "cohort_retrospective"
+  ],
+  "scope": "study",
+  "answer_sets": {
+    "stars_1": [
+      "0",
+      "1"
+    ],
+    "stars_2": [
+      "0",
+      "1",
+      "2"
+    ]
+  },
+  "judgement": {
+    "kind": "group_rule"
+  },
+  "domains": [
+    {
+      "key": "selection",
+      "name": {
+        "pt-BR": "Seleção",
+        "en": "Selection"
+      },
+      "questions": [
+        {
+          "key": "1",
+          "answers": "stars_1",
+          "level": "study"
+        },
+        {
+          "key": "2",
+          "answers": "stars_1",
+          "level": "study"
+        },
+        {
+          "key": "3",
+          "answers": "stars_1",
+          "level": "study"
+        },
+        {
+          "key": "4",
+          "answers": "stars_1",
+          "level": "study"
+        }
+      ]
+    },
+    {
+      "key": "comparability",
+      "name": {
+        "pt-BR": "Comparabilidade",
+        "en": "Comparability"
+      },
+      "questions": [
+        {
+          "key": "1",
+          "answers": "stars_2",
+          "level": "study"
+        }
+      ]
+    },
+    {
+      "key": "outcome",
+      "name": {
+        "pt-BR": "Desfecho",
+        "en": "Outcome"
+      },
+      "questions": [
+        {
+          "key": "1",
+          "answers": "stars_1",
+          "level": "study"
+        },
+        {
+          "key": "2",
+          "answers": "stars_1",
+          "level": "study"
+        },
+        {
+          "key": "3",
+          "answers": "stars_1",
+          "level": "study"
+        }
+      ]
+    }
+  ]
+}

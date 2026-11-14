@@ -4495,6 +4495,431 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/rob/catalog": {
+      "get": {
+        "tags": [
+          "risk_of_bias"
+        ],
+        "summary": "Rob Catalog",
+        "description": "Instruments available (structure only; official wording is pasted by the admin).",
+        "operationId": "rob_catalog",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CatalogItem"
+                  },
+                  "title": "Response Rob Catalog"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/rob/tools": {
+      "get": {
+        "tags": [
+          "risk_of_bias"
+        ],
+        "summary": "List Rob Tools",
+        "operationId": "list_rob_tools",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ToolOut"
+                  },
+                  "title": "Response List Rob Tools"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "risk_of_bias"
+        ],
+        "summary": "Enable Rob Tool",
+        "description": "Enables an instrument in the project (a copy that keeps its version).",
+        "operationId": "enable_rob_tool",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnableIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ToolOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/rob/tools/{tool_id}/texts": {
+      "put": {
+        "tags": [
+          "risk_of_bias"
+        ],
+        "summary": "Set Rob Tool Texts",
+        "description": "Official wording of the questions, pasted from the official source.",
+        "operationId": "set_rob_tool_texts",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tool_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Tool Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TextsIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ToolOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/rob/tools/{tool_id}/structure": {
+      "put": {
+        "tags": [
+          "risk_of_bias"
+        ],
+        "summary": "Set Rob Tool Structure",
+        "description": "Domains of the generic instrument, defined by the group.",
+        "operationId": "set_rob_tool_structure",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "tool_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Tool Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenericStructureIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ToolOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/rob/studies/{study_id}/tool": {
+      "get": {
+        "tags": [
+          "risk_of_bias"
+        ],
+        "summary": "Get Study Rob Tool",
+        "description": "Instrument suggested by the study design and the one confirmed by the admin.",
+        "operationId": "get_study_rob_tool",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "study_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Study Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudyToolOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "risk_of_bias"
+        ],
+        "summary": "Confirm Study Rob Tool",
+        "operationId": "confirm_study_rob_tool",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "study_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Study Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StudyToolIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudyToolOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/me/usage": {
       "get": {
         "tags": [
@@ -5635,6 +6060,70 @@
         ],
         "title": "Body_run_import"
       },
+      "CatalogItem": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "family": {
+            "type": "string",
+            "title": "Family"
+          },
+          "name": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Name"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "citation": {
+            "type": "string",
+            "title": "Citation"
+          },
+          "source_url": {
+            "type": "string",
+            "title": "Source Url"
+          },
+          "designs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Designs"
+          },
+          "scope": {
+            "type": "string",
+            "title": "Scope"
+          },
+          "domains": {
+            "type": "integer",
+            "title": "Domains"
+          },
+          "questions": {
+            "type": "integer",
+            "title": "Questions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "family",
+          "name",
+          "version",
+          "citation",
+          "source_url",
+          "designs",
+          "scope",
+          "domains",
+          "questions"
+        ],
+        "title": "CatalogItem"
+      },
       "CharacteristicsUpdate": {
         "properties": {
           "version": {
@@ -6155,6 +6644,21 @@
         ],
         "title": "EmailIn"
       },
+      "EnableIn": {
+        "properties": {
+          "template_key": {
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 1,
+            "title": "Template Key"
+          }
+        },
+        "type": "object",
+        "required": [
+          "template_key"
+        ],
+        "title": "EnableIn"
+      },
       "ExportMode": {
         "type": "string",
         "enum": [
@@ -6611,6 +7115,51 @@
           "schema"
         ],
         "title": "FormUpdate"
+      },
+      "GenericDomainIn": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "questions": {
+            "type": "integer",
+            "maximum": 40.0,
+            "minimum": 1.0,
+            "title": "Questions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "questions"
+        ],
+        "title": "GenericDomainIn"
+      },
+      "GenericStructureIn": {
+        "properties": {
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "domains": {
+            "items": {
+              "$ref": "#/components/schemas/GenericDomainIn"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "minItems": 1,
+            "title": "Domains"
+          }
+        },
+        "type": "object",
+        "required": [
+          "version",
+          "domains"
+        ],
+        "title": "GenericStructureIn"
       },
       "GroupCreate": {
         "properties": {
@@ -10141,6 +10690,70 @@
         ],
         "title": "StudyOut"
       },
+      "StudyToolIn": {
+        "properties": {
+          "tool_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Tool Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tool_id"
+        ],
+        "title": "StudyToolIn"
+      },
+      "StudyToolOut": {
+        "properties": {
+          "study_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Study Id"
+          },
+          "design": {
+            "type": "string",
+            "title": "Design"
+          },
+          "suggested_tool_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Suggested Tool Id"
+          },
+          "tool_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tool Id"
+          },
+          "confirmed": {
+            "type": "boolean",
+            "title": "Confirmed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "study_id",
+          "design",
+          "suggested_tool_id",
+          "tool_id",
+          "confirmed"
+        ],
+        "title": "StudyToolOut"
+      },
       "StudyUpdate": {
         "properties": {
           "version": {
@@ -10189,6 +10802,34 @@
         ],
         "title": "StudyUpdate"
       },
+      "TextsIn": {
+        "properties": {
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "texts": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Texts"
+          }
+        },
+        "type": "object",
+        "required": [
+          "version",
+          "texts"
+        ],
+        "title": "TextsIn"
+      },
       "TokenIn": {
         "properties": {
           "token": {
@@ -10231,6 +10872,77 @@
           "user"
         ],
         "title": "TokenOut"
+      },
+      "ToolOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "template_key": {
+            "type": "string",
+            "title": "Template Key"
+          },
+          "family": {
+            "type": "string",
+            "title": "Family"
+          },
+          "template_version": {
+            "type": "string",
+            "title": "Template Version"
+          },
+          "structure": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Structure"
+          },
+          "texts": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Texts"
+          },
+          "overall_rule": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overall Rule"
+          },
+          "texts_filled": {
+            "type": "integer",
+            "title": "Texts Filled"
+          },
+          "questions": {
+            "type": "integer",
+            "title": "Questions"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "template_key",
+          "family",
+          "template_version",
+          "structure",
+          "texts",
+          "overall_rule",
+          "texts_filled",
+          "questions",
+          "version"
+        ],
+        "title": "ToolOut"
       },
       "TransferOwnershipIn": {
         "properties": {

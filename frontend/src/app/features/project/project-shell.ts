@@ -46,6 +46,15 @@ import { ProjectContext } from './project-context';
         </a>
         <a
           mat-tab-link
+          routerLink="risco-de-vies"
+          routerLinkActive
+          #rob="routerLinkActive"
+          [active]="rob.isActive"
+        >
+          {{ 'project.nav.rob' | transloco }}
+        </a>
+        <a
+          mat-tab-link
           routerLink="conferencia"
           routerLinkActive
           #review="routerLinkActive"

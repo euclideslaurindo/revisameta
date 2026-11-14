@@ -77,6 +77,7 @@ class Stage(enum.StrEnum):
     """Review stages that a project admin can lock (docs/modulos.md, 7.12)."""
 
     EXTRACTION = "extraction"
+    RISK_OF_BIAS = "risk_of_bias"
 
 
 class StageAction(enum.StrEnum):

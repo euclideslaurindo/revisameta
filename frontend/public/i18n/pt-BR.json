@@ -82,7 +82,8 @@
     "arm": "Grupo do estudo (braço): um conjunto de participantes que o artigo descreve separadamente, por exemplo, os operados antes dos 5 anos.",
     "checks": "O sistema desconfia dos números digitados e aponta o que parece errado. Corrija o valor ou, se ele estiver certo, escreva uma justificativa curta: ela fica registrada.",
     "agreement": "Mostra o quanto os dois extratores digitaram os mesmos valores. Uma concordância baixa indica que vale conferir o processo de extração.",
-    "kappa": "O kappa de Cohen mede a concordância descontando a que aconteceria por acaso: 1 é concordância total; 0 é o que se esperaria por sorte. Aqui ele é calculado só nos campos de categoria (tipo de dispersão, valor final ou mudança, maior é melhor, ajustado), porque foi feito para respostas em categorias."
+    "kappa": "O kappa de Cohen mede a concordância descontando a que aconteceria por acaso: 1 é concordância total; 0 é o que se esperaria por sorte. Aqui ele é calculado só nos campos de categoria (tipo de dispersão, valor final ou mudança, maior é melhor, ajustado), porque foi feito para respostas em categorias.",
+    "riskOfBias": "Risco de viés é a chance de o jeito como o estudo foi feito ter distorcido o resultado. Cada instrumento avalia isso por domínios (por exemplo, confundimento ou dados faltantes), com perguntas que ajudam a julgar cada domínio."
   },
   "notFound": {
     "title": "Página não encontrada",
@@ -94,7 +95,8 @@
       "studies": "Estudos",
       "pending": "Pendências",
       "review": "Conferência final",
-      "export": "Exportar"
+      "export": "Exportar",
+      "rob": "Risco de viés"
     }
   },
   "protocol": {
@@ -562,6 +564,57 @@
     "errors": {
       "label": "Dê um nome ao campo.",
       "options": "Uma lista de opções precisa de pelo menos duas opções."
+    }
+  },
+  "rob": {
+    "intro": "Escolha os instrumentos de avaliação de risco de viés do projeto e defina qual instrumento vale para cada estudo. O sistema sugere e organiza; o julgamento é sempre dos revisores.",
+    "version": "versão {{version}}",
+    "tools": {
+      "title": "Instrumentos do projeto",
+      "empty": "Nenhum instrumento habilitado ainda. Um administrador pode habilitar no catálogo abaixo.",
+      "textsFilled": "Texto oficial colado em {{filled}} de {{total}} perguntas.",
+      "pasteTexts": "Colar texto oficial",
+      "configure": "Configurar domínios e textos"
+    },
+    "catalog": {
+      "title": "Catálogo de instrumentos",
+      "hint": "O sistema traz a estrutura de cada instrumento (domínios, número de perguntas e opções de resposta), não o texto oficial das perguntas, que tem direito autoral. Se o grupo tiver permissão, o administrador cola o texto a partir da fonte oficial.",
+      "size": "{{domains}} domínio(s), {{questions}} pergunta(s)",
+      "source": "Fonte oficial",
+      "enable": "Habilitar",
+      "allEnabled": "Todos os instrumentos do catálogo já estão habilitados."
+    },
+    "scope": {
+      "study": "avaliado por estudo",
+      "result": "avaliado por resultado (desfecho e momento)"
+    },
+    "level": {
+      "study": "avaliada para o estudo",
+      "outcome": "avaliada por desfecho",
+      "result": "avaliada por resultado"
+    },
+    "texts": {
+      "title": "Texto oficial das perguntas",
+      "hint": "Cole cada pergunta exatamente como está na fonte oficial do instrumento, respeitando a licença. Sem texto, a tela de avaliação mostra só o número da pergunta e o domínio.",
+      "question": "Pergunta {{n}}",
+      "save": "Salvar textos"
+    },
+    "generic": {
+      "title": "Domínios do instrumento genérico",
+      "hint": "Dê um nome a cada domínio e diga quantas perguntas ele tem. As respostas possíveis são Sim, Provavelmente sim, Provavelmente não, Não, Sem informação e Não se aplica.",
+      "domain": "Domínio {{n}}",
+      "questions": "Perguntas",
+      "addDomain": "Adicionar domínio",
+      "save": "Salvar domínios"
+    },
+    "study": {
+      "title": "Risco de viés",
+      "noTools": "O projeto ainda não tem instrumentos de risco de viés.",
+      "goToTools": "Habilitar instrumentos",
+      "suggested": "Sugerido pelo desenho do estudo: {{name}}. Um administrador precisa confirmar.",
+      "confirmed": "Instrumento deste estudo: {{name}}.",
+      "choose": "Instrumento",
+      "confirm": "Confirmar instrumento"
     }
   }
 }

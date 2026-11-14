@@ -1,0 +1,138 @@
+{
+  "key": "jbi_rct",
+  "family": "jbi",
+  "name": {
+    "pt-BR": "JBI – ensaios clínicos randomizados",
+    "en": "JBI – randomized controlled trials"
+  },
+  "version": "2023",
+  "citation": "Barker TH, Stone JC, Sears K, et al. The revised JBI critical appraisal tool for the assessment of risk of bias for randomized controlled trials. JBI Evid Synth. 2023;21(3):494-506.",
+  "source_url": "https://jbi.global/critical-appraisal-tools",
+  "designs": [
+    "rct"
+  ],
+  "scope": "study",
+  "answer_sets": {
+    "jbi": [
+      "Y",
+      "N",
+      "U",
+      "NA"
+    ]
+  },
+  "judgement": {
+    "kind": "group_rule"
+  },
+  "domains": [
+    {
+      "key": "selection",
+      "name": {
+        "pt-BR": "Seleção e alocação",
+        "en": "Selection and allocation"
+      },
+      "questions": [
+        {
+          "key": "1",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "2",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "3",
+          "answers": "jbi",
+          "level": "study"
+        }
+      ]
+    },
+    {
+      "key": "intervention",
+      "name": {
+        "pt-BR": "Administração da intervenção ou exposição",
+        "en": "Administration of intervention or exposure"
+      },
+      "questions": [
+        {
+          "key": "4",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "5",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "6",
+          "answers": "jbi",
+          "level": "study"
+        }
+      ]
+    },
+    {
+      "key": "outcome",
+      "name": {
+        "pt-BR": "Avaliação, detecção e mensuração do desfecho",
+        "en": "Assessment, detection and measurement of the outcome"
+      },
+      "questions": [
+        {
+          "key": "7",
+          "answers": "jbi",
+          "level": "outcome"
+        },
+        {
+          "key": "8",
+          "answers": "jbi",
+          "level": "outcome"
+        },
+        {
+          "key": "9",
+          "answers": "jbi",
+          "level": "outcome"
+        }
+      ]
+    },
+    {
+      "key": "retention",
+      "name": {
+        "pt-BR": "Retenção dos participantes",
+        "en": "Participant retention"
+      },
+      "questions": [
+        {
+          "key": "10",
+          "answers": "jbi",
+          "level": "result"
+        }
+      ]
+    },
+    {
+      "key": "statistical",
+      "name": {
+        "pt-BR": "Validade da conclusão estatística",
+        "en": "Statistical conclusion validity"
+      },
+      "questions": [
+        {
+          "key": "11",
+          "answers": "jbi",
+          "level": "result"
+        },
+        {
+          "key": "12",
+          "answers": "jbi",
+          "level": "result"
+        },
+        {
+          "key": "13",
+          "answers": "jbi",
+          "level": "study"
+        }
+      ]
+    }
+  ]
+}

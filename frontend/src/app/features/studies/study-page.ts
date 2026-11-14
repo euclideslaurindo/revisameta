@@ -1,5 +1,10 @@
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
-import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormsModule,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
@@ -26,12 +31,14 @@ import { ConfirmData, ConfirmDialog } from '../../shared/confirm-dialog';
 import { FormError } from '../../shared/form-error';
 import { StudyExtractions } from '../extraction/study-extractions';
 import { ReportPdfs } from '../pdfs/report-pdfs';
+import { StudyRobTool } from '../risk-of-bias/study-rob-tool';
 import { ProjectContext } from '../project/project-context';
 import { STUDY_DESIGNS } from './designs';
 
 @Component({
   selector: 'rm-study-page',
   imports: [
+    StudyRobTool,
     FormsModule,
     ReactiveFormsModule,
     RouterLink,
@@ -53,7 +60,9 @@ import { STUDY_DESIGNS } from './designs';
       <header class="page-header">
         <h2>{{ s.label }}</h2>
         @if (context.isAdmin()) {
-          <button mat-button type="button" (click)="remove(s)">{{ 'studies.delete' | transloco }}</button>
+          <button mat-button type="button" (click)="remove(s)">
+            {{ 'studies.delete' | transloco }}
+          </button>
         }
       </header>
 
@@ -61,7 +70,11 @@ import { STUDY_DESIGNS } from './designs';
         <mat-card-content class="stack">
           <mat-form-field>
             <mat-label>{{ 'studies.design' | transloco }}</mat-label>
-            <mat-select [value]="s.design" [disabled]="!canEdit()" (valueChange)="changeDesign(s, $event)">
+            <mat-select
+              [value]="s.design"
+              [disabled]="!canEdit()"
+              (valueChange)="changeDesign(s, $event)"
+            >
               @for (design of designs; track design) {
                 <mat-option [value]="design">{{ 'designs.' + design | transloco }}</mat-option>
               }
@@ -73,7 +86,20 @@ import { STUDY_DESIGNS } from './designs';
 
       <mat-card class="block">
         <mat-card-header>
-          <mat-card-title><h3>{{ 'extraction.title' | transloco }}</h3></mat-card-title>
+          <mat-card-title
+            ><h3>{{ 'rob.study.title' | transloco }}</h3></mat-card-title
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <rm-study-rob-tool [studyId]="s.id" />
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="block">
+        <mat-card-header>
+          <mat-card-title
+            ><h3>{{ 'extraction.title' | transloco }}</h3></mat-card-title
+          >
         </mat-card-header>
         <mat-card-content>
           <rm-study-extractions [studyId]="s.id" />
@@ -85,7 +111,9 @@ import { STUDY_DESIGNS } from './designs';
           <mat-card-title>
             <h3>
               {{ 'studies.articles' | transloco }}
-              <span class="term" tabindex="0" [matTooltip]="'glossary.studyVsReport' | transloco">?</span>
+              <span class="term" tabindex="0" [matTooltip]="'glossary.studyVsReport' | transloco"
+                >?</span
+              >
             </h3>
           </mat-card-title>
         </mat-card-header>
@@ -100,13 +128,23 @@ import { STUDY_DESIGNS } from './designs';
                   }
                   <div class="muted">
                     {{ report.reference.authors }}
-                    @if (report.reference.year) { · {{ report.reference.year }} }
-                    @if (report.reference.doi) { · DOI {{ report.reference.doi }} }
+                    @if (report.reference.year) {
+                      · {{ report.reference.year }}
+                    }
+                    @if (report.reference.doi) {
+                      · DOI {{ report.reference.doi }}
+                    }
                   </div>
-                  <rm-report-pdfs [projectId]="projectId()" [reportId]="report.id" [canUpload]="canUploadPdf()" />
+                  <rm-report-pdfs
+                    [projectId]="projectId()"
+                    [reportId]="report.id"
+                    [canUpload]="canUploadPdf()"
+                  />
                 </div>
                 @if (canEdit() && s.reports.length > 1) {
-                  <button mat-button type="button" (click)="removeArticle(s, report)">{{ 'common.delete' | transloco }}</button>
+                  <button mat-button type="button" (click)="removeArticle(s, report)">
+                    {{ 'common.delete' | transloco }}
+                  </button>
                 }
               </li>
             }
@@ -135,7 +173,9 @@ import { STUDY_DESIGNS } from './designs';
                 </mat-form-field>
               </div>
               <div class="actions">
-                <button mat-flat-button type="submit" [disabled]="busy()">{{ 'studies.addArticle' | transloco }}</button>
+                <button mat-flat-button type="submit" [disabled]="busy()">
+                  {{ 'studies.addArticle' | transloco }}
+                </button>
               </div>
             </form>
           }
@@ -145,7 +185,9 @@ import { STUDY_DESIGNS } from './designs';
       @if (canEdit() && others().length > 0) {
         <mat-card class="block">
           <mat-card-header>
-            <mat-card-title><h3>{{ 'studies.merge.title' | transloco }}</h3></mat-card-title>
+            <mat-card-title
+              ><h3>{{ 'studies.merge.title' | transloco }}</h3></mat-card-title
+            >
           </mat-card-header>
           <mat-card-content class="stack">
             <p class="muted">{{ 'studies.merge.hint' | transloco }}</p>
@@ -158,7 +200,12 @@ import { STUDY_DESIGNS } from './designs';
               </mat-select>
             </mat-form-field>
             <div class="actions">
-              <button mat-stroked-button type="button" [disabled]="!mergeTarget || busy()" (click)="merge(s)">
+              <button
+                mat-stroked-button
+                type="button"
+                [disabled]="!mergeTarget || busy()"
+                (click)="merge(s)"
+              >
                 {{ 'studies.merge.action' | transloco }}
               </button>
             </div>
@@ -271,16 +318,32 @@ export class StudyPage {
   }
 
   async removeArticle(study: StudyOut, report: ReportOut): Promise<void> {
-    if (!(await this.confirm({ message: 'studies.confirmRemoveArticle', params: { title: report.reference.title } }))) return;
+    if (
+      !(await this.confirm({
+        message: 'studies.confirmRemoveArticle',
+        params: { title: report.reference.title },
+      }))
+    )
+      return;
     await this.run(() =>
-      this.api.invoke(removeReport, { project_id: this.projectId(), study_id: study.id, report_id: report.id }),
+      this.api.invoke(removeReport, {
+        project_id: this.projectId(),
+        study_id: study.id,
+        report_id: report.id,
+      }),
     );
   }
 
   async merge(study: StudyOut): Promise<void> {
     const other = this.others().find((s) => s.id === this.mergeTarget);
     if (!other) return;
-    if (!(await this.confirm({ message: 'studies.merge.confirm', params: { other: other.label, study: study.label } }))) return;
+    if (
+      !(await this.confirm({
+        message: 'studies.merge.confirm',
+        params: { other: other.label, study: study.label },
+      }))
+    )
+      return;
     const ok = await this.run(() =>
       this.api.invoke(mergeStudies, {
         project_id: this.projectId(),
@@ -295,7 +358,8 @@ export class StudyPage {
   }
 
   async remove(study: StudyOut): Promise<void> {
-    if (!(await this.confirm({ message: 'studies.confirmDelete', params: { label: study.label } }))) return;
+    if (!(await this.confirm({ message: 'studies.confirmDelete', params: { label: study.label } })))
+      return;
     const ok = await this.run(() =>
       this.api.invoke(deleteStudy, { project_id: this.projectId(), study_id: study.id }),
     );

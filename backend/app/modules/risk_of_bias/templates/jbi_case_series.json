@@ -1,0 +1,87 @@
+{
+  "key": "jbi_case_series",
+  "family": "jbi",
+  "name": {
+    "pt-BR": "JBI – séries de casos",
+    "en": "JBI – case series"
+  },
+  "version": "2020",
+  "citation": "Munn Z, Barker T, Moola S, et al. Methodological quality of case series studies. JBI Evidence Synthesis. doi: 10.11124/JBISRIR-D-19-00099.",
+  "source_url": "https://jbi.global/critical-appraisal-tools",
+  "designs": [
+    "case_series"
+  ],
+  "scope": "study",
+  "answer_sets": {
+    "jbi": [
+      "Y",
+      "N",
+      "U",
+      "NA"
+    ]
+  },
+  "judgement": {
+    "kind": "group_rule"
+  },
+  "domains": [
+    {
+      "key": "checklist",
+      "name": {
+        "pt-BR": "Itens do checklist",
+        "en": "Checklist items"
+      },
+      "questions": [
+        {
+          "key": "1",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "2",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "3",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "4",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "5",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "6",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "7",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "8",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "9",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "10",
+          "answers": "jbi",
+          "level": "study"
+        }
+      ]
+    }
+  ]
+}

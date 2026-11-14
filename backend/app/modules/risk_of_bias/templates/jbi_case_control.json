@@ -1,0 +1,87 @@
+{
+  "key": "jbi_case_control",
+  "family": "jbi",
+  "name": {
+    "pt-BR": "JBI – estudos de caso-controle",
+    "en": "JBI – case-control studies"
+  },
+  "version": "2020",
+  "citation": "Moola S, Munn Z, Tufanaru C, et al. Chapter 7: Systematic reviews of etiology and risk. In: Aromataris E, Munn Z (Editors). JBI Manual for Evidence Synthesis. JBI, 2020.",
+  "source_url": "https://jbi.global/critical-appraisal-tools",
+  "designs": [
+    "case_control"
+  ],
+  "scope": "study",
+  "answer_sets": {
+    "jbi": [
+      "Y",
+      "N",
+      "U",
+      "NA"
+    ]
+  },
+  "judgement": {
+    "kind": "group_rule"
+  },
+  "domains": [
+    {
+      "key": "checklist",
+      "name": {
+        "pt-BR": "Itens do checklist",
+        "en": "Checklist items"
+      },
+      "questions": [
+        {
+          "key": "1",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "2",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "3",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "4",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "5",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "6",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "7",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "8",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "9",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "10",
+          "answers": "jbi",
+          "level": "study"
+        }
+      ]
+    }
+  ]
+}

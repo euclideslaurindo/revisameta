@@ -164,6 +164,25 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
     ),
     ("GET", "/api/v1/projects/{project_id}/exports/extraction/status", None),
     ("GET", "/api/v1/projects/{project_id}/exports/extraction", None),
+    ("GET", "/api/v1/projects/{project_id}/rob/catalog", None),
+    ("GET", "/api/v1/projects/{project_id}/rob/tools", None),
+    ("POST", "/api/v1/projects/{project_id}/rob/tools", {"template_key": "generic"}),
+    (
+        "PUT",
+        "/api/v1/projects/{project_id}/rob/tools/{tool_id}/texts",
+        {"version": 1, "texts": {}},
+    ),
+    (
+        "PUT",
+        "/api/v1/projects/{project_id}/rob/tools/{tool_id}/structure",
+        {"version": 1, "domains": [{"name": "D", "questions": 1}]},
+    ),
+    ("GET", "/api/v1/projects/{project_id}/rob/studies/{study_id}/tool", None),
+    (
+        "PUT",
+        "/api/v1/projects/{project_id}/rob/studies/{study_id}/tool",
+        {"tool_id": "{tool_id}"},
+    ),
 ]
 
 
@@ -235,6 +254,13 @@ async def _setup(client: AsyncClient, make_user: MakeUser) -> tuple[LoggedUser, 
     ids.update(
         await _extraction_ids(client, owner, project["id"], ids["study_id"], ids["outcome_id"])
     )
+    ids["tool_id"] = (
+        await client.post(
+            f"/api/v1/projects/{project['id']}/rob/tools",
+            json={"template_key": "generic"},
+            headers=owner.headers,
+        )
+    ).json()["id"]
     return owner, ids
 
 

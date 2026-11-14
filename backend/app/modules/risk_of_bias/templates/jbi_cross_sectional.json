@@ -1,0 +1,122 @@
+{
+  "key": "jbi_cross_sectional",
+  "family": "jbi",
+  "name": {
+    "pt-BR": "JBI – estudos transversais analíticos",
+    "en": "JBI – analytical cross-sectional studies"
+  },
+  "version": "2026",
+  "citation": "Barker TH, Hasanoff S, Aromataris E, et al. The revised JBI critical appraisal tool for the assessment of risk of bias for analytical cross-sectional studies. JBI Evid Synth. 2026;24(3):401-8.",
+  "source_url": "https://jbi.global/critical-appraisal-tools",
+  "designs": [
+    "cross_sectional"
+  ],
+  "scope": "study",
+  "answer_sets": {
+    "jbi": [
+      "Y",
+      "N",
+      "U",
+      "NA"
+    ]
+  },
+  "judgement": {
+    "kind": "group_rule"
+  },
+  "domains": [
+    {
+      "key": "selection",
+      "name": {
+        "pt-BR": "Seleção e alocação",
+        "en": "Selection and allocation"
+      },
+      "questions": [
+        {
+          "key": "1",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "2",
+          "answers": "jbi",
+          "level": "outcome"
+        }
+      ]
+    },
+    {
+      "key": "exposure",
+      "name": {
+        "pt-BR": "Classificação da exposição",
+        "en": "Classification of the exposure"
+      },
+      "questions": [
+        {
+          "key": "3",
+          "answers": "jbi",
+          "level": "study"
+        }
+      ]
+    },
+    {
+      "key": "outcome",
+      "name": {
+        "pt-BR": "Avaliação, detecção e mensuração do desfecho",
+        "en": "Assessment, detection and measurement of the outcome"
+      },
+      "questions": [
+        {
+          "key": "4",
+          "answers": "jbi",
+          "level": "outcome"
+        }
+      ]
+    },
+    {
+      "key": "confounding",
+      "name": {
+        "pt-BR": "Fatores de confusão",
+        "en": "Confounding factors"
+      },
+      "questions": [
+        {
+          "key": "5",
+          "answers": "jbi",
+          "level": "study"
+        },
+        {
+          "key": "6",
+          "answers": "jbi",
+          "level": "outcome"
+        }
+      ]
+    },
+    {
+      "key": "statistical",
+      "name": {
+        "pt-BR": "Validade da conclusão estatística",
+        "en": "Statistical conclusion validity"
+      },
+      "questions": [
+        {
+          "key": "7",
+          "answers": "jbi",
+          "level": "result"
+        }
+      ]
+    },
+    {
+      "key": "reporting",
+      "name": {
+        "pt-BR": "Completude do relato",
+        "en": "Comprehensiveness of reporting"
+      },
+      "questions": [
+        {
+          "key": "8",
+          "answers": "jbi",
+          "level": "study"
+        }
+      ]
+    }
+  ]
+}
