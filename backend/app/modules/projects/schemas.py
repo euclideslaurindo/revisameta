@@ -32,6 +32,7 @@ class ProjectUpdate(BaseModel):
     prospero: str | None = Field(default=None, max_length=64)
     deadline: date | None = None
     report_language: Literal["pt-BR", "en"] | None = None
+    double_extraction: bool | None = None
 
 
 class ProjectOut(BaseModel):
@@ -44,6 +45,7 @@ class ProjectOut(BaseModel):
     prospero: str | None
     deadline: date | None
     report_language: str
+    double_extraction: bool
     locked_stages: list[str]
     owner_id: uuid.UUID
     version: int

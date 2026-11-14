@@ -213,3 +213,46 @@ mat-card-title h2 {
   margin: 0;
   font-size: 1.35rem;
 }
+
+.back {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+.term {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-left: 0.3rem;
+  border-radius: 50%;
+  background: #e8f0fe;
+  color: #174ea6;
+  font-size: 0.75rem;
+  cursor: help;
+}
+.badge {
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: #e6f4ea;
+  color: #1e5e2f;
+  font-size: 0.75rem;
+}
+.item-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem;
+}
+.item-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid #e4e7eb;
+}
+mat-tab-nav-panel {
+  display: block;
+  padding-top: 1rem;
+}

@@ -18,7 +18,9 @@
     "cancel": "Cancel",
     "save": "Save",
     "loading": "Loading…",
-    "networkError": "Could not reach the server. Check your connection and try again."
+    "networkError": "Could not reach the server. Check your connection and try again.",
+    "delete": "Delete",
+    "confirm": "Confirm"
   },
   "login": {
     "title": "Sign in",
@@ -71,10 +73,53 @@
   },
   "glossary": {
     "systematicReview": "A study that gathers every study on a question, following a fixed and transparent method.",
-    "metaAnalysis": "The statistical part that combines the numbers of several studies into a single result."
+    "metaAnalysis": "The statistical part that combines the numbers of several studies into a single result.",
+    "outcome": "An outcome is the result measured in participants, for example an intelligence score.",
+    "comparisonGroup": "The groups your question compares within each study, for example operated before and after age 5.",
+    "doubleExtraction": "Two people copy the numbers of each article without seeing each other's work. The system compares both versions and points out differences, which prevents typing errors."
   },
   "notFound": {
     "title": "Page not found",
     "back": "Back to start"
+  },
+  "project": {
+    "nav": {
+      "protocol": "Protocol"
+    }
+  },
+  "protocol": {
+    "intro": "The protocol is the review plan. Define the outcomes and the groups to compare here; data extraction uses these definitions.",
+    "confirmDelete": "Delete \"{{name}}\"? It leaves the protocol, but its history stays in the audit log.",
+    "doubleExtraction": {
+      "title": "Double extraction",
+      "on": "On: two extractors record the numbers of each study without seeing each other's work.",
+      "off": "Off: one extractor per study."
+    },
+    "outcomes": {
+      "title": "Outcomes",
+      "empty": "No outcomes yet. Add the main outcome of your question.",
+      "add": "Add outcome",
+      "name": "Outcome name",
+      "type": "Data type",
+      "typeHint": "Continuous: means and deviations (e.g. IQ). Dichotomous: yes/no (e.g. complication).",
+      "types": {
+        "continuous": "Continuous",
+        "dichotomous": "Dichotomous"
+      },
+      "timepoints": "Time points",
+      "timepointsHint": "Separate with commas. E.g.: 12 months, 5 years",
+      "higherBetter": "Higher is better",
+      "higherWorse": "Higher is worse",
+      "primary": "Primary outcome"
+    },
+    "groups": {
+      "title": "Comparison groups",
+      "empty": "No groups yet. Add the two groups of your question.",
+      "add": "Add group",
+      "label": "Group name",
+      "labelHint": "E.g.: Surgery before age 5",
+      "rule": "Group rule",
+      "ruleHint": "E.g.: age at surgery below 5 years. Say what to do if a study uses another cut-off."
+    }
   }
 }

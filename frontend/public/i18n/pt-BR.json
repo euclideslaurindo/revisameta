@@ -18,7 +18,9 @@
     "cancel": "Cancelar",
     "save": "Salvar",
     "loading": "Carregando…",
-    "networkError": "Não foi possível falar com o servidor. Confira sua internet e tente de novo."
+    "networkError": "Não foi possível falar com o servidor. Confira sua internet e tente de novo.",
+    "delete": "Excluir",
+    "confirm": "Confirmar"
   },
   "login": {
     "title": "Entrar",
@@ -71,10 +73,53 @@
   },
   "glossary": {
     "systematicReview": "Estudo que reúne todos os estudos sobre uma pergunta, seguindo um método fixo e transparente.",
-    "metaAnalysis": "Parte estatística que combina os números de vários estudos em um resultado único."
+    "metaAnalysis": "Parte estatística que combina os números de vários estudos em um resultado único.",
+    "outcome": "Desfecho é o resultado medido nos participantes, por exemplo, o escore de inteligência.",
+    "comparisonGroup": "Os grupos que a pergunta compara dentro de cada estudo, por exemplo, operados antes e depois dos 5 anos.",
+    "doubleExtraction": "Duas pessoas copiam os números de cada artigo sem ver o trabalho uma da outra. O sistema compara as duas versões e aponta as diferenças, o que evita erros de digitação."
   },
   "notFound": {
     "title": "Página não encontrada",
     "back": "Voltar para o início"
+  },
+  "project": {
+    "nav": {
+      "protocol": "Protocolo"
+    }
+  },
+  "protocol": {
+    "intro": "O protocolo é o plano da revisão. Defina aqui os desfechos e os grupos que serão comparados; a extração de dados usa estas definições.",
+    "confirmDelete": "Excluir \"{{name}}\"? O item sai do protocolo, mas o histórico fica guardado na auditoria.",
+    "doubleExtraction": {
+      "title": "Dupla extração",
+      "on": "Ligada: dois extratores registram os números de cada estudo, sem ver o trabalho um do outro.",
+      "off": "Desligada: um extrator por estudo."
+    },
+    "outcomes": {
+      "title": "Desfechos",
+      "empty": "Nenhum desfecho ainda. Cadastre o desfecho principal da sua pergunta.",
+      "add": "Adicionar desfecho",
+      "name": "Nome do desfecho",
+      "type": "Tipo de dado",
+      "typeHint": "Contínuo: médias e desvios (ex.: QI). Dicotômico: sim/não (ex.: complicação).",
+      "types": {
+        "continuous": "Contínuo",
+        "dichotomous": "Dicotômico"
+      },
+      "timepoints": "Momentos de medida",
+      "timepointsHint": "Separe por vírgula. Ex.: 12 meses, 5 anos",
+      "higherBetter": "Maior é melhor",
+      "higherWorse": "Maior é pior",
+      "primary": "Desfecho primário"
+    },
+    "groups": {
+      "title": "Grupos de comparação",
+      "empty": "Nenhum grupo ainda. Cadastre os dois grupos da sua pergunta.",
+      "add": "Adicionar grupo",
+      "label": "Nome do grupo",
+      "labelHint": "Ex.: Cirurgia antes dos 5 anos",
+      "rule": "Regra do grupo",
+      "ruleHint": "Ex.: idade na cirurgia menor que 5 anos. Diga o que fazer se o estudo usar outro corte."
+    }
   }
 }

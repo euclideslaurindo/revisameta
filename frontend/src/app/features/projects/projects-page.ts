@@ -7,6 +7,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 import { Api } from '../../core/api/api';
@@ -22,6 +23,7 @@ import { FormError } from '../../shared/form-error';
   imports: [
     DatePipe,
     ReactiveFormsModule,
+    RouterLink,
     TranslocoPipe,
     MatButtonModule,
     MatCardModule,
@@ -88,7 +90,7 @@ import { FormError } from '../../shared/form-error';
         @for (project of projects(); track project.id) {
           <mat-card>
             <mat-card-header>
-              <mat-card-title>{{ project.title }}</mat-card-title>
+              <mat-card-title><a [routerLink]="['/projetos', project.id]">{{ project.title }}</a></mat-card-title>
             </mat-card-header>
             <mat-card-content>
               @if (project.question) {

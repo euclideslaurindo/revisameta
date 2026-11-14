@@ -16,6 +16,7 @@ from app.integrations.storage import Storage
 from app.modules.auth.router import router as auth_router
 from app.modules.jobs.router import router as jobs_router
 from app.modules.projects.router import router as projects_router
+from app.modules.protocol.router import router as protocol_router
 from app.modules.quotas.router import router as quotas_router
 from app.modules.system.router import router as system_router
 from app.modules.uploads.router import router as uploads_router
@@ -71,6 +72,7 @@ def create_app() -> FastAPI:
         system_router,
         auth_router,
         projects_router,
+        protocol_router,
         quotas_router,
         uploads_router,
         jobs_router,

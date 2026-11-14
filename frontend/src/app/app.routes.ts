@@ -32,6 +32,19 @@ export const routes: Routes = [
     loadComponent: () => import('./features/projects/projects-page').then((m) => m.ProjectsPage),
   },
   {
+    path: 'projetos/:projectId',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/project/project-shell').then((m) => m.ProjectShell),
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: 'protocolo' },
+      {
+        path: 'protocolo',
+        loadComponent: () =>
+          import('./features/protocol/protocol-page').then((m) => m.ProtocolPage),
+      },
+    ],
+  },
+  {
     path: '**',
     loadComponent: () => import('./features/not-found-page').then((m) => m.NotFoundPage),
   },

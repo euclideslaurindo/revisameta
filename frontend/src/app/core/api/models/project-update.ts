@@ -7,6 +7,7 @@
  */
 export interface ProjectUpdate {
   deadline?: (string | null);
+  double_extraction?: (boolean | null);
   pico?: ({
 [key: string]: any;
 } | null);

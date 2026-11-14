@@ -5,6 +5,7 @@ import { Role } from '../models/role';
 export interface ProjectOut {
   created_at: string;
   deadline: (string | null);
+  double_extraction: boolean;
   id: string;
   locked_stages: Array<string>;
   my_roles?: Array<Role>;

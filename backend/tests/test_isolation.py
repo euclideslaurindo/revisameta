@@ -44,6 +44,18 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
     ("GET", "/api/v1/projects/{project_id}/uploads/{upload_id}/download-url", None),
     ("GET", "/api/v1/projects/{project_id}/jobs/{job_id}", None),
     ("GET", "/api/v1/projects/{project_id}/jobs/{job_id}/events", None),
+    ("GET", "/api/v1/projects/{project_id}/outcomes", None),
+    ("POST", "/api/v1/projects/{project_id}/outcomes", {"name": "QI", "type": "continuous"}),
+    ("PATCH", "/api/v1/projects/{project_id}/outcomes/{outcome_id}", {"version": 1, "name": "x"}),
+    ("DELETE", "/api/v1/projects/{project_id}/outcomes/{outcome_id}", None),
+    ("GET", "/api/v1/projects/{project_id}/comparison-groups", None),
+    ("POST", "/api/v1/projects/{project_id}/comparison-groups", {"label": "< 5 anos"}),
+    (
+        "PATCH",
+        "/api/v1/projects/{project_id}/comparison-groups/{group_id}",
+        {"version": 1, "label": "x"},
+    ),
+    ("DELETE", "/api/v1/projects/{project_id}/comparison-groups/{group_id}", None),
 ]
 
 
@@ -95,6 +107,20 @@ async def _setup(client: AsyncClient, make_user: MakeUser) -> tuple[LoggedUser, 
         "invitation_id": invitation["id"],
         "upload_id": upload["id"],
         "job_id": job["id"],
+        "outcome_id": (
+            await client.post(
+                f"/api/v1/projects/{project['id']}/outcomes",
+                json={"name": "Desfecho", "type": "continuous"},
+                headers=owner.headers,
+            )
+        ).json()["id"],
+        "group_id": (
+            await client.post(
+                f"/api/v1/projects/{project['id']}/comparison-groups",
+                json={"label": "Grupo"},
+                headers=owner.headers,
+            )
+        ).json()["id"],
     }
     return owner, ids
 

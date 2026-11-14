@@ -3,6 +3,9 @@
 
 export type { DownloadUrl } from './models/download-url';
 export type { EmailIn } from './models/email-in';
+export type { GroupCreate } from './models/group-create';
+export type { GroupOut } from './models/group-out';
+export type { GroupUpdate } from './models/group-update';
 export type { HttpValidationError } from './models/http-validation-error';
 export type { InvitationCreate } from './models/invitation-create';
 export type { InvitationCreated } from './models/invitation-created';
@@ -12,6 +15,10 @@ export type { JobOut } from './models/job-out';
 export type { LoginIn } from './models/login-in';
 export type { MemberOut } from './models/member-out';
 export type { MemberUpdate } from './models/member-update';
+export type { OutcomeCreate } from './models/outcome-create';
+export type { OutcomeOut } from './models/outcome-out';
+export type { OutcomeType } from './models/outcome-type';
+export type { OutcomeUpdate } from './models/outcome-update';
 export type { PartUrl } from './models/part-url';
 export type { PartUrlsIn } from './models/part-urls-in';
 export type { ProjectCreate } from './models/project-create';
