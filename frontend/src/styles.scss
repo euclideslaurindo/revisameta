@@ -388,3 +388,43 @@ main:has(.extraction-layout) {
 .arm-row {
   align-items: center;
 }
+.badge-block {
+  background: #fce8e6;
+  color: #a50e0e;
+}
+.alert-item {
+  margin: 0.4rem 0;
+  padding: 0.5rem 0.75rem;
+  border-left: 4px solid #f9ab00;
+  border-radius: 4px;
+  background: #fef7e0;
+  font-size: 0.9rem;
+}
+.alert-item.alert-block {
+  border-left-color: #d93025;
+  background: #fce8e6;
+}
+.alert-item.alert-justified {
+  border-left-color: #9aa0a6;
+  background: #f1f3f4;
+}
+.alert-tag {
+  margin-right: 0.4rem;
+  font-weight: 600;
+}
+.direction {
+  margin: 0.5rem 0;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+}
+.direction.confirmed {
+  border-color: #81c995;
+  background: #e6f4ea;
+}
+.direction .actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}

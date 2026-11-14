@@ -25,7 +25,9 @@ import { ProjectContext } from '../project/project-context';
               {{ e.kind === 'consensus' ? ('extraction.consensus' | transloco) : e.extractor_name }}
             </a>
             <span class="badge">{{ 'extraction.status.' + e.status | transloco }}</span>
-            <div class="muted">{{ 'extraction.updated' | transloco }} {{ e.updated_at | date: 'short' }}</div>
+            <div class="muted">
+              {{ 'extraction.updated' | transloco }} {{ e.updated_at | date: 'short' }}
+            </div>
           </div>
         </li>
       }
@@ -35,7 +37,9 @@ import { ProjectContext } from '../project/project-context';
     }
     <rm-form-error [error]="error()" />
     @if (canExtract() && !mine()) {
-      <button mat-flat-button type="button" [disabled]="busy()" (click)="start()">{{ 'extraction.start' | transloco }}</button>
+      <button mat-flat-button type="button" [disabled]="busy()" (click)="start()">
+        {{ 'extraction.start' | transloco }}
+      </button>
     }
   `,
 })
@@ -50,7 +54,9 @@ export class StudyExtractions implements OnInit {
   protected readonly busy = signal(false);
   protected readonly error = signal<unknown>(null);
   protected readonly mine = computed(() =>
-    this.extractions().find((e) => e.kind === 'individual' && e.extractor_id === this.auth.user()?.id),
+    this.extractions().find(
+      (e) => e.kind === 'individual' && e.extractor_id === this.auth.user()?.id,
+    ),
   );
   protected readonly canExtract = computed(() => {
     const roles = this.context.project()?.my_roles ?? [];
@@ -63,7 +69,10 @@ export class StudyExtractions implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.extractions.set(
-      await this.api.invoke(listExtractions, { project_id: this.projectId(), study_id: this.studyId() }),
+      await this.api.invoke(listExtractions, {
+        project_id: this.projectId(),
+        study_id: this.studyId(),
+      }),
     );
   }
 

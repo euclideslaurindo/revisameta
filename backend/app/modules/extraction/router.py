@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_session
-from app.modules.extraction import service
+from app.modules.extraction import alerts, service
 from app.modules.extraction.models import ExtractionForm
 from app.modules.extraction.schemas import (
     ArmIn,
@@ -173,3 +173,56 @@ async def delete_outcome_data(
     session: AsyncSession = Depends(get_session),
 ) -> None:
     await service.delete_outcome_data(session, ctx, row_id)
+
+
+# ---- Safeguards (blocks A and C of 7.5.1) --------------------------------------------
+
+
+@router.get("/extractions/{extraction_id}/alerts")
+async def list_alerts(
+    extraction_id: uuid.UUID,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> list[alerts.AlertOut]:
+    """Active alerts of the extraction, recomputed from the current data."""
+    return await alerts.list_alerts(session, ctx, extraction_id)
+
+
+@router.post("/alerts/{alert_id}/justify")
+async def justify_alert(
+    alert_id: uuid.UUID,
+    body: alerts.JustifyIn,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> alerts.AlertOut:
+    """Confirms the value with a short justification (recorded in the audit log)."""
+    return await alerts.justify(session, ctx, alert_id, body)
+
+
+@router.get("/pending-checks")
+async def pending_checks(
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> list[alerts.PendingAlert]:
+    """'Pendências de conferência' of the project (only extractions the user may see)."""
+    return await alerts.pending(session, ctx)
+
+
+@router.get("/extractions/{extraction_id}/direction")
+async def direction(
+    extraction_id: uuid.UUID,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> list[alerts.DirectionOut]:
+    """Data for the direction sentence of each outcome and time point."""
+    return await alerts.directions(session, ctx, extraction_id)
+
+
+@router.post("/extractions/{extraction_id}/direction/confirm")
+async def confirm_direction(
+    extraction_id: uuid.UUID,
+    body: alerts.ConfirmDirectionIn,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> list[alerts.DirectionOut]:
+    return await alerts.confirm_direction(session, ctx, extraction_id, body)

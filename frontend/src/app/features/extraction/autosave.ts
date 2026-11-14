@@ -6,6 +6,8 @@ export class AutosaveState {
   private readonly pending = signal(0);
   readonly dirty = signal(0);
   readonly error = signal<unknown>(null);
+  /** Increments after every successful save; pages use it to refresh alerts. */
+  readonly saved = signal(0);
   readonly saving = computed(() => this.pending() > 0);
   readonly status = computed<'saving' | 'unsaved' | 'error' | 'saved'>(() => {
     if (this.error()) return 'error';
@@ -24,6 +26,7 @@ export class AutosaveState {
       const result = await action();
       this.error.set(null);
       this.dirty.set(0);
+      this.saved.update((n) => n + 1);
       return result;
     } catch (error) {
       this.error.set(error);

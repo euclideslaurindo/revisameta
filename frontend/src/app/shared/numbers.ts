@@ -22,3 +22,26 @@ export function isValidNumberText(value: string | null | undefined, integer = fa
   if (value === null || value === undefined || !String(value).trim()) return true;
   return integer ? parseInteger(value) !== null : parseDecimal(value) !== null;
 }
+
+/**
+ * Shows a stored decimal ("92.5") with the separator of the language ("92,5" in pt-BR).
+ * Digits are kept as typed: no rounding, the value is the one from the article.
+ */
+export function displayDecimal(value: string | number | null | undefined, lang: string): string {
+  if (value === null || value === undefined) return '';
+  const text = String(value);
+  return lang.startsWith('pt') && /^-?\d+(\.\d+)?$/.test(text) ? text.replace('.', ',') : text;
+}
+
+/** Same as `displayDecimal`, for every numeric value of a translation params object. */
+export function displayParams(
+  params: Record<string, unknown> | null | undefined,
+  lang: string,
+): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(params ?? {})) {
+    out[key] =
+      typeof value === 'string' || typeof value === 'number' ? displayDecimal(value, lang) : value;
+  }
+  return out;
+}

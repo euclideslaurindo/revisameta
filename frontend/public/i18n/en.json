@@ -79,7 +79,8 @@
     "doubleExtraction": "Two people copy the numbers of each article without seeing each other's work. The system compares both versions and points out differences, which prevents typing errors.",
     "studyVsReport": "A study is a group of patients. The same group can appear in several articles; that is why articles are grouped under the study, and patients are not counted twice.",
     "annotation": "A marked passage keeps the page and the exact text of the article a number or a decision came from, so anyone can check it later.",
-    "arm": "Study group (arm): a set of participants the article describes separately, for example those operated before age 5."
+    "arm": "Study group (arm): a set of participants the article describes separately, for example those operated before age 5.",
+    "checks": "The system distrusts typed numbers and points out what looks wrong. Fix the value or, if it is right, write a short justification: it is recorded."
   },
   "notFound": {
     "title": "Page not found",
@@ -88,7 +89,8 @@
   "project": {
     "nav": {
       "protocol": "Protocol",
-      "studies": "Studies"
+      "studies": "Studies",
+      "pending": "Pending checks"
     }
   },
   "protocol": {
@@ -337,6 +339,43 @@
         "notAnInteger": "n, events and total must be whole numbers.",
         "dispersionTypeRequired": "Choose what the article reports (SD, SE, CI…) before typing the dispersion."
       }
+    },
+    "alert": {
+      "arms_exceed_total": "The group sizes add up to {{sum}}, more than the study's total n ({{total}}). Check the numbers or justify (e.g. participants counted in more than one group).",
+      "mean_outside_scale": "The mean {{value}} is outside the scale range ({{min}} to {{max}}). Check the article.",
+      "sd_too_large": "The SD {{value}} is larger than half the scale range ({{half}}). That is rare: check the value and the scale.",
+      "ci_excludes_mean": "The 95% CI ({{low}} to {{high}}) does not contain the mean {{mean}}. A CI of the mean always contains it: check the values.",
+      "dispersion_unconfirmed": "Say where the article states this number is an SD, SE, CI... (e.g. footnote of Table 2). Confusing SD with SE is one of the most common errors.",
+      "no_source": "These numbers have no origin: enter the page/table or mark the passage in the PDF.",
+      "direction_unconfirmed": "Confirm the effect direction sentence for \"{{outcome}}\" ({{timepoint}})."
+    },
+    "alertSeverity": {
+      "warn": "Check",
+      "block": "Blocks submission"
+    },
+    "justified": "Justified",
+    "justification": "Why is the value correct?",
+    "confirmValue": "Confirm value",
+    "valueIsCorrect": "The value is correct",
+    "checks": {
+      "title": "Checks",
+      "summary": "{{open}} open alert(s), {{justified}} justified."
+    },
+    "direction": {
+      "title": "Effect direction",
+      "sentence": "In study {{study}}, for \"{{outcome}}\" ({{timepoint}}), group {{first}} had a mean of {{meanFirst}} and group {{second}} had {{meanSecond}} on the {{scale}} scale,",
+      "higherBetter": "where higher is better.",
+      "higherWorse": "where higher is worse.",
+      "favors": "This favours group {{group}}.",
+      "equal": "The means are equal.",
+      "confirmed": "Confirmed",
+      "ifWrong": "If the sentence does not match the article, fix the numbers or the scale.",
+      "confirm": "It is correct",
+      "none": "The sentence appears once both protocol groups are linked to one arm each and have a mean entered."
     }
+  },
+  "pending": {
+    "intro": "Open check alerts in the extractions you can see. Open the extraction to fix or justify them.",
+    "empty": "No pending checks."
   }
 }

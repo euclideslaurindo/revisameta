@@ -16,6 +16,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.errors import AppError, ConflictError, ForbiddenError, NotFoundError
 from app.db.base import new_id
 from app.modules.auth.models import User
+from app.modules.extraction.checks import impossible_arm_values, impossible_row_values
 from app.modules.extraction.models import (
     Extraction,
     ExtractionForm,
@@ -260,11 +261,21 @@ async def update_characteristics(
 async def submit(
     session: AsyncSession, ctx: ProjectContext, extraction_id: uuid.UUID
 ) -> ExtractionSummary:
+    from app.modules.extraction.alerts import blocking_open
+
     extraction = await get_extraction(session, ctx, extraction_id)
     _ensure_editable(ctx, extraction)
+    if await blocking_open(session, ctx, extraction):
+        raise AppError("extraction.open_blocking_alerts", status_code=409)
     extraction.status = ExtractionStatus.SUBMITTED
     await session.commit()
     return await _summary(session, ctx, extraction)
+
+
+def _reject_impossible(code: str | None) -> None:
+    """Values that cannot be true are refused (bloco A, item 2)."""
+    if code is not None:
+        raise AppError(code, status_code=422)
 
 
 def _bump(extraction: Extraction) -> None:
@@ -294,6 +305,7 @@ async def add_arm(
     extraction = await get_extraction(session, ctx, extraction_id)
     _ensure_editable(ctx, extraction)
     await _check_group(session, ctx, data.mapped_group_id)
+    _reject_impossible(impossible_arm_values(data.n))
     arm = StudyArm(
         project_id=ctx.project.id,
         created_by=ctx.user.id,
@@ -321,6 +333,24 @@ async def _arm(
     return arm, extraction
 
 
+async def _unconfirm_direction(
+    session: AsyncSession, extraction: Extraction, *conditions: Any
+) -> None:
+    """The direction sentence changed: the extractor must read and confirm it again.
+
+    Done per ORM object so the change goes through the audit log.
+    """
+    rows = await session.scalars(
+        select(OutcomeData).where(
+            OutcomeData.extraction_id == extraction.id,
+            OutcomeData.direction_confirmed.is_(True),
+            *conditions,
+        )
+    )
+    for row in rows:
+        row.direction_confirmed = False
+
+
 async def update_arm(
     session: AsyncSession, ctx: ProjectContext, arm_id: uuid.UUID, data: ArmUpdate
 ) -> ArmOut:
@@ -330,6 +360,10 @@ async def update_arm(
     values = data.model_dump(exclude_unset=True, exclude={"version"})
     if "mapped_group_id" in values:
         await _check_group(session, ctx, values["mapped_group_id"])
+    if "n" in values:
+        _reject_impossible(impossible_arm_values(values["n"]))
+    if "mapped_group_id" in values and values["mapped_group_id"] != arm.mapped_group_id:
+        await _unconfirm_direction(session, extraction, OutcomeData.arm_id == arm.id)
     for key, value in values.items():
         setattr(arm, key, value)
     _bump(extraction)
@@ -393,6 +427,8 @@ async def set_measure(
             outcome_id=outcome_id,
         )
         session.add(measure)
+    if measure.higher_is_better != data.higher_is_better:
+        await _unconfirm_direction(session, extraction, OutcomeData.outcome_id == outcome_id)
     for key, value in data.model_dump().items():
         setattr(measure, key, value)
     _bump(extraction)
@@ -464,6 +500,7 @@ async def add_outcome_data(
     _ensure_editable(ctx, extraction)
     await _check_row(session, ctx, extraction, data.arm_id, data.outcome_id, data.timepoint)
     await _check_annotation(session, ctx, extraction, data.annotation_id)
+    _reject_impossible(impossible_row_values(data.model_dump()))
     values = _values(data.model_dump())
     values["value_type"] = str(values["value_type"])
     row = OutcomeData(
@@ -501,6 +538,14 @@ async def update_outcome_data(
     timepoint = data.timepoint or row.timepoint
     await _check_row(session, ctx, extraction, row.arm_id, row.outcome_id, timepoint)
     await _check_annotation(session, ctx, extraction, data.values.annotation_id)
+    _reject_impossible(impossible_row_values(data.values.model_dump()))
+    new_value_type = str(data.value_type) if data.value_type is not None else row.value_type
+    if (
+        data.values.mean != row.mean
+        or timepoint != row.timepoint
+        or new_value_type != row.value_type
+    ):
+        row.direction_confirmed = False
     row.timepoint = timepoint
     if data.value_type is not None:
         row.value_type = str(data.value_type)

@@ -222,7 +222,6 @@ class OutcomeDataFields(BaseModel):
     source: DataSource = DataSource.ARTICLE
     source_location: str | None = Field(default=None, max_length=300)
     annotation_id: uuid.UUID | None = None
-    direction_confirmed: bool = False
 
 
 def check_dispersion(data: dict[str, Any]) -> None:
@@ -266,6 +265,10 @@ class OutcomeDataUpdate(BaseModel):
 
 class OutcomeDataOut(OutcomeDataFields):
     model_config = ConfigDict(from_attributes=True)
+
+    # Set only by confirming the direction sentence; cleared by the server when the
+    # sentence changes (mean, scale direction or group link).
+    direction_confirmed: bool = False
 
     id: uuid.UUID
     arm_id: uuid.UUID

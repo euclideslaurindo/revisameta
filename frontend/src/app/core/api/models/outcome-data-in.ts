@@ -12,7 +12,6 @@ export interface OutcomeDataIn {
   arm_id: string;
   ci_high?: (number | string | null);
   ci_low?: (number | string | null);
-  direction_confirmed?: boolean;
   dispersion_source?: (string | null);
   dispersion_type?: (DispersionType | null);
   effect_reported?: (EffectReportedInput | null);

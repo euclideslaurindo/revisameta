@@ -4,6 +4,7 @@ from app.modules.audit import recorder as _audit_recorder  # noqa: F401 - regist
 from app.modules.audit.models import AuditLog
 from app.modules.auth.models import EmailToken, RefreshToken, User
 from app.modules.extraction.models import (
+    CheckAlert,
     Extraction,
     ExtractionForm,
     OutcomeData,
@@ -21,6 +22,7 @@ from app.modules.uploads.models import PdfPageText, StoredFile, UploadSession
 __all__ = [
     "AuditLog",
     "BackgroundJob",
+    "CheckAlert",
     "ComparisonGroup",
     "EmailToken",
     "Extraction",

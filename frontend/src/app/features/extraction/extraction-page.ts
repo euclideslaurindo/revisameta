@@ -16,7 +16,9 @@ import { firstValueFrom } from 'rxjs';
 import { Api } from '../../core/api/api';
 import { addArm } from '../../core/api/fn/extraction/add-arm';
 import { deleteArm } from '../../core/api/fn/extraction/delete-arm';
+import { direction } from '../../core/api/fn/extraction/direction';
 import { getExtraction } from '../../core/api/fn/extraction/get-extraction';
+import { listAlerts } from '../../core/api/fn/extraction/list-alerts';
 import { getForm } from '../../core/api/fn/extraction/get-form';
 import { setMeasure } from '../../core/api/fn/extraction/set-measure';
 import { submitExtraction } from '../../core/api/fn/extraction/submit-extraction';
@@ -29,7 +31,9 @@ import { viewPdf } from '../../core/api/fn/pdfs/view-pdf';
 import { listGroups } from '../../core/api/fn/protocol/list-groups';
 import { listOutcomes } from '../../core/api/fn/protocol/list-outcomes';
 import { getStudy } from '../../core/api/fn/studies/get-study';
+import { AlertOut } from '../../core/api/models/alert-out';
 import { AnnotationOut } from '../../core/api/models/annotation-out';
+import { DirectionOut } from '../../core/api/models/direction-out';
 import { ArmOut } from '../../core/api/models/arm-out';
 import { ExtractionDetail } from '../../core/api/models/extraction-detail';
 import { FormField } from '../../core/api/models/form-field';
@@ -48,6 +52,8 @@ import { readPdfSelection } from '../pdfs/pdf-selection';
 import { ProjectContext } from '../project/project-context';
 import { AutosaveState } from './autosave';
 import { OutcomeRow } from './outcome-row';
+import { AlertMessage } from './alert-message';
+import { DirectionCheck } from './direction-check';
 
 const SAVE_DELAY_MS = 800;
 
@@ -67,25 +73,33 @@ const SAVE_DELAY_MS = 800;
     NgxExtendedPdfViewerModule,
     FormError,
     OutcomeRow,
+    AlertMessage,
+    DirectionCheck,
   ],
   providers: [AutosaveState],
   template: `
     @if (extraction(); as ex) {
-      <a [routerLink]="['/projetos', projectId(), 'estudos', ex.study_id]" class="back">← {{ study()?.label }}</a>
+      <a [routerLink]="['/projetos', projectId(), 'estudos', ex.study_id]" class="back"
+        >← {{ study()?.label }}</a
+      >
       <header class="page-header sticky-status">
         <h2>{{ 'extraction.title' | transloco }} · {{ study()?.label }}</h2>
         <span class="save-status" [class]="'save-' + autosave.status()" role="status">
           {{ 'extraction.save.' + autosave.status() | transloco }}
         </span>
         @if (editable()) {
-          <button mat-flat-button type="button" (click)="submit()">{{ 'extraction.submit' | transloco }}</button>
+          <button mat-flat-button type="button" (click)="submit()">
+            {{ 'extraction.submit' | transloco }}
+          </button>
         } @else {
           <span class="badge">{{ 'extraction.status.' + ex.status | transloco }}</span>
         }
       </header>
       <rm-form-error [error]="autosave.error() ?? error()" />
       @if (ex.outdated_form) {
-        <div class="notice notice-warn" role="status">{{ 'extraction.outdatedForm' | transloco }}</div>
+        <div class="notice notice-warn" role="status">
+          {{ 'extraction.outdatedForm' | transloco }}
+        </div>
       }
 
       <div class="extraction-layout">
@@ -114,10 +128,14 @@ const SAVE_DELAY_MS = 800;
               />
               @if (editable()) {
                 <div class="actions">
-                  <button mat-stroked-button type="button" (click)="markPassage()">{{ 'pdfs.annotations.mark' | transloco }}</button>
+                  <button mat-stroked-button type="button" (click)="markPassage()">
+                    {{ 'pdfs.annotations.mark' | transloco }}
+                  </button>
                 </div>
                 @if (selectionMissing()) {
-                  <p class="notice notice-warn" role="status">{{ 'pdfs.annotations.selectFirst' | transloco }}</p>
+                  <p class="notice notice-warn" role="status">
+                    {{ 'pdfs.annotations.selectFirst' | transloco }}
+                  </p>
                 }
               }
             }
@@ -126,17 +144,70 @@ const SAVE_DELAY_MS = 800;
 
         <section class="form-pane">
           <mat-card class="block">
-            <mat-card-header><mat-card-title><h3>{{ 'extraction.characteristics' | transloco }}</h3></mat-card-title></mat-card-header>
+            <mat-card-header>
+              <mat-card-title>
+                <h3>
+                  {{ 'extraction.checks.title' | transloco }}
+                  <span class="term" tabindex="0" [matTooltip]="'glossary.checks' | transloco"
+                    >?</span
+                  >
+                </h3>
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p class="muted">
+                {{
+                  'extraction.checks.summary'
+                    | transloco: { open: openAlerts(), justified: justifiedAlerts() }
+                }}
+              </p>
+              @for (alert of generalAlerts(); track alert.id) {
+                <rm-alert-message
+                  [projectId]="projectId()"
+                  [alert]="alert"
+                  [canJustify]="editable()"
+                />
+              }
+              <h4>{{ 'extraction.direction.title' | transloco }}</h4>
+              <rm-direction-check
+                [projectId]="projectId()"
+                [extractionId]="ex.id"
+                [studyLabel]="study()?.label ?? ''"
+                [summaries]="directions()"
+                [editable]="editable()"
+                (changed)="directionChanged($event)"
+              />
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card class="block">
+            <mat-card-header
+              ><mat-card-title
+                ><h3>{{ 'extraction.characteristics' | transloco }}</h3></mat-card-title
+              ></mat-card-header
+            >
             <mat-card-content class="stack">
               @for (field of fields(); track field.key) {
                 <mat-form-field subscriptSizing="dynamic">
-                  <mat-label>{{ field.label_key ? (field.label_key | transloco) : field.label }}</mat-label>
+                  <mat-label>{{
+                    field.label_key ? (field.label_key | transloco) : field.label
+                  }}</mat-label>
                   @switch (field.type) {
                     @case ('textarea') {
-                      <textarea matInput rows="2" [(ngModel)]="characteristics[field.key]" (ngModelChange)="characteristicsChanged()" [disabled]="!editable()"></textarea>
+                      <textarea
+                        matInput
+                        rows="2"
+                        [(ngModel)]="characteristics[field.key]"
+                        (ngModelChange)="characteristicsChanged()"
+                        [disabled]="!editable()"
+                      ></textarea>
                     }
                     @case ('select') {
-                      <mat-select [(ngModel)]="characteristics[field.key]" (ngModelChange)="characteristicsChanged()" [disabled]="!editable()">
+                      <mat-select
+                        [(ngModel)]="characteristics[field.key]"
+                        (ngModelChange)="characteristicsChanged()"
+                        [disabled]="!editable()"
+                      >
                         <mat-option [value]="null">—</mat-option>
                         @for (option of field.options ?? []; track option) {
                           <mat-option [value]="option">{{ option }}</mat-option>
@@ -144,13 +215,27 @@ const SAVE_DELAY_MS = 800;
                       </mat-select>
                     }
                     @case ('date') {
-                      <input matInput type="date" [(ngModel)]="characteristics[field.key]" (ngModelChange)="characteristicsChanged()" [disabled]="!editable()" />
+                      <input
+                        matInput
+                        type="date"
+                        [(ngModel)]="characteristics[field.key]"
+                        (ngModelChange)="characteristicsChanged()"
+                        [disabled]="!editable()"
+                      />
                     }
                     @default {
-                      <input matInput [(ngModel)]="characteristics[field.key]" (ngModelChange)="characteristicsChanged()" [disabled]="!editable()" [attr.inputmode]="field.type === 'number' ? 'decimal' : null" />
+                      <input
+                        matInput
+                        [(ngModel)]="characteristics[field.key]"
+                        (ngModelChange)="characteristicsChanged()"
+                        [disabled]="!editable()"
+                        [attr.inputmode]="field.type === 'number' ? 'decimal' : null"
+                      />
                     }
                   }
-                  @if (field.help) { <mat-hint>{{ field.help }}</mat-hint> }
+                  @if (field.help) {
+                    <mat-hint>{{ field.help }}</mat-hint>
+                  }
                 </mat-form-field>
               }
             </mat-card-content>
@@ -171,23 +256,42 @@ const SAVE_DELAY_MS = 800;
                 <div class="row arm-row">
                   <mat-form-field subscriptSizing="dynamic">
                     <mat-label>{{ 'extraction.arms.label' | transloco }}</mat-label>
-                    <input matInput [ngModel]="arm.label" (ngModelChange)="armChanged(arm, { label: $event })" [disabled]="!editable()" />
+                    <input
+                      matInput
+                      [ngModel]="arm.label"
+                      (ngModelChange)="armChanged(arm, { label: $event })"
+                      [disabled]="!editable()"
+                    />
                   </mat-form-field>
                   <mat-form-field subscriptSizing="dynamic">
                     <mat-label>n</mat-label>
-                    <input matInput [ngModel]="arm.n" (ngModelChange)="armChanged(arm, { n: $event })" [disabled]="!editable()" inputmode="numeric" />
+                    <input
+                      matInput
+                      [ngModel]="arm.n"
+                      (ngModelChange)="armChanged(arm, { n: $event })"
+                      [disabled]="!editable()"
+                      inputmode="numeric"
+                    />
                   </mat-form-field>
                   <mat-form-field subscriptSizing="dynamic">
                     <mat-label>{{ 'extraction.arms.group' | transloco }}</mat-label>
-                    <mat-select [ngModel]="arm.mapped_group_id" (ngModelChange)="armChanged(arm, { mapped_group_id: $event })" [disabled]="!editable()">
-                      <mat-option [value]="null">{{ 'extraction.arms.noGroup' | transloco }}</mat-option>
+                    <mat-select
+                      [ngModel]="arm.mapped_group_id"
+                      (ngModelChange)="armChanged(arm, { mapped_group_id: $event })"
+                      [disabled]="!editable()"
+                    >
+                      <mat-option [value]="null">{{
+                        'extraction.arms.noGroup' | transloco
+                      }}</mat-option>
                       @for (g of groups(); track g.id) {
                         <mat-option [value]="g.id">{{ g.label }}</mat-option>
                       }
                     </mat-select>
                   </mat-form-field>
                   @if (editable()) {
-                    <button mat-button type="button" (click)="removeArm(arm)">{{ 'common.delete' | transloco }}</button>
+                    <button mat-button type="button" (click)="removeArm(arm)">
+                      {{ 'common.delete' | transloco }}
+                    </button>
                   }
                 </div>
               }
@@ -197,7 +301,9 @@ const SAVE_DELAY_MS = 800;
                     <mat-label>{{ 'extraction.arms.new' | transloco }}</mat-label>
                     <input matInput name="newArm" [(ngModel)]="newArm" />
                   </mat-form-field>
-                  <button mat-stroked-button type="submit">{{ 'extraction.arms.add' | transloco }}</button>
+                  <button mat-stroked-button type="submit">
+                    {{ 'extraction.arms.add' | transloco }}
+                  </button>
                 </form>
               }
             </mat-card-content>
@@ -206,25 +312,50 @@ const SAVE_DELAY_MS = 800;
           @for (outcome of outcomes(); track outcome.id) {
             <mat-card class="block">
               <mat-card-header>
-                <mat-card-title><h3>{{ outcome.name }}</h3></mat-card-title>
-                <mat-card-subtitle>{{ 'protocol.outcomes.types.' + outcome.type | transloco }}</mat-card-subtitle>
+                <mat-card-title
+                  ><h3>{{ outcome.name }}</h3></mat-card-title
+                >
+                <mat-card-subtitle>{{
+                  'protocol.outcomes.types.' + outcome.type | transloco
+                }}</mat-card-subtitle>
               </mat-card-header>
               <mat-card-content>
                 @if (outcome.type === 'continuous') {
                   <div class="row">
                     <mat-form-field subscriptSizing="dynamic">
                       <mat-label>{{ 'extraction.scale.name' | transloco }}</mat-label>
-                      <input matInput [ngModel]="scale(outcome).name" (ngModelChange)="scaleChanged(outcome, { name: $event })" [disabled]="!editable()" />
+                      <input
+                        matInput
+                        [ngModel]="scale(outcome).name"
+                        (ngModelChange)="scaleChanged(outcome, { name: $event })"
+                        [disabled]="!editable()"
+                      />
                     </mat-form-field>
                     <mat-form-field subscriptSizing="dynamic">
                       <mat-label>{{ 'extraction.scale.min' | transloco }}</mat-label>
-                      <input matInput [ngModel]="scale(outcome).min" (ngModelChange)="scaleChanged(outcome, { min: $event })" [disabled]="!editable()" inputmode="decimal" />
+                      <input
+                        matInput
+                        [ngModel]="scale(outcome).min"
+                        (ngModelChange)="scaleChanged(outcome, { min: $event })"
+                        [disabled]="!editable()"
+                        inputmode="decimal"
+                      />
                     </mat-form-field>
                     <mat-form-field subscriptSizing="dynamic">
                       <mat-label>{{ 'extraction.scale.max' | transloco }}</mat-label>
-                      <input matInput [ngModel]="scale(outcome).max" (ngModelChange)="scaleChanged(outcome, { max: $event })" [disabled]="!editable()" inputmode="decimal" />
+                      <input
+                        matInput
+                        [ngModel]="scale(outcome).max"
+                        (ngModelChange)="scaleChanged(outcome, { max: $event })"
+                        [disabled]="!editable()"
+                        inputmode="decimal"
+                      />
                     </mat-form-field>
-                    <mat-checkbox [ngModel]="scale(outcome).higherIsBetter" (ngModelChange)="scaleChanged(outcome, { higherIsBetter: $event })" [disabled]="!editable()">
+                    <mat-checkbox
+                      [ngModel]="scale(outcome).higherIsBetter"
+                      (ngModelChange)="scaleChanged(outcome, { higherIsBetter: $event })"
+                      [disabled]="!editable()"
+                    >
                       {{ 'protocol.outcomes.higherBetter' | transloco }}
                     </mat-checkbox>
                   </div>
@@ -247,6 +378,7 @@ const SAVE_DELAY_MS = 800;
                       [row]="rowFor(outcome.id, arm.id, timepoint)"
                       [annotations]="annotations()"
                       [editable]="editable()"
+                      [alerts]="alertsFor(outcome.id, arm.id, timepoint)"
                       (saved)="rowSaved($event)"
                     />
                   }
@@ -280,23 +412,75 @@ export class ExtractionPage {
   protected readonly annotations = signal<AnnotationOut[]>([]);
   protected readonly error = signal<unknown>(null);
   protected readonly selectionMissing = signal(false);
+  protected readonly alerts = signal<AlertOut[]>([]);
+  protected readonly directions = signal<DirectionOut[]>([]);
+  protected readonly generalAlerts = computed(() =>
+    this.alerts().filter((a) => a.target_type !== 'row'),
+  );
+  protected readonly openAlerts = computed(
+    () => this.alerts().filter((a) => a.status === 'open').length,
+  );
+  protected readonly justifiedAlerts = computed(
+    () => this.alerts().filter((a) => a.status === 'justified').length,
+  );
   protected readonly editable = computed(() => {
     const ex = this.extraction();
     if (!ex || ex.status !== 'draft') return false;
-    return ex.kind === 'consensus' ? this.context.isAdmin() : ex.extractor_id === this.auth.user()?.id;
+    return ex.kind === 'consensus'
+      ? this.context.isAdmin()
+      : ex.extractor_id === this.auth.user()?.id;
   });
   protected page = 1;
   protected newArm = '';
   protected characteristics: Record<string, unknown> = {};
   private rows: OutcomeDataOut[] = [];
   private measures = new Map<string, MeasureOut>();
-  private scales = new Map<string, { name: string; min: string; max: string; higherIsBetter: boolean }>();
+  private scales = new Map<
+    string,
+    { name: string; min: string; max: string; higherIsBetter: boolean }
+  >();
   private timers = new Map<string, ReturnType<typeof setTimeout>>();
   // One save at a time per item, so versions never race each other.
   private queues = new Map<string, Promise<void>>();
 
   constructor() {
     effect(() => void this.load(this.extractionId()));
+    // After every save, recompute the safeguards (alerts and direction sentences).
+    effect(() => {
+      if (this.autosave.saved() > 0) void this.reloadChecks();
+    });
+  }
+
+  private async reloadChecks(): Promise<void> {
+    const ex = this.extraction();
+    if (!ex) return;
+    const params = { project_id: this.projectId(), extraction_id: ex.id };
+    const [alerts, directions] = await Promise.all([
+      this.api.invoke(listAlerts, params),
+      this.api.invoke(direction, params),
+    ]);
+    this.alerts.set(alerts);
+    this.directions.set(directions);
+  }
+
+  protected alertsFor(outcomeId: string, armId: string, timepoint: string): AlertOut[] {
+    const row = this.rowFor(outcomeId, armId, timepoint);
+    return row
+      ? this.alerts().filter((a) => a.target_type === 'row' && a.target_id === row.id)
+      : [];
+  }
+
+  protected async directionChanged(summaries: DirectionOut[]): Promise<void> {
+    this.directions.set(summaries);
+    const ex = this.extraction();
+    if (!ex) return;
+    // Confirming bumps the rows on the server: take their new versions.
+    const detail = await this.api.invoke(getExtraction, {
+      project_id: this.projectId(),
+      extraction_id: ex.id,
+    });
+    this.rows = detail.outcome_data;
+    await this.reloadChecks();
   }
 
   protected projectId(): string {
@@ -320,6 +504,7 @@ export class ExtractionPage {
       this.groups.set(groups);
       this.arms.set(ex.arms);
       this.extraction.set(ex);
+      await this.reloadChecks();
       const study = await this.api.invoke(getStudy, { project_id, study_id: ex.study_id });
       this.study.set(study);
       const pdfLists = await Promise.all(
@@ -336,7 +521,9 @@ export class ExtractionPage {
 
   private async reloadAnnotations(): Promise<void> {
     const lists = await Promise.all(
-      this.pdfs().map((p) => this.api.invoke(listAnnotations, { project_id: this.projectId(), pdf_id: p.id })),
+      this.pdfs().map((p) =>
+        this.api.invoke(listAnnotations, { project_id: this.projectId(), pdf_id: p.id }),
+      ),
     );
     this.annotations.set(lists.flat());
   }
@@ -351,7 +538,11 @@ export class ExtractionPage {
     const pdf = this.pdf();
     if (!selection || !pdf) return;
     await this.autosave.track(() =>
-      this.api.invoke(createAnnotation, { project_id: this.projectId(), pdf_id: pdf.id, body: selection }),
+      this.api.invoke(createAnnotation, {
+        project_id: this.projectId(),
+        pdf_id: pdf.id,
+        body: selection,
+      }),
     );
     window.getSelection()?.removeAllRanges();
     await this.reloadAnnotations();
@@ -381,12 +572,23 @@ export class ExtractionPage {
           body: { version: ex.version, characteristics: this.characteristics },
         }),
       );
-      if (result) this.extraction.set({ ...ex, version: result.version, outdated_form: result.outdated_form });
+      if (result)
+        this.extraction.set({
+          ...ex,
+          version: result.version,
+          outdated_form: result.outdated_form,
+        });
     });
   }
 
-  armChanged(arm: ArmOut, change: { label?: string; n?: string | number | null; mapped_group_id?: string | null }): void {
-    if (change.n !== undefined && !isValidNumberText(change.n === null ? '' : String(change.n), true)) {
+  armChanged(
+    arm: ArmOut,
+    change: { label?: string; n?: string | number | null; mapped_group_id?: string | null },
+  ): void {
+    if (
+      change.n !== undefined &&
+      !isValidNumberText(change.n === null ? '' : String(change.n), true)
+    ) {
       this.autosave.error.set(null);
       return;
     }
@@ -426,7 +628,11 @@ export class ExtractionPage {
 
   async removeArm(arm: ArmOut): Promise<void> {
     const ok = await firstValueFrom(
-      this.dialog.open(ConfirmDialog, { data: { message: 'extraction.arms.confirmDelete', params: { label: arm.label } } }).afterClosed(),
+      this.dialog
+        .open(ConfirmDialog, {
+          data: { message: 'extraction.arms.confirmDelete', params: { label: arm.label } },
+        })
+        .afterClosed(),
     );
     if (!ok) return;
     const done = await this.autosave.track(async () => {
@@ -451,7 +657,10 @@ export class ExtractionPage {
     return scale;
   }
 
-  scaleChanged(outcome: OutcomeOut, change: Partial<{ name: string; min: string; max: string; higherIsBetter: boolean }>): void {
+  scaleChanged(
+    outcome: OutcomeOut,
+    change: Partial<{ name: string; min: string; max: string; higherIsBetter: boolean }>,
+  ): void {
     const scale = { ...this.scale(outcome), ...change };
     this.scales.set(outcome.id, scale);
     if (!isValidNumberText(scale.min) || !isValidNumberText(scale.max)) return;
@@ -476,7 +685,11 @@ export class ExtractionPage {
   }
 
   rowFor(outcomeId: string, armId: string, timepoint: string): OutcomeDataOut | null {
-    return this.rows.find((r) => r.outcome_id === outcomeId && r.arm_id === armId && r.timepoint === timepoint) ?? null;
+    return (
+      this.rows.find(
+        (r) => r.outcome_id === outcomeId && r.arm_id === armId && r.timepoint === timepoint,
+      ) ?? null
+    );
   }
 
   rowSaved(row: OutcomeDataOut): void {
@@ -487,7 +700,9 @@ export class ExtractionPage {
     const ex = this.extraction();
     if (!ex) return;
     const ok = await firstValueFrom(
-      this.dialog.open(ConfirmDialog, { data: { message: 'extraction.confirmSubmit' } }).afterClosed(),
+      this.dialog
+        .open(ConfirmDialog, { data: { message: 'extraction.confirmSubmit' } })
+        .afterClosed(),
     );
     if (!ok) return;
     const result = await this.autosave.track(() =>

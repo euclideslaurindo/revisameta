@@ -3617,6 +3617,326 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/extractions/{extraction_id}/alerts": {
+      "get": {
+        "tags": [
+          "extraction"
+        ],
+        "summary": "List Alerts",
+        "description": "Active alerts of the extraction, recomputed from the current data.",
+        "operationId": "list_alerts",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "extraction_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Extraction Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AlertOut"
+                  },
+                  "title": "Response List Alerts"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/alerts/{alert_id}/justify": {
+      "post": {
+        "tags": [
+          "extraction"
+        ],
+        "summary": "Justify Alert",
+        "description": "Confirms the value with a short justification (recorded in the audit log).",
+        "operationId": "justify_alert",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "alert_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Alert Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JustifyIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/pending-checks": {
+      "get": {
+        "tags": [
+          "extraction"
+        ],
+        "summary": "Pending Checks",
+        "description": "'Pendências de conferência' of the project (only extractions the user may see).",
+        "operationId": "pending_checks",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PendingAlert"
+                  },
+                  "title": "Response Pending Checks"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/extractions/{extraction_id}/direction": {
+      "get": {
+        "tags": [
+          "extraction"
+        ],
+        "summary": "Direction",
+        "description": "Data for the direction sentence of each outcome and time point.",
+        "operationId": "direction",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "extraction_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Extraction Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DirectionOut"
+                  },
+                  "title": "Response Direction"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/extractions/{extraction_id}/direction/confirm": {
+      "post": {
+        "tags": [
+          "extraction"
+        ],
+        "summary": "Confirm Direction",
+        "operationId": "confirm_direction",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "extraction_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Extraction Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmDirectionIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DirectionOut"
+                  },
+                  "title": "Response Confirm Direction"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/me/usage": {
       "get": {
         "tags": [
@@ -4216,6 +4536,87 @@
   },
   "components": {
     "schemas": {
+      "AlertOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "extraction_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Extraction Id"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "severity": {
+            "type": "string",
+            "title": "Severity"
+          },
+          "target_type": {
+            "type": "string",
+            "title": "Target Type"
+          },
+          "target_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Target Id"
+          },
+          "field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Field"
+          },
+          "params": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Params"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "justification": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Justification"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "extraction_id",
+          "code",
+          "severity",
+          "target_type",
+          "target_id",
+          "field",
+          "params",
+          "status",
+          "justification",
+          "version"
+        ],
+        "title": "AlertOut"
+      },
       "AnnotationIn": {
         "properties": {
           "page": {
@@ -4647,6 +5048,27 @@
         ],
         "title": "CharacteristicsUpdate"
       },
+      "ConfirmDirectionIn": {
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Outcome Id"
+          },
+          "timepoint": {
+            "type": "string",
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Timepoint"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome_id",
+          "timepoint"
+        ],
+        "title": "ConfirmDirectionIn"
+      },
       "DataSource": {
         "type": "string",
         "enum": [
@@ -4656,6 +5078,92 @@
           "ai"
         ],
         "title": "DataSource"
+      },
+      "DirectionOut": {
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "title": "Outcome Id"
+          },
+          "outcome_name": {
+            "type": "string",
+            "title": "Outcome Name"
+          },
+          "timepoint": {
+            "type": "string",
+            "title": "Timepoint"
+          },
+          "scale_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scale Name"
+          },
+          "higher_is_better": {
+            "type": "boolean",
+            "title": "Higher Is Better"
+          },
+          "first": {
+            "$ref": "#/components/schemas/DirectionSideOut"
+          },
+          "second": {
+            "$ref": "#/components/schemas/DirectionSideOut"
+          },
+          "favors": {
+            "type": "string",
+            "title": "Favors"
+          },
+          "confirmed": {
+            "type": "boolean",
+            "title": "Confirmed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome_id",
+          "outcome_name",
+          "timepoint",
+          "scale_name",
+          "higher_is_better",
+          "first",
+          "second",
+          "favors",
+          "confirmed"
+        ],
+        "title": "DirectionOut"
+      },
+      "DirectionSideOut": {
+        "properties": {
+          "arm_id": {
+            "type": "string",
+            "title": "Arm Id"
+          },
+          "arm_label": {
+            "type": "string",
+            "title": "Arm Label"
+          },
+          "group_label": {
+            "type": "string",
+            "title": "Group Label"
+          },
+          "mean": {
+            "type": "string",
+            "title": "Mean"
+          }
+        },
+        "type": "object",
+        "required": [
+          "arm_id",
+          "arm_label",
+          "group_label",
+          "mean"
+        ],
+        "title": "DirectionSideOut"
       },
       "DispersionType": {
         "type": "string",
@@ -5589,6 +6097,21 @@
         ],
         "title": "JobOut"
       },
+      "JustifyIn": {
+        "properties": {
+          "justification": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 5,
+            "title": "Justification"
+          }
+        },
+        "type": "object",
+        "required": [
+          "justification"
+        ],
+        "title": "JustifyIn"
+      },
       "LoginIn": {
         "properties": {
           "email": {
@@ -6153,11 +6676,6 @@
               }
             ],
             "title": "Annotation Id"
-          },
-          "direction_confirmed": {
-            "type": "boolean",
-            "title": "Direction Confirmed",
-            "default": false
           }
         },
         "type": "object",
@@ -6442,11 +6960,6 @@
               }
             ],
             "title": "Annotation Id"
-          },
-          "direction_confirmed": {
-            "type": "boolean",
-            "title": "Direction Confirmed",
-            "default": false
           },
           "arm_id": {
             "type": "string",
@@ -7123,6 +7636,98 @@
           "expires_in"
         ],
         "title": "PdfViewOut"
+      },
+      "PendingAlert": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "extraction_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Extraction Id"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "severity": {
+            "type": "string",
+            "title": "Severity"
+          },
+          "target_type": {
+            "type": "string",
+            "title": "Target Type"
+          },
+          "target_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Target Id"
+          },
+          "field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Field"
+          },
+          "params": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Params"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "justification": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Justification"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "study_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Study Id"
+          },
+          "study_label": {
+            "type": "string",
+            "title": "Study Label"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "extraction_id",
+          "code",
+          "severity",
+          "target_type",
+          "target_id",
+          "field",
+          "params",
+          "status",
+          "justification",
+          "version",
+          "study_id",
+          "study_label"
+        ],
+        "title": "PendingAlert"
       },
       "Preview": {
         "properties": {

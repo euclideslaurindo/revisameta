@@ -130,6 +130,19 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
     ),
     ("PUT", "/api/v1/projects/{project_id}/outcome-data/{row_id}", {"version": 1, "values": {}}),
     ("DELETE", "/api/v1/projects/{project_id}/outcome-data/{row_id}", None),
+    ("GET", "/api/v1/projects/{project_id}/extractions/{extraction_id}/alerts", None),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/alerts/{alert_id}/justify",
+        {"justification": "conferido no artigo"},
+    ),
+    ("GET", "/api/v1/projects/{project_id}/pending-checks", None),
+    ("GET", "/api/v1/projects/{project_id}/extractions/{extraction_id}/direction", None),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/extractions/{extraction_id}/direction/confirm",
+        {"outcome_id": "{outcome_id}", "timepoint": "1"},
+    ),
 ]
 
 
@@ -256,11 +269,19 @@ async def _extraction_ids(
     row = (
         await client.post(
             f"{base}/extractions/{extraction['id']}/outcome-data",
-            json={"arm_id": arm["id"], "outcome_id": outcome_id, "timepoint": "1"},
+            json={"arm_id": arm["id"], "outcome_id": outcome_id, "timepoint": "1", "n": 10},
             headers=owner.headers,
         )
     ).json()
-    return {"extraction_id": extraction["id"], "arm_id": arm["id"], "row_id": row["id"]}
+    alerts = (
+        await client.get(f"{base}/extractions/{extraction['id']}/alerts", headers=owner.headers)
+    ).json()
+    return {
+        "extraction_id": extraction["id"],
+        "arm_id": arm["id"],
+        "row_id": row["id"],
+        "alert_id": alerts[0]["id"],
+    }
 
 
 def _fill(value: Any, ids: dict[str, str]) -> Any:

@@ -60,6 +60,11 @@ export const routes: Routes = [
           import('./features/extraction/extraction-page').then((m) => m.ExtractionPage),
       },
       {
+        path: 'pendencias',
+        loadComponent: () =>
+          import('./features/extraction/pending-page').then((m) => m.PendingPage),
+      },
+      {
         path: 'pdfs/:pdfId',
         loadComponent: () =>
           import('./features/pdfs/pdf-viewer-page').then((m) => m.PdfViewerPage),

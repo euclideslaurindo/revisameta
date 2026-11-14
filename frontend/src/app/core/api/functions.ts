@@ -135,6 +135,16 @@ export type { UpdateOutcomeData$Params as UpdateOutcomeData$Params } from './fn/
 export { updateOutcomeData as updateOutcomeData } from './fn/extraction/update-outcome-data';
 export type { DeleteOutcomeData$Params as DeleteOutcomeData$Params } from './fn/extraction/delete-outcome-data';
 export { deleteOutcomeData as deleteOutcomeData } from './fn/extraction/delete-outcome-data';
+export type { ListAlerts$Params as ListAlerts$Params } from './fn/extraction/list-alerts';
+export { listAlerts as listAlerts } from './fn/extraction/list-alerts';
+export type { JustifyAlert$Params as JustifyAlert$Params } from './fn/extraction/justify-alert';
+export { justifyAlert as justifyAlert } from './fn/extraction/justify-alert';
+export type { PendingChecks$Params as PendingChecks$Params } from './fn/extraction/pending-checks';
+export { pendingChecks as pendingChecks } from './fn/extraction/pending-checks';
+export type { Direction$Params as Direction$Params } from './fn/extraction/direction';
+export { direction as direction } from './fn/extraction/direction';
+export type { ConfirmDirection$Params as ConfirmDirection$Params } from './fn/extraction/confirm-direction';
+export { confirmDirection as confirmDirection } from './fn/extraction/confirm-direction';
 export type { MyUsage$Params as MyUsage$Params } from './fn/quotas/my-usage';
 export { myUsage as myUsage } from './fn/quotas/my-usage';
 export type { UserUsage$Params as UserUsage$Params } from './fn/quotas/user-usage';

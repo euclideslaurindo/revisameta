@@ -23,6 +23,9 @@ import { ProjectContext } from './project-context';
         <a mat-tab-link routerLink="estudos" routerLinkActive #studies="routerLinkActive" [active]="studies.isActive">
           {{ 'project.nav.studies' | transloco }}
         </a>
+        <a mat-tab-link routerLink="pendencias" routerLinkActive #pending="routerLinkActive" [active]="pending.isActive">
+          {{ 'project.nav.pending' | transloco }}
+        </a>
       </nav>
       <mat-tab-nav-panel #panel>
         <router-outlet />

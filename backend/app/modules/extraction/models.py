@@ -165,3 +165,31 @@ class OutcomeData(BusinessMixin, AuditedMixin, Base):
     source_location: Mapped[str | None] = mapped_column(String(300))
     annotation_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("pdf_annotations.id"))
     direction_confirmed: Mapped[bool] = mapped_column(Boolean, default=False)
+
+
+class AlertStatus(enum.StrEnum):
+    OPEN = "open"
+    JUSTIFIED = "justified"
+    RESOLVED = "resolved"
+
+
+class CheckAlert(BusinessMixin, AuditedMixin, Base):
+    """An extraction safeguard alert (docs/modulos.md 7.5.1).
+
+    Recomputed whenever the extraction is read for review: alerts that no longer apply
+    become `resolved`; a justified alert reopens if the values behind it change.
+    """
+
+    __tablename__ = "check_alerts"
+
+    project_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("projects.id"), index=True)
+    extraction_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("extractions.id"), index=True)
+    code: Mapped[str] = mapped_column(String(80))
+    severity: Mapped[str] = mapped_column(String(8))
+    target_type: Mapped[str] = mapped_column(String(16))
+    target_id: Mapped[uuid.UUID]
+    field: Mapped[str | None] = mapped_column(String(120))
+    params: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict)
+    status: Mapped[str] = mapped_column(String(16), default=AlertStatus.OPEN)
+    justification: Mapped[str | None] = mapped_column(Text)
+    decided_by: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id"))

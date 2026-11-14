@@ -1,4 +1,14 @@
-import { Component, OnDestroy, OnInit, computed, inject, input, output, signal } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  computed,
+  effect,
+  inject,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,14 +20,27 @@ import { TranslocoPipe } from '@jsverse/transloco';
 import { Api } from '../../core/api/api';
 import { addOutcomeData } from '../../core/api/fn/extraction/add-outcome-data';
 import { updateOutcomeData } from '../../core/api/fn/extraction/update-outcome-data';
+import { AlertOut } from '../../core/api/models/alert-out';
 import { AnnotationOut } from '../../core/api/models/annotation-out';
 import { DispersionType } from '../../core/api/models/dispersion-type';
 import { OutcomeDataFields } from '../../core/api/models/outcome-data-fields';
 import { OutcomeDataOut } from '../../core/api/models/outcome-data-out';
 import { isValidNumberText, parseDecimal, parseInteger } from '../../shared/numbers';
+import { AlertMessage } from './alert-message';
 import { AutosaveState } from './autosave';
 
-const DECIMALS = ['mean', 'sd', 'se', 'ci_low', 'ci_high', 'median', 'q1', 'q3', 'min', 'max'] as const;
+const DECIMALS = [
+  'mean',
+  'sd',
+  'se',
+  'ci_low',
+  'ci_high',
+  'median',
+  'q1',
+  'q3',
+  'min',
+  'max',
+] as const;
 const INTEGERS = ['n', 'events', 'total'] as const;
 type NumberKey = (typeof DECIMALS)[number] | (typeof INTEGERS)[number];
 
@@ -36,7 +59,16 @@ const SAVE_DELAY_MS = 800;
 /** The numbers of one outcome, for one group, at one time point. Saves itself. */
 @Component({
   selector: 'rm-outcome-row',
-  imports: [FormsModule, TranslocoPipe, MatCheckboxModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatTooltipModule],
+  imports: [
+    AlertMessage,
+    FormsModule,
+    TranslocoPipe,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatTooltipModule,
+  ],
   template: `
     <div class="outcome-row" [class.readonly]="!editable()">
       <div class="row-head">
@@ -47,35 +79,67 @@ const SAVE_DELAY_MS = 800;
         <div class="row">
           <mat-form-field subscriptSizing="dynamic">
             <mat-label>{{ 'extraction.data.events' | transloco }}</mat-label>
-            <input matInput [(ngModel)]="text.events" (ngModelChange)="changed()" [disabled]="!editable()" inputmode="numeric" />
+            <input
+              matInput
+              [(ngModel)]="text.events"
+              (ngModelChange)="changed()"
+              [disabled]="!editable()"
+              inputmode="numeric"
+            />
           </mat-form-field>
           <mat-form-field subscriptSizing="dynamic">
             <mat-label>{{ 'extraction.data.total' | transloco }}</mat-label>
-            <input matInput [(ngModel)]="text.total" (ngModelChange)="changed()" [disabled]="!editable()" inputmode="numeric" />
+            <input
+              matInput
+              [(ngModel)]="text.total"
+              (ngModelChange)="changed()"
+              [disabled]="!editable()"
+              inputmode="numeric"
+            />
           </mat-form-field>
         </div>
       } @else {
         <div class="row">
           <mat-form-field subscriptSizing="dynamic">
             <mat-label>{{ 'extraction.data.valueType' | transloco }}</mat-label>
-            <mat-select [(ngModel)]="valueType" (ngModelChange)="changed()" [disabled]="!editable()">
+            <mat-select
+              [(ngModel)]="valueType"
+              (ngModelChange)="changed()"
+              [disabled]="!editable()"
+            >
               <mat-option value="final">{{ 'extraction.data.final' | transloco }}</mat-option>
               <mat-option value="change">{{ 'extraction.data.change' | transloco }}</mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field subscriptSizing="dynamic">
             <mat-label>n</mat-label>
-            <input matInput [(ngModel)]="text.n" (ngModelChange)="changed()" [disabled]="!editable()" inputmode="numeric" />
+            <input
+              matInput
+              [(ngModel)]="text.n"
+              (ngModelChange)="changed()"
+              [disabled]="!editable()"
+              inputmode="numeric"
+            />
           </mat-form-field>
           <mat-form-field subscriptSizing="dynamic">
             <mat-label>{{ 'extraction.data.mean' | transloco }}</mat-label>
-            <input matInput [(ngModel)]="text.mean" (ngModelChange)="changed()" [disabled]="!editable()" inputmode="decimal" />
+            <input
+              matInput
+              [(ngModel)]="text.mean"
+              (ngModelChange)="changed()"
+              [disabled]="!editable()"
+              inputmode="decimal"
+            />
           </mat-form-field>
           <mat-form-field subscriptSizing="dynamic">
             <mat-label>
               {{ 'extraction.data.dispersionType' | transloco }}
             </mat-label>
-            <mat-select [(ngModel)]="dispersionType" (ngModelChange)="changed()" [disabled]="!editable()">
+            <mat-select
+              [(ngModel)]="dispersionType"
+              (ngModelChange)="changed()"
+              [disabled]="!editable()"
+            >
               @for (d of dispersions; track d) {
                 <mat-option [value]="d">{{ 'extraction.dispersion.' + d | transloco }}</mat-option>
               }
@@ -88,13 +152,24 @@ const SAVE_DELAY_MS = 800;
             @for (key of dispersionInputs(); track key) {
               <mat-form-field subscriptSizing="dynamic">
                 <mat-label>{{ 'extraction.data.fields.' + key | transloco }}</mat-label>
-                <input matInput [(ngModel)]="text[key]" (ngModelChange)="changed()" [disabled]="!editable()" inputmode="decimal" />
+                <input
+                  matInput
+                  [(ngModel)]="text[key]"
+                  (ngModelChange)="changed()"
+                  [disabled]="!editable()"
+                  inputmode="decimal"
+                />
               </mat-form-field>
             }
             @if (dispersionType !== 'not_reported') {
               <mat-form-field subscriptSizing="dynamic" class="wide">
                 <mat-label>{{ 'extraction.data.dispersionSource' | transloco }}</mat-label>
-                <input matInput [(ngModel)]="dispersionSource" (ngModelChange)="changed()" [disabled]="!editable()" />
+                <input
+                  matInput
+                  [(ngModel)]="dispersionSource"
+                  (ngModelChange)="changed()"
+                  [disabled]="!editable()"
+                />
                 <mat-hint>{{ 'extraction.data.dispersionSourceHint' | transloco }}</mat-hint>
               </mat-form-field>
             }
@@ -104,20 +179,34 @@ const SAVE_DELAY_MS = 800;
       <div class="row">
         <mat-form-field subscriptSizing="dynamic" class="wide">
           <mat-label>{{ 'extraction.data.sourceLocation' | transloco }}</mat-label>
-          <input matInput [(ngModel)]="sourceLocation" (ngModelChange)="changed()" [disabled]="!editable()" />
+          <input
+            matInput
+            [(ngModel)]="sourceLocation"
+            (ngModelChange)="changed()"
+            [disabled]="!editable()"
+          />
         </mat-form-field>
         <mat-form-field subscriptSizing="dynamic" class="wide">
           <mat-label>{{ 'extraction.data.annotation' | transloco }}</mat-label>
-          <mat-select [(ngModel)]="annotationId" (ngModelChange)="changed()" [disabled]="!editable()">
+          <mat-select
+            [(ngModel)]="annotationId"
+            (ngModelChange)="changed()"
+            [disabled]="!editable()"
+          >
             <mat-option [value]="null">{{ 'extraction.data.noAnnotation' | transloco }}</mat-option>
             @for (a of annotations(); track a.id) {
-              <mat-option [value]="a.id">{{ 'pdfs.page' | transloco: { page: a.page } }} · {{ a.quote }}</mat-option>
+              <mat-option [value]="a.id"
+                >{{ 'pdfs.page' | transloco: { page: a.page } }} · {{ a.quote }}</mat-option
+              >
             }
           </mat-select>
         </mat-form-field>
       </div>
       @if (problem(); as key) {
         <div class="notice notice-error" role="alert">{{ key | transloco }}</div>
+      }
+      @for (alert of alerts(); track alert.id) {
+        <rm-alert-message [projectId]="projectId()" [alert]="alert" [canJustify]="editable()" />
       }
     </div>
   `,
@@ -136,6 +225,7 @@ export class OutcomeRow implements OnInit, OnDestroy {
   readonly row = input<OutcomeDataOut | null>(null);
   readonly annotations = input<AnnotationOut[]>([]);
   readonly editable = input(true);
+  readonly alerts = input<AlertOut[]>([]);
   readonly saved = output<OutcomeDataOut>();
 
   protected readonly dispersions = DISPERSIONS;
@@ -148,12 +238,25 @@ export class OutcomeRow implements OnInit, OnDestroy {
   protected dispersionSource = '';
   protected sourceLocation = '';
   protected annotationId: string | null = null;
-  protected readonly dispersionInputs = computed(() => DISPERSION_INPUTS[this.dispersionTypeSignal() ?? 'not_reported']);
+  protected readonly dispersionInputs = computed(
+    () => DISPERSION_INPUTS[this.dispersionTypeSignal() ?? 'not_reported'],
+  );
   private readonly dispersionTypeSignal = signal<DispersionType | null>(null);
   private current: OutcomeDataOut | null = null;
   private timer: ReturnType<typeof setTimeout> | null = null;
   // Saves run one after the other, so a slow first save never creates a duplicate row.
   private queue: Promise<void> = Promise.resolve();
+
+  constructor() {
+    // The server may bump the row (e.g. direction confirmed): keep its newest version
+    // without touching what the user is typing.
+    effect(() => {
+      const row = this.row();
+      if (row && this.current && row.id === this.current.id && row.version > this.current.version) {
+        this.current = row;
+      }
+    });
+  }
 
   ngOnInit(): void {
     const row = this.row();
@@ -189,13 +292,21 @@ export class OutcomeRow implements OnInit, OnDestroy {
       if (!isValidNumberText(this.text[key])) return this.fail('extraction.data.errors.notANumber');
     }
     for (const key of INTEGERS) {
-      if (!isValidNumberText(this.text[key], true)) return this.fail('extraction.data.errors.notAnInteger');
+      if (!isValidNumberText(this.text[key], true))
+        return this.fail('extraction.data.errors.notAnInteger');
     }
-    const allowed = new Set<NumberKey>(['n', 'mean', 'events', 'total', ...DISPERSION_INPUTS[this.dispersionType ?? 'not_reported']]);
-    const hasDispersionValue = (['sd', 'se', 'ci_low', 'ci_high', 'q1', 'q3', 'min', 'max'] as const).some(
-      (k) => this.text[k].trim() && allowed.has(k),
-    );
-    if (!this.dispersionType && hasDispersionValue) return this.fail('extraction.data.errors.dispersionTypeRequired');
+    const allowed = new Set<NumberKey>([
+      'n',
+      'mean',
+      'events',
+      'total',
+      ...DISPERSION_INPUTS[this.dispersionType ?? 'not_reported'],
+    ]);
+    const hasDispersionValue = (
+      ['sd', 'se', 'ci_low', 'ci_high', 'q1', 'q3', 'min', 'max'] as const
+    ).some((k) => this.text[k].trim() && allowed.has(k));
+    if (!this.dispersionType && hasDispersionValue)
+      return this.fail('extraction.data.errors.dispersionTypeRequired');
     this.problem.set(null);
     const decimal = (k: NumberKey) => (allowed.has(k) ? parseDecimal(this.text[k]) : null);
     const integer = (k: NumberKey) => (allowed.has(k) ? parseInteger(this.text[k]) : null);
