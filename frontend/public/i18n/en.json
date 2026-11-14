@@ -93,7 +93,8 @@
       "protocol": "Protocol",
       "studies": "Studies",
       "pending": "Pending checks",
-      "review": "Final review"
+      "review": "Final review",
+      "export": "Export"
     }
   },
   "protocol": {
@@ -479,5 +480,35 @@
       "single": "single extraction, checked by {{name}}",
       "empty": "not reported"
     }
+  },
+  "export": {
+    "intro": "Download the extracted data to use in another program or keep a copy. Numbers are exported as reported by the article, without conversions.",
+    "extraction": {
+      "title": "Extracted data",
+      "ready": "{{ready}} of {{total}} study(ies) with a submitted consensus.",
+      "missing": "{{count}} study(ies) do not have a submitted consensus yet and will be left out of the consensus file:"
+    },
+    "missing": {
+      "no_consensus": "no consensus",
+      "consensus_draft": "consensus not submitted yet",
+      "no_extraction": "no extraction"
+    },
+    "content": "What to export",
+    "mode": {
+      "consensus": "Only the consensus (recommended). The list of what is missing goes in the \"Read me\" sheet.",
+      "individual": "Each extractor's individual extraction, marked as pre-consensus (not checked yet)."
+    },
+    "format": "Format",
+    "formats": {
+      "xlsx": "Excel (XLSX), with sheets for studies, groups, data and justified alerts",
+      "csv": "CSV, with the data table only"
+    },
+    "csv": {
+      "excel": "For Excel in Portuguese (; separator and decimal comma)",
+      "r": "For R or other programs (, separator and decimal point)"
+    },
+    "language": "File language",
+    "acknowledge": "I am aware that {{count}} study(ies) will be left out of the file.",
+    "download": "Download"
   }
 }

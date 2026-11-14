@@ -68,6 +68,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/extraction/review-page').then((m) => m.ReviewPage),
       },
       {
+        path: 'exportar',
+        loadComponent: () => import('./features/exports/export-page').then((m) => m.ExportPage),
+      },
+      {
         path: 'pendencias',
         loadComponent: () =>
           import('./features/extraction/pending-page').then((m) => m.PendingPage),

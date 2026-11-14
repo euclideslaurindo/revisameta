@@ -162,6 +162,8 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
         "/api/v1/projects/{project_id}/extractions/{extraction_id}/reopen",
         {"justification": "motivo de teste"},
     ),
+    ("GET", "/api/v1/projects/{project_id}/exports/extraction/status", None),
+    ("GET", "/api/v1/projects/{project_id}/exports/extraction", None),
 ]
 
 

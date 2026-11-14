@@ -61,6 +61,8 @@ MESSAGES: dict[Language, dict[str, str]] = {
         "extraction.alert_confirm_direction": (
             "Este alerta é resolvido confirmando a frase de direção do efeito."
         ),
+        "export.empty": "Não há dados para exportar: nenhum estudo tem consenso enviado. Use a opção de extrações individuais (pré-consenso) se precisar.",
+        "export.incomplete": "{count} estudo(s) ficariam fora do arquivo. Confira a lista e confirme a exportação.",
         "stage.locked": "Esta etapa está travada. Peça ao administrador para destravá-la (com justificativa) se precisar alterar algo.",
         "stage.not_locked": "Esta etapa não está travada.",
         "review.not_ready": "Só dá para travar quando todos os estudos têm consenso enviado e nenhum alerta em aberto ({ready} de {total} prontos).",
@@ -166,6 +168,8 @@ MESSAGES: dict[Language, dict[str, str]] = {
         "extraction.alert_confirm_direction": (
             "This alert is resolved by confirming the effect direction sentence."
         ),
+        "export.empty": "There is no data to export: no study has a submitted consensus. Use the individual (pre-consensus) option if needed.",
+        "export.incomplete": "{count} study(ies) would be left out of the file. Check the list and confirm the export.",
         "stage.locked": "This stage is locked. Ask the admin to unlock it (with a justification) if something must change.",
         "stage.not_locked": "This stage is not locked.",
         "review.not_ready": "The stage can only be locked when every study has a submitted consensus and no open alert ({ready} of {total} ready).",

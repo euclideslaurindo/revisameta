@@ -19,3 +19,25 @@ export function asProblem(error: unknown): Problem | null {
   }
   return null;
 }
+
+/**
+ * File downloads ask for a Blob, so their error bodies arrive as a Blob too. This
+ * turns such an error back into a regular Problem Details error.
+ */
+export async function withJsonBody(error: unknown): Promise<unknown> {
+  if (error instanceof HttpErrorResponse && error.error instanceof Blob) {
+    try {
+      const body: unknown = JSON.parse(await error.error.text());
+      return new HttpErrorResponse({
+        error: body,
+        headers: error.headers,
+        status: error.status,
+        statusText: error.statusText,
+        url: error.url ?? undefined,
+      });
+    } catch {
+      return error;
+    }
+  }
+  return error;
+}

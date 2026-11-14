@@ -14,6 +14,7 @@ from app.db import models as _models  # noqa: F401 - register mappers and audit 
 from app.db.session import dispose_engine
 from app.integrations.storage import Storage
 from app.modules.auth.router import router as auth_router
+from app.modules.exports.router import router as exports_router
 from app.modules.extraction.router import router as extraction_router
 from app.modules.jobs.router import router as jobs_router
 from app.modules.pdfs.router import router as pdfs_router
@@ -79,6 +80,7 @@ def create_app() -> FastAPI:
         studies_router,
         pdfs_router,
         extraction_router,
+        exports_router,
         quotas_router,
         uploads_router,
         jobs_router,

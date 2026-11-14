@@ -4342,6 +4342,159 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/exports/extraction/status": {
+      "get": {
+        "tags": [
+          "exports"
+        ],
+        "summary": "Extraction Export Status",
+        "description": "Which studies have a submitted consensus and which would be left out.",
+        "operationId": "extraction_export_status",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExportStatus"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/exports/extraction": {
+      "get": {
+        "tags": [
+          "exports"
+        ],
+        "summary": "Export Extraction",
+        "description": "Extracted data as XLSX or CSV. Refuses to leave studies out silently.",
+        "operationId": "export_extraction",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "file_format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/FileFormat",
+              "default": "xlsx"
+            }
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ExportMode",
+              "default": "consensus"
+            }
+          },
+          {
+            "name": "csv_style",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CsvStyle",
+              "default": "excel"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 8
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Lang"
+            }
+          },
+          {
+            "name": "acknowledge_missing",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Acknowledge Missing"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The exported file.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/me/usage": {
       "get": {
         "tags": [
@@ -5635,6 +5788,14 @@
         ],
         "title": "ConsensusRef"
       },
+      "CsvStyle": {
+        "type": "string",
+        "enum": [
+          "excel",
+          "r"
+        ],
+        "title": "CsvStyle"
+      },
       "DataSource": {
         "type": "string",
         "enum": [
@@ -5994,6 +6155,50 @@
         ],
         "title": "EmailIn"
       },
+      "ExportMode": {
+        "type": "string",
+        "enum": [
+          "consensus",
+          "individual"
+        ],
+        "title": "ExportMode"
+      },
+      "ExportStatus": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "ready": {
+            "type": "integer",
+            "title": "Ready"
+          },
+          "missing": {
+            "items": {
+              "$ref": "#/components/schemas/MissingStudy"
+            },
+            "type": "array",
+            "title": "Missing"
+          },
+          "locked": {
+            "type": "boolean",
+            "title": "Locked"
+          },
+          "individual_allowed": {
+            "type": "boolean",
+            "title": "Individual Allowed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total",
+          "ready",
+          "missing",
+          "locked",
+          "individual_allowed"
+        ],
+        "title": "ExportStatus"
+      },
       "ExtractionDetail": {
         "properties": {
           "id": {
@@ -6224,6 +6429,14 @@
           "side"
         ],
         "title": "ExtractorOut"
+      },
+      "FileFormat": {
+        "type": "string",
+        "enum": [
+          "xlsx",
+          "csv"
+        ],
+        "title": "FileFormat"
       },
       "FinalReviewOut": {
         "properties": {
@@ -7248,6 +7461,30 @@
         "title": "MergeIn",
         "description": "Moves every report of `other_study_id` into this study (same patients)."
       },
+      "MissingStudy": {
+        "properties": {
+          "study_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Study Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "study_id",
+          "label",
+          "reason"
+        ],
+        "title": "MissingStudy"
+      },
       "NumberCheck": {
         "properties": {
           "status": {
@@ -7282,7 +7519,7 @@
           "status"
         ],
         "title": "NumberCheck",
-        "description": "How one number of the consensus was checked.\n\nstatus: agreed (both extractors typed it) | decided (divergence settled) |\nundecided | edited (changed in the consensus without a decision) |\none_extractor (only one extractor recorded the row) | single (no double\nextraction: checked when the admin submitted the consensus)."
+        "description": "How one number of the consensus was checked.\n\nstatus: empty (no value: nothing to check) | agreed (both extractors typed it) |\ndecided (divergence settled) | undecided | edited (changed in the consensus\nwithout a decision) |\none_extractor (only one extractor recorded the row) | single (no double\nextraction: checked when the admin submitted the consensus)."
       },
       "OutcomeCreate": {
         "properties": {

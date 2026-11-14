@@ -53,6 +53,15 @@ import { ProjectContext } from './project-context';
         >
           {{ 'project.nav.review' | transloco }}
         </a>
+        <a
+          mat-tab-link
+          routerLink="exportar"
+          routerLinkActive
+          #exports="routerLinkActive"
+          [active]="exports.isActive"
+        >
+          {{ 'project.nav.export' | transloco }}
+        </a>
       </nav>
       <mat-tab-nav-panel #panel>
         <router-outlet />

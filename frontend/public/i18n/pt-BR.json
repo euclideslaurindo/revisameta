@@ -93,7 +93,8 @@
       "protocol": "Protocolo",
       "studies": "Estudos",
       "pending": "Pendências",
-      "review": "Conferência final"
+      "review": "Conferência final",
+      "export": "Exportar"
     }
   },
   "protocol": {
@@ -479,5 +480,35 @@
       "single": "extração única, conferida por {{name}}",
       "empty": "não informado"
     }
+  },
+  "export": {
+    "intro": "Baixe os dados extraídos para usar em outro programa ou guardar uma cópia. Os números saem como o artigo informa, sem conversões.",
+    "extraction": {
+      "title": "Dados extraídos",
+      "ready": "{{ready}} de {{total}} estudo(s) com consenso enviado.",
+      "missing": "{{count}} estudo(s) ainda não têm consenso enviado e ficarão fora do arquivo de consenso:"
+    },
+    "missing": {
+      "no_consensus": "sem consenso",
+      "consensus_draft": "consenso ainda não enviado",
+      "no_extraction": "sem extração"
+    },
+    "content": "O que exportar",
+    "mode": {
+      "consensus": "Só o consenso (recomendado). A lista do que falta vai na aba \"Leia-me\".",
+      "individual": "Extrações individuais de cada extrator, marcadas como pré-consenso (ainda não conferidas)."
+    },
+    "format": "Formato",
+    "formats": {
+      "xlsx": "Excel (XLSX), com abas de estudos, grupos, dados e alertas justificados",
+      "csv": "CSV, só com a tabela de dados"
+    },
+    "csv": {
+      "excel": "Para Excel em português (separador ; e vírgula decimal)",
+      "r": "Para o R ou outros programas (separador , e ponto decimal)"
+    },
+    "language": "Idioma do arquivo",
+    "acknowledge": "Estou ciente de que {{count}} estudo(s) ficarão fora do arquivo.",
+    "download": "Baixar"
   }
 }

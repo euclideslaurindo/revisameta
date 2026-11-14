@@ -5,8 +5,9 @@
 /**
  * How one number of the consensus was checked.
  *
- * status: agreed (both extractors typed it) | decided (divergence settled) |
- * undecided | edited (changed in the consensus without a decision) |
+ * status: empty (no value: nothing to check) | agreed (both extractors typed it) |
+ * decided (divergence settled) | undecided | edited (changed in the consensus
+ * without a decision) |
  * one_extractor (only one extractor recorded the row) | single (no double
  * extraction: checked when the admin submitted the consensus).
  */

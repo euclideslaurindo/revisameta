@@ -159,6 +159,10 @@ export type { UnlockExtraction$Params as UnlockExtraction$Params } from './fn/ex
 export { unlockExtraction as unlockExtraction } from './fn/extraction/unlock-extraction';
 export type { ReopenConsensus$Params as ReopenConsensus$Params } from './fn/extraction/reopen-consensus';
 export { reopenConsensus as reopenConsensus } from './fn/extraction/reopen-consensus';
+export type { ExtractionExportStatus$Params as ExtractionExportStatus$Params } from './fn/exports/extraction-export-status';
+export { extractionExportStatus as extractionExportStatus } from './fn/exports/extraction-export-status';
+export type { ExportExtraction$Params as ExportExtraction$Params } from './fn/exports/export-extraction';
+export { exportExtraction as exportExtraction } from './fn/exports/export-extraction';
 export type { MyUsage$Params as MyUsage$Params } from './fn/quotas/my-usage';
 export { myUsage as myUsage } from './fn/quotas/my-usage';
 export type { UserUsage$Params as UserUsage$Params } from './fn/quotas/user-usage';

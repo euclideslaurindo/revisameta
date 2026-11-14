@@ -56,6 +56,7 @@ classmethod-decorators = ["declared_attr", "declared_attr.directive"]
 [tool.ruff.lint.per-file-ignores]
 "alembic/versions/**" = ["E501"]
 "app/core/i18n.py" = ["E501"]  # translated message catalog
+"app/modules/exports/labels.py" = ["E501"]  # translated texts of exported files
 "tests/**" = ["S101", "S105", "S106"]
 
 [tool.mypy]

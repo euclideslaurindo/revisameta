@@ -492,3 +492,12 @@ main:has(.extraction-layout) {
     grid-template-columns: 1fr;
   }
 }
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+.stack.indent {
+  margin-left: 2rem;
+}
