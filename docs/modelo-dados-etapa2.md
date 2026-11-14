@@ -1,4 +1,4 @@
-# Modelo de dados — Etapa 2 (proposta para aprovação)
+# Modelo de dados — Etapa 2 (aprovado em 2026-11-14)
 
 > Risco de viés e migração (docs/modulos.md 7.6; roteiro, Etapa 2). Refina o rascunho da seção 9 ([modelo-dados.md](modelo-dados.md)).
 > Todas as tabelas de negócio têm `id` (UUID v7), `project_id`, `created_at`, `updated_at`, `created_by`, `deleted_at` (soft delete) e `version` (trava otimista), omitidos no diagrama.
@@ -73,6 +73,11 @@ erDiagram
         text reason
     }
 ```
+
+## Decisões do responsável (2026-11-14)
+- **ROBINS-I nas duas versões** (2016 e V2): o projeto escolhe; a versão fica registrada em cada avaliação.
+- **Algoritmos de domínio a partir dos documentos oficiais** de cada instrumento, testados com os exemplos dos próprios manuais. O revisor pode discordar com justificativa.
+- **Todos os instrumentos da especificação** nesta etapa, na ordem: JBI coorte, ROBINS-I, NOS, RoB 2, ROBINS-E, demais checklists JBI e genérico.
 
 ## Decisões de modelagem
 
