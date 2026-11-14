@@ -341,7 +341,31 @@
       "errors": {
         "notANumber": "A value is not a number. Use a comma or a dot for decimals.",
         "notAnInteger": "n, events and total must be whole numbers.",
-        "dispersionTypeRequired": "Choose what the article reports (SD, SE, CI…) before typing the dispersion."
+        "dispersionTypeRequired": "Choose what the article reports (SD, SE, CI…) before typing the dispersion.",
+        "effectIncomplete": "To record the effect reported by the article, choose the measure and type the estimate."
+      },
+      "extra": {
+        "show": "Other data from the article (adjusted effect, p value, t statistic)",
+        "hide": "Hide other data from the article",
+        "hint": "Use it when the article already gives the computed effect (e.g. adjusted OR with 95% CI) or only reports the p value or t statistic. Type it as in the article: the conversion to the analysis scale is done by the system.",
+        "measure": "Effect reported by the article",
+        "noEffect": "None",
+        "measures": {
+          "OR": "OR (odds ratio)",
+          "RR": "RR (relative risk)",
+          "HR": "HR (hazard ratio)",
+          "MD": "Mean difference",
+          "SMD": "Standardized mean difference",
+          "other": "Other measure"
+        },
+        "estimate": "Estimate",
+        "ci_low": "95% CI lower",
+        "ci_high": "95% CI upper",
+        "se": "SE of the effect",
+        "adjusted": "Adjusted estimate (corrected for other factors)",
+        "adjustedFor": "Adjusted for which variables?",
+        "t_stat": "t statistic",
+        "p_value": "Exact p value"
       }
     },
     "alert": {
@@ -351,7 +375,8 @@
       "ci_excludes_mean": "The 95% CI ({{low}} to {{high}}) does not contain the mean {{mean}}. A CI of the mean always contains it: check the values.",
       "dispersion_unconfirmed": "Say where the article states this number is an SD, SE, CI... (e.g. footnote of Table 2). Confusing SD with SE is one of the most common errors.",
       "no_source": "These numbers have no origin: enter the page/table or mark the passage in the PDF.",
-      "direction_unconfirmed": "Confirm the effect direction sentence for \"{{outcome}}\" ({{timepoint}})."
+      "direction_unconfirmed": "Confirm the effect direction sentence for \"{{outcome}}\" ({{timepoint}}).",
+      "effect_outside_ci": "The reported effect ({{estimate}}) is outside its own CI ({{low}} to {{high}}). Check the values in the article."
     },
     "alertSeverity": {
       "warn": "Check",
@@ -510,5 +535,33 @@
     "language": "File language",
     "acknowledge": "I am aware that {{count}} study(ies) will be left out of the file.",
     "download": "Download"
+  },
+  "formEditor": {
+    "title": "Study characteristics form",
+    "help": "The fields each extractor fills in about the study (country, total n, type of surgery...). Saving creates a new form version; extractions made on the old version show a warning to review. Removing a field does not delete what was already typed.",
+    "version": "Current version: {{version}}",
+    "addBack": "Removed default fields (click to add them back):",
+    "newField": "New field",
+    "label": "Field name",
+    "type": "Type",
+    "types": {
+      "text": "Short text",
+      "textarea": "Long text",
+      "number": "Number",
+      "select": "List of options",
+      "date": "Date"
+    },
+    "options": "Options",
+    "optionsHint": "Separate the options with semicolons (e.g. general; local; sedation)",
+    "fieldHelp": "Explanation for the extractor (optional)",
+    "add": "Add field",
+    "up": "Move up",
+    "down": "Move down",
+    "saveHint": "Changes only apply after saving. Version {{next}} of the form will be created, and extractions already started will show a warning to review.",
+    "save": "Save new version",
+    "errors": {
+      "label": "Give the field a name.",
+      "options": "A list of options needs at least two options."
+    }
   }
 }

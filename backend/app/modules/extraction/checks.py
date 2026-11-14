@@ -78,6 +78,34 @@ def impossible_row_values(values: dict[str, Any]) -> str | None:
         a, b = _num(values.get(low)), _num(values.get(high))
         if median is not None and a is not None and b is not None and not a <= median <= b:
             return "extraction.impossible.median_outside"
+    p_value = _num(values.get("p_value"))
+    if p_value is not None and not 0 < p_value <= 1:
+        return "extraction.impossible.p_out_of_range"
+    return impossible_effect(values.get("effect_reported"))
+
+
+RATIO_MEASURES = {"OR", "RR", "HR"}
+
+
+def impossible_effect(effect: dict[str, Any] | None) -> str | None:
+    """An effect already computed by the article (e.g. adjusted OR with its CI)."""
+    if not effect:
+        return None
+    estimate, low, high = (
+        _num(effect.get("estimate")),
+        _num(effect.get("ci_low")),
+        _num(effect.get("ci_high")),
+    )
+    se = _num(effect.get("se"))
+    if effect.get("measure") in RATIO_MEASURES and any(
+        v is not None and v <= 0 for v in (estimate, low, high)
+    ):
+        # Ratios (OR, RR, HR) are always above zero; they are analysed on the log scale.
+        return "extraction.impossible.ratio_not_positive"
+    if low is not None and high is not None and low > high:
+        return "extraction.impossible.ci_inverted"
+    if se is not None and se <= 0:
+        return "extraction.impossible.se_not_positive"
     return None
 
 
@@ -168,10 +196,34 @@ def compute_alerts(
                 )
             )
 
+        # A4 for effects reported by the article: the estimate lies inside its CI.
+        effect = row.effect_reported or {}
+        est, e_low, e_high = (
+            _num(effect.get("estimate")),
+            _num(effect.get("ci_low")),
+            _num(effect.get("ci_high")),
+        )
+        if (
+            est is not None
+            and e_low is not None
+            and e_high is not None
+            and not e_low <= est <= e_high
+        ):
+            alerts.append(
+                Alert(
+                    "extraction.alert.effect_outside_ci",
+                    "warn",
+                    "row",
+                    rid,
+                    "effect_reported",
+                    {"estimate": _fmt(est), "low": _fmt(e_low), "high": _fmt(e_high)},
+                )
+            )
+
         has_numbers = any(
             getattr(row, f) is not None
             for f in ("n", "mean", "sd", "se", "ci_low", "ci_high", "median", "events", "total")
-        )
+        ) or bool(effect)
         # A1: a dispersion value is only confirmed when we know where the article says its type.
         if (
             row.dispersion_type

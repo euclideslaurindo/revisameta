@@ -116,6 +116,7 @@ LABELS: dict[str, dict[str, str]] = {
         "alert.dispersion_unconfirmed": "Sem indicação de onde o artigo diz o tipo de dispersão",
         "alert.no_source": "Números sem origem no artigo",
         "alert.direction_unconfirmed": "Direção do efeito não confirmada ({outcome}, {timepoint})",
+        "alert.effect_outside_ci": "Efeito informado {estimate} fora do próprio IC ({low} a {high})",
     },
     "en": {
         "file.extraction": "extraction",
@@ -224,6 +225,7 @@ LABELS: dict[str, dict[str, str]] = {
         "alert.dispersion_unconfirmed": "No indication of where the article states the dispersion type",
         "alert.no_source": "Numbers without origin in the article",
         "alert.direction_unconfirmed": "Effect direction not confirmed ({outcome}, {timepoint})",
+        "alert.effect_outside_ci": "Reported effect {estimate} outside its own CI ({low} to {high})",
     },
 }
 

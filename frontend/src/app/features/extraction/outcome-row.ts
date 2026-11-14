@@ -10,6 +10,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -23,6 +24,7 @@ import { updateOutcomeData } from '../../core/api/fn/extraction/update-outcome-d
 import { AlertOut } from '../../core/api/models/alert-out';
 import { AnnotationOut } from '../../core/api/models/annotation-out';
 import { DispersionType } from '../../core/api/models/dispersion-type';
+import { EffectReportedInput } from '../../core/api/models/effect-reported-input';
 import { OutcomeDataFields } from '../../core/api/models/outcome-data-fields';
 import { OutcomeDataOut } from '../../core/api/models/outcome-data-out';
 import { isValidNumberText, parseDecimal, parseInteger } from '../../shared/numbers';
@@ -40,7 +42,12 @@ const DECIMALS = [
   'q3',
   'min',
   'max',
+  't_stat',
+  'p_value',
 ] as const;
+const EFFECT_NUMBERS = ['estimate', 'ci_low', 'ci_high', 'se'] as const;
+type EffectNumber = (typeof EFFECT_NUMBERS)[number];
+const MEASURES: EffectReportedInput['measure'][] = ['OR', 'RR', 'HR', 'MD', 'SMD', 'other'];
 const INTEGERS = ['n', 'events', 'total'] as const;
 type NumberKey = (typeof DECIMALS)[number] | (typeof INTEGERS)[number];
 
@@ -62,6 +69,7 @@ const SAVE_DELAY_MS = 800;
   imports: [
     AlertMessage,
     FormsModule,
+    MatButtonModule,
     TranslocoPipe,
     MatCheckboxModule,
     MatFormFieldModule,
@@ -176,6 +184,91 @@ const SAVE_DELAY_MS = 800;
           </div>
         }
       }
+      <button mat-button type="button" class="extra-toggle" (click)="showExtra.set(!showExtra())">
+        {{
+          (showExtra() ? 'extraction.data.extra.hide' : 'extraction.data.extra.show') | transloco
+        }}
+      </button>
+      @if (showExtra()) {
+        <div class="extra">
+          <p class="muted">{{ 'extraction.data.extra.hint' | transloco }}</p>
+          <div class="row">
+            <mat-form-field subscriptSizing="dynamic">
+              <mat-label>{{ 'extraction.data.extra.measure' | transloco }}</mat-label>
+              <mat-select
+                [(ngModel)]="effectMeasure"
+                (ngModelChange)="changed()"
+                [disabled]="!editable()"
+              >
+                <mat-option [value]="null">{{
+                  'extraction.data.extra.noEffect' | transloco
+                }}</mat-option>
+                @for (m of measures; track m) {
+                  <mat-option [value]="m">{{
+                    'extraction.data.extra.measures.' + m | transloco
+                  }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            @if (effectMeasure) {
+              @for (key of effectNumbers; track key) {
+                <mat-form-field subscriptSizing="dynamic">
+                  <mat-label>{{ 'extraction.data.extra.' + key | transloco }}</mat-label>
+                  <input
+                    matInput
+                    [(ngModel)]="effect[key]"
+                    (ngModelChange)="changed()"
+                    [disabled]="!editable()"
+                    inputmode="decimal"
+                  />
+                </mat-form-field>
+              }
+            }
+          </div>
+          <div class="row">
+            <mat-checkbox
+              [(ngModel)]="adjusted"
+              (ngModelChange)="changed()"
+              [disabled]="!editable()"
+            >
+              {{ 'extraction.data.extra.adjusted' | transloco }}
+            </mat-checkbox>
+            @if (adjusted) {
+              <mat-form-field subscriptSizing="dynamic" class="wide">
+                <mat-label>{{ 'extraction.data.extra.adjustedFor' | transloco }}</mat-label>
+                <input
+                  matInput
+                  [(ngModel)]="adjustedFor"
+                  (ngModelChange)="changed()"
+                  [disabled]="!editable()"
+                />
+              </mat-form-field>
+            }
+          </div>
+          <div class="row">
+            <mat-form-field subscriptSizing="dynamic">
+              <mat-label>{{ 'extraction.data.extra.t_stat' | transloco }}</mat-label>
+              <input
+                matInput
+                [(ngModel)]="text.t_stat"
+                (ngModelChange)="changed()"
+                [disabled]="!editable()"
+                inputmode="decimal"
+              />
+            </mat-form-field>
+            <mat-form-field subscriptSizing="dynamic">
+              <mat-label>{{ 'extraction.data.extra.p_value' | transloco }}</mat-label>
+              <input
+                matInput
+                [(ngModel)]="text.p_value"
+                (ngModelChange)="changed()"
+                [disabled]="!editable()"
+                inputmode="decimal"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+      }
       <div class="row">
         <mat-form-field subscriptSizing="dynamic" class="wide">
           <mat-label>{{ 'extraction.data.sourceLocation' | transloco }}</mat-label>
@@ -238,6 +331,19 @@ export class OutcomeRow implements OnInit, OnDestroy {
   protected dispersionSource = '';
   protected sourceLocation = '';
   protected annotationId: string | null = null;
+  protected readonly measures = MEASURES;
+  protected readonly effectNumbers = EFFECT_NUMBERS;
+  protected effectMeasure: EffectReportedInput['measure'] | null = null;
+  protected effect: Record<EffectNumber, string> = {
+    estimate: '',
+    ci_low: '',
+    ci_high: '',
+    se: '',
+  };
+  protected adjusted = false;
+  protected adjustedFor = '';
+  /** Optional data (effect computed by the article, p value, t): open when already filled. */
+  protected readonly showExtra = signal(false);
   protected readonly dispersionInputs = computed(
     () => DISPERSION_INPUTS[this.dispersionTypeSignal() ?? 'not_reported'],
   );
@@ -272,6 +378,18 @@ export class OutcomeRow implements OnInit, OnDestroy {
     this.dispersionSource = row.dispersion_source ?? '';
     this.sourceLocation = row.source_location ?? '';
     this.annotationId = row.annotation_id ?? null;
+    const effect = row.effect_reported;
+    if (effect) {
+      this.effectMeasure = effect.measure as EffectReportedInput['measure'];
+      for (const key of EFFECT_NUMBERS) {
+        const value = effect[key];
+        this.effect[key] =
+          value === null || value === undefined ? '' : String(value).replace('.', ',');
+      }
+    }
+    this.adjusted = row.adjusted ?? false;
+    this.adjustedFor = row.adjusted_for ?? '';
+    this.showExtra.set(!!effect || this.adjusted || row.t_stat != null || row.p_value != null);
   }
 
   ngOnDestroy(): void {
@@ -295,9 +413,19 @@ export class OutcomeRow implements OnInit, OnDestroy {
       if (!isValidNumberText(this.text[key], true))
         return this.fail('extraction.data.errors.notAnInteger');
     }
+    for (const key of EFFECT_NUMBERS) {
+      if (!isValidNumberText(this.effect[key]))
+        return this.fail('extraction.data.errors.notANumber');
+    }
+    // An effect needs both its measure and its estimate.
+    const estimate = parseDecimal(this.effect.estimate);
+    if (this.effectMeasure && estimate === null)
+      return this.fail('extraction.data.errors.effectIncomplete');
     const allowed = new Set<NumberKey>([
       'n',
       'mean',
+      't_stat',
+      'p_value',
       'events',
       'total',
       ...DISPERSION_INPUTS[this.dispersionType ?? 'not_reported'],
@@ -326,6 +454,20 @@ export class OutcomeRow implements OnInit, OnDestroy {
       max: decimal('max'),
       events: integer('events'),
       total: integer('total'),
+      t_stat: decimal('t_stat'),
+      p_value: decimal('p_value'),
+      effect_reported:
+        this.effectMeasure && estimate !== null
+          ? {
+              measure: this.effectMeasure,
+              estimate,
+              ci_low: parseDecimal(this.effect.ci_low),
+              ci_high: parseDecimal(this.effect.ci_high),
+              se: parseDecimal(this.effect.se),
+            }
+          : null,
+      adjusted: this.adjusted,
+      adjusted_for: this.adjusted ? this.adjustedFor || null : null,
       source_location: this.sourceLocation || null,
       annotation_id: this.annotationId,
     };

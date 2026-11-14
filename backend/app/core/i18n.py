@@ -61,6 +61,8 @@ MESSAGES: dict[Language, dict[str, str]] = {
         "extraction.alert_confirm_direction": (
             "Este alerta é resolvido confirmando a frase de direção do efeito."
         ),
+        "extraction.impossible.ratio_not_positive": "OR, RR e HR são sempre maiores que zero (estimativa e IC). Confira o valor digitado.",
+        "extraction.impossible.p_out_of_range": "O valor p precisa estar entre 0 e 1.",
         "export.empty": "Não há dados para exportar: nenhum estudo tem consenso enviado. Use a opção de extrações individuais (pré-consenso) se precisar.",
         "export.incomplete": "{count} estudo(s) ficariam fora do arquivo. Confira a lista e confirme a exportação.",
         "stage.locked": "Esta etapa está travada. Peça ao administrador para destravá-la (com justificativa) se precisar alterar algo.",
@@ -168,6 +170,8 @@ MESSAGES: dict[Language, dict[str, str]] = {
         "extraction.alert_confirm_direction": (
             "This alert is resolved by confirming the effect direction sentence."
         ),
+        "extraction.impossible.ratio_not_positive": "OR, RR and HR are always above zero (estimate and CI). Check the value typed.",
+        "extraction.impossible.p_out_of_range": "The p value must be between 0 and 1.",
         "export.empty": "There is no data to export: no study has a submitted consensus. Use the individual (pre-consensus) option if needed.",
         "export.incomplete": "{count} study(ies) would be left out of the file. Check the list and confirm the export.",
         "stage.locked": "This stage is locked. Ask the admin to unlock it (with a justification) if something must change.",

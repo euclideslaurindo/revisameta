@@ -41,7 +41,7 @@ Cadastro e importação da lista final, upload e anotação de PDF, relatos agru
 | Exportação XLSX/CSV com regra de consenso | `tests/test_exports.py` |
 | A usuária cadastra 4 estudos reais com os dados dos dois grupos, sem planilha paralela | **Pendente:** depende de uma sessão de teste com a usuária |
 
-Lacunas conhecidas, para depois: tela para o administrador editar o formulário de características (a API existe), campos de "efeito já calculado pelo artigo" na tela (o banco e a API aceitam) e marcação dos trechos salvos em cima da página do PDF.
+As lacunas do passo 4 foram fechadas em 2026-11-14: editor do formulário de características (na página Protocolo), campos de efeito informado pelo artigo, valor p e estatística t (com as checagens de valores impossíveis e o alerta de efeito fora do IC) e destaque dos trechos salvos sobre a página do PDF.
 
 **Etapa 2 — Risco de viés e migração (P0)**
 Templates configuráveis (ROBINS-I, RoB 2, JBI, NOS, genérico), dupla avaliação cega, conflitos, consenso, tabela consolidada, gráficos robvis (versão fixada do GitHub, com "Sem informação" testado), solução para JBI/NOS, exportações, importação da tabela consolidada já existente.

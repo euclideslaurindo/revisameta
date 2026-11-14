@@ -25,6 +25,7 @@ import { GroupOut } from '../../core/api/models/group-out';
 import { OutcomeOut } from '../../core/api/models/outcome-out';
 import { ConfirmDialog, ConfirmData } from '../../shared/confirm-dialog';
 import { FormError } from '../../shared/form-error';
+import { FormEditor } from './form-editor';
 import { ProjectContext } from '../project/project-context';
 
 @Component({
@@ -42,6 +43,7 @@ import { ProjectContext } from '../project/project-context';
     MatSlideToggleModule,
     MatTooltipModule,
     FormError,
+    FormEditor,
   ],
   template: `
     <p class="muted">{{ 'protocol.intro' | transloco }}</p>
@@ -53,7 +55,9 @@ import { ProjectContext } from '../project/project-context';
           <mat-card-title>
             <h2>
               {{ 'protocol.doubleExtraction.title' | transloco }}
-              <span class="term" tabindex="0" [matTooltip]="'glossary.doubleExtraction' | transloco">?</span>
+              <span class="term" tabindex="0" [matTooltip]="'glossary.doubleExtraction' | transloco"
+                >?</span
+              >
             </h2>
           </mat-card-title>
         </mat-card-header>
@@ -63,7 +67,12 @@ import { ProjectContext } from '../project/project-context';
             [disabled]="!context.isAdmin() || busy()"
             (change)="setDoubleExtraction($event.checked)"
           >
-            {{ (project.double_extraction ? 'protocol.doubleExtraction.on' : 'protocol.doubleExtraction.off') | transloco }}
+            {{
+              (project.double_extraction
+                ? 'protocol.doubleExtraction.on'
+                : 'protocol.doubleExtraction.off'
+              ) | transloco
+            }}
           </mat-slide-toggle>
         </mat-card-content>
       </mat-card>
@@ -92,14 +101,21 @@ import { ProjectContext } from '../project/project-context';
                 }
                 <div class="muted">
                   {{ 'protocol.outcomes.types.' + outcome.type | transloco }} ·
-                  {{ (outcome.higher_is_better ? 'protocol.outcomes.higherBetter' : 'protocol.outcomes.higherWorse') | transloco }}
+                  {{
+                    (outcome.higher_is_better
+                      ? 'protocol.outcomes.higherBetter'
+                      : 'protocol.outcomes.higherWorse'
+                    ) | transloco
+                  }}
                   @if (outcome.timepoints.length) {
                     · {{ outcome.timepoints.join(', ') }}
                   }
                 </div>
               </div>
               @if (context.isAdmin()) {
-                <button mat-button type="button" (click)="removeOutcome(outcome)">{{ 'common.delete' | transloco }}</button>
+                <button mat-button type="button" (click)="removeOutcome(outcome)">
+                  {{ 'common.delete' | transloco }}
+                </button>
               }
             </li>
           }
@@ -115,8 +131,12 @@ import { ProjectContext } from '../project/project-context';
             <mat-form-field>
               <mat-label>{{ 'protocol.outcomes.type' | transloco }}</mat-label>
               <mat-select formControlName="type">
-                <mat-option value="continuous">{{ 'protocol.outcomes.types.continuous' | transloco }}</mat-option>
-                <mat-option value="dichotomous">{{ 'protocol.outcomes.types.dichotomous' | transloco }}</mat-option>
+                <mat-option value="continuous">{{
+                  'protocol.outcomes.types.continuous' | transloco
+                }}</mat-option>
+                <mat-option value="dichotomous">{{
+                  'protocol.outcomes.types.dichotomous' | transloco
+                }}</mat-option>
               </mat-select>
               <mat-hint>{{ 'protocol.outcomes.typeHint' | transloco }}</mat-hint>
             </mat-form-field>
@@ -125,8 +145,12 @@ import { ProjectContext } from '../project/project-context';
               <input matInput formControlName="timepoints" />
               <mat-hint>{{ 'protocol.outcomes.timepointsHint' | transloco }}</mat-hint>
             </mat-form-field>
-            <mat-checkbox formControlName="higherIsBetter">{{ 'protocol.outcomes.higherBetter' | transloco }}</mat-checkbox>
-            <mat-checkbox formControlName="isPrimary">{{ 'protocol.outcomes.primary' | transloco }}</mat-checkbox>
+            <mat-checkbox formControlName="higherIsBetter">{{
+              'protocol.outcomes.higherBetter' | transloco
+            }}</mat-checkbox>
+            <mat-checkbox formControlName="isPrimary">{{
+              'protocol.outcomes.primary' | transloco
+            }}</mat-checkbox>
             <div class="actions">
               <button mat-flat-button type="submit" [disabled]="busy()">
                 {{ 'protocol.outcomes.add' | transloco }}
@@ -142,7 +166,9 @@ import { ProjectContext } from '../project/project-context';
         <mat-card-title>
           <h2>
             {{ 'protocol.groups.title' | transloco }}
-            <span class="term" tabindex="0" [matTooltip]="'glossary.comparisonGroup' | transloco">?</span>
+            <span class="term" tabindex="0" [matTooltip]="'glossary.comparisonGroup' | transloco"
+              >?</span
+            >
           </h2>
         </mat-card-title>
       </mat-card-header>
@@ -160,7 +186,9 @@ import { ProjectContext } from '../project/project-context';
                 }
               </div>
               @if (context.isAdmin()) {
-                <button mat-button type="button" (click)="removeGroup(group)">{{ 'common.delete' | transloco }}</button>
+                <button mat-button type="button" (click)="removeGroup(group)">
+                  {{ 'common.delete' | transloco }}
+                </button>
               }
             </li>
           }
@@ -187,6 +215,8 @@ import { ProjectContext } from '../project/project-context';
         }
       </mat-card-content>
     </mat-card>
+
+    <rm-form-editor />
   `,
 })
 export class ProtocolPage implements OnInit {
@@ -285,7 +315,10 @@ export class ProtocolPage implements OnInit {
   }
 
   async removeOutcome(outcome: OutcomeOut): Promise<void> {
-    if (!(await this.confirm({ message: 'protocol.confirmDelete', params: { name: outcome.name } }))) return;
+    if (
+      !(await this.confirm({ message: 'protocol.confirmDelete', params: { name: outcome.name } }))
+    )
+      return;
     await this.run(() =>
       this.api.invoke(deleteOutcome, { project_id: this.projectId(), outcome_id: outcome.id }),
     );
@@ -300,14 +333,19 @@ export class ProtocolPage implements OnInit {
     const ok = await this.run(() =>
       this.api.invoke(createGroup, {
         project_id: this.projectId(),
-        body: { label: value.label, rule_description: value.rule || null, position: this.groups().length },
+        body: {
+          label: value.label,
+          rule_description: value.rule || null,
+          position: this.groups().length,
+        },
       }),
     );
     if (ok) this.groupForm.reset();
   }
 
   async removeGroup(group: GroupOut): Promise<void> {
-    if (!(await this.confirm({ message: 'protocol.confirmDelete', params: { name: group.label } }))) return;
+    if (!(await this.confirm({ message: 'protocol.confirmDelete', params: { name: group.label } })))
+      return;
     await this.run(() =>
       this.api.invoke(deleteGroup, { project_id: this.projectId(), group_id: group.id }),
     );

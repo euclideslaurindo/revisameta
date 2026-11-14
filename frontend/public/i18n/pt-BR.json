@@ -341,7 +341,31 @@
       "errors": {
         "notANumber": "Há um valor que não é número. Use vírgula ou ponto para decimais.",
         "notAnInteger": "n, eventos e total precisam ser números inteiros.",
-        "dispersionTypeRequired": "Escolha o que o artigo informa (DP, EP, IC…) antes de digitar a dispersão."
+        "dispersionTypeRequired": "Escolha o que o artigo informa (DP, EP, IC…) antes de digitar a dispersão.",
+        "effectIncomplete": "Para registrar o efeito informado pelo artigo, escolha a medida e digite a estimativa."
+      },
+      "extra": {
+        "show": "Outros dados do artigo (efeito ajustado, valor p, estatística t)",
+        "hide": "Ocultar outros dados do artigo",
+        "hint": "Use quando o artigo já traz o efeito calculado (por exemplo, OR ajustado com IC 95%) ou só informa o valor p ou a estatística t. Digite como está no artigo: a conversão para a escala da análise é feita pelo sistema.",
+        "measure": "Efeito informado pelo artigo",
+        "noEffect": "Nenhum",
+        "measures": {
+          "OR": "OR (razão de chances)",
+          "RR": "RR (risco relativo)",
+          "HR": "HR (razão de riscos)",
+          "MD": "Diferença de médias",
+          "SMD": "Diferença de médias padronizada",
+          "other": "Outra medida"
+        },
+        "estimate": "Estimativa",
+        "ci_low": "IC 95% inferior",
+        "ci_high": "IC 95% superior",
+        "se": "EP do efeito",
+        "adjusted": "Estimativa ajustada (corrigida para outros fatores)",
+        "adjustedFor": "Ajustada para quais variáveis?",
+        "t_stat": "Estatística t",
+        "p_value": "Valor p exato"
       }
     },
     "alert": {
@@ -351,7 +375,8 @@
       "ci_excludes_mean": "O IC 95% ({{low}} a {{high}}) não contém a média {{mean}}. Um IC da média sempre contém a média: confira os valores.",
       "dispersion_unconfirmed": "Informe onde o artigo diz que este número é DP, EP, IC... (ex.: rodapé da Tabela 2). Confundir DP com EP é um dos erros mais comuns.",
       "no_source": "Estes números estão sem origem: indique a página/tabela ou marque o trecho no PDF.",
-      "direction_unconfirmed": "Confirme a frase de direção do efeito de \"{{outcome}}\" ({{timepoint}})."
+      "direction_unconfirmed": "Confirme a frase de direção do efeito de \"{{outcome}}\" ({{timepoint}}).",
+      "effect_outside_ci": "O efeito informado ({{estimate}}) está fora do próprio IC ({{low}} a {{high}}). Confira os valores no artigo."
     },
     "alertSeverity": {
       "warn": "Conferir",
@@ -510,5 +535,33 @@
     "language": "Idioma do arquivo",
     "acknowledge": "Estou ciente de que {{count}} estudo(s) ficarão fora do arquivo.",
     "download": "Baixar"
+  },
+  "formEditor": {
+    "title": "Formulário de características do estudo",
+    "help": "Os campos que cada extrator preenche sobre o estudo (país, n total, tipo de cirurgia...). Ao salvar, o formulário ganha uma versão nova; extrações feitas na versão antiga mostram um aviso para revisar. Remover um campo não apaga o que já foi digitado.",
+    "version": "Versão atual: {{version}}",
+    "addBack": "Campos padrão removidos (clique para adicionar de volta):",
+    "newField": "Novo campo",
+    "label": "Nome do campo",
+    "type": "Tipo",
+    "types": {
+      "text": "Texto curto",
+      "textarea": "Texto longo",
+      "number": "Número",
+      "select": "Lista de opções",
+      "date": "Data"
+    },
+    "options": "Opções",
+    "optionsHint": "Separe as opções com ponto e vírgula (ex.: geral; local; sedação)",
+    "fieldHelp": "Explicação para o extrator (opcional)",
+    "add": "Adicionar campo",
+    "up": "Mover para cima",
+    "down": "Mover para baixo",
+    "saveHint": "As mudanças só valem depois de salvar. Será criada a versão {{next}} do formulário, e as extrações já começadas vão mostrar um aviso para revisar.",
+    "save": "Salvar nova versão",
+    "errors": {
+      "label": "Dê um nome ao campo.",
+      "options": "Uma lista de opções precisa de pelo menos duas opções."
+    }
   }
 }

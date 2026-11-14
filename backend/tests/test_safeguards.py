@@ -117,6 +117,31 @@ def _codes(alerts: list[dict[str, Any]], status: str = "open") -> set[str]:
             {"dispersion_type": "iqr", "median": "20", "q1": "5", "q3": "10"},
             "extraction.impossible.median_outside",
         ),
+        ({"p_value": "1.5"}, "extraction.impossible.p_out_of_range"),
+        ({"p_value": "0"}, "extraction.impossible.p_out_of_range"),
+        (
+            {"effect_reported": {"measure": "OR", "estimate": "-0.4"}},
+            "extraction.impossible.ratio_not_positive",
+        ),
+        (
+            {
+                "effect_reported": {
+                    "measure": "HR",
+                    "estimate": "1.2",
+                    "ci_low": "0",
+                    "ci_high": "2",
+                }
+            },
+            "extraction.impossible.ratio_not_positive",
+        ),
+        (
+            {"effect_reported": {"measure": "MD", "estimate": "3", "ci_low": "5", "ci_high": "1"}},
+            "extraction.impossible.ci_inverted",
+        ),
+        (
+            {"effect_reported": {"measure": "SMD", "estimate": "0.3", "se": "0"}},
+            "extraction.impossible.se_not_positive",
+        ),
     ],
 )
 async def test_impossible_values_are_blocked(
@@ -505,3 +530,33 @@ async def test_pending_checks_respect_blinding(client: AsyncClient, make_user: M
         headers=ana.headers,
     )
     assert r.status_code == 403  # admins see, but only the extractor confirms
+
+
+async def test_reported_effect_outside_its_ci_is_an_alert_and_kept_on_save(
+    client: AsyncClient, make_user: MakeUser
+) -> None:
+    ana = await make_user()
+    s = await _setup(client, ana)
+    effect = {"measure": "OR", "estimate": "2.5", "ci_low": "1.1", "ci_high": "2.0"}
+    row = (
+        await client.post(
+            f"{s['eb']}/outcome-data",
+            json=_row(
+                s,
+                "arm_a",
+                effect_reported=effect,
+                adjusted=True,
+                adjusted_for="idade",
+                p_value="0.03",
+                source_location="Tabela 3",
+            ),
+            headers=ana.headers,
+        )
+    ).json()
+    assert row["effect_reported"]["estimate"] == "2.5"
+    assert row["adjusted"] is True and row["p_value"] == "0.03"
+    alerts = await _alerts(client, ana, s)
+    [alert] = [a for a in alerts if a["code"] == "extraction.alert.effect_outside_ci"]
+    assert alert["params"] == {"estimate": "2.5", "low": "1.1", "high": "2"}
+    # A row with only a reported effect still needs its origin in the article.
+    assert "extraction.alert.no_source" not in _codes(alerts)
