@@ -65,7 +65,7 @@ from redis.asyncio import Redis  # noqa: E402
 from app.core.config import get_settings  # noqa: E402
 from app.integrations.email import InMemoryEmailSender, get_email_sender  # noqa: E402
 
-PASSWORD = "senha-forte-123"
+PASSWORD = "senha-forte-123"  # gitleaks:allow - fictitious test password
 
 
 @pytest.fixture(autouse=True)
