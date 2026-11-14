@@ -1,9 +1,9 @@
-import { DatePipe } from '@angular/common';
 import { Component, OnInit, computed, inject, input, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
+import { LocalDatePipe } from '../../shared/local-date.pipe';
 import { Api } from '../../core/api/api';
 import { listExtractions } from '../../core/api/fn/extraction/list-extractions';
 import { startExtraction } from '../../core/api/fn/extraction/start-extraction';
@@ -15,7 +15,7 @@ import { ProjectContext } from '../project/project-context';
 /** Extractions of a study that the current user may see, and a way to start one. */
 @Component({
   selector: 'rm-study-extractions',
-  imports: [DatePipe, RouterLink, TranslocoPipe, MatButtonModule, FormError],
+  imports: [LocalDatePipe, RouterLink, TranslocoPipe, MatButtonModule, FormError],
   template: `
     <ul class="item-list">
       @for (e of extractions(); track e.id) {
@@ -26,7 +26,7 @@ import { ProjectContext } from '../project/project-context';
             </a>
             <span class="badge">{{ 'extraction.status.' + e.status | transloco }}</span>
             <div class="muted">
-              {{ 'extraction.updated' | transloco }} {{ e.updated_at | date: 'short' }}
+              {{ 'extraction.updated' | transloco }} {{ e.updated_at | localDate: 'short' }}
             </div>
           </div>
         </li>

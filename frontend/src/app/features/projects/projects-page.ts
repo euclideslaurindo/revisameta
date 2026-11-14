@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,6 +9,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
+import { LocalDatePipe } from '../../shared/local-date.pipe';
 import { Api } from '../../core/api/api';
 import { createProject } from '../../core/api/fn/projects/create-project';
 import { listProjects } from '../../core/api/fn/projects/list-projects';
@@ -21,7 +21,7 @@ import { FormError } from '../../shared/form-error';
 @Component({
   selector: 'rm-projects-page',
   imports: [
-    DatePipe,
+    LocalDatePipe,
     ReactiveFormsModule,
     RouterLink,
     TranslocoPipe,
@@ -49,7 +49,9 @@ import { FormError } from '../../shared/form-error';
     @if (creating()) {
       <mat-card class="block">
         <mat-card-header>
-          <mat-card-title><h2>{{ 'projects.new' | transloco }}</h2></mat-card-title>
+          <mat-card-title
+            ><h2>{{ 'projects.new' | transloco }}</h2></mat-card-title
+          >
         </mat-card-header>
         <mat-card-content>
           <form [formGroup]="form" (ngSubmit)="create()" class="stack">
@@ -90,14 +92,18 @@ import { FormError } from '../../shared/form-error';
         @for (project of projects(); track project.id) {
           <mat-card>
             <mat-card-header>
-              <mat-card-title><a [routerLink]="['/projetos', project.id]">{{ project.title }}</a></mat-card-title>
+              <mat-card-title
+                ><a [routerLink]="['/projetos', project.id]">{{ project.title }}</a></mat-card-title
+              >
             </mat-card-header>
             <mat-card-content>
               @if (project.question) {
                 <p>{{ project.question }}</p>
               }
               @if (project.deadline) {
-                <p class="muted">{{ 'projects.deadline' | transloco }}: {{ project.deadline | date }}</p>
+                <p class="muted">
+                  {{ 'projects.deadline' | transloco }}: {{ project.deadline | localDate }}
+                </p>
               }
               <mat-chip-set [attr.aria-label]="'projects.roles' | transloco">
                 @for (role of project.my_roles ?? []; track role) {
@@ -154,7 +160,11 @@ export class ProjectsPage implements OnInit {
     const value = this.form.getRawValue();
     try {
       await this.api.invoke(createProject, {
-        body: { title: value.title, question: value.question || null, deadline: value.deadline || null },
+        body: {
+          title: value.title,
+          question: value.question || null,
+          deadline: value.deadline || null,
+        },
       });
       this.form.reset();
       this.creating.set(false);
