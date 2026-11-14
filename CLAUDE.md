@@ -195,6 +195,8 @@ revisameta/
 - `scripts/check-commit-messages.sh` — confere se nenhuma mensagem de commit menciona IA (também roda no CI)
 - `scripts/test-backend.sh` / `scripts/test-stats-r.sh` — lint, tipos e testes dentro dos containers
 - `scripts/export-openapi.sh` — regenera o cliente da API do frontend a partir do backend
+- `scripts/generate-fixtures.sh` — regera as fixtures estatísticas rodando o R no contêiner (nunca escrever valores esperados à mão)
+- Depois de mudar o `Caddyfile`: `docker compose restart caddy` (a API de admin do Caddy fica desligada, então ele não recarrega sozinho)
 
 ---
 
