@@ -19,9 +19,13 @@ import { FormError } from '../../shared/form-error';
     <div class="pdf-box">
       @for (pdf of pdfs(); track pdf.id) {
         <div class="pdf-row">
-          <a [routerLink]="['/projetos', projectId(), 'pdfs', pdf.id]">{{ pdf.original_filename }}</a>
+          <a [routerLink]="['/projetos', projectId(), 'pdfs', pdf.id]">{{
+            pdf.original_filename
+          }}</a>
           <span class="muted">
-            @if (pdf.page_count) { {{ 'pdfs.pages' | transloco: { count: pdf.page_count } }} · }
+            @if (pdf.page_count) {
+              {{ 'pdfs.pages' | transloco: { count: pdf.page_count } }} ·
+            }
             {{ 'pdfs.textStatus.' + pdf.text_status | transloco }}
           </span>
         </div>
@@ -36,11 +40,18 @@ import { FormError } from '../../shared/form-error';
           <div class="notice notice-error" role="alert">{{ key | transloco }}</div>
         }
         @if (pendingFile() && !busy()) {
-          <button mat-stroked-button type="button" (click)="resume()">{{ 'pdfs.resume' | transloco }}</button>
+          <button mat-stroked-button type="button" (click)="resume()">
+            {{ 'pdfs.resume' | transloco }}
+          </button>
         }
         <label class="file-input">
           <span>{{ 'pdfs.attach' | transloco }}</span>
-          <input type="file" accept="application/pdf,.pdf" [disabled]="busy()" (change)="choose($event)" />
+          <input
+            type="file"
+            accept="application/pdf,.pdf"
+            [disabled]="busy()"
+            (change)="choose($event)"
+          />
         </label>
       }
     </div>
@@ -67,7 +78,9 @@ export class ReportPdfs implements OnInit {
   }
 
   private async reload(): Promise<void> {
-    this.pdfs.set(await this.api.invoke(listPdfs, { project_id: this.projectId(), report_id: this.reportId() }));
+    this.pdfs.set(
+      await this.api.invoke(listPdfs, { project_id: this.projectId(), report_id: this.reportId() }),
+    );
   }
 
   async choose(event: Event): Promise<void> {
@@ -100,7 +113,9 @@ export class ReportPdfs implements OnInit {
       this.pendingUploadId = uploadId;
       if (job.status !== 'succeeded') {
         // Processing failed (e.g. not a real PDF): start over with another file.
-        this.failure.set(job.error_code === 'upload.not_pdf' ? 'pdfs.errors.notPdf' : 'pdfs.errors.failed');
+        this.failure.set(
+          job.error_code === 'upload.not_pdf' ? 'pdfs.errors.notPdf' : 'pdfs.errors.failed',
+        );
         this.pendingFile.set(null);
         this.pendingUploadId = undefined;
         this.progress.set(null);

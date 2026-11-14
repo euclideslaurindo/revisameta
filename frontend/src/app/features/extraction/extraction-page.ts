@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { Component, ElementRef, computed, effect, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -10,7 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import { NgxExtendedPdfViewerModule, PageRenderedEvent } from 'ngx-extended-pdf-viewer';
 import { firstValueFrom } from 'rxjs';
 
 import { Api } from '../../core/api/api';
@@ -51,6 +51,7 @@ import { isValidNumberText, parseDecimal, parseInteger } from '../../shared/numb
 import { readPdfSelection } from '../pdfs/pdf-selection';
 import { ProjectContext } from '../project/project-context';
 import { AutosaveState } from './autosave';
+import { paintAll, paintPage } from '../pdfs/pdf-highlights';
 import { OutcomeRow } from './outcome-row';
 import { AlertMessage } from './alert-message';
 import { DirectionCheck } from './direction-check';
@@ -125,6 +126,7 @@ const SAVE_DELAY_MS = 800;
                 [showSecondaryToolbarButton]="false"
                 [useInlineScripts]="false"
                 height="70vh"
+                (pageRendered)="onPageRendered($event)"
               />
               @if (editable()) {
                 <div class="actions">
@@ -409,6 +411,12 @@ export class ExtractionPage {
   protected readonly arms = signal<ArmOut[]>([]);
   protected readonly pdfs = signal<PdfOut[]>([]);
   protected readonly pdf = signal<PdfViewOut | null>(null);
+  private readonly host = inject(ElementRef<HTMLElement>);
+  /** Passages of the PDF on screen (the list holds those of every PDF of the study). */
+  private readonly pagePassages = computed(() => {
+    const id = this.pdf()?.id;
+    return this.annotations().filter((a) => a.pdf_file_id === id);
+  });
   protected readonly annotations = signal<AnnotationOut[]>([]);
   protected readonly error = signal<unknown>(null);
   protected readonly selectionMissing = signal(false);
@@ -443,7 +451,12 @@ export class ExtractionPage {
   // One save at a time per item, so versions never race each other.
   private queues = new Map<string, Promise<void>>();
 
+  protected onPageRendered(event: PageRenderedEvent): void {
+    paintPage(this.host.nativeElement, event.pageNumber, this.pagePassages());
+  }
+
   constructor() {
+    effect(() => paintAll(this.host.nativeElement, this.pagePassages()));
     effect(() => void this.load(this.extractionId()));
     // After every save, recompute the safeguards (alerts and direction sentences).
     effect(() => {

@@ -14,7 +14,9 @@ export function readPdfSelection(): PdfSelection | null {
   if (!quote) return null;
   const range = selection.getRangeAt(0);
   const start =
-    range.startContainer instanceof Element ? range.startContainer : range.startContainer.parentElement;
+    range.startContainer instanceof Element
+      ? range.startContainer
+      : range.startContainer.parentElement;
   const pageEl = start?.closest<HTMLElement>('.page[data-page-number]');
   if (!pageEl) return null;
   const box = pageEl.getBoundingClientRect();

@@ -501,3 +501,32 @@ main:has(.extraction-layout) {
 .stack.indent {
   margin-left: 2rem;
 }
+/* Saved PDF passages (drawn over the rendered page; see pdf-highlights.ts). */
+.rm-highlight {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  border-radius: 2px;
+  background: rgba(255, 213, 0, 0.45);
+}
+.rm-highlight-green {
+  background: rgba(52, 168, 83, 0.35);
+}
+.rm-highlight-blue {
+  background: rgba(66, 133, 244, 0.35);
+}
+.rm-highlight-pink {
+  background: rgba(234, 67, 135, 0.35);
+}
+.rm-highlight-active {
+  outline: 2px solid #d93025;
+}
+.outcome-row .extra-toggle {
+  margin: 0.25rem 0;
+}
+.outcome-row .extra {
+  padding: 0.5rem 0.75rem;
+  border-left: 3px solid #dadce0;
+  margin-bottom: 0.5rem;
+}
