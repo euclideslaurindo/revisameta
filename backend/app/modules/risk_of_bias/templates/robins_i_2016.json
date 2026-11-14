@@ -1,0 +1,638 @@
+{
+  "key": "robins_i_2016",
+  "family": "robins_i",
+  "name": {
+    "pt-BR": "ROBINS-I (versão original de 2016) – estudos não randomizados de intervenções",
+    "en": "ROBINS-I (original 2016 version) – non-randomized studies of interventions"
+  },
+  "version": "2016-08-01",
+  "citation": "Sterne JAC, Hernán MA, Reeves BC, et al. ROBINS-I: a tool for assessing risk of bias in non-randomised studies of interventions. BMJ 2016;355:i4919. Tool template of 1 August 2016, CC BY-NC-ND 4.0.",
+  "source_url": "https://www.riskofbias.info/welcome/home/original-2016-version-of-robins-i",
+  "designs": [
+    "cohort_prospective",
+    "cohort_retrospective",
+    "case_control",
+    "other"
+  ],
+  "scope": "result",
+  "answer_sets": {
+    "y_py_pn_n": [
+      "Y",
+      "PY",
+      "PN",
+      "N"
+    ],
+    "na_y_py_pn_n_ni": [
+      "NA",
+      "Y",
+      "PY",
+      "PN",
+      "N",
+      "NI"
+    ],
+    "y_py_pn_n_ni": [
+      "Y",
+      "PY",
+      "PN",
+      "N",
+      "NI"
+    ]
+  },
+  "judgement": {
+    "kind": "reviewer",
+    "levels": [
+      "low",
+      "moderate",
+      "serious",
+      "critical",
+      "no_information"
+    ],
+    "overall": {
+      "rule": "robins_2016",
+      "warn_several": []
+    },
+    "direction": [
+      "favours_experimental",
+      "favours_comparator",
+      "towards_null",
+      "away_from_null",
+      "unpredictable"
+    ]
+  },
+  "source_notes": [
+    "The 2016 version has no official domain algorithms: each domain is judged by the reviewer, guided by the signalling questions.",
+    "Overall (official criteria): Critical if any domain is Critical; otherwise Serious if any is Serious; otherwise No information if information is lacking in any domain; otherwise Moderate or Low."
+  ],
+  "domains": [
+    {
+      "key": "d1",
+      "name": {
+        "pt-BR": "Confundimento",
+        "en": "Confounding"
+      },
+      "questions": [
+        {
+          "key": "1.1",
+          "answers": "y_py_pn_n",
+          "level": "result"
+        },
+        {
+          "key": "1.2",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "q": "1.1",
+            "in": [
+              "Y",
+              "PY"
+            ]
+          }
+        },
+        {
+          "key": "1.3",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "all": [
+              {
+                "q": "1.1",
+                "in": [
+                  "Y",
+                  "PY"
+                ]
+              },
+              {
+                "q": "1.2",
+                "in": [
+                  "Y",
+                  "PY"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "key": "1.4",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "all": [
+              {
+                "q": "1.1",
+                "in": [
+                  "Y",
+                  "PY"
+                ]
+              },
+              {
+                "any": [
+                  {
+                    "q": "1.2",
+                    "in": [
+                      "N",
+                      "PN"
+                    ]
+                  },
+                  {
+                    "q": "1.3",
+                    "in": [
+                      "N",
+                      "PN"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "key": "1.5",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "all": [
+              {
+                "all": [
+                  {
+                    "q": "1.1",
+                    "in": [
+                      "Y",
+                      "PY"
+                    ]
+                  },
+                  {
+                    "any": [
+                      {
+                        "q": "1.2",
+                        "in": [
+                          "N",
+                          "PN"
+                        ]
+                      },
+                      {
+                        "q": "1.3",
+                        "in": [
+                          "N",
+                          "PN"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "q": "1.4",
+                "in": [
+                  "Y",
+                  "PY"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "key": "1.6",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "all": [
+              {
+                "q": "1.1",
+                "in": [
+                  "Y",
+                  "PY"
+                ]
+              },
+              {
+                "any": [
+                  {
+                    "q": "1.2",
+                    "in": [
+                      "N",
+                      "PN"
+                    ]
+                  },
+                  {
+                    "q": "1.3",
+                    "in": [
+                      "N",
+                      "PN"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "key": "1.7",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "all": [
+              {
+                "q": "1.1",
+                "in": [
+                  "Y",
+                  "PY"
+                ]
+              },
+              {
+                "q": "1.2",
+                "in": [
+                  "Y",
+                  "PY"
+                ]
+              },
+              {
+                "q": "1.3",
+                "in": [
+                  "Y",
+                  "PY"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "key": "1.8",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "all": [
+              {
+                "all": [
+                  {
+                    "q": "1.1",
+                    "in": [
+                      "Y",
+                      "PY"
+                    ]
+                  },
+                  {
+                    "q": "1.2",
+                    "in": [
+                      "Y",
+                      "PY"
+                    ]
+                  },
+                  {
+                    "q": "1.3",
+                    "in": [
+                      "Y",
+                      "PY"
+                    ]
+                  }
+                ]
+              },
+              {
+                "q": "1.7",
+                "in": [
+                  "Y",
+                  "PY"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "key": "d2",
+      "name": {
+        "pt-BR": "Seleção dos participantes no estudo",
+        "en": "Selection of participants into the study"
+      },
+      "questions": [
+        {
+          "key": "2.1",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "2.2",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "q": "2.1",
+            "in": [
+              "Y",
+              "PY"
+            ]
+          }
+        },
+        {
+          "key": "2.3",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "q": "2.2",
+            "in": [
+              "Y",
+              "PY"
+            ]
+          }
+        },
+        {
+          "key": "2.4",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "2.5",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "any": [
+              {
+                "all": [
+                  {
+                    "q": "2.2",
+                    "in": [
+                      "Y",
+                      "PY"
+                    ]
+                  },
+                  {
+                    "q": "2.3",
+                    "in": [
+                      "Y",
+                      "PY"
+                    ]
+                  }
+                ]
+              },
+              {
+                "q": "2.4",
+                "in": [
+                  "N",
+                  "PN"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "key": "d3",
+      "name": {
+        "pt-BR": "Classificação das intervenções",
+        "en": "Classification of interventions"
+      },
+      "questions": [
+        {
+          "key": "3.1",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "3.2",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "3.3",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        }
+      ]
+    },
+    {
+      "key": "d4",
+      "name": {
+        "pt-BR": "Desvios das intervenções pretendidas",
+        "en": "Deviations from intended interventions"
+      },
+      "variants": [
+        {
+          "key": "S",
+          "name": {
+            "pt-BR": "Efeito da atribuição à intervenção",
+            "en": "Effect of assignment to intervention"
+          }
+        },
+        {
+          "key": "H",
+          "name": {
+            "pt-BR": "Efeito de iniciar e aderir à intervenção",
+            "en": "Effect of starting and adhering to intervention"
+          }
+        }
+      ],
+      "questions": [
+        {
+          "key": "S4.1",
+          "answers": "y_py_pn_n_ni",
+          "level": "result",
+          "label": "4.1",
+          "variant": "S"
+        },
+        {
+          "key": "S4.2",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "label": "4.2",
+          "variant": "S",
+          "ask_if": {
+            "q": "S4.1",
+            "in": [
+              "Y",
+              "PY"
+            ]
+          }
+        },
+        {
+          "key": "H4.3",
+          "answers": "y_py_pn_n_ni",
+          "level": "result",
+          "label": "4.3",
+          "variant": "H"
+        },
+        {
+          "key": "H4.4",
+          "answers": "y_py_pn_n_ni",
+          "level": "result",
+          "label": "4.4",
+          "variant": "H"
+        },
+        {
+          "key": "H4.5",
+          "answers": "y_py_pn_n_ni",
+          "level": "result",
+          "label": "4.5",
+          "variant": "H"
+        },
+        {
+          "key": "H4.6",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "label": "4.6",
+          "variant": "H",
+          "ask_if": {
+            "any": [
+              {
+                "q": "H4.3",
+                "in": [
+                  "N",
+                  "PN"
+                ]
+              },
+              {
+                "q": "H4.4",
+                "in": [
+                  "N",
+                  "PN"
+                ]
+              },
+              {
+                "q": "H4.5",
+                "in": [
+                  "N",
+                  "PN"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "key": "d5",
+      "name": {
+        "pt-BR": "Dados faltantes",
+        "en": "Missing data"
+      },
+      "questions": [
+        {
+          "key": "5.1",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "5.2",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "5.3",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "5.4",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "any": [
+              {
+                "q": "5.1",
+                "in": [
+                  "N",
+                  "PN"
+                ]
+              },
+              {
+                "q": "5.2",
+                "in": [
+                  "Y",
+                  "PY"
+                ]
+              },
+              {
+                "q": "5.3",
+                "in": [
+                  "Y",
+                  "PY"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "key": "5.5",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "any": [
+              {
+                "q": "5.1",
+                "in": [
+                  "N",
+                  "PN"
+                ]
+              },
+              {
+                "q": "5.2",
+                "in": [
+                  "Y",
+                  "PY"
+                ]
+              },
+              {
+                "q": "5.3",
+                "in": [
+                  "Y",
+                  "PY"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "key": "d6",
+      "name": {
+        "pt-BR": "Mensuração dos desfechos",
+        "en": "Measurement of outcomes"
+      },
+      "questions": [
+        {
+          "key": "6.1",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "6.2",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "6.3",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "6.4",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        }
+      ]
+    },
+    {
+      "key": "d7",
+      "name": {
+        "pt-BR": "Seleção do resultado relatado",
+        "en": "Selection of the reported result"
+      },
+      "questions": [
+        {
+          "key": "7.1",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "7.2",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "7.3",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        }
+      ]
+    }
+  ]
+}

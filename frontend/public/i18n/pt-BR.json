@@ -597,7 +597,8 @@
       "title": "Texto oficial das perguntas",
       "hint": "Cole cada pergunta exatamente como está na fonte oficial do instrumento, respeitando a licença. Sem texto, a tela de avaliação mostra só o número da pergunta e o domínio.",
       "question": "Pergunta {{n}}",
-      "save": "Salvar textos"
+      "save": "Salvar textos",
+      "variant": "variante {{v}}"
     },
     "generic": {
       "title": "Domínios do instrumento genérico",

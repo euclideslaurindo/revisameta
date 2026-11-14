@@ -9,7 +9,7 @@ project admin pastes it from the official source when the group may use it.
 import json
 from functools import lru_cache
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field, model_validator
 
@@ -41,17 +41,39 @@ class Question(BaseModel):
     key: str = Field(min_length=1, max_length=20)
     answers: str  # key of an answer set of the template
     level: Level = "study"
+    label: str | None = None  # number shown to the reviewer when it differs from the key
+    variant: str | None = None  # domain variant the question belongs to
+    ask_if: dict[str, Any] | None = None  # condition for asking it (see algorithm.py)
+
+
+class Variant(BaseModel):
+    key: str
+    name: LocalizedText
 
 
 class Domain(BaseModel):
     key: str = Field(min_length=1, max_length=40)
     name: LocalizedText
     questions: list[Question]
+    variants: list[Variant] = Field(default_factory=list)
+    # Decision tree of the official algorithm, or one tree per variant.
+    algorithm: dict[str, Any] | None = None
+
+
+class Overall(BaseModel):
+    rule: Literal["worst", "rob2", "robins_2016"]
+    # Levels where several domains may justify a worse overall judgement (reviewer decides).
+    warn_several: list[str] = Field(default_factory=list)
 
 
 class Judgement(BaseModel):
     # group_rule: JBI, NOS and generic (no official overall rule; the group decides).
-    kind: Literal["group_rule", "algorithm"]
+    # reviewer: domains judged by the reviewer, overall by the official rule (ROBINS-I 2016).
+    # algorithm: domains and overall suggested by the official algorithms.
+    kind: Literal["group_rule", "reviewer", "algorithm"]
+    levels: list[str] = Field(default_factory=list)  # from best to worst
+    overall: Overall | None = None
+    direction: list[str] = Field(default_factory=list)  # optional predicted direction of bias
 
 
 class Template(BaseModel):
@@ -66,6 +88,7 @@ class Template(BaseModel):
     answer_sets: dict[str, list[str]]
     judgement: Judgement
     domains: list[Domain]
+    source_notes: list[str] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def _consistent(self) -> "Template":
@@ -82,6 +105,10 @@ class Template(BaseModel):
             for q in domain.questions:
                 if q.answers not in self.answer_sets:
                     raise ValueError(f"unknown answer set {q.answers}")
+        if self.judgement.kind == "algorithm":
+            from app.modules.risk_of_bias.algorithm import check_template
+
+            check_template(self)
         return self
 
     def question_keys(self) -> list[str]:

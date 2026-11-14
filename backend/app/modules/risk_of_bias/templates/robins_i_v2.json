@@ -1,0 +1,2136 @@
+{
+  "key": "robins_i_v2",
+  "family": "robins_i",
+  "name": {
+    "pt-BR": "ROBINS-I V2 – estudos não randomizados de intervenções",
+    "en": "ROBINS-I V2 – non-randomized studies of interventions"
+  },
+  "version": "V2-2025-11-20",
+  "citation": "Sterne JAC, Higgins JPT, et al. ROBINS-I V2: Risk Of Bias In Non-randomized Studies - of Interventions, version 2 (revised draft, 20 November 2025). riskofbias.info. CC BY-NC-ND 4.0.",
+  "source_url": "https://www.riskofbias.info/welcome/robins-i-v2",
+  "designs": [
+    "cohort_prospective",
+    "cohort_retrospective",
+    "case_control",
+    "other"
+  ],
+  "scope": "result",
+  "answer_sets": {
+    "y_py_wn_sn_ni": [
+      "Y",
+      "PY",
+      "WN",
+      "SN",
+      "NI"
+    ],
+    "na_y_py_wn_sn_ni": [
+      "NA",
+      "Y",
+      "PY",
+      "WN",
+      "SN",
+      "NI"
+    ],
+    "na_y_py_pn_n_ni": [
+      "NA",
+      "Y",
+      "PY",
+      "PN",
+      "N",
+      "NI"
+    ],
+    "y_py_pn_n": [
+      "Y",
+      "PY",
+      "PN",
+      "N"
+    ],
+    "y_py_pn_n_ni": [
+      "Y",
+      "PY",
+      "PN",
+      "N",
+      "NI"
+    ],
+    "na_sy_wy_pn_n_ni": [
+      "NA",
+      "SY",
+      "WY",
+      "PN",
+      "N",
+      "NI"
+    ],
+    "sy_wy_pn_n_ni": [
+      "SY",
+      "WY",
+      "PN",
+      "N",
+      "NI"
+    ],
+    "na_y_py_pn_n": [
+      "NA",
+      "Y",
+      "PY",
+      "PN",
+      "N"
+    ]
+  },
+  "judgement": {
+    "kind": "algorithm",
+    "levels": [
+      "low",
+      "low_except_confounding",
+      "moderate",
+      "serious",
+      "critical"
+    ],
+    "overall": {
+      "rule": "worst",
+      "warn_several": [
+        "moderate",
+        "serious"
+      ]
+    },
+    "direction": [
+      "upward",
+      "downward",
+      "unpredictable"
+    ]
+  },
+  "source_notes": [
+    "Domain 3, question 3.1: the flowchart labels the substantial-risk branch 'SY', but the response options of 3.1 are Y/PY/WN/SN/NI and question 3.6 is asked 'If SN to 3.1'; SN is used.",
+    "Domain 4, question 4.4: the official condition reads 'If N/PN/NI to 4.1, 4.4 or 4.4'; read as 4.1, 4.2 or 4.3 (consistent with the flowchart).",
+    "Several Moderate (or Serious) domains may justify a Serious (or Critical) overall judgement (official table); the system suggests the worst domain and warns, the reviewer decides."
+  ],
+  "domains": [
+    {
+      "key": "d1",
+      "name": {
+        "pt-BR": "Confundimento",
+        "en": "Confounding"
+      },
+      "variants": [
+        {
+          "key": "A",
+          "name": {
+            "pt-BR": "Variante A: efeito por intenção de tratar (só confundimento na linha de base)",
+            "en": "Variant A: intention-to-treat effect (baseline confounding only)"
+          }
+        },
+        {
+          "key": "B",
+          "name": {
+            "pt-BR": "Variante B: efeito por protocolo (confundimento na linha de base e ao longo do tempo)",
+            "en": "Variant B: per-protocol effect (baseline and time-varying confounding)"
+          }
+        }
+      ],
+      "questions": [
+        {
+          "key": "A1.1",
+          "answers": "y_py_wn_sn_ni",
+          "level": "result",
+          "label": "1.1",
+          "variant": "A"
+        },
+        {
+          "key": "A1.2",
+          "answers": "na_y_py_wn_sn_ni",
+          "level": "result",
+          "label": "1.2",
+          "variant": "A",
+          "ask_if": {
+            "q": "A1.1",
+            "in": [
+              "Y",
+              "PY",
+              "WN"
+            ]
+          }
+        },
+        {
+          "key": "A1.3",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "label": "1.3",
+          "variant": "A",
+          "ask_if": {
+            "q": "A1.1",
+            "in": [
+              "Y",
+              "PY",
+              "WN"
+            ]
+          }
+        },
+        {
+          "key": "A1.4",
+          "answers": "y_py_pn_n",
+          "level": "result",
+          "label": "1.4",
+          "variant": "A"
+        },
+        {
+          "key": "B1.1",
+          "answers": "y_py_pn_n_ni",
+          "level": "result",
+          "label": "1.1",
+          "variant": "B"
+        },
+        {
+          "key": "B1.2",
+          "answers": "na_y_py_wn_sn_ni",
+          "level": "result",
+          "label": "1.2",
+          "variant": "B",
+          "ask_if": {
+            "q": "B1.1",
+            "in": [
+              "Y",
+              "PY"
+            ]
+          }
+        },
+        {
+          "key": "B1.3",
+          "answers": "na_y_py_wn_sn_ni",
+          "level": "result",
+          "label": "1.3",
+          "variant": "B",
+          "ask_if": {
+            "q": "B1.2",
+            "in": [
+              "Y",
+              "PY",
+              "WN"
+            ]
+          }
+        },
+        {
+          "key": "B1.4",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "label": "1.4",
+          "variant": "B",
+          "ask_if": {
+            "q": "B1.1",
+            "in": [
+              "N",
+              "PN",
+              "NI"
+            ]
+          }
+        },
+        {
+          "key": "B1.5",
+          "answers": "y_py_pn_n",
+          "level": "result",
+          "label": "1.5",
+          "variant": "B"
+        }
+      ],
+      "algorithm": {
+        "A": {
+          "q": "A1.1",
+          "b": [
+            [
+              [
+                "Y",
+                "PY"
+              ],
+              {
+                "q": "A1.3",
+                "b": [
+                  [
+                    [
+                      "N",
+                      "PN",
+                      "NI"
+                    ],
+                    {
+                      "q": "A1.2",
+                      "b": [
+                        [
+                          [
+                            "Y",
+                            "PY"
+                          ],
+                          {
+                            "q": "A1.4",
+                            "b": [
+                              [
+                                [
+                                  "N",
+                                  "PN"
+                                ],
+                                "low_except_confounding"
+                              ],
+                              [
+                                [
+                                  "Y",
+                                  "PY"
+                                ],
+                                "serious"
+                              ]
+                            ]
+                          }
+                        ],
+                        [
+                          [
+                            "WN"
+                          ],
+                          {
+                            "q": "A1.4",
+                            "b": [
+                              [
+                                [
+                                  "N",
+                                  "PN"
+                                ],
+                                "moderate"
+                              ],
+                              [
+                                [
+                                  "Y",
+                                  "PY"
+                                ],
+                                "serious"
+                              ]
+                            ]
+                          }
+                        ],
+                        [
+                          [
+                            "SN",
+                            "NI"
+                          ],
+                          "serious"
+                        ]
+                      ]
+                    }
+                  ],
+                  [
+                    [
+                      "Y",
+                      "PY"
+                    ],
+                    {
+                      "q": "A1.4",
+                      "b": [
+                        [
+                          [
+                            "Y",
+                            "PY"
+                          ],
+                          "critical"
+                        ],
+                        [
+                          [
+                            "N",
+                            "PN"
+                          ],
+                          {
+                            "q": "A1.2",
+                            "b": [
+                              [
+                                [
+                                  "Y",
+                                  "PY"
+                                ],
+                                "serious"
+                              ],
+                              [
+                                [
+                                  "SN",
+                                  "WN",
+                                  "NI"
+                                ],
+                                "critical"
+                              ]
+                            ]
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ]
+              }
+            ],
+            [
+              [
+                "WN"
+              ],
+              {
+                "q": "A1.3",
+                "b": [
+                  [
+                    [
+                      "N",
+                      "PN",
+                      "NI"
+                    ],
+                    {
+                      "q": "A1.2",
+                      "b": [
+                        [
+                          [
+                            "Y",
+                            "PY",
+                            "WN"
+                          ],
+                          {
+                            "q": "A1.4",
+                            "b": [
+                              [
+                                [
+                                  "N",
+                                  "PN"
+                                ],
+                                "moderate"
+                              ],
+                              [
+                                [
+                                  "Y",
+                                  "PY"
+                                ],
+                                "serious"
+                              ]
+                            ]
+                          }
+                        ],
+                        [
+                          [
+                            "SN",
+                            "NI"
+                          ],
+                          "serious"
+                        ]
+                      ]
+                    }
+                  ],
+                  [
+                    [
+                      "Y",
+                      "PY"
+                    ],
+                    {
+                      "q": "A1.4",
+                      "b": [
+                        [
+                          [
+                            "Y",
+                            "PY"
+                          ],
+                          "critical"
+                        ],
+                        [
+                          [
+                            "N",
+                            "PN"
+                          ],
+                          {
+                            "q": "A1.2",
+                            "b": [
+                              [
+                                [
+                                  "Y",
+                                  "PY"
+                                ],
+                                "serious"
+                              ],
+                              [
+                                [
+                                  "SN",
+                                  "WN",
+                                  "NI"
+                                ],
+                                "critical"
+                              ]
+                            ]
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ]
+              }
+            ],
+            [
+              [
+                "SN",
+                "NI"
+              ],
+              {
+                "q": "A1.4",
+                "b": [
+                  [
+                    [
+                      "N",
+                      "PN"
+                    ],
+                    "serious"
+                  ],
+                  [
+                    [
+                      "Y",
+                      "PY"
+                    ],
+                    "critical"
+                  ]
+                ]
+              }
+            ]
+          ]
+        },
+        "B": {
+          "q": "B1.1",
+          "b": [
+            [
+              [
+                "Y",
+                "PY"
+              ],
+              {
+                "q": "B1.2",
+                "b": [
+                  [
+                    [
+                      "Y",
+                      "PY"
+                    ],
+                    {
+                      "q": "B1.3",
+                      "b": [
+                        [
+                          [
+                            "Y",
+                            "PY"
+                          ],
+                          {
+                            "q": "B1.5",
+                            "b": [
+                              [
+                                [
+                                  "N",
+                                  "PN"
+                                ],
+                                "low_except_confounding"
+                              ],
+                              [
+                                [
+                                  "Y",
+                                  "PY"
+                                ],
+                                "serious"
+                              ]
+                            ]
+                          }
+                        ],
+                        [
+                          [
+                            "WN"
+                          ],
+                          {
+                            "q": "B1.5",
+                            "b": [
+                              [
+                                [
+                                  "N",
+                                  "PN"
+                                ],
+                                "moderate"
+                              ],
+                              [
+                                [
+                                  "Y",
+                                  "PY"
+                                ],
+                                "serious"
+                              ]
+                            ]
+                          }
+                        ],
+                        [
+                          [
+                            "SN",
+                            "NI"
+                          ],
+                          "serious"
+                        ]
+                      ]
+                    }
+                  ],
+                  [
+                    [
+                      "WN"
+                    ],
+                    {
+                      "q": "B1.3",
+                      "b": [
+                        [
+                          [
+                            "Y",
+                            "PY",
+                            "WN"
+                          ],
+                          {
+                            "q": "B1.5",
+                            "b": [
+                              [
+                                [
+                                  "N",
+                                  "PN"
+                                ],
+                                "moderate"
+                              ],
+                              [
+                                [
+                                  "Y",
+                                  "PY"
+                                ],
+                                "serious"
+                              ]
+                            ]
+                          }
+                        ],
+                        [
+                          [
+                            "SN",
+                            "NI"
+                          ],
+                          "serious"
+                        ]
+                      ]
+                    }
+                  ],
+                  [
+                    [
+                      "SN",
+                      "NI"
+                    ],
+                    {
+                      "q": "B1.5",
+                      "b": [
+                        [
+                          [
+                            "N",
+                            "PN"
+                          ],
+                          "serious"
+                        ],
+                        [
+                          [
+                            "Y",
+                            "PY"
+                          ],
+                          "critical"
+                        ]
+                      ]
+                    }
+                  ]
+                ]
+              }
+            ],
+            [
+              [
+                "N",
+                "PN",
+                "NI"
+              ],
+              {
+                "q": "B1.4",
+                "b": [
+                  [
+                    [
+                      "N",
+                      "PN",
+                      "NI"
+                    ],
+                    {
+                      "q": "B1.5",
+                      "b": [
+                        [
+                          [
+                            "N",
+                            "PN"
+                          ],
+                          "serious"
+                        ],
+                        [
+                          [
+                            "Y",
+                            "PY"
+                          ],
+                          "critical"
+                        ]
+                      ]
+                    }
+                  ],
+                  [
+                    [
+                      "Y",
+                      "PY"
+                    ],
+                    "critical"
+                  ]
+                ]
+              }
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "key": "d2",
+      "name": {
+        "pt-BR": "Classificação das intervenções",
+        "en": "Classification of interventions"
+      },
+      "questions": [
+        {
+          "key": "2.1",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "2.2",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "q": "2.1",
+            "in": [
+              "N",
+              "PN",
+              "NI"
+            ]
+          }
+        },
+        {
+          "key": "2.3",
+          "answers": "na_sy_wy_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "q": "2.2",
+            "in": [
+              "N",
+              "PN",
+              "NI"
+            ]
+          }
+        },
+        {
+          "key": "2.4",
+          "answers": "sy_wy_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "2.5",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        }
+      ],
+      "algorithm": {
+        "q": "2.1",
+        "b": [
+          [
+            [
+              "Y",
+              "PY"
+            ],
+            {
+              "q": "2.4",
+              "b": [
+                [
+                  [
+                    "N",
+                    "PN"
+                  ],
+                  {
+                    "q": "2.5",
+                    "b": [
+                      [
+                        [
+                          "N",
+                          "PN"
+                        ],
+                        "low"
+                      ],
+                      [
+                        [
+                          "Y",
+                          "PY",
+                          "NI"
+                        ],
+                        "moderate"
+                      ]
+                    ]
+                  }
+                ],
+                [
+                  [
+                    "WY",
+                    "NI"
+                  ],
+                  {
+                    "q": "2.5",
+                    "b": [
+                      [
+                        [
+                          "N",
+                          "PN"
+                        ],
+                        "moderate"
+                      ],
+                      [
+                        [
+                          "Y",
+                          "PY",
+                          "NI"
+                        ],
+                        "serious"
+                      ]
+                    ]
+                  }
+                ],
+                [
+                  [
+                    "SY"
+                  ],
+                  {
+                    "q": "2.5",
+                    "b": [
+                      [
+                        [
+                          "N",
+                          "PN"
+                        ],
+                        "serious"
+                      ],
+                      [
+                        [
+                          "Y",
+                          "PY",
+                          "NI"
+                        ],
+                        "critical"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            }
+          ],
+          [
+            [
+              "N",
+              "PN",
+              "NI"
+            ],
+            {
+              "q": "2.2",
+              "b": [
+                [
+                  [
+                    "Y",
+                    "PY"
+                  ],
+                  {
+                    "q": "2.4",
+                    "b": [
+                      [
+                        [
+                          "N",
+                          "PN"
+                        ],
+                        {
+                          "q": "2.5",
+                          "b": [
+                            [
+                              [
+                                "N",
+                                "PN"
+                              ],
+                              "low"
+                            ],
+                            [
+                              [
+                                "Y",
+                                "PY",
+                                "NI"
+                              ],
+                              "moderate"
+                            ]
+                          ]
+                        }
+                      ],
+                      [
+                        [
+                          "WY",
+                          "NI"
+                        ],
+                        {
+                          "q": "2.5",
+                          "b": [
+                            [
+                              [
+                                "N",
+                                "PN"
+                              ],
+                              "moderate"
+                            ],
+                            [
+                              [
+                                "Y",
+                                "PY",
+                                "NI"
+                              ],
+                              "serious"
+                            ]
+                          ]
+                        }
+                      ],
+                      [
+                        [
+                          "SY"
+                        ],
+                        {
+                          "q": "2.5",
+                          "b": [
+                            [
+                              [
+                                "N",
+                                "PN"
+                              ],
+                              "serious"
+                            ],
+                            [
+                              [
+                                "Y",
+                                "PY",
+                                "NI"
+                              ],
+                              "critical"
+                            ]
+                          ]
+                        }
+                      ]
+                    ]
+                  }
+                ],
+                [
+                  [
+                    "N",
+                    "PN",
+                    "NI"
+                  ],
+                  {
+                    "q": "2.3",
+                    "b": [
+                      [
+                        [
+                          "SY"
+                        ],
+                        {
+                          "q": "2.4",
+                          "b": [
+                            [
+                              [
+                                "N",
+                                "PN"
+                              ],
+                              {
+                                "q": "2.5",
+                                "b": [
+                                  [
+                                    [
+                                      "N",
+                                      "PN"
+                                    ],
+                                    "low"
+                                  ],
+                                  [
+                                    [
+                                      "Y",
+                                      "PY",
+                                      "NI"
+                                    ],
+                                    "moderate"
+                                  ]
+                                ]
+                              }
+                            ],
+                            [
+                              [
+                                "WY",
+                                "NI"
+                              ],
+                              {
+                                "q": "2.5",
+                                "b": [
+                                  [
+                                    [
+                                      "N",
+                                      "PN"
+                                    ],
+                                    "moderate"
+                                  ],
+                                  [
+                                    [
+                                      "Y",
+                                      "PY",
+                                      "NI"
+                                    ],
+                                    "serious"
+                                  ]
+                                ]
+                              }
+                            ],
+                            [
+                              [
+                                "SY"
+                              ],
+                              {
+                                "q": "2.5",
+                                "b": [
+                                  [
+                                    [
+                                      "N",
+                                      "PN"
+                                    ],
+                                    "serious"
+                                  ],
+                                  [
+                                    [
+                                      "Y",
+                                      "PY",
+                                      "NI"
+                                    ],
+                                    "critical"
+                                  ]
+                                ]
+                              }
+                            ]
+                          ]
+                        }
+                      ],
+                      [
+                        [
+                          "WY",
+                          "NI"
+                        ],
+                        {
+                          "q": "2.4",
+                          "b": [
+                            [
+                              [
+                                "N",
+                                "PN"
+                              ],
+                              {
+                                "q": "2.5",
+                                "b": [
+                                  [
+                                    [
+                                      "N",
+                                      "PN"
+                                    ],
+                                    "moderate"
+                                  ],
+                                  [
+                                    [
+                                      "Y",
+                                      "PY",
+                                      "NI"
+                                    ],
+                                    "serious"
+                                  ]
+                                ]
+                              }
+                            ],
+                            [
+                              [
+                                "WY",
+                                "NI"
+                              ],
+                              {
+                                "q": "2.5",
+                                "b": [
+                                  [
+                                    [
+                                      "N",
+                                      "PN"
+                                    ],
+                                    "serious"
+                                  ],
+                                  [
+                                    [
+                                      "Y",
+                                      "PY",
+                                      "NI"
+                                    ],
+                                    "critical"
+                                  ]
+                                ]
+                              }
+                            ],
+                            [
+                              [
+                                "SY"
+                              ],
+                              "critical"
+                            ]
+                          ]
+                        }
+                      ],
+                      [
+                        [
+                          "N",
+                          "PN"
+                        ],
+                        {
+                          "q": "2.4",
+                          "b": [
+                            [
+                              [
+                                "N",
+                                "PN"
+                              ],
+                              {
+                                "q": "2.5",
+                                "b": [
+                                  [
+                                    [
+                                      "N",
+                                      "PN"
+                                    ],
+                                    "serious"
+                                  ],
+                                  [
+                                    [
+                                      "Y",
+                                      "PY",
+                                      "NI"
+                                    ],
+                                    "critical"
+                                  ]
+                                ]
+                              }
+                            ],
+                            [
+                              [
+                                "SY",
+                                "WY",
+                                "NI"
+                              ],
+                              "critical"
+                            ]
+                          ]
+                        }
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            }
+          ]
+        ]
+      }
+    },
+    {
+      "key": "d3",
+      "name": {
+        "pt-BR": "Seleção dos participantes no estudo (ou na análise)",
+        "en": "Selection of participants into the study (or analysis)"
+      },
+      "questions": [
+        {
+          "key": "3.1",
+          "answers": "y_py_wn_sn_ni",
+          "level": "result"
+        },
+        {
+          "key": "3.2",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "q": "3.1",
+            "in": [
+              "Y",
+              "PY"
+            ]
+          }
+        },
+        {
+          "key": "3.3",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "3.4",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "q": "3.3",
+            "in": [
+              "Y",
+              "PY"
+            ]
+          }
+        },
+        {
+          "key": "3.5",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "q": "3.4",
+            "in": [
+              "Y",
+              "PY"
+            ]
+          }
+        },
+        {
+          "key": "3.6",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "any": [
+              {
+                "q": "3.1",
+                "in": [
+                  "SN"
+                ]
+              },
+              {
+                "q": "3.5",
+                "in": [
+                  "Y",
+                  "PY"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "key": "3.7",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "q": "3.6",
+            "in": [
+              "N",
+              "PN",
+              "NI"
+            ]
+          }
+        },
+        {
+          "key": "3.8",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "q": "3.7",
+            "in": [
+              "N",
+              "PN",
+              "NI"
+            ]
+          }
+        }
+      ],
+      "algorithm": {
+        "worst_of": [
+          {
+            "q": "3.1",
+            "b": [
+              [
+                [
+                  "Y",
+                  "PY"
+                ],
+                {
+                  "q": "3.2",
+                  "b": [
+                    [
+                      [
+                        "N",
+                        "PN",
+                        "NI"
+                      ],
+                      "low"
+                    ],
+                    [
+                      [
+                        "Y",
+                        "PY"
+                      ],
+                      "moderate"
+                    ]
+                  ]
+                }
+              ],
+              [
+                [
+                  "WN",
+                  "NI"
+                ],
+                "moderate"
+              ],
+              [
+                [
+                  "SN"
+                ],
+                "serious"
+              ]
+            ]
+          },
+          {
+            "q": "3.3",
+            "b": [
+              [
+                [
+                  "N",
+                  "PN"
+                ],
+                "low"
+              ],
+              [
+                [
+                  "NI"
+                ],
+                "moderate"
+              ],
+              [
+                [
+                  "Y",
+                  "PY"
+                ],
+                {
+                  "q": "3.4",
+                  "b": [
+                    [
+                      [
+                        "N",
+                        "PN"
+                      ],
+                      "low"
+                    ],
+                    [
+                      [
+                        "NI"
+                      ],
+                      "moderate"
+                    ],
+                    [
+                      [
+                        "Y",
+                        "PY"
+                      ],
+                      {
+                        "q": "3.5",
+                        "b": [
+                          [
+                            [
+                              "N",
+                              "PN",
+                              "NI"
+                            ],
+                            "moderate"
+                          ],
+                          [
+                            [
+                              "Y",
+                              "PY"
+                            ],
+                            "serious"
+                          ]
+                        ]
+                      }
+                    ]
+                  ]
+                }
+              ]
+            ]
+          }
+        ],
+        "then": {
+          "low": "low",
+          "moderate": "moderate",
+          "serious": {
+            "q": "3.6",
+            "b": [
+              [
+                [
+                  "Y",
+                  "PY"
+                ],
+                "moderate"
+              ],
+              [
+                [
+                  "N",
+                  "PN",
+                  "NI"
+                ],
+                {
+                  "q": "3.7",
+                  "b": [
+                    [
+                      [
+                        "Y",
+                        "PY"
+                      ],
+                      "moderate"
+                    ],
+                    [
+                      [
+                        "N",
+                        "PN",
+                        "NI"
+                      ],
+                      {
+                        "q": "3.8",
+                        "b": [
+                          [
+                            [
+                              "N",
+                              "PN",
+                              "NI"
+                            ],
+                            "serious"
+                          ],
+                          [
+                            [
+                              "Y",
+                              "PY"
+                            ],
+                            "critical"
+                          ]
+                        ]
+                      }
+                    ]
+                  ]
+                }
+              ]
+            ]
+          }
+        }
+      }
+    },
+    {
+      "key": "d4",
+      "name": {
+        "pt-BR": "Dados faltantes",
+        "en": "Missing data"
+      },
+      "questions": [
+        {
+          "key": "4.1",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "4.2",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "4.3",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "4.4",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "any": [
+              {
+                "q": "4.1",
+                "in": [
+                  "N",
+                  "PN",
+                  "NI"
+                ]
+              },
+              {
+                "q": "4.2",
+                "in": [
+                  "N",
+                  "PN",
+                  "NI"
+                ]
+              },
+              {
+                "q": "4.3",
+                "in": [
+                  "N",
+                  "PN",
+                  "NI"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "key": "4.5",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "q": "4.4",
+            "in": [
+              "Y",
+              "PY",
+              "NI"
+            ]
+          }
+        },
+        {
+          "key": "4.6",
+          "answers": "na_y_py_wn_sn_ni",
+          "level": "result",
+          "ask_if": {
+            "q": "4.5",
+            "in": [
+              "Y",
+              "PY",
+              "NI"
+            ]
+          }
+        },
+        {
+          "key": "4.7",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "q": "4.4",
+            "in": [
+              "N",
+              "PN"
+            ]
+          }
+        },
+        {
+          "key": "4.8",
+          "answers": "na_y_py_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "q": "4.7",
+            "in": [
+              "Y",
+              "PY"
+            ]
+          }
+        },
+        {
+          "key": "4.9",
+          "answers": "na_y_py_wn_sn_ni",
+          "level": "result",
+          "ask_if": {
+            "q": "4.8",
+            "in": [
+              "Y",
+              "PY"
+            ]
+          }
+        },
+        {
+          "key": "4.10",
+          "answers": "na_y_py_wn_sn_ni",
+          "level": "result",
+          "ask_if": {
+            "q": "4.7",
+            "in": [
+              "N",
+              "PN",
+              "NI"
+            ]
+          }
+        },
+        {
+          "key": "4.11",
+          "answers": "na_y_py_pn_n",
+          "level": "result",
+          "ask_if": {
+            "all": [
+              {
+                "any": [
+                  {
+                    "q": "4.1",
+                    "in": [
+                      "N",
+                      "PN",
+                      "NI"
+                    ]
+                  },
+                  {
+                    "q": "4.2",
+                    "in": [
+                      "N",
+                      "PN",
+                      "NI"
+                    ]
+                  },
+                  {
+                    "q": "4.3",
+                    "in": [
+                      "N",
+                      "PN",
+                      "NI"
+                    ]
+                  }
+                ]
+              },
+              {
+                "any": [
+                  {
+                    "q": "4.5",
+                    "in": [
+                      "Y",
+                      "PY",
+                      "NI"
+                    ]
+                  },
+                  {
+                    "q": "4.9",
+                    "in": [
+                      "WN",
+                      "SN",
+                      "NI"
+                    ]
+                  },
+                  {
+                    "q": "4.10",
+                    "in": [
+                      "WN",
+                      "SN",
+                      "NI"
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "algorithm": {
+        "count": [
+          "4.1",
+          "4.2",
+          "4.3"
+        ],
+        "cases": [
+          {
+            "answers": [
+              "Y",
+              "PY"
+            ],
+            "all": true,
+            "then": "low"
+          }
+        ],
+        "else": {
+          "q": "4.4",
+          "b": [
+            [
+              [
+                "Y",
+                "PY",
+                "NI"
+              ],
+              {
+                "q": "4.5",
+                "b": [
+                  [
+                    [
+                      "N",
+                      "PN"
+                    ],
+                    "low"
+                  ],
+                  [
+                    [
+                      "Y",
+                      "PY",
+                      "NI"
+                    ],
+                    {
+                      "q": "4.6",
+                      "b": [
+                        [
+                          [
+                            "Y",
+                            "PY"
+                          ],
+                          {
+                            "q": "4.11",
+                            "b": [
+                              [
+                                [
+                                  "Y",
+                                  "PY"
+                                ],
+                                "low"
+                              ],
+                              [
+                                [
+                                  "N",
+                                  "PN"
+                                ],
+                                "moderate"
+                              ]
+                            ]
+                          }
+                        ],
+                        [
+                          [
+                            "WN",
+                            "NI"
+                          ],
+                          {
+                            "q": "4.11",
+                            "b": [
+                              [
+                                [
+                                  "Y",
+                                  "PY"
+                                ],
+                                "moderate"
+                              ],
+                              [
+                                [
+                                  "N",
+                                  "PN"
+                                ],
+                                "serious"
+                              ]
+                            ]
+                          }
+                        ],
+                        [
+                          [
+                            "SN"
+                          ],
+                          {
+                            "q": "4.11",
+                            "b": [
+                              [
+                                [
+                                  "Y",
+                                  "PY"
+                                ],
+                                "serious"
+                              ],
+                              [
+                                [
+                                  "N",
+                                  "PN"
+                                ],
+                                "critical"
+                              ]
+                            ]
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ]
+              }
+            ],
+            [
+              [
+                "N",
+                "PN"
+              ],
+              {
+                "q": "4.7",
+                "b": [
+                  [
+                    [
+                      "Y",
+                      "PY"
+                    ],
+                    {
+                      "q": "4.8",
+                      "b": [
+                        [
+                          [
+                            "N",
+                            "PN",
+                            "NI"
+                          ],
+                          "serious"
+                        ],
+                        [
+                          [
+                            "Y",
+                            "PY"
+                          ],
+                          {
+                            "q": "4.9",
+                            "b": [
+                              [
+                                [
+                                  "Y",
+                                  "PY"
+                                ],
+                                "low"
+                              ],
+                              [
+                                [
+                                  "WN",
+                                  "NI"
+                                ],
+                                {
+                                  "q": "4.11",
+                                  "b": [
+                                    [
+                                      [
+                                        "Y",
+                                        "PY"
+                                      ],
+                                      "moderate"
+                                    ],
+                                    [
+                                      [
+                                        "N",
+                                        "PN"
+                                      ],
+                                      "serious"
+                                    ]
+                                  ]
+                                }
+                              ],
+                              [
+                                [
+                                  "SN"
+                                ],
+                                {
+                                  "q": "4.11",
+                                  "b": [
+                                    [
+                                      [
+                                        "Y",
+                                        "PY"
+                                      ],
+                                      "serious"
+                                    ],
+                                    [
+                                      [
+                                        "N",
+                                        "PN"
+                                      ],
+                                      "critical"
+                                    ]
+                                  ]
+                                }
+                              ]
+                            ]
+                          }
+                        ]
+                      ]
+                    }
+                  ],
+                  [
+                    [
+                      "N",
+                      "PN",
+                      "NI"
+                    ],
+                    {
+                      "q": "4.10",
+                      "b": [
+                        [
+                          [
+                            "Y",
+                            "PY"
+                          ],
+                          "low"
+                        ],
+                        [
+                          [
+                            "WN",
+                            "NI"
+                          ],
+                          {
+                            "q": "4.11",
+                            "b": [
+                              [
+                                [
+                                  "Y",
+                                  "PY"
+                                ],
+                                "moderate"
+                              ],
+                              [
+                                [
+                                  "N",
+                                  "PN"
+                                ],
+                                "serious"
+                              ]
+                            ]
+                          }
+                        ],
+                        [
+                          [
+                            "SN"
+                          ],
+                          {
+                            "q": "4.11",
+                            "b": [
+                              [
+                                [
+                                  "Y",
+                                  "PY"
+                                ],
+                                "serious"
+                              ],
+                              [
+                                [
+                                  "N",
+                                  "PN"
+                                ],
+                                "critical"
+                              ]
+                            ]
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                ]
+              }
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "key": "d5",
+      "name": {
+        "pt-BR": "Mensuração do desfecho",
+        "en": "Measurement of the outcome"
+      },
+      "questions": [
+        {
+          "key": "5.1",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "5.2",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "5.3",
+          "answers": "na_sy_wy_pn_n_ni",
+          "level": "result",
+          "ask_if": {
+            "q": "5.2",
+            "in": [
+              "Y",
+              "PY",
+              "NI"
+            ]
+          }
+        }
+      ],
+      "algorithm": {
+        "q": "5.1",
+        "b": [
+          [
+            [
+              "N",
+              "PN"
+            ],
+            {
+              "q": "5.2",
+              "b": [
+                [
+                  [
+                    "N",
+                    "PN"
+                  ],
+                  "low"
+                ],
+                [
+                  [
+                    "Y",
+                    "PY",
+                    "NI"
+                  ],
+                  {
+                    "q": "5.3",
+                    "b": [
+                      [
+                        [
+                          "N",
+                          "PN"
+                        ],
+                        "low"
+                      ],
+                      [
+                        [
+                          "WY",
+                          "NI"
+                        ],
+                        "moderate"
+                      ],
+                      [
+                        [
+                          "SY"
+                        ],
+                        "serious"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            }
+          ],
+          [
+            [
+              "NI"
+            ],
+            {
+              "q": "5.2",
+              "b": [
+                [
+                  [
+                    "N",
+                    "PN"
+                  ],
+                  "moderate"
+                ],
+                [
+                  [
+                    "Y",
+                    "PY",
+                    "NI"
+                  ],
+                  {
+                    "q": "5.3",
+                    "b": [
+                      [
+                        [
+                          "WY",
+                          "N",
+                          "PN",
+                          "NI"
+                        ],
+                        "moderate"
+                      ],
+                      [
+                        [
+                          "SY"
+                        ],
+                        "serious"
+                      ]
+                    ]
+                  }
+                ]
+              ]
+            }
+          ],
+          [
+            [
+              "Y",
+              "PY"
+            ],
+            "serious"
+          ]
+        ]
+      }
+    },
+    {
+      "key": "d6",
+      "name": {
+        "pt-BR": "Seleção do resultado relatado",
+        "en": "Selection of the reported result"
+      },
+      "questions": [
+        {
+          "key": "6.1",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "6.2",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "6.3",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        },
+        {
+          "key": "6.4",
+          "answers": "y_py_pn_n_ni",
+          "level": "result"
+        }
+      ],
+      "algorithm": {
+        "q": "6.1",
+        "b": [
+          [
+            [
+              "Y",
+              "PY"
+            ],
+            "low"
+          ],
+          [
+            [
+              "N",
+              "PN",
+              "NI"
+            ],
+            {
+              "count": [
+                "6.2",
+                "6.3",
+                "6.4"
+              ],
+              "cases": [
+                {
+                  "answers": [
+                    "Y",
+                    "PY"
+                  ],
+                  "at_least": 2,
+                  "then": "critical"
+                },
+                {
+                  "answers": [
+                    "Y",
+                    "PY"
+                  ],
+                  "at_least": 1,
+                  "then": "serious"
+                },
+                {
+                  "answers": [
+                    "NI"
+                  ],
+                  "all": true,
+                  "then": "serious"
+                },
+                {
+                  "answers": [
+                    "NI"
+                  ],
+                  "at_least": 1,
+                  "then": "moderate"
+                }
+              ],
+              "else": "low"
+            }
+          ]
+        ]
+      }
+    }
+  ]
+}

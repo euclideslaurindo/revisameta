@@ -597,7 +597,8 @@
       "title": "Official wording of the questions",
       "hint": "Paste each question exactly as in the instrument's official source, respecting its license. Without wording, the assessment screen shows only the question number and domain.",
       "question": "Question {{n}}",
-      "save": "Save wording"
+      "save": "Save wording",
+      "variant": "variant {{v}}"
     },
     "generic": {
       "title": "Domains of the generic instrument",

@@ -95,6 +95,18 @@ erDiagram
 - **Algoritmos do ROBINS-I V2 são fluxogramas** (imagem) no documento oficial; serão transcritos domínio a domínio e testados com os exemplos do manual (passo 1b).
 - **O documento JBI proíbe reprodução** ("Unauthorized reproduction of this article is prohibited"): confirma que só a estrutura entra no sistema.
 
+## Algoritmos transcritos (passo 1b)
+Cada algoritmo de domínio fica no template como uma árvore de decisão, nó a nó como no fluxograma oficial (`app/modules/risk_of_bias/algorithm.py` descreve os tipos de nó). Os testes (`tests/test_rob_algorithm.py`) percorrem caminhos de cada fluxograma e verificam, com milhares de respostas sorteadas, que as regras de "pular pergunta" nunca escondem uma pergunta de que o algoritmo precisa.
+
+| Instrumento | Fonte dos algoritmos | Julgamento geral |
+|---|---|---|
+| ROBINS-I V2 (rascunho de 20 nov 2025) | fluxogramas das págs. 20–47 | pior domínio; aviso se vários "moderado" ou "grave" |
+| RoB 2 (22 ago 2019) | cribsheet oficial, págs. 6–23 | regra oficial; aviso se várias "algumas preocupações" |
+| ROBINS-E (24 mar 2024) | fluxogramas das págs. 25–62 | pior domínio; aviso se vários "alto" |
+| ROBINS-I 2016 | sem algoritmo oficial de domínio: o revisor julga | Tabela 3 oficial (crítico > grave > sem informação > moderado > baixo) |
+
+Divergências encontradas nos documentos oficiais estão registradas em `source_notes` de cada template (por exemplo, o rótulo "SY" na pergunta 3.1 do ROBINS-I V2, que pelas opções e pela condição da 3.6 é "SN").
+
 ## Fora desta etapa
 - Kappa da avaliação de risco de viés é P1, mas sai quase de graça com o `/kappa` da Etapa 1; entra se couber.
 - Uso na meta-análise (sensibilidade sem alto risco, subgrupo por risco de viés) → Etapas 3 e 4. Forest plot com semáforo → Etapa 4.

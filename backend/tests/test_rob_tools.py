@@ -1,6 +1,7 @@
 """Risk-of-bias instruments: catalog, project copies, official wording and choice per study."""
 
 import json
+import re
 from typing import Any
 
 import pytest
@@ -31,7 +32,10 @@ def test_catalog_has_structure_and_never_the_official_wording() -> None:
         data = json.loads(path.read_text(encoding="utf-8"))
         for domain in data["domains"]:
             for question in domain["questions"]:
-                assert set(question) == {"key", "answers", "level"}, path.name
+                allowed = {"key", "answers", "level", "label", "variant", "ask_if"}
+                assert set(question) <= allowed, path.name
+                # Labels are question numbers only ("1.1"), never wording.
+                assert re.fullmatch(r"[0-9.]{1,6}", question.get("label", "1")), path.name
 
 
 async def _project(client: AsyncClient, admin: Any) -> dict[str, Any]:

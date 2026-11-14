@@ -14,12 +14,15 @@ import { FormError } from '../../shared/form-error';
 
 interface TemplateQuestion {
   key: string;
+  label?: string;
+  variant?: string;
   level: 'study' | 'outcome' | 'result';
 }
 interface TemplateDomain {
   key: string;
   name: Record<string, string>;
   questions: TemplateQuestion[];
+  variants?: { key: string; name: Record<string, string> }[];
 }
 
 /** Localized name of a template element ({"pt-BR": ..., "en": ...}). */
@@ -82,7 +85,11 @@ export function localized(name: Record<string, string> | undefined, lang: string
       @for (q of d.questions; track q.key) {
         <mat-form-field subscriptSizing="dynamic" class="wide block-field">
           <mat-label>
-            {{ 'rob.texts.question' | transloco: { n: q.key } }} ·
+            {{ 'rob.texts.question' | transloco: { n: q.label ?? q.key } }}
+            @if (q.variant) {
+              ({{ 'rob.texts.variant' | transloco: { v: q.variant } }})
+            }
+            ·
             {{ 'rob.level.' + q.level | transloco }}
           </mat-label>
           <textarea
