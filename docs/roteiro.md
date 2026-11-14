@@ -29,6 +29,20 @@ Docker Compose com todos os serviços (perfis padrão e `lite`), Caddy, FastAPI 
 Cadastro e importação da lista final, upload e anotação de PDF, relatos agrupados, formulário padrão versionado com braços e desfechos por grupo, proteções anti-erro dos blocos A, C, D, F e G de 7.5.1, exportação XLSX/CSV com regra de consenso.
 *Saída:* a usuária cadastra 4 estudos reais com dados dos dois grupos sem planilha paralela; os testes de casos sintéticos de 7.5.1 (blocos A, C, D, F e G) passam.
 
+**Etapa 1 — implementação concluída em 2026-11-14; falta o teste com a usuária.**
+
+| Critério | Situação |
+|---|---|
+| Testes sintéticos do bloco A (valores impossíveis e alertas) | `tests/test_safeguards.py` |
+| Bloco C (frase de direção, inversão pela escala) | `tests/test_safeguards.py` |
+| Bloco D (comparação, divergências, consenso, concordância) | `tests/test_consensus.py`; kappa contra o `irr` em `stats-r/tests/testthat/test-kappa.R` |
+| Bloco F (conferência final e trava) | `tests/test_review.py` |
+| Bloco G (digitar uma vez: toda mudança em números sobe a versão dos dados; exportação lê só o consenso) | `tests/test_extraction.py`, `tests/test_exports.py`. A marcação de análises "desatualizadas" chega com as análises, na Etapa 3 |
+| Exportação XLSX/CSV com regra de consenso | `tests/test_exports.py` |
+| A usuária cadastra 4 estudos reais com os dados dos dois grupos, sem planilha paralela | **Pendente:** depende de uma sessão de teste com a usuária |
+
+Lacunas conhecidas, para depois: tela para o administrador editar o formulário de características (a API existe), campos de "efeito já calculado pelo artigo" na tela (o banco e a API aceitam) e marcação dos trechos salvos em cima da página do PDF.
+
 **Etapa 2 — Risco de viés e migração (P0)**
 Templates configuráveis (ROBINS-I, RoB 2, JBI, NOS, genérico), dupla avaliação cega, conflitos, consenso, tabela consolidada, gráficos robvis (versão fixada do GitHub, com "Sem informação" testado), solução para JBI/NOS, exportações, importação da tabela consolidada já existente.
 *Saída:* a avaliação de um estudo feita à mão bate com a do sistema; os gráficos saem iguais aos do robvis web com os mesmos dados; a planilha atual do grupo é importada sem perda.
