@@ -3,6 +3,13 @@
 from app.modules.audit import recorder as _audit_recorder  # noqa: F401 - registers listener
 from app.modules.audit.models import AuditLog
 from app.modules.auth.models import EmailToken, RefreshToken, User
+from app.modules.extraction.models import (
+    Extraction,
+    ExtractionForm,
+    OutcomeData,
+    OutcomeMeasure,
+    StudyArm,
+)
 from app.modules.jobs.models import BackgroundJob
 from app.modules.pdfs.models import PdfAnnotation, PdfFile
 from app.modules.projects.models import Invitation, Project, ProjectMember
@@ -16,8 +23,12 @@ __all__ = [
     "BackgroundJob",
     "ComparisonGroup",
     "EmailToken",
+    "Extraction",
+    "ExtractionForm",
     "Invitation",
     "Outcome",
+    "OutcomeData",
+    "OutcomeMeasure",
     "PdfAnnotation",
     "PdfFile",
     "PdfPageText",
@@ -28,6 +39,7 @@ __all__ = [
     "Report",
     "StoredFile",
     "Study",
+    "StudyArm",
     "UploadSession",
     "UsageQuota",
     "User",

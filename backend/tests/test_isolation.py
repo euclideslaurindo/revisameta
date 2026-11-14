@@ -100,6 +100,36 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
         {"version": 1, "note": "x"},
     ),
     ("DELETE", "/api/v1/projects/{project_id}/annotations/{annotation_id}", None),
+    ("GET", "/api/v1/projects/{project_id}/extraction-form", None),
+    (
+        "PUT",
+        "/api/v1/projects/{project_id}/extraction-form",
+        {"version": 1, "schema": {"fields": []}},
+    ),
+    ("GET", "/api/v1/projects/{project_id}/studies/{study_id}/extractions", None),
+    ("POST", "/api/v1/projects/{project_id}/studies/{study_id}/extractions", None),
+    ("GET", "/api/v1/projects/{project_id}/extractions/{extraction_id}", None),
+    (
+        "PATCH",
+        "/api/v1/projects/{project_id}/extractions/{extraction_id}",
+        {"version": 1, "characteristics": {}},
+    ),
+    ("POST", "/api/v1/projects/{project_id}/extractions/{extraction_id}/submit", None),
+    ("POST", "/api/v1/projects/{project_id}/extractions/{extraction_id}/arms", {"label": "x"}),
+    ("PATCH", "/api/v1/projects/{project_id}/arms/{arm_id}", {"version": 1, "n": 5}),
+    ("DELETE", "/api/v1/projects/{project_id}/arms/{arm_id}", None),
+    (
+        "PUT",
+        "/api/v1/projects/{project_id}/extractions/{extraction_id}/measures/{outcome_id}",
+        {"scale_name": "x"},
+    ),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/extractions/{extraction_id}/outcome-data",
+        {"arm_id": "{arm_id}", "outcome_id": "{outcome_id}", "timepoint": "x"},
+    ),
+    ("PUT", "/api/v1/projects/{project_id}/outcome-data/{row_id}", {"version": 1, "values": {}}),
+    ("DELETE", "/api/v1/projects/{project_id}/outcome-data/{row_id}", None),
 ]
 
 
@@ -168,6 +198,9 @@ async def _setup(client: AsyncClient, make_user: MakeUser) -> tuple[LoggedUser, 
             )
         ).json()["id"],
     }
+    ids.update(
+        await _extraction_ids(client, owner, project["id"], ids["study_id"], ids["outcome_id"])
+    )
     return owner, ids
 
 
@@ -204,6 +237,30 @@ async def _pdf_ids(
         )
     ).json()
     return {"pdf_id": pdf["id"], "annotation_id": annotation["id"]}
+
+
+async def _extraction_ids(
+    client: AsyncClient, owner: LoggedUser, project_id: str, study_id: str, outcome_id: str
+) -> dict[str, str]:
+    base = f"/api/v1/projects/{project_id}"
+    extraction = (
+        await client.post(f"{base}/studies/{study_id}/extractions", headers=owner.headers)
+    ).json()
+    arm = (
+        await client.post(
+            f"{base}/extractions/{extraction['id']}/arms",
+            json={"label": "A"},
+            headers=owner.headers,
+        )
+    ).json()
+    row = (
+        await client.post(
+            f"{base}/extractions/{extraction['id']}/outcome-data",
+            json={"arm_id": arm["id"], "outcome_id": outcome_id, "timepoint": "1"},
+            headers=owner.headers,
+        )
+    ).json()
+    return {"extraction_id": extraction["id"], "arm_id": arm["id"], "row_id": row["id"]}
 
 
 def _fill(value: Any, ids: dict[str, str]) -> Any:
