@@ -80,7 +80,9 @@
     "studyVsReport": "A study is a group of patients. The same group can appear in several articles; that is why articles are grouped under the study, and patients are not counted twice.",
     "annotation": "A marked passage keeps the page and the exact text of the article a number or a decision came from, so anyone can check it later.",
     "arm": "Study group (arm): a set of participants the article describes separately, for example those operated before age 5.",
-    "checks": "The system distrusts typed numbers and points out what looks wrong. Fix the value or, if it is right, write a short justification: it is recorded."
+    "checks": "The system distrusts typed numbers and points out what looks wrong. Fix the value or, if it is right, write a short justification: it is recorded.",
+    "agreement": "Shows how often the two extractors typed the same values. Low agreement means the extraction process is worth checking.",
+    "kappa": "Cohen's kappa measures agreement beyond what chance alone would give: 1 is full agreement; 0 is what luck would produce. Here it is computed only on category fields (dispersion type, final value or change, higher is better, adjusted), because it was made for categorical answers."
   },
   "notFound": {
     "title": "Page not found",
@@ -377,5 +379,61 @@
   "pending": {
     "intro": "Open check alerts in the extractions you can see. Open the extraction to fix or justify them.",
     "empty": "No pending checks."
+  },
+  "consensus": {
+    "link": "Divergences and consensus",
+    "title": "Divergences and consensus · {{study}}",
+    "intro": "Here you see, field by field, what the two extractors typed. Only numbers and categories count as divergences; formatting-only differences (comma or dot, trailing zeros) do not. Each divergence needs a decision before the consensus is submitted.",
+    "waiting": "Waiting for the individual extractions: {{submitted}} of {{needed}} submitted. The comparison appears once both are submitted.",
+    "single": "Double extraction is off in this project: the submitted extraction becomes the consensus draft, without comparison.",
+    "agreement": {
+      "title": "Agreement between extractors",
+      "percent": "{{percent}}% of the compared values are equal ({{agreeing}} of {{items}}).",
+      "kappa": "Cohen's kappa on category fields: {{kappa}} ({{items}} fields).",
+      "noKappa": "Kappa could not be computed (too few category fields, or all with the same answer).",
+      "unavailable": "The statistics service is down: agreement could not be computed now. The divergences below are still valid."
+    },
+    "counts": "{{divergences}} divergence(s), {{undecided}} undecided.",
+    "open": "Open the consensus",
+    "create": "Create the consensus",
+    "createHint": "The consensus starts from the first extractor's values (filled in with the second's where the first left blanks). Then decide each divergence.",
+    "divergences": "Divergences",
+    "noDivergences": "No divergences: both extractors typed the same numbers and categories.",
+    "texts": "Different texts",
+    "textsHint": "They do not count as divergences. Check that the consensus kept the best text and edit it if needed.",
+    "extractor": "Extractor: {{name}}",
+    "consensusValue": "Consensus",
+    "useValueOf": "Use {{name}}'s value",
+    "keepConsensus": "Keep the consensus value",
+    "reason": "Why does the consensus keep another value?",
+    "markedPassage": "passage marked in the PDF",
+    "noSource": "no source given",
+    "decided": {
+      "a": "Decided: {{name}}'s value",
+      "b": "Decided: {{name}}'s value",
+      "consensus": "Consensus value kept"
+    },
+    "section": {
+      "characteristics": "Study characteristics",
+      "arm": "Study group: {{arm}}",
+      "scale": "{{outcome}} · scale",
+      "row": "{{outcome}} · {{timepoint}} · {{arm}}"
+    },
+    "field": {
+      "armPresent": "Group recorded",
+      "rowPresent": "Data row recorded",
+      "higherIsBetter": "Higher is better",
+      "t_stat": "t statistic",
+      "p_value": "p value",
+      "adjusted": "Adjusted estimate",
+      "adjusted_for": "Adjusted for",
+      "effect_reported": "Effect reported by the article"
+    },
+    "value": {
+      "present": "Recorded",
+      "absent": "Not recorded",
+      "yes": "Yes",
+      "no": "No"
+    }
   }
 }

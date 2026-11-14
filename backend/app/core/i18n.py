@@ -61,6 +61,13 @@ MESSAGES: dict[Language, dict[str, str]] = {
         "extraction.alert_confirm_direction": (
             "Este alerta é resolvido confirmando a frase de direção do efeito."
         ),
+        "consensus.exists": "Este estudo já tem um consenso.",
+        "consensus.waiting_extractions": "O consenso só pode ser criado depois que {needed} extração(ões) individual(is) forem enviadas.",
+        "consensus.missing": "Crie o consenso antes de decidir as divergências.",
+        "consensus.not_double": "Este estudo não tem duas extrações para comparar.",
+        "consensus.not_a_divergence": "Este campo não é uma divergência entre os dois extratores.",
+        "consensus.reason_required": "Explique em poucas palavras por que o valor do consenso é diferente dos dois extratores.",
+        "consensus.undecided_divergences": "Ainda há {count} divergência(s) sem decisão. Decida todas antes de enviar o consenso.",
         "extraction.open_blocking_alerts": "Há alertas que impedem o envio. Corrija os valores ou justifique os alertas antes de enviar.",
         "extraction.enough_extractors": "Este estudo já tem {limit} extrator(es). Peça ao administrador para ajustar, se precisar.",
         "extraction.invalid_field": 'O campo "{field}" tem um valor inválido.',
@@ -154,6 +161,13 @@ MESSAGES: dict[Language, dict[str, str]] = {
         "extraction.alert_confirm_direction": (
             "This alert is resolved by confirming the effect direction sentence."
         ),
+        "consensus.exists": "This study already has a consensus.",
+        "consensus.waiting_extractions": "The consensus can only be created after {needed} individual extraction(s) are submitted.",
+        "consensus.missing": "Create the consensus before deciding the divergences.",
+        "consensus.not_double": "This study does not have two extractions to compare.",
+        "consensus.not_a_divergence": "This field is not a divergence between the two extractors.",
+        "consensus.reason_required": "Briefly explain why the consensus value differs from both extractors.",
+        "consensus.undecided_divergences": "There are still {count} undecided divergence(s). Decide all of them before submitting the consensus.",
         "extraction.open_blocking_alerts": "Some alerts prevent submission. Fix the values or justify the alerts before submitting.",
         "extraction.enough_extractors": "This study already has {limit} extractor(s). Ask the admin to adjust it if needed.",
         "extraction.invalid_field": 'The field "{field}" has an invalid value.',

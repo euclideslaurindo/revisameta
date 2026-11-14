@@ -4,7 +4,8 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_session
-from app.modules.extraction import alerts, service
+from app.integrations.stats_client import StatsClient, get_stats_client
+from app.modules.extraction import alerts, consensus, service
 from app.modules.extraction.models import ExtractionForm
 from app.modules.extraction.schemas import (
     ArmIn,
@@ -226,3 +227,38 @@ async def confirm_direction(
     session: AsyncSession = Depends(get_session),
 ) -> list[alerts.DirectionOut]:
     return await alerts.confirm_direction(session, ctx, extraction_id, body)
+
+
+# ---- Double extraction: divergences and consensus (block D of 7.5.1) -----------------
+
+
+@router.get("/studies/{study_id}/comparison")
+async def study_comparison(
+    study_id: uuid.UUID,
+    ctx: ProjectContext = Depends(admin_access),
+    session: AsyncSession = Depends(get_session),
+    stats: StatsClient = Depends(get_stats_client),
+) -> consensus.ComparisonOut:
+    """Both extractors' values side by side, the decisions taken and the agreement."""
+    return await consensus.comparison_for_study(session, ctx, stats, study_id)
+
+
+@router.post("/studies/{study_id}/consensus", status_code=status.HTTP_201_CREATED)
+async def create_consensus(
+    study_id: uuid.UUID,
+    ctx: ProjectContext = Depends(admin_access),
+    session: AsyncSession = Depends(get_session),
+) -> consensus.ConsensusRef:
+    """Creates the consensus once the individual extractions are submitted."""
+    return await consensus.create_consensus(session, ctx, study_id)
+
+
+@router.post("/studies/{study_id}/decisions")
+async def decide_divergence(
+    study_id: uuid.UUID,
+    body: consensus.DecideIn,
+    ctx: ProjectContext = Depends(admin_access),
+    session: AsyncSession = Depends(get_session),
+) -> consensus.ItemOut:
+    """Settles one divergence: extractor A's value, B's, or the consensus value (justified)."""
+    return await consensus.decide(session, ctx, study_id, body)

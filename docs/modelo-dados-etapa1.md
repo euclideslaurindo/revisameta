@@ -134,6 +134,9 @@ erDiagram
 7. **Texto do PDF por arquivo físico.** `pdf_page_texts` liga ao `stored_file` (o mesmo PDF enviado duas vezes é extraído uma vez só), com **pypdfium2** (ADR-012).
 8. **Isolamento.** Toda tabela tem `project_id`, inclusive as filhas, para que toda consulta filtre por projeto e o teste de isolamento cubra cada rota nova.
 
+9. **Comparação da dupla extração (bloco D, decidido em 2026-11-14).** Só **números e categorias** viram divergência; textos (país, financiamento, página de origem...) aparecem lado a lado, mas não contam. Números são comparados como números ("92,50" = "92.5"). Braços são pareados pelo grupo do protocolo a que estão ligados (sem ligação, pelo nome, ignorando maiúsculas e espaços); linhas, por desfecho, braço e momento. O tipo de dispersão e seus números são decididos juntos, para a linha não ficar incoerente.
+10. **Consenso.** Criado pelo administrador quando as duas extrações individuais estão enviadas, a partir dos valores do primeiro extrator (completados com os do segundo onde o primeiro deixou em branco). Cada divergência precisa de uma decisão em `extraction_decisions` (valor de A, de B, ou o valor do consenso com justificativa); o consenso não é enviado com divergência sem decisão. Sem dupla extração, a extração enviada vira o rascunho do consenso.
+
 ## Fora desta etapa (já previsto no modelo)
 - Conversões, combinação de braços, detector de EP e influência (blocos B e E) → Etapa 3, no serviço R.
 - Inversão de sinal de escalas "maior é pior" → Etapa 3, só no R.

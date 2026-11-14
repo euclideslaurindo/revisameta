@@ -85,6 +85,10 @@ class StatsClient:
     async def health(self) -> StatsResponse:
         return await self._request("GET", "/health")
 
+    async def kappa(self, rater_a: list[str], rater_b: list[str]) -> StatsResponse:
+        """% of equal codes and Cohen's kappa between two raters (irr, in R)."""
+        return await self._request("POST", "/kappa", json={"rater_a": rater_a, "rater_b": rater_b})
+
 
 def get_stats_client() -> StatsClient:
     return StatsClient()

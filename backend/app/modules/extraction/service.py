@@ -262,12 +262,18 @@ async def submit(
     session: AsyncSession, ctx: ProjectContext, extraction_id: uuid.UUID
 ) -> ExtractionSummary:
     from app.modules.extraction.alerts import blocking_open
+    from app.modules.extraction.consensus import consensus_from_single, undecided_divergences
 
     extraction = await get_extraction(session, ctx, extraction_id)
     _ensure_editable(ctx, extraction)
     if await blocking_open(session, ctx, extraction):
         raise AppError("extraction.open_blocking_alerts", status_code=409)
+    if extraction.kind == ExtractionKind.CONSENSUS:
+        undecided = await undecided_divergences(session, ctx, extraction)
+        if undecided:
+            raise AppError("consensus.undecided_divergences", status_code=409, count=len(undecided))
     extraction.status = ExtractionStatus.SUBMITTED
+    await consensus_from_single(session, ctx, extraction)
     await session.commit()
     return await _summary(session, ctx, extraction)
 

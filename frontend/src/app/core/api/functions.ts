@@ -145,6 +145,12 @@ export type { Direction$Params as Direction$Params } from './fn/extraction/direc
 export { direction as direction } from './fn/extraction/direction';
 export type { ConfirmDirection$Params as ConfirmDirection$Params } from './fn/extraction/confirm-direction';
 export { confirmDirection as confirmDirection } from './fn/extraction/confirm-direction';
+export type { StudyComparison$Params as StudyComparison$Params } from './fn/extraction/study-comparison';
+export { studyComparison as studyComparison } from './fn/extraction/study-comparison';
+export type { CreateConsensus$Params as CreateConsensus$Params } from './fn/extraction/create-consensus';
+export { createConsensus as createConsensus } from './fn/extraction/create-consensus';
+export type { DecideDivergence$Params as DecideDivergence$Params } from './fn/extraction/decide-divergence';
+export { decideDivergence as decideDivergence } from './fn/extraction/decide-divergence';
 export type { MyUsage$Params as MyUsage$Params } from './fn/quotas/my-usage';
 export { myUsage as myUsage } from './fn/quotas/my-usage';
 export type { UserUsage$Params as UserUsage$Params } from './fn/quotas/user-usage';

@@ -6,6 +6,7 @@ from app.modules.auth.models import EmailToken, RefreshToken, User
 from app.modules.extraction.models import (
     CheckAlert,
     Extraction,
+    ExtractionDecision,
     ExtractionForm,
     OutcomeData,
     OutcomeMeasure,
@@ -26,6 +27,7 @@ __all__ = [
     "ComparisonGroup",
     "EmailToken",
     "Extraction",
+    "ExtractionDecision",
     "ExtractionForm",
     "Invitation",
     "Outcome",

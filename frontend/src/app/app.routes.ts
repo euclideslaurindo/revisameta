@@ -17,8 +17,7 @@ export const routes: Routes = [
   },
   {
     path: 'verificar-email',
-    loadComponent: () =>
-      import('./features/auth/verify-email-page').then((m) => m.VerifyEmailPage),
+    loadComponent: () => import('./features/auth/verify-email-page').then((m) => m.VerifyEmailPage),
   },
   {
     path: 'convite',
@@ -55,6 +54,11 @@ export const routes: Routes = [
         loadComponent: () => import('./features/studies/study-page').then((m) => m.StudyPage),
       },
       {
+        path: 'estudos/:studyId/consenso',
+        loadComponent: () =>
+          import('./features/extraction/consensus-page').then((m) => m.ConsensusPage),
+      },
+      {
         path: 'extracoes/:extractionId',
         loadComponent: () =>
           import('./features/extraction/extraction-page').then((m) => m.ExtractionPage),
@@ -66,8 +70,7 @@ export const routes: Routes = [
       },
       {
         path: 'pdfs/:pdfId',
-        loadComponent: () =>
-          import('./features/pdfs/pdf-viewer-page').then((m) => m.PdfViewerPage),
+        loadComponent: () => import('./features/pdfs/pdf-viewer-page').then((m) => m.PdfViewerPage),
       },
     ],
   },

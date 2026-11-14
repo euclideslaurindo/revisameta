@@ -193,3 +193,33 @@ class CheckAlert(BusinessMixin, AuditedMixin, Base):
     status: Mapped[str] = mapped_column(String(16), default=AlertStatus.OPEN)
     justification: Mapped[str | None] = mapped_column(Text)
     decided_by: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id"))
+
+
+class DecisionChoice(enum.StrEnum):
+    A = "a"  # first extractor's value
+    B = "b"  # second extractor's value
+    CONSENSUS = "consensus"  # keep the value typed in the consensus (justified)
+
+
+class ExtractionDecision(BusinessMixin, AuditedMixin, Base):
+    """How one divergence between the two extractors was settled in the consensus."""
+
+    __tablename__ = "extraction_decisions"
+
+    project_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("projects.id"), index=True)
+    consensus_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("extractions.id"), index=True)
+    item_key: Mapped[str] = mapped_column(String(300))
+    choice: Mapped[str] = mapped_column(String(16))
+    value: Mapped[Any] = mapped_column(JSONB, nullable=True)
+    reason: Mapped[str | None] = mapped_column(Text)
+    decided_by: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"))
+
+    __table_args__ = (
+        Index(
+            "uq_extraction_decisions_item",
+            "consensus_id",
+            "item_key",
+            unique=True,
+            postgresql_where="deleted_at IS NULL",
+        ),
+    )

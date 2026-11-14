@@ -36,6 +36,14 @@ import { ProjectContext } from '../project/project-context';
       <p class="muted">{{ 'extraction.none' | transloco }}</p>
     }
     <rm-form-error [error]="error()" />
+    @if (isAdmin() && extractions().length > 0) {
+      <a
+        mat-stroked-button
+        [routerLink]="['/projetos', projectId(), 'estudos', studyId(), 'consenso']"
+      >
+        {{ 'consensus.link' | transloco }}
+      </a>
+    }
     @if (canExtract() && !mine()) {
       <button mat-flat-button type="button" [disabled]="busy()" (click)="start()">
         {{ 'extraction.start' | transloco }}
@@ -57,6 +65,9 @@ export class StudyExtractions implements OnInit {
     this.extractions().find(
       (e) => e.kind === 'individual' && e.extractor_id === this.auth.user()?.id,
     ),
+  );
+  protected readonly isAdmin = computed(() =>
+    (this.context.project()?.my_roles ?? []).includes('admin'),
   );
   protected readonly canExtract = computed(() => {
     const roles = this.context.project()?.my_roles ?? [];

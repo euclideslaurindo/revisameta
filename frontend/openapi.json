@@ -3937,6 +3937,193 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/studies/{study_id}/comparison": {
+      "get": {
+        "tags": [
+          "extraction"
+        ],
+        "summary": "Study Comparison",
+        "description": "Both extractors' values side by side, the decisions taken and the agreement.",
+        "operationId": "study_comparison",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "study_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Study Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComparisonOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/studies/{study_id}/consensus": {
+      "post": {
+        "tags": [
+          "extraction"
+        ],
+        "summary": "Create Consensus",
+        "description": "Creates the consensus once the individual extractions are submitted.",
+        "operationId": "create_consensus",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "study_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Study Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsensusRef"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/studies/{study_id}/decisions": {
+      "post": {
+        "tags": [
+          "extraction"
+        ],
+        "summary": "Decide Divergence",
+        "description": "Settles one divergence: extractor A's value, B's, or the consensus value (justified).",
+        "operationId": "decide_divergence",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "study_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Study Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DecideIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ItemOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/me/usage": {
       "get": {
         "tags": [
@@ -4536,6 +4723,54 @@
   },
   "components": {
     "schemas": {
+      "AgreementOut": {
+        "properties": {
+          "items": {
+            "type": "integer",
+            "title": "Items"
+          },
+          "agreeing_items": {
+            "type": "integer",
+            "title": "Agreeing Items"
+          },
+          "agreement_percent": {
+            "type": "number",
+            "title": "Agreement Percent"
+          },
+          "kappa": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kappa"
+          },
+          "kappa_items": {
+            "type": "integer",
+            "title": "Kappa Items"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "agreeing_items",
+          "agreement_percent",
+          "kappa",
+          "kappa_items",
+          "warnings"
+        ],
+        "title": "AgreementOut"
+      },
       "AlertOut": {
         "properties": {
           "id": {
@@ -5048,6 +5283,95 @@
         ],
         "title": "CharacteristicsUpdate"
       },
+      "ComparisonOut": {
+        "properties": {
+          "study_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Study Id"
+          },
+          "double_extraction": {
+            "type": "boolean",
+            "title": "Double Extraction"
+          },
+          "needed": {
+            "type": "integer",
+            "title": "Needed"
+          },
+          "submitted": {
+            "type": "integer",
+            "title": "Submitted"
+          },
+          "extractors": {
+            "items": {
+              "$ref": "#/components/schemas/ExtractorOut"
+            },
+            "type": "array",
+            "title": "Extractors"
+          },
+          "consensus": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ConsensusRef"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ItemOut"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "divergences": {
+            "type": "integer",
+            "title": "Divergences"
+          },
+          "undecided": {
+            "type": "integer",
+            "title": "Undecided"
+          },
+          "agreement": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AgreementOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "agreement_error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Agreement Error"
+          }
+        },
+        "type": "object",
+        "required": [
+          "study_id",
+          "double_extraction",
+          "needed",
+          "submitted",
+          "extractors",
+          "consensus",
+          "items",
+          "divergences",
+          "undecided",
+          "agreement",
+          "agreement_error"
+        ],
+        "title": "ComparisonOut"
+      },
       "ConfirmDirectionIn": {
         "properties": {
           "outcome_id": {
@@ -5069,6 +5393,30 @@
         ],
         "title": "ConfirmDirectionIn"
       },
+      "ConsensusRef": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "status",
+          "version"
+        ],
+        "title": "ConsensusRef"
+      },
       "DataSource": {
         "type": "string",
         "enum": [
@@ -5078,6 +5426,89 @@
           "ai"
         ],
         "title": "DataSource"
+      },
+      "DecideIn": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Key"
+          },
+          "choice": {
+            "$ref": "#/components/schemas/DecisionChoice"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "choice"
+        ],
+        "title": "DecideIn"
+      },
+      "DecisionChoice": {
+        "type": "string",
+        "enum": [
+          "a",
+          "b",
+          "consensus"
+        ],
+        "title": "DecisionChoice"
+      },
+      "DecisionOut": {
+        "properties": {
+          "choice": {
+            "type": "string",
+            "title": "Choice"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "decided_by_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decided By Name"
+          },
+          "decided_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Decided At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "choice",
+          "reason",
+          "decided_by_name",
+          "decided_at"
+        ],
+        "title": "DecisionOut"
       },
       "DirectionOut": {
         "properties": {
@@ -5538,6 +5969,43 @@
           "updated_at"
         ],
         "title": "ExtractionSummary"
+      },
+      "ExtractorOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "extraction_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Extraction Id"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "side": {
+            "type": "string",
+            "title": "Side"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "extraction_id",
+          "name",
+          "side"
+        ],
+        "title": "ExtractorOut"
       },
       "FormField": {
         "properties": {
@@ -6036,6 +6504,166 @@
           "email"
         ],
         "title": "InvitationPreview"
+      },
+      "ItemOut": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "section": {
+            "type": "string",
+            "title": "Section"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "value_a": {
+            "title": "Value A"
+          },
+          "value_b": {
+            "title": "Value B"
+          },
+          "consensus_value": {
+            "title": "Consensus Value"
+          },
+          "agree": {
+            "type": "boolean",
+            "title": "Agree"
+          },
+          "divergent": {
+            "type": "boolean",
+            "title": "Divergent"
+          },
+          "outcome_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outcome Id"
+          },
+          "arm_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Arm Key"
+          },
+          "arm_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Arm Label"
+          },
+          "group_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Group Id"
+          },
+          "timepoint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timepoint"
+          },
+          "label_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label Key"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "source_a": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source A"
+          },
+          "source_b": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source B"
+          },
+          "decision": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DecisionOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "section",
+          "kind",
+          "field",
+          "value_a",
+          "value_b",
+          "agree",
+          "divergent"
+        ],
+        "title": "ItemOut"
       },
       "JobOut": {
         "properties": {

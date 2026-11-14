@@ -143,6 +143,13 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
         "/api/v1/projects/{project_id}/extractions/{extraction_id}/direction/confirm",
         {"outcome_id": "{outcome_id}", "timepoint": "1"},
     ),
+    ("GET", "/api/v1/projects/{project_id}/studies/{study_id}/comparison", None),
+    ("POST", "/api/v1/projects/{project_id}/studies/{study_id}/consensus", None),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/studies/{study_id}/decisions",
+        {"key": "char|country", "choice": "a"},
+    ),
 ]
 
 
