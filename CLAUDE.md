@@ -189,7 +189,7 @@ revisameta/
 - `cd e2e && npx playwright test`
 - `make seed-demo` — cria projeto de demonstração com dataset público
 - `docker compose --profile lite up -d` — versão leve (1 worker, 1 processo R) para máquinas com pouca RAM
-- `make tunnel` — expõe o sistema local pelo Cloudflare Tunnel (10.6)
+- `make tunnel` — expõe o sistema local pelo Cloudflare Tunnel (10.6) *(adiado: fora da Etapa 0, ver docs/roteiro.md)*
 - `make backup` / `make restore` — backup criptografado e restauração (10.8)
 - `git config core.hooksPath .githooks` — ativa o hook de commits (rodar uma vez após clonar)
 
