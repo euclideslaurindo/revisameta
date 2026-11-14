@@ -4124,6 +4124,224 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/extraction-review": {
+      "get": {
+        "tags": [
+          "extraction"
+        ],
+        "summary": "Extraction Review",
+        "description": "Every number of the consensus, how it was checked and what blocks the lock.",
+        "operationId": "extraction_review",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinalReviewOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/extraction-review/lock": {
+      "post": {
+        "tags": [
+          "extraction"
+        ],
+        "summary": "Lock Extraction",
+        "description": "Locks the extraction once every study has a checked consensus.",
+        "operationId": "lock_extraction",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinalReviewOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/extraction-review/unlock": {
+      "post": {
+        "tags": [
+          "extraction"
+        ],
+        "summary": "Unlock Extraction",
+        "operationId": "unlock_extraction",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JustificationIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FinalReviewOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/extractions/{extraction_id}/reopen": {
+      "post": {
+        "tags": [
+          "extraction"
+        ],
+        "summary": "Reopen Consensus",
+        "description": "Puts a submitted consensus back to draft to correct it (justified).",
+        "operationId": "reopen_consensus",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "extraction_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Extraction Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JustificationIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/me/usage": {
       "get": {
         "tags": [
@@ -6007,6 +6225,50 @@
         ],
         "title": "ExtractorOut"
       },
+      "FinalReviewOut": {
+        "properties": {
+          "locked": {
+            "type": "boolean",
+            "title": "Locked"
+          },
+          "can_lock": {
+            "type": "boolean",
+            "title": "Can Lock"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "ready": {
+            "type": "integer",
+            "title": "Ready"
+          },
+          "studies": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewStudy"
+            },
+            "type": "array",
+            "title": "Studies"
+          },
+          "history": {
+            "items": {
+              "$ref": "#/components/schemas/StageEventOut"
+            },
+            "type": "array",
+            "title": "History"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locked",
+          "can_lock",
+          "total",
+          "ready",
+          "studies",
+          "history"
+        ],
+        "title": "FinalReviewOut"
+      },
       "FormField": {
         "properties": {
           "key": {
@@ -6725,6 +6987,21 @@
         ],
         "title": "JobOut"
       },
+      "JustificationIn": {
+        "properties": {
+          "justification": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 5,
+            "title": "Justification"
+          }
+        },
+        "type": "object",
+        "required": [
+          "justification"
+        ],
+        "title": "JustificationIn"
+      },
       "JustifyIn": {
         "properties": {
           "justification": {
@@ -6970,6 +7247,42 @@
         ],
         "title": "MergeIn",
         "description": "Moves every report of `other_study_id` into this study (same patients)."
+      },
+      "NumberCheck": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "choice": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Choice"
+          },
+          "by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "By"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "NumberCheck",
+        "description": "How one number of the consensus was checked.\n\nstatus: agreed (both extractors typed it) | decided (divergence settled) |\nundecided | edited (changed in the consensus without a decision) |\none_extractor (only one extractor recorded the row) | single (no double\nextraction: checked when the admin submitted the consensus)."
       },
       "OutcomeCreate": {
         "properties": {
@@ -9113,6 +9426,272 @@
         ],
         "title": "ReportOut"
       },
+      "ReviewArm": {
+        "properties": {
+          "arm_label": {
+            "type": "string",
+            "title": "Arm Label"
+          },
+          "group_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Group Label"
+          },
+          "n": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "N"
+          },
+          "check": {
+            "$ref": "#/components/schemas/NumberCheck"
+          }
+        },
+        "type": "object",
+        "required": [
+          "arm_label",
+          "group_label",
+          "n",
+          "check"
+        ],
+        "title": "ReviewArm"
+      },
+      "ReviewNumber": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "value": {
+            "type": "string",
+            "title": "Value"
+          },
+          "check": {
+            "$ref": "#/components/schemas/NumberCheck"
+          }
+        },
+        "type": "object",
+        "required": [
+          "field",
+          "value",
+          "check"
+        ],
+        "title": "ReviewNumber"
+      },
+      "ReviewRow": {
+        "properties": {
+          "outcome_name": {
+            "type": "string",
+            "title": "Outcome Name"
+          },
+          "timepoint": {
+            "type": "string",
+            "title": "Timepoint"
+          },
+          "arm_label": {
+            "type": "string",
+            "title": "Arm Label"
+          },
+          "group_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Group Label"
+          },
+          "value_type": {
+            "type": "string",
+            "title": "Value Type"
+          },
+          "dispersion_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dispersion Type"
+          },
+          "dispersion_source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dispersion Source"
+          },
+          "source_location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Location"
+          },
+          "has_annotation": {
+            "type": "boolean",
+            "title": "Has Annotation"
+          },
+          "numbers": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewNumber"
+            },
+            "type": "array",
+            "title": "Numbers"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome_name",
+          "timepoint",
+          "arm_label",
+          "group_label",
+          "value_type",
+          "dispersion_type",
+          "dispersion_source",
+          "source_location",
+          "has_annotation",
+          "numbers"
+        ],
+        "title": "ReviewRow"
+      },
+      "ReviewStudy": {
+        "properties": {
+          "study_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Study Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "consensus_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Consensus Id"
+          },
+          "consensus_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Consensus Status"
+          },
+          "extractors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Extractors"
+          },
+          "checked_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Checked By"
+          },
+          "checked_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Checked At"
+          },
+          "open_alerts": {
+            "items": {
+              "$ref": "#/components/schemas/AlertOut"
+            },
+            "type": "array",
+            "title": "Open Alerts"
+          },
+          "justified_alerts": {
+            "type": "integer",
+            "title": "Justified Alerts"
+          },
+          "arms": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewArm"
+            },
+            "type": "array",
+            "title": "Arms"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewRow"
+            },
+            "type": "array",
+            "title": "Rows"
+          },
+          "blockers": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Blockers"
+          }
+        },
+        "type": "object",
+        "required": [
+          "study_id",
+          "label",
+          "consensus_id",
+          "consensus_status",
+          "extractors",
+          "checked_by",
+          "checked_at",
+          "open_alerts",
+          "justified_alerts",
+          "arms",
+          "rows",
+          "blockers"
+        ],
+        "title": "ReviewStudy"
+      },
       "Role": {
         "type": "string",
         "enum": [
@@ -9172,6 +9751,62 @@
           "snippet"
         ],
         "title": "SearchHit"
+      },
+      "StageEventOut": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "title": "Action"
+          },
+          "target_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Target Id"
+          },
+          "justification": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Justification"
+          },
+          "user_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Name"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "action",
+          "target_id",
+          "justification",
+          "user_name",
+          "created_at"
+        ],
+        "title": "StageEventOut"
       },
       "StudyCreate": {
         "properties": {

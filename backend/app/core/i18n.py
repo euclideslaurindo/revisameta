@@ -61,6 +61,11 @@ MESSAGES: dict[Language, dict[str, str]] = {
         "extraction.alert_confirm_direction": (
             "Este alerta é resolvido confirmando a frase de direção do efeito."
         ),
+        "stage.locked": "Esta etapa está travada. Peça ao administrador para destravá-la (com justificativa) se precisar alterar algo.",
+        "stage.not_locked": "Esta etapa não está travada.",
+        "review.not_ready": "Só dá para travar quando todos os estudos têm consenso enviado e nenhum alerta em aberto ({ready} de {total} prontos).",
+        "review.not_a_consensus": "Consenso não encontrado.",
+        "review.not_submitted": "Só um consenso enviado pode ser reaberto.",
         "consensus.exists": "Este estudo já tem um consenso.",
         "consensus.waiting_extractions": "O consenso só pode ser criado depois que {needed} extração(ões) individual(is) forem enviadas.",
         "consensus.missing": "Crie o consenso antes de decidir as divergências.",
@@ -161,6 +166,11 @@ MESSAGES: dict[Language, dict[str, str]] = {
         "extraction.alert_confirm_direction": (
             "This alert is resolved by confirming the effect direction sentence."
         ),
+        "stage.locked": "This stage is locked. Ask the admin to unlock it (with a justification) if something must change.",
+        "stage.not_locked": "This stage is not locked.",
+        "review.not_ready": "The stage can only be locked when every study has a submitted consensus and no open alert ({ready} of {total} ready).",
+        "review.not_a_consensus": "Consensus not found.",
+        "review.not_submitted": "Only a submitted consensus can be reopened.",
         "consensus.exists": "This study already has a consensus.",
         "consensus.waiting_extractions": "The consensus can only be created after {needed} individual extraction(s) are submitted.",
         "consensus.missing": "Create the consensus before deciding the divergences.",

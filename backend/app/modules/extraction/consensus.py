@@ -46,6 +46,8 @@ from app.modules.extraction.models import (
 from app.modules.extraction.schemas import FormSchema
 from app.modules.extraction.service import current_form
 from app.modules.projects.access import ProjectContext
+from app.modules.projects.models import Stage
+from app.modules.projects.stages import ensure_open
 from app.modules.studies.service import get_study
 
 ROW_COPY_FIELDS = (
@@ -493,6 +495,7 @@ async def create_consensus(
     session: AsyncSession, ctx: ProjectContext, study_id: uuid.UUID
 ) -> ConsensusRef:
     _require_admin(ctx)
+    ensure_open(ctx, Stage.EXTRACTION)
     await get_study(session, ctx, study_id)
     individuals, consensus = await _extractions(session, ctx, study_id)
     if consensus is not None:
@@ -643,6 +646,7 @@ async def decide(
     session: AsyncSession, ctx: ProjectContext, study_id: uuid.UUID, data: DecideIn
 ) -> ItemOut:
     _require_admin(ctx)
+    ensure_open(ctx, Stage.EXTRACTION)
     await get_study(session, ctx, study_id)
     individuals, consensus = await _extractions(session, ctx, study_id)
     if consensus is None:

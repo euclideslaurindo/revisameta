@@ -92,7 +92,8 @@
     "nav": {
       "protocol": "Protocolo",
       "studies": "Estudos",
-      "pending": "Pendências"
+      "pending": "Pendências",
+      "review": "Conferência final"
     }
   },
   "protocol": {
@@ -434,6 +435,49 @@
       "absent": "Não registrado",
       "yes": "Sim",
       "no": "Não"
+    }
+  },
+  "review": {
+    "intro": "Antes de travar a extração, confira cada número que vai para a análise: o valor, de onde veio no artigo, quem extraiu e como foi conferido. A extração só trava quando todos os estudos têm consenso enviado e nenhum alerta em aberto.",
+    "locked": "A extração está travada: nenhum número pode ser alterado. Para corrigir algo, destrave com uma justificativa.",
+    "unlockReason": "Por que destravar?",
+    "unlock": "Destravar a extração",
+    "readyCount": "{{ready}} de {{total}} estudo(s) prontos para travar.",
+    "lock": "Travar a extração",
+    "lockHint": "O botão fica disponível quando todos os estudos estiverem prontos.",
+    "empty": "Nenhum estudo cadastrado ainda.",
+    "pending": "Pendente",
+    "ready": "Pronto",
+    "no_consensus": "Ainda não tem consenso.",
+    "consensus_draft": "O consenso ainda não foi enviado.",
+    "open_alerts": "{{count}} alerta(s) em aberto no consenso: corrija ou justifique.",
+    "extractedBy": "Extraído por: {{names}}",
+    "checkedBy": "conferido e enviado por {{name}}",
+    "justified": "{{count}} alerta(s) justificado(s)",
+    "group": "Grupo / desfecho",
+    "numbers": "Números e conferência",
+    "origin": "Origem no artigo",
+    "reopen": "Reabrir o consenso para corrigir",
+    "reopenReason": "O que precisa ser corrigido?",
+    "history": "Histórico da etapa",
+    "action": {
+      "lock": "Extração travada",
+      "unlock": "Extração destravada",
+      "reopen": "Consenso reaberto"
+    },
+    "side": {
+      "a": "do primeiro extrator",
+      "b": "do segundo extrator",
+      "consensus": "do consenso"
+    },
+    "check": {
+      "agreed": "✓ igual nos dois extratores",
+      "decided": "✓ divergência decidida por {{name}}: valor {{side}}",
+      "undecided": "divergência sem decisão",
+      "edited": "alterado no consenso, sem decisão registrada",
+      "one_extractor": "só um extrator registrou; decidido por {{name}}",
+      "single": "extração única, conferida por {{name}}",
+      "empty": "não informado"
     }
   }
 }

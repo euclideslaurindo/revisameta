@@ -64,6 +64,10 @@ export const routes: Routes = [
           import('./features/extraction/extraction-page').then((m) => m.ExtractionPage),
       },
       {
+        path: 'conferencia',
+        loadComponent: () => import('./features/extraction/review-page').then((m) => m.ReviewPage),
+      },
+      {
         path: 'pendencias',
         loadComponent: () =>
           import('./features/extraction/pending-page').then((m) => m.PendingPage),

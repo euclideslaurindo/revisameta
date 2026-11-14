@@ -92,7 +92,8 @@
     "nav": {
       "protocol": "Protocol",
       "studies": "Studies",
-      "pending": "Pending checks"
+      "pending": "Pending checks",
+      "review": "Final review"
     }
   },
   "protocol": {
@@ -434,6 +435,49 @@
       "absent": "Not recorded",
       "yes": "Yes",
       "no": "No"
+    }
+  },
+  "review": {
+    "intro": "Before locking the extraction, check every number that goes into the analysis: its value, where it came from in the article, who extracted it and how it was checked. The extraction locks only when every study has a submitted consensus and no open alert.",
+    "locked": "The extraction is locked: no number can change. To correct something, unlock it with a justification.",
+    "unlockReason": "Why unlock?",
+    "unlock": "Unlock the extraction",
+    "readyCount": "{{ready}} of {{total}} study(ies) ready to lock.",
+    "lock": "Lock the extraction",
+    "lockHint": "The button becomes available when every study is ready.",
+    "empty": "No studies yet.",
+    "pending": "Pending",
+    "ready": "Ready",
+    "no_consensus": "No consensus yet.",
+    "consensus_draft": "The consensus has not been submitted yet.",
+    "open_alerts": "{{count}} open alert(s) in the consensus: fix or justify them.",
+    "extractedBy": "Extracted by: {{names}}",
+    "checkedBy": "checked and submitted by {{name}}",
+    "justified": "{{count}} justified alert(s)",
+    "group": "Group / outcome",
+    "numbers": "Numbers and check",
+    "origin": "Origin in the article",
+    "reopen": "Reopen the consensus to correct it",
+    "reopenReason": "What needs to be corrected?",
+    "history": "Stage history",
+    "action": {
+      "lock": "Extraction locked",
+      "unlock": "Extraction unlocked",
+      "reopen": "Consensus reopened"
+    },
+    "side": {
+      "a": "from the first extractor",
+      "b": "from the second extractor",
+      "consensus": "from the consensus"
+    },
+    "check": {
+      "agreed": "✓ same for both extractors",
+      "decided": "✓ divergence decided by {{name}}: value {{side}}",
+      "undecided": "undecided divergence",
+      "edited": "changed in the consensus, no decision recorded",
+      "one_extractor": "recorded by one extractor only; decided by {{name}}",
+      "single": "single extraction, checked by {{name}}",
+      "empty": "not reported"
     }
   }
 }

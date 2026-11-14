@@ -150,6 +150,18 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
         "/api/v1/projects/{project_id}/studies/{study_id}/decisions",
         {"key": "char|country", "choice": "a"},
     ),
+    ("GET", "/api/v1/projects/{project_id}/extraction-review", None),
+    ("POST", "/api/v1/projects/{project_id}/extraction-review/lock", None),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/extraction-review/unlock",
+        {"justification": "motivo de teste"},
+    ),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/extractions/{extraction_id}/reopen",
+        {"justification": "motivo de teste"},
+    ),
 ]
 
 

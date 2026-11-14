@@ -151,6 +151,14 @@ export type { CreateConsensus$Params as CreateConsensus$Params } from './fn/extr
 export { createConsensus as createConsensus } from './fn/extraction/create-consensus';
 export type { DecideDivergence$Params as DecideDivergence$Params } from './fn/extraction/decide-divergence';
 export { decideDivergence as decideDivergence } from './fn/extraction/decide-divergence';
+export type { ExtractionReview$Params as ExtractionReview$Params } from './fn/extraction/extraction-review';
+export { extractionReview as extractionReview } from './fn/extraction/extraction-review';
+export type { LockExtraction$Params as LockExtraction$Params } from './fn/extraction/lock-extraction';
+export { lockExtraction as lockExtraction } from './fn/extraction/lock-extraction';
+export type { UnlockExtraction$Params as UnlockExtraction$Params } from './fn/extraction/unlock-extraction';
+export { unlockExtraction as unlockExtraction } from './fn/extraction/unlock-extraction';
+export type { ReopenConsensus$Params as ReopenConsensus$Params } from './fn/extraction/reopen-consensus';
+export { reopenConsensus as reopenConsensus } from './fn/extraction/reopen-consensus';
 export type { MyUsage$Params as MyUsage$Params } from './fn/quotas/my-usage';
 export { myUsage as myUsage } from './fn/quotas/my-usage';
 export type { UserUsage$Params as UserUsage$Params } from './fn/quotas/user-usage';

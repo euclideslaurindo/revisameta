@@ -460,3 +460,35 @@ main:has(.extraction-layout) {
   gap: 0.5rem;
   margin-top: 0.5rem;
 }
+.review-table {
+  margin: 0.75rem 0;
+  border-top: 1px solid #dadce0;
+}
+.review-head,
+.review-row {
+  display: grid;
+  grid-template-columns: 1.2fr 2fr 1.2fr;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f1f3f4;
+}
+.review-head {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.check {
+  margin-left: 0.4rem;
+  font-size: 0.8rem;
+  color: #1e5e2f;
+}
+.check.check-warn {
+  color: #a50e0e;
+}
+@media (max-width: 700px) {
+  .review-head {
+    display: none;
+  }
+  .review-row {
+    grid-template-columns: 1fr;
+  }
+}

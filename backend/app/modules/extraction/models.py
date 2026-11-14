@@ -6,10 +6,11 @@ other) and one consensus. Analyses and exports read only the consensus (bloco G)
 
 import enum
 import uuid
+from datetime import datetime
 from decimal import Decimal
 from typing import Any
 
-from sqlalchemy import Boolean, ForeignKey, Index, Integer, Numeric, String, Text
+from sqlalchemy import Boolean, DateTime, ForeignKey, Index, Integer, Numeric, String, Text
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -72,6 +73,9 @@ class Extraction(BusinessMixin, AuditedMixin, Base):
     # Goes up on every change to numbers (arms, scales, outcome data). Etapa 3 marks
     # analyses as outdated when the consensus version they used is no longer current.
     data_version: Mapped[int] = mapped_column(Integer, default=1)
+    # Who submitted it: for the consensus, the admin who checked it (final review).
+    submitted_by: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id"))
+    submitted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
     __table_args__ = (
         Index(

@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_session
 from app.integrations.stats_client import StatsClient, get_stats_client
-from app.modules.extraction import alerts, consensus, service
+from app.modules.extraction import alerts, consensus, review, service
 from app.modules.extraction.models import ExtractionForm
 from app.modules.extraction.schemas import (
     ArmIn,
@@ -262,3 +262,44 @@ async def decide_divergence(
 ) -> consensus.ItemOut:
     """Settles one divergence: extractor A's value, B's, or the consensus value (justified)."""
     return await consensus.decide(session, ctx, study_id, body)
+
+
+# ---- Final review and stage lock (block F of 7.5.1) ----------------------------------
+
+
+@router.get("/extraction-review")
+async def extraction_review(
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> review.FinalReviewOut:
+    """Every number of the consensus, how it was checked and what blocks the lock."""
+    return await review.final_review(session, ctx)
+
+
+@router.post("/extraction-review/lock")
+async def lock_extraction(
+    ctx: ProjectContext = Depends(admin_access),
+    session: AsyncSession = Depends(get_session),
+) -> review.FinalReviewOut:
+    """Locks the extraction once every study has a checked consensus."""
+    return await review.lock(session, ctx)
+
+
+@router.post("/extraction-review/unlock")
+async def unlock_extraction(
+    body: review.JustificationIn,
+    ctx: ProjectContext = Depends(admin_access),
+    session: AsyncSession = Depends(get_session),
+) -> review.FinalReviewOut:
+    return await review.unlock(session, ctx, body)
+
+
+@router.post("/extractions/{extraction_id}/reopen", status_code=status.HTTP_204_NO_CONTENT)
+async def reopen_consensus(
+    extraction_id: uuid.UUID,
+    body: review.JustificationIn,
+    ctx: ProjectContext = Depends(admin_access),
+    session: AsyncSession = Depends(get_session),
+) -> None:
+    """Puts a submitted consensus back to draft to correct it (justified)."""
+    await review.reopen(session, ctx, extraction_id, body)

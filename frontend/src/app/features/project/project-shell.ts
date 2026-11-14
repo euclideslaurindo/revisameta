@@ -17,14 +17,41 @@ import { ProjectContext } from './project-context';
     } @else if (context.project(); as project) {
       <h1>{{ project.title }}</h1>
       <nav mat-tab-nav-bar [tabPanel]="panel">
-        <a mat-tab-link routerLink="protocolo" routerLinkActive #protocol="routerLinkActive" [active]="protocol.isActive">
+        <a
+          mat-tab-link
+          routerLink="protocolo"
+          routerLinkActive
+          #protocol="routerLinkActive"
+          [active]="protocol.isActive"
+        >
           {{ 'project.nav.protocol' | transloco }}
         </a>
-        <a mat-tab-link routerLink="estudos" routerLinkActive #studies="routerLinkActive" [active]="studies.isActive">
+        <a
+          mat-tab-link
+          routerLink="estudos"
+          routerLinkActive
+          #studies="routerLinkActive"
+          [active]="studies.isActive"
+        >
           {{ 'project.nav.studies' | transloco }}
         </a>
-        <a mat-tab-link routerLink="pendencias" routerLinkActive #pending="routerLinkActive" [active]="pending.isActive">
+        <a
+          mat-tab-link
+          routerLink="pendencias"
+          routerLinkActive
+          #pending="routerLinkActive"
+          [active]="pending.isActive"
+        >
           {{ 'project.nav.pending' | transloco }}
+        </a>
+        <a
+          mat-tab-link
+          routerLink="conferencia"
+          routerLinkActive
+          #review="routerLinkActive"
+          [active]="review.isActive"
+        >
+          {{ 'project.nav.review' | transloco }}
         </a>
       </nav>
       <mat-tab-nav-panel #panel>

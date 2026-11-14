@@ -26,6 +26,8 @@ from app.modules.extraction.models import (
 )
 from app.modules.extraction.service import get_extraction
 from app.modules.projects.access import ProjectContext
+from app.modules.projects.models import Stage
+from app.modules.projects.stages import ensure_open
 from app.modules.protocol.models import ComparisonGroup, Outcome
 
 
@@ -197,6 +199,7 @@ async def justify(
     extraction = await get_extraction(session, ctx, alert.extraction_id)
     if not _can_decide(ctx, extraction):
         raise ForbiddenError()
+    ensure_open(ctx, Stage.EXTRACTION)
     if extraction.status != ExtractionStatus.DRAFT:
         raise AppError("extraction.not_editable", status_code=409)
     if alert.status == AlertStatus.RESOLVED:
@@ -267,6 +270,7 @@ async def confirm_direction(
     extraction = await get_extraction(session, ctx, extraction_id)
     if not _can_decide(ctx, extraction):
         raise ForbiddenError()
+    ensure_open(ctx, Stage.EXTRACTION)
     if extraction.status != ExtractionStatus.DRAFT:
         raise AppError("extraction.not_editable", status_code=409)
     summary = next(

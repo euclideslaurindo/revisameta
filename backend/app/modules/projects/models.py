@@ -71,3 +71,28 @@ class Invitation(BusinessMixin, AuditedMixin, Base):
     expires_at: Mapped[datetime]
     accepted_at: Mapped[datetime | None]
     accepted_by: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id"))
+
+
+class Stage(enum.StrEnum):
+    """Review stages that a project admin can lock (docs/modulos.md, 7.12)."""
+
+    EXTRACTION = "extraction"
+
+
+class StageAction(enum.StrEnum):
+    LOCK = "lock"
+    UNLOCK = "unlock"
+    REOPEN = "reopen"  # one record of a locked-down stage reopened for a fix
+
+
+class StageEvent(BusinessMixin, AuditedMixin, Base):
+    """History of a stage: who locked, unlocked or reopened something, and why."""
+
+    __tablename__ = "stage_events"
+
+    project_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("projects.id"), index=True)
+    stage: Mapped[str] = mapped_column(String(32))
+    action: Mapped[str] = mapped_column(String(16))
+    target_id: Mapped[uuid.UUID | None]
+    justification: Mapped[str | None] = mapped_column(Text)
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"))

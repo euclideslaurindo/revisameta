@@ -45,7 +45,8 @@ from app.modules.extraction.schemas import (
 )
 from app.modules.pdfs.models import PdfAnnotation, PdfFile
 from app.modules.projects.access import ProjectContext
-from app.modules.projects.models import Role
+from app.modules.projects.models import Role, Stage
+from app.modules.projects.stages import ensure_open
 from app.modules.protocol.models import ComparisonGroup, Outcome
 from app.modules.studies.models import Report
 from app.modules.studies.service import get_study
@@ -84,6 +85,7 @@ async def update_form(
     session: AsyncSession, ctx: ProjectContext, data: FormUpdate
 ) -> ExtractionForm:
     """Creates a new version; extractions on older versions are flagged for review."""
+    ensure_open(ctx, Stage.EXTRACTION)
     form = await current_form(session, ctx)
     if form.version != data.version:
         raise ConflictError()
@@ -111,6 +113,7 @@ def _can_view(ctx: ProjectContext, extraction: Extraction) -> bool:
 
 
 def _ensure_editable(ctx: ProjectContext, extraction: Extraction) -> None:
+    ensure_open(ctx, Stage.EXTRACTION)
     if extraction.status != ExtractionStatus.DRAFT:
         raise AppError("extraction.not_editable", status_code=409)
     if extraction.kind == ExtractionKind.CONSENSUS:
@@ -178,6 +181,7 @@ async def start(
     if not ({Role.ADMIN, Role.EXTRACTOR} & ctx.roles):
         raise ForbiddenError()
     study = await get_study(session, ctx, study_id)
+    ensure_open(ctx, Stage.EXTRACTION)
     existing = list(
         await session.scalars(
             select(Extraction).where(
@@ -273,6 +277,8 @@ async def submit(
         if undecided:
             raise AppError("consensus.undecided_divergences", status_code=409, count=len(undecided))
     extraction.status = ExtractionStatus.SUBMITTED
+    extraction.submitted_by = ctx.user.id
+    extraction.submitted_at = _now()
     await consensus_from_single(session, ctx, extraction)
     await session.commit()
     return await _summary(session, ctx, extraction)
