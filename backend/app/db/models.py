@@ -17,7 +17,13 @@ from app.modules.pdfs.models import PdfAnnotation, PdfFile
 from app.modules.projects.models import Invitation, Project, ProjectMember, StageEvent
 from app.modules.protocol.models import ComparisonGroup, Outcome
 from app.modules.quotas.models import UsageQuota
-from app.modules.risk_of_bias.models import RobStudyTool, RobTool
+from app.modules.risk_of_bias.models import (
+    RobAnswer,
+    RobAssessment,
+    RobJudgement,
+    RobStudyTool,
+    RobTool,
+)
 from app.modules.studies.models import Reference, Report, Study
 from app.modules.uploads.models import PdfPageText, StoredFile, UploadSession
 
@@ -42,6 +48,9 @@ __all__ = [
     "Reference",
     "RefreshToken",
     "Report",
+    "RobAnswer",
+    "RobAssessment",
+    "RobJudgement",
     "RobStudyTool",
     "RobTool",
     "StageEvent",

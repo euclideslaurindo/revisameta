@@ -17,7 +17,8 @@ from app.modules.projects.access import ProjectContext
 from app.modules.projects.models import Stage
 from app.modules.projects.stages import ensure_open
 from app.modules.risk_of_bias.catalog import FAMILY_PREFERENCE, Template, catalog
-from app.modules.risk_of_bias.models import RobStudyTool, RobTool
+from app.modules.risk_of_bias.models import RobAssessment, RobStudyTool, RobTool
+from app.modules.risk_of_bias.rules import GroupRule, check_rule
 from app.modules.studies.service import get_study
 
 # ---- Schemas -------------------------------------------------------------------------
@@ -218,7 +219,8 @@ async def set_generic_structure(
         raise AppError("rob.not_generic", status_code=422)
     if tool.version != data.version:
         raise ConflictError()
-    # TODO(stage 2, step 2): refuse once the tool has assessments.
+    if await _has_assessments(session, RobAssessment.tool_id == tool.id):
+        raise AppError("rob.tool_in_use", status_code=409)
     structure = dict(tool.structure)
     structure["domains"] = [
         {
@@ -235,6 +237,41 @@ async def set_generic_structure(
     tool.structure = structure
     keys = set(Template.model_validate(structure).question_keys())
     tool.texts = {k: v for k, v in (tool.texts or {}).items() if k in keys}
+    await session.commit()
+    return tool_out(tool)
+
+
+class OverallRuleIn(BaseModel):
+    version: int
+    rule: dict[str, Any] | None  # None removes the rule: the overall judgement is free
+
+
+async def _has_assessments(session: AsyncSession, condition: Any) -> bool:
+    found = await session.scalar(select(RobAssessment.id).where(condition).limit(1))
+    return found is not None
+
+
+async def set_overall_rule(
+    session: AsyncSession, ctx: ProjectContext, tool_id: uuid.UUID, data: OverallRuleIn
+) -> ToolOut:
+    """The group's rule for the overall judgement (JBI, Newcastle-Ottawa, generic)."""
+    _require_admin(ctx)
+    ensure_open(ctx, Stage.RISK_OF_BIAS)
+    tool = await get_tool(session, ctx, tool_id)
+    template = _template_of(tool)
+    if template.judgement.kind != "group_rule":
+        raise AppError("rob.has_official_rule", status_code=422)
+    if tool.version != data.version:
+        raise ConflictError()
+    if data.rule is None:
+        tool.overall_rule = None
+    else:
+        try:
+            rule = GroupRule.model_validate(data.rule)
+            check_rule(rule, template)
+        except ValueError as exc:
+            raise AppError("rob.invalid_rule", status_code=422) from exc
+        tool.overall_rule = rule.model_dump(by_alias=True)
     await session.commit()
     return tool_out(tool)
 
@@ -282,7 +319,12 @@ async def confirm_study_tool(
     study = await get_study(session, ctx, study_id)
     tool = await get_tool(session, ctx, data.tool_id)
     choice = await _choice(session, study.id)
-    # TODO(stage 2, step 2): refuse a change once the study has assessments.
+    if (
+        choice is not None
+        and choice.tool_id != tool.id
+        and await _has_assessments(session, RobAssessment.study_id == study.id)
+    ):
+        raise AppError("rob.study_has_assessments", status_code=409)
     if choice is None:
         session.add(
             RobStudyTool(

@@ -120,7 +120,7 @@ def overall_warnings(
     return warnings
 
 
-def is_asked(condition: dict[str, Any] | None, answers: Answers) -> bool:
+def is_asked(condition: dict[str, Any] | None, answers: Mapping[str, str | None]) -> bool:
     """Whether a question applies, given the answers so far (official "If ... to x.y")."""
     if condition is None:
         return True

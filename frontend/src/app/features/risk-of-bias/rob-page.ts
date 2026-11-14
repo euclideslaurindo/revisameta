@@ -13,6 +13,7 @@ import { CatalogItem } from '../../core/api/models/catalog-item';
 import { ToolOut } from '../../core/api/models/tool-out';
 import { FormError } from '../../shared/form-error';
 import { ProjectContext } from '../project/project-context';
+import { RobRuleEditor } from './rob-rule-editor';
 import { RobToolEditor, localized } from './rob-tool-editor';
 
 /** Risk of bias: the instruments of the project (step 1 of stage 2). */
@@ -25,6 +26,7 @@ import { RobToolEditor, localized } from './rob-tool-editor';
     MatTooltipModule,
     FormError,
     RobToolEditor,
+    RobRuleEditor,
   ],
   template: `
     <p class="muted">
@@ -58,6 +60,19 @@ import { RobToolEditor, localized } from './rob-tool-editor';
                       | transloco: { filled: t.texts_filled, total: t.questions }
                   }}
                 </div>
+                @if (isGroupRule(t)) {
+                  <div class="muted">
+                    {{ (t.overall_rule ? 'rob.rule.defined' : 'rob.rule.none') | transloco }}
+                  </div>
+                }
+                @if (ruleEditing() === t.id) {
+                  <rm-rob-rule-editor
+                    [projectId]="projectId()"
+                    [tool]="t"
+                    (saved)="replace($event)"
+                    (closed)="ruleEditing.set(null)"
+                  />
+                }
                 @if (editing() === t.id) {
                   <rm-rob-tool-editor
                     [projectId]="projectId()"
@@ -67,6 +82,11 @@ import { RobToolEditor, localized } from './rob-tool-editor';
                   />
                 }
               </div>
+              @if (isAdmin() && isGroupRule(t) && ruleEditing() !== t.id) {
+                <button mat-stroked-button type="button" (click)="ruleEditing.set(t.id)">
+                  {{ 'rob.rule.edit' | transloco }}
+                </button>
+              }
               @if (isAdmin() && editing() !== t.id) {
                 <button mat-stroked-button type="button" (click)="editing.set(t.id)">
                   {{
@@ -135,6 +155,7 @@ export class RobPage implements OnInit {
   protected readonly catalog = signal<CatalogItem[]>([]);
   protected readonly tools = signal<ToolOut[]>([]);
   protected readonly editing = signal<string | null>(null);
+  protected readonly ruleEditing = signal<string | null>(null);
   protected readonly busy = signal(false);
   protected readonly error = signal<unknown>(null);
   protected readonly isAdmin = computed(() => this.context.isAdmin());
@@ -162,9 +183,14 @@ export class RobPage implements OnInit {
     return localized(value as Record<string, string>, this.lang());
   }
 
+  protected isGroupRule(tool: ToolOut): boolean {
+    return (tool.structure['judgement'] as { kind?: string } | undefined)?.kind === 'group_rule';
+  }
+
   protected replace(tool: ToolOut): void {
     this.tools.update((list) => list.map((t) => (t.id === tool.id ? tool : t)));
     this.editing.set(null);
+    this.ruleEditing.set(null);
   }
 
   async enable(item: CatalogItem): Promise<void> {

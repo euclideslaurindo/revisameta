@@ -534,3 +534,47 @@ main:has(.extraction-layout) {
   display: block;
   margin-bottom: 0.5rem;
 }
+/* Risk-of-bias levels: colours always come with the level written (docs/modulos.md 12). */
+.rob-level {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  background: #5f6368;
+}
+.rob-level-low {
+  background: #1e8e3e;
+}
+.rob-level-low_except_confounding {
+  background: #f9e000;
+  color: #202124;
+}
+.rob-level-some_concerns,
+.rob-level-moderate {
+  background: #f9ab00;
+  color: #202124;
+}
+.rob-level-high,
+.rob-level-serious {
+  background: #d93025;
+}
+.rob-level-critical,
+.rob-level-very_high {
+  background: #5c0a0a;
+}
+.rob-level-no_information {
+  background: #9aa0a6;
+}
+.rob-question-block {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f1f3f4;
+}
+.rob-question-block h4 {
+  margin: 0.25rem 0;
+}
+.rob-answers {
+  flex-wrap: wrap;
+  margin: 0.25rem 0;
+}

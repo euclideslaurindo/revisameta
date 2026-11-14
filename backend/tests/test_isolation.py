@@ -183,6 +183,30 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
         "/api/v1/projects/{project_id}/rob/studies/{study_id}/tool",
         {"tool_id": "{tool_id}"},
     ),
+    (
+        "PUT",
+        "/api/v1/projects/{project_id}/rob/tools/{tool_id}/overall-rule",
+        {"version": 1, "rule": None},
+    ),
+    ("GET", "/api/v1/projects/{project_id}/rob/studies/{study_id}/assessments", None),
+    ("POST", "/api/v1/projects/{project_id}/rob/studies/{study_id}/assessments", {}),
+    ("GET", "/api/v1/projects/{project_id}/rob/assessments/{assessment_id}", None),
+    (
+        "PUT",
+        "/api/v1/projects/{project_id}/rob/assessments/{assessment_id}/answers",
+        {"answers": [{"question_key": "d1.1", "answer": "Y"}]},
+    ),
+    (
+        "PUT",
+        "/api/v1/projects/{project_id}/rob/assessments/{assessment_id}/variants",
+        {"variants": {}},
+    ),
+    (
+        "PUT",
+        "/api/v1/projects/{project_id}/rob/assessments/{assessment_id}/judgement",
+        {"final": "low"},
+    ),
+    ("POST", "/api/v1/projects/{project_id}/rob/assessments/{assessment_id}/submit", None),
 ]
 
 
@@ -259,6 +283,17 @@ async def _setup(client: AsyncClient, make_user: MakeUser) -> tuple[LoggedUser, 
             f"/api/v1/projects/{project['id']}/rob/tools",
             json={"template_key": "generic"},
             headers=owner.headers,
+        )
+    ).json()["id"]
+    rob = f"/api/v1/projects/{project['id']}/rob"
+    await client.put(
+        f"{rob}/studies/{ids['study_id']}/tool",
+        json={"tool_id": ids["tool_id"]},
+        headers=owner.headers,
+    )
+    ids["assessment_id"] = (
+        await client.post(
+            f"{rob}/studies/{ids['study_id']}/assessments", json={}, headers=owner.headers
         )
     ).json()["id"]
     return owner, ids

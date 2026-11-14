@@ -53,8 +53,9 @@ erDiagram
         enum status "draft | submitted | locked"
     }
     rob_answers {
-        string domain_key
-        string question_key
+        string question_key "dominio.pergunta"
+        uuid outcome_id "JBI: perguntas por desfecho/resultado"
+        string timepoint
         string answer "Y | PY | PN | N | NI | WY... | estrelas (NOS)"
         text justification
         uuid annotation_id
@@ -106,6 +107,14 @@ Cada algoritmo de domínio fica no template como uma árvore de decisão, nó a 
 | ROBINS-I 2016 | sem algoritmo oficial de domínio: o revisor julga | Tabela 3 oficial (crítico > grave > sem informação > moderado > baixo) |
 
 Divergências encontradas nos documentos oficiais estão registradas em `source_notes` de cada template (por exemplo, o rótulo "SY" na pergunta 3.1 do ROBINS-I V2, que pelas opções e pela condição da 3.6 é "SN").
+
+## Avaliação individual cega (passo 2)
+- **Cegamento:** quem não é o dono da avaliação recebe 404 (como se ela não existisse); só o admin vê todas. No máximo 2 avaliações individuais por estudo e resultado.
+- **Escopo:** instrumentos "por resultado" (RoB 2, ROBINS-I, ROBINS-E) exigem desfecho e momento ao iniciar; JBI e NOS avaliam o estudo, e as perguntas de nível desfecho/resultado do JBI são respondidas uma vez para cada desfecho/momento do protocolo.
+- **Variantes:** domínios com versões alternativas (ex.: D1 do ROBINS-I V2, A ou B) pedem a escolha antes das perguntas.
+- **Sugestão × julgamento:** o sistema guarda a sugestão do algoritmo junto do julgamento final; discordar exige justificativa. O envio só acontece sem pendências (`rob.incomplete` lista o que falta).
+- **Regra do grupo (JBI, NOS e genérico):** sem ponto de corte oficial, o admin pode definir uma regra em `rob_tools.overall_rule`: níveis de um conjunto pronto (baixo/moderado/alto, baixo/alto ou boa/razoável/ruim), casos conferidos em ordem (contagem de respostas, opcionalmente só em algumas perguntas, ou total de estrelas no NOS) e um nível padrão. Sem regra, o julgamento geral é livre e obrigatório. Nunca há "nota total" para o JBI.
+- **Imutabilidade:** depois da primeira avaliação, o instrumento do estudo e a estrutura do instrumento genérico não podem mais mudar (`rob.study_has_assessments`, `rob.tool_in_use`).
 
 ## Fora desta etapa
 - Kappa da avaliação de risco de viés é P1, mas sai quase de graça com o `/kappa` da Etapa 1; entra se couber.

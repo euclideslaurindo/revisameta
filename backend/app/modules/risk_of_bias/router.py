@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_session
 from app.modules.projects.access import ProjectContext, admin_access, member_access
-from app.modules.risk_of_bias import tools
+from app.modules.risk_of_bias import assessments, tools
 
 router = APIRouter(prefix="/projects/{project_id}/rob", tags=["risk_of_bias"])
 
@@ -74,3 +74,88 @@ async def confirm_study_rob_tool(
     session: AsyncSession = Depends(get_session),
 ) -> tools.StudyToolOut:
     return await tools.confirm_study_tool(session, ctx, study_id, body)
+
+
+@router.put("/tools/{tool_id}/overall-rule")
+async def set_rob_overall_rule(
+    tool_id: uuid.UUID,
+    body: tools.OverallRuleIn,
+    ctx: ProjectContext = Depends(admin_access),
+    session: AsyncSession = Depends(get_session),
+) -> tools.ToolOut:
+    """The group's rule for the overall judgement of JBI, Newcastle-Ottawa or generic tools."""
+    return await tools.set_overall_rule(session, ctx, tool_id, body)
+
+
+# ---- Assessments ---------------------------------------------------------------------
+
+
+@router.get("/studies/{study_id}/assessments")
+async def list_rob_assessments(
+    study_id: uuid.UUID,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> list[assessments.AssessmentSummary]:
+    """Assessments of the study the user may see (individual ones are blind)."""
+    return await assessments.list_for_study(session, ctx, study_id)
+
+
+@router.post("/studies/{study_id}/assessments", status_code=status.HTTP_201_CREATED)
+async def start_rob_assessment(
+    study_id: uuid.UUID,
+    body: assessments.StartIn,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> assessments.AssessmentOut:
+    """Starts (or reopens) the user's own assessment of the study or of one result."""
+    return await assessments.start(session, ctx, study_id, body)
+
+
+@router.get("/assessments/{assessment_id}")
+async def get_rob_assessment(
+    assessment_id: uuid.UUID,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> assessments.AssessmentOut:
+    return await assessments.detail(session, ctx, assessment_id)
+
+
+@router.put("/assessments/{assessment_id}/answers")
+async def save_rob_answers(
+    assessment_id: uuid.UUID,
+    body: assessments.AnswersIn,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> assessments.AssessmentOut:
+    """Saves answers (autosave); suggestions are recomputed from them."""
+    return await assessments.save_answers(session, ctx, assessment_id, body)
+
+
+@router.put("/assessments/{assessment_id}/variants")
+async def set_rob_variants(
+    assessment_id: uuid.UUID,
+    body: assessments.VariantsIn,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> assessments.AssessmentOut:
+    return await assessments.set_variants(session, ctx, assessment_id, body)
+
+
+@router.put("/assessments/{assessment_id}/judgement")
+async def set_rob_judgement(
+    assessment_id: uuid.UUID,
+    body: assessments.JudgementIn,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> assessments.AssessmentOut:
+    """Judgement of a domain or overall; disagreeing with the suggestion needs a justification."""
+    return await assessments.set_judgement(session, ctx, assessment_id, body)
+
+
+@router.post("/assessments/{assessment_id}/submit")
+async def submit_rob_assessment(
+    assessment_id: uuid.UUID,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> assessments.AssessmentOut:
+    return await assessments.submit(session, ctx, assessment_id)
