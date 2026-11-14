@@ -20,6 +20,7 @@ from app.modules.quotas.models import UsageQuota
 from app.modules.risk_of_bias.models import (
     RobAnswer,
     RobAssessment,
+    RobDecision,
     RobJudgement,
     RobStudyTool,
     RobTool,
@@ -50,6 +51,7 @@ __all__ = [
     "Report",
     "RobAnswer",
     "RobAssessment",
+    "RobDecision",
     "RobJudgement",
     "RobStudyTool",
     "RobTool",

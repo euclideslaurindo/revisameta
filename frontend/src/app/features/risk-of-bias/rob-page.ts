@@ -8,10 +8,13 @@ import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { Api } from '../../core/api/api';
 import { enableRobTool } from '../../core/api/fn/risk-of-bias/enable-rob-tool';
 import { listRobTools } from '../../core/api/fn/risk-of-bias/list-rob-tools';
+import { robAgreement } from '../../core/api/fn/risk-of-bias/rob-agreement';
 import { robCatalog } from '../../core/api/fn/risk-of-bias/rob-catalog';
 import { CatalogItem } from '../../core/api/models/catalog-item';
+import { RobProjectAgreementOut } from '../../core/api/models/rob-project-agreement-out';
 import { ToolOut } from '../../core/api/models/tool-out';
 import { FormError } from '../../shared/form-error';
+import { displayDecimal } from '../../shared/numbers';
 import { ProjectContext } from '../project/project-context';
 import { RobRuleEditor } from './rob-rule-editor';
 import { RobToolEditor, localized } from './rob-tool-editor';
@@ -101,6 +104,44 @@ import { RobToolEditor, localized } from './rob-tool-editor';
       </mat-card-content>
     </mat-card>
 
+    @if (agreement(); as g) {
+      <mat-card class="block">
+        <mat-card-header>
+          <mat-card-title
+            ><h3>
+              {{ 'rob.agreement.title' | transloco }}
+              <span class="term" tabindex="0" [matTooltip]="'glossary.robKappa' | transloco"
+                >?</span
+              >
+            </h3></mat-card-title
+          >
+        </mat-card-header>
+        <mat-card-content>
+          @if (g.agreement; as a) {
+            <p>
+              {{
+                'rob.agreement.summary'
+                  | transloco
+                    : {
+                        pairs: g.pairs,
+                        percent: number(a.agreement_percent, 1),
+                        agreeing: a.agreeing_items,
+                        items: a.items,
+                      }
+              }}
+              @if (a.kappa !== null && a.kappa !== undefined) {
+                · {{ 'rob.consensus.kappa' | transloco: { kappa: number(a.kappa, 2) } }}
+              }
+            </p>
+          } @else if (g.agreement_error) {
+            <p class="notice notice-error">{{ 'consensus.agreement.unavailable' | transloco }}</p>
+          } @else {
+            <p class="muted">{{ 'rob.agreement.none' | transloco }}</p>
+          }
+        </mat-card-content>
+      </mat-card>
+    }
+
     @if (isAdmin()) {
       <mat-card class="block">
         <mat-card-header>
@@ -154,6 +195,7 @@ export class RobPage implements OnInit {
 
   protected readonly catalog = signal<CatalogItem[]>([]);
   protected readonly tools = signal<ToolOut[]>([]);
+  protected readonly agreement = signal<RobProjectAgreementOut | null>(null);
   protected readonly editing = signal<string | null>(null);
   protected readonly ruleEditing = signal<string | null>(null);
   protected readonly busy = signal(false);
@@ -174,9 +216,14 @@ export class RobPage implements OnInit {
       ]);
       this.catalog.set(catalog);
       this.tools.set(tools);
+      this.agreement.set(await this.api.invoke(robAgreement, { project_id }));
     } catch (error) {
       this.error.set(error);
     }
+  }
+
+  protected number(value: number, digits: number): string {
+    return displayDecimal(value.toFixed(digits), this.lang());
   }
 
   protected name(value: unknown): string {

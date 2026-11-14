@@ -193,6 +193,14 @@ export type { SetRobJudgement$Params as SetRobJudgement$Params } from './fn/risk
 export { setRobJudgement as setRobJudgement } from './fn/risk-of-bias/set-rob-judgement';
 export type { SubmitRobAssessment$Params as SubmitRobAssessment$Params } from './fn/risk-of-bias/submit-rob-assessment';
 export { submitRobAssessment as submitRobAssessment } from './fn/risk-of-bias/submit-rob-assessment';
+export type { ListRobComparisons$Params as ListRobComparisons$Params } from './fn/risk-of-bias/list-rob-comparisons';
+export { listRobComparisons as listRobComparisons } from './fn/risk-of-bias/list-rob-comparisons';
+export type { CreateRobConsensus$Params as CreateRobConsensus$Params } from './fn/risk-of-bias/create-rob-consensus';
+export { createRobConsensus as createRobConsensus } from './fn/risk-of-bias/create-rob-consensus';
+export type { DecideRobConflict$Params as DecideRobConflict$Params } from './fn/risk-of-bias/decide-rob-conflict';
+export { decideRobConflict as decideRobConflict } from './fn/risk-of-bias/decide-rob-conflict';
+export type { RobAgreement$Params as RobAgreement$Params } from './fn/risk-of-bias/rob-agreement';
+export { robAgreement as robAgreement } from './fn/risk-of-bias/rob-agreement';
 export type { MyUsage$Params as MyUsage$Params } from './fn/quotas/my-usage';
 export { myUsage as myUsage } from './fn/quotas/my-usage';
 export type { UserUsage$Params as UserUsage$Params } from './fn/quotas/user-usage';

@@ -632,6 +632,12 @@ async def submit(
     current = await detail(session, ctx, a.id)
     if current.missing:
         raise AppError("rob.incomplete", status_code=409, count=len(current.missing))
+    if a.kind == "consensus":
+        from app.modules.risk_of_bias.consensus import undecided_conflicts
+
+        undecided = await undecided_conflicts(session, ctx, a)
+        if undecided:
+            raise AppError("rob.undecided_conflicts", status_code=409, count=undecided)
     a.status = "submitted"
     a.submitted_by = ctx.user.id
     a.submitted_at = datetime.now(UTC)

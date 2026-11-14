@@ -99,6 +99,22 @@ import { localized } from './rob-tool-editor';
           </ul>
         }
 
+        @if (isAdmin() && assessments().length) {
+          <a
+            mat-stroked-button
+            [routerLink]="[
+              '/projetos',
+              projectId(),
+              'risco-de-vies',
+              'estudos',
+              studyId(),
+              'consenso',
+            ]"
+          >
+            {{ 'rob.study.compare' | transloco }}
+          </a>
+        }
+
         @if (s.confirmed && canAssess()) {
           @if (perResult()) {
             <p class="muted">{{ 'rob.study.perResult' | transloco }}</p>

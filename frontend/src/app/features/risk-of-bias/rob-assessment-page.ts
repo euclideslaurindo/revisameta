@@ -195,6 +195,11 @@ interface TemplateView {
               <rm-rob-judgement
                 [label]="'rob.assessment.overallJudgement' | transloco"
                 [state]="a.overall"
+                [suggestedLabel]="
+                  a.judgement_kind === 'group_rule'
+                    ? 'rob.assessment.suggestedByRule'
+                    : 'rob.assessment.suggested'
+                "
                 [levels]="a.overall.levels"
                 [directions]="template()?.judgement?.direction ?? []"
                 [editable]="editable()"

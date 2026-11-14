@@ -83,7 +83,8 @@
     "checks": "O sistema desconfia dos números digitados e aponta o que parece errado. Corrija o valor ou, se ele estiver certo, escreva uma justificativa curta: ela fica registrada.",
     "agreement": "Mostra o quanto os dois extratores digitaram os mesmos valores. Uma concordância baixa indica que vale conferir o processo de extração.",
     "kappa": "O kappa de Cohen mede a concordância descontando a que aconteceria por acaso: 1 é concordância total; 0 é o que se esperaria por sorte. Aqui ele é calculado só nos campos de categoria (tipo de dispersão, valor final ou mudança, maior é melhor, ajustado), porque foi feito para respostas em categorias.",
-    "riskOfBias": "Risco de viés é a chance de o jeito como o estudo foi feito ter distorcido o resultado. Cada instrumento avalia isso por domínios (por exemplo, confundimento ou dados faltantes), com perguntas que ajudam a julgar cada domínio."
+    "riskOfBias": "Risco de viés é a chance de o jeito como o estudo foi feito ter distorcido o resultado. Cada instrumento avalia isso por domínios (por exemplo, confundimento ou dados faltantes), com perguntas que ajudam a julgar cada domínio.",
+    "robKappa": "Concordância entre os dois revisores nas respostas e nos julgamentos. O kappa de Cohen desconta a concordância que aconteceria por acaso: 1 é concordância total; 0 é o que se esperaria por sorte."
   },
   "notFound": {
     "title": "Página não encontrada",
@@ -620,7 +621,8 @@
       "perResult": "Este instrumento avalia cada resultado separadamente: escolha o desfecho e o momento.",
       "outcome": "Desfecho",
       "timepoint": "Momento",
-      "start": "Começar minha avaliação"
+      "start": "Começar minha avaliação",
+      "compare": "Comparar avaliações e consenso"
     },
     "assessment": {
       "title": "Risco de viés · {{study}}",
@@ -632,6 +634,7 @@
       "domainJudgement": "Julgamento do domínio",
       "judgement": "Seu julgamento",
       "suggested": "Sugerido pelo algoritmo oficial:",
+      "suggestedByRule": "Sugerido pela regra do grupo:",
       "noSuggestion": "Responda as perguntas para ver a sugestão.",
       "direction": "Direção provável do viés (opcional)",
       "overall": "Julgamento geral",
@@ -715,6 +718,37 @@
       "edit": "Regra do julgamento geral",
       "defined": "Regra do grupo definida: o sistema sugere o julgamento geral.",
       "none": "Sem regra do grupo: o julgamento geral é livre."
+    },
+    "agreement": {
+      "title": "Concordância entre revisores",
+      "summary": "{{pairs}} par(es) de avaliações: {{percent}}% de julgamentos iguais ({{agreeing}} de {{items}}).",
+      "none": "Ainda não há duas avaliações enviadas do mesmo estudo para comparar."
+    },
+    "consensus": {
+      "title": "Consenso do risco de viés: {{study}}",
+      "intro": "As duas avaliações individuais lado a lado. Cada conflito precisa de uma decisão: ficar com a resposta do revisor A, do revisor B ou com um valor diferente, editado no consenso e justificado. Quem decide fica registrado.",
+      "none": "Nenhuma avaliação iniciada para este estudo.",
+      "waiting": "Aguardando as duas avaliações individuais ({{submitted}} de 2 enviadas). Até lá, as respostas não são mostradas, para manter o cegamento.",
+      "agreement": "Concordância: {{percent}}% dos itens iguais ({{agreeing}} de {{items}}).",
+      "kappa": "kappa de Cohen {{kappa}}",
+      "counts": "{{conflicts}} conflito(s); {{undecided}} sem decisão.",
+      "open": "Abrir o consenso",
+      "create": "Criar o consenso",
+      "createHint": "O consenso começa com as respostas do revisor A (completadas com as do B onde A deixou em branco). Depois, decida cada conflito. Para manter um valor diferente dos dois, edite-o no consenso e explique o motivo aqui.",
+      "conflicts": "Conflitos",
+      "noConflicts": "Os dois revisores concordaram em tudo.",
+      "value": "Consenso",
+      "blank": "(em branco)",
+      "variant": "versão do domínio",
+      "useA": "Ficar com A",
+      "useB": "Ficar com B",
+      "reason": "Motivo para manter o valor do consenso",
+      "keep": "Manter o valor do consenso",
+      "decided": {
+        "a": "Decidido por {{name}}: resposta do revisor A.",
+        "b": "Decidido por {{name}}: resposta do revisor B.",
+        "consensus": "Decidido por {{name}}: valor editado no consenso."
+      }
     }
   }
 }

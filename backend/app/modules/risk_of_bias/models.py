@@ -112,3 +112,17 @@ class RobJudgement(BusinessMixin, AuditedMixin, Base):
     suggested: Mapped[str | None] = mapped_column(String(32))
     justification: Mapped[str | None] = mapped_column(Text)
     direction: Mapped[str | None] = mapped_column(String(40))
+
+
+class RobDecision(BusinessMixin, AuditedMixin, Base):
+    """How a conflict between the two reviewers was settled in the consensus."""
+
+    __tablename__ = "rob_decisions"
+
+    project_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("projects.id"), index=True)
+    consensus_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("rob_assessments.id"), index=True)
+    item_key: Mapped[str] = mapped_column(String(200))
+    choice: Mapped[str] = mapped_column(String(16))  # a | b | consensus
+    value: Mapped[str | None] = mapped_column(String(40))
+    reason: Mapped[str | None] = mapped_column(Text)
+    decided_by: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"))

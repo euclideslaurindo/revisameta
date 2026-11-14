@@ -83,7 +83,8 @@
     "checks": "The system distrusts typed numbers and points out what looks wrong. Fix the value or, if it is right, write a short justification: it is recorded.",
     "agreement": "Shows how often the two extractors typed the same values. Low agreement means the extraction process is worth checking.",
     "kappa": "Cohen's kappa measures agreement beyond what chance alone would give: 1 is full agreement; 0 is what luck would produce. Here it is computed only on category fields (dispersion type, final value or change, higher is better, adjusted), because it was made for categorical answers.",
-    "riskOfBias": "Risk of bias is the chance that the way a study was done distorted its result. Each instrument assesses it by domains (for example, confounding or missing data), with questions that help judge each domain."
+    "riskOfBias": "Risk of bias is the chance that the way a study was done distorted its result. Each instrument assesses it by domains (for example, confounding or missing data), with questions that help judge each domain.",
+    "robKappa": "Agreement between the two reviewers on answers and judgements. Cohen’s kappa discounts the agreement expected by chance: 1 is full agreement; 0 is what chance alone would give."
   },
   "notFound": {
     "title": "Page not found",
@@ -620,7 +621,8 @@
       "perResult": "This instrument assesses each result separately: choose the outcome and time point.",
       "outcome": "Outcome",
       "timepoint": "Time point",
-      "start": "Start my assessment"
+      "start": "Start my assessment",
+      "compare": "Compare assessments and consensus"
     },
     "assessment": {
       "title": "Risk of bias · {{study}}",
@@ -632,6 +634,7 @@
       "domainJudgement": "Domain judgement",
       "judgement": "Your judgement",
       "suggested": "Suggested by the official algorithm:",
+      "suggestedByRule": "Suggested by the group's rule:",
       "noSuggestion": "Answer the questions to see the suggestion.",
       "direction": "Likely direction of bias (optional)",
       "overall": "Overall judgement",
@@ -715,6 +718,37 @@
       "edit": "Overall judgement rule",
       "defined": "Group rule set: the system suggests the overall judgement.",
       "none": "No group rule: the overall judgement is free."
+    },
+    "agreement": {
+      "title": "Agreement between reviewers",
+      "summary": "{{pairs}} pair(s) of assessments: {{percent}}% equal judgements ({{agreeing}} of {{items}}).",
+      "none": "There are not yet two submitted assessments of the same study to compare."
+    },
+    "consensus": {
+      "title": "Risk-of-bias consensus: {{study}}",
+      "intro": "Both individual assessments side by side. Each conflict needs a decision: keep reviewer A’s answer, reviewer B’s, or a different value edited in the consensus and justified. Who decides is recorded.",
+      "none": "No assessment has been started for this study.",
+      "waiting": "Waiting for both individual assessments ({{submitted}} of 2 submitted). Until then the answers are not shown, to keep the blinding.",
+      "agreement": "Agreement: {{percent}}% equal items ({{agreeing}} of {{items}}).",
+      "kappa": "Cohen’s kappa {{kappa}}",
+      "counts": "{{conflicts}} conflict(s); {{undecided}} undecided.",
+      "open": "Open the consensus",
+      "create": "Create the consensus",
+      "createHint": "The consensus starts with reviewer A’s answers (filled in with B’s where A left blanks). Then decide each conflict. To keep a value different from both, edit it in the consensus and explain why here.",
+      "conflicts": "Conflicts",
+      "noConflicts": "Both reviewers agreed on everything.",
+      "value": "Consensus",
+      "blank": "(blank)",
+      "variant": "domain version",
+      "useA": "Keep A",
+      "useB": "Keep B",
+      "reason": "Reason for keeping the consensus value",
+      "keep": "Keep the consensus value",
+      "decided": {
+        "a": "Decided by {{name}}: reviewer A’s answer.",
+        "b": "Decided by {{name}}: reviewer B’s answer.",
+        "consensus": "Decided by {{name}}: value edited in the consensus."
+      }
     }
   }
 }

@@ -64,6 +64,11 @@ export const routes: Routes = [
           import('./features/extraction/extraction-page').then((m) => m.ExtractionPage),
       },
       {
+        path: 'risco-de-vies/estudos/:studyId/consenso',
+        loadComponent: () =>
+          import('./features/risk-of-bias/rob-consensus-page').then((m) => m.RobConsensusPage),
+      },
+      {
         path: 'risco-de-vies/avaliacoes/:assessmentId',
         loadComponent: () =>
           import('./features/risk-of-bias/rob-assessment-page').then((m) => m.RobAssessmentPage),

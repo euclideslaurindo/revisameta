@@ -69,9 +69,11 @@ erDiagram
     }
     rob_decisions {
         uuid consensus_id
-        string item_key "domínio/pergunta"
+        string item_key "variant|d, answer|d.q|desfecho|momento, domain|d, overall"
         enum choice "a | b | consensus"
-        text reason
+        string value "valor escolhido (a ou b)"
+        text reason "obrigatório quando choice = consensus"
+        uuid decided_by
     }
 ```
 
@@ -116,7 +118,13 @@ Divergências encontradas nos documentos oficiais estão registradas em `source_
 - **Regra do grupo (JBI, NOS e genérico):** sem ponto de corte oficial, o admin pode definir uma regra em `rob_tools.overall_rule`: níveis de um conjunto pronto (baixo/moderado/alto, baixo/alto ou boa/razoável/ruim), casos conferidos em ordem (contagem de respostas, opcionalmente só em algumas perguntas, ou total de estrelas no NOS) e um nível padrão. Sem regra, o julgamento geral é livre e obrigatório. Nunca há "nota total" para o JBI.
 - **Imutabilidade:** depois da primeira avaliação, o instrumento do estudo e a estrutura do instrumento genérico não podem mais mudar (`rob.study_has_assessments`, `rob.tool_in_use`).
 
+## Conflitos, consenso e concordância (passo 3)
+- **Comparação** (só admin): para cada estudo ou resultado avaliado, as duas avaliações enviadas lado a lado: versão do domínio, respostas, julgamentos de domínio e julgamento geral, com as justificativas. Enquanto não houver duas enviadas, nenhuma resposta é mostrada (cegamento).
+- **Só o que foi perguntado conta:** respostas guardadas em perguntas que as regras do instrumento pularam são ignoradas, para não virarem conflitos falsos.
+- **Consenso:** começa com as respostas do revisor A, completadas com as do B onde A deixou em branco. Cada conflito é decidido como A, B ou "valor do consenso" (editado na própria avaliação de consenso, com motivo de pelo menos 5 caracteres). O consenso só é enviado sem conflitos pendentes (`rob.undecided_conflicts`) e com todas as regras de uma avaliação normal. Quem decide fica registrado; o terceiro revisor é um admin do projeto.
+- **Concordância** (R, `/kappa`): por par, % de itens iguais e kappa de Cohen sobre todos os itens (todos são categorias). No projeto, % e kappa só nos julgamentos (domínios e geral) de todos os pares. Se o R estiver fora do ar, a tela funciona e avisa.
+- **Visibilidade:** depois de criado, o consenso é visível a todos os membros; as avaliações individuais continuam cegas para os outros revisores.
+
 ## Fora desta etapa
-- Kappa da avaliação de risco de viés é P1, mas sai quase de graça com o `/kappa` da Etapa 1; entra se couber.
 - Uso na meta-análise (sensibilidade sem alto risco, subgrupo por risco de viés) → Etapas 3 e 4. Forest plot com semáforo → Etapa 4.
 - IA como segunda opinião (IA4) → Etapa 7.

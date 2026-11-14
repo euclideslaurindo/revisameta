@@ -207,6 +207,14 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
         {"final": "low"},
     ),
     ("POST", "/api/v1/projects/{project_id}/rob/assessments/{assessment_id}/submit", None),
+    ("GET", "/api/v1/projects/{project_id}/rob/studies/{study_id}/comparisons", None),
+    ("POST", "/api/v1/projects/{project_id}/rob/studies/{study_id}/consensus", {}),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/rob/assessments/{assessment_id}/decisions",
+        {"key": "overall", "choice": "a"},
+    ),
+    ("GET", "/api/v1/projects/{project_id}/rob/agreement", None),
 ]
 
 

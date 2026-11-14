@@ -25,7 +25,7 @@ export interface JudgementView {
     <div class="rob-judgement">
       @if (state().suggested; as s) {
         <p>
-          {{ 'rob.assessment.suggested' | transloco }}
+          {{ suggestedLabel() | transloco }}
           <span class="rob-level" [class]="'rob-level rob-level-' + s">{{ levelLabel()(s) }}</span>
         </p>
       } @else if (showNoSuggestion()) {
@@ -89,6 +89,8 @@ export class RobJudgement {
   readonly directions = input<string[]>([]);
   readonly editable = input(false);
   readonly showNoSuggestion = input(false);
+  /** Who suggests: the official algorithm, or the group's rule (JBI, NOS, generic). */
+  readonly suggestedLabel = input('rob.assessment.suggested');
   /** Translated name of a level (group-defined levels are shown as typed). */
   readonly levelLabel = input<(level: string) => string>((l) => l);
   readonly changed = output<JudgementIn>();

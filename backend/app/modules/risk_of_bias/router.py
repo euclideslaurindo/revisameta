@@ -4,8 +4,9 @@ from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_session
+from app.integrations.stats_client import StatsClient, get_stats_client
 from app.modules.projects.access import ProjectContext, admin_access, member_access
-from app.modules.risk_of_bias import assessments, tools
+from app.modules.risk_of_bias import assessments, consensus, tools
 
 router = APIRouter(prefix="/projects/{project_id}/rob", tags=["risk_of_bias"])
 
@@ -159,3 +160,50 @@ async def submit_rob_assessment(
     session: AsyncSession = Depends(get_session),
 ) -> assessments.AssessmentOut:
     return await assessments.submit(session, ctx, assessment_id)
+
+
+# ---- Conflicts, consensus and agreement ----------------------------------------------
+
+
+@router.get("/studies/{study_id}/comparisons")
+async def list_rob_comparisons(
+    study_id: uuid.UUID,
+    ctx: ProjectContext = Depends(admin_access),
+    session: AsyncSession = Depends(get_session),
+    stats: StatsClient = Depends(get_stats_client),
+) -> list[consensus.RobComparisonOut]:
+    """The two reviewers side by side, per assessed study or result (admins only)."""
+    return await consensus.comparisons_for_study(session, ctx, stats, study_id)
+
+
+@router.post("/studies/{study_id}/consensus", status_code=status.HTTP_201_CREATED)
+async def create_rob_consensus(
+    study_id: uuid.UUID,
+    body: consensus.RobConsensusIn,
+    ctx: ProjectContext = Depends(admin_access),
+    session: AsyncSession = Depends(get_session),
+) -> consensus.RobComparisonOut:
+    """Starts the consensus from reviewer A (filled in with B) once both have submitted."""
+    return await consensus.create_consensus(session, ctx, study_id, body)
+
+
+@router.post("/assessments/{assessment_id}/decisions")
+async def decide_rob_conflict(
+    assessment_id: uuid.UUID,
+    body: consensus.RobDecideIn,
+    ctx: ProjectContext = Depends(admin_access),
+    session: AsyncSession = Depends(get_session),
+    stats: StatsClient = Depends(get_stats_client),
+) -> consensus.RobComparisonOut:
+    """Settles one conflict: A's value, B's value, or the consensus value (justified)."""
+    return await consensus.decide(session, ctx, stats, assessment_id, body)
+
+
+@router.get("/agreement")
+async def rob_agreement(
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+    stats: StatsClient = Depends(get_stats_client),
+) -> consensus.RobProjectAgreementOut:
+    """Agreement between reviewers on domain and overall judgements (% and kappa)."""
+    return await consensus.project_agreement(session, ctx, stats)

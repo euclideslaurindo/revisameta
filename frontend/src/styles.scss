@@ -578,3 +578,10 @@ main:has(.extraction-layout) {
   flex-wrap: wrap;
   margin: 0.25rem 0;
 }
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.75rem;
+  margin: 0.5rem 0;
+}
