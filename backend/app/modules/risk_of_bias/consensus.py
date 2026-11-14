@@ -344,7 +344,9 @@ async def _comparison(
             for a in individuals
         ],
         submitted=len(pair),
-        consensus=RobConsensusRef(id=consensus.id, status=consensus.status, version=consensus.version)
+        consensus=RobConsensusRef(
+            id=consensus.id, status=consensus.status, version=consensus.version
+        )
         if consensus
         else None,
         items=[],
