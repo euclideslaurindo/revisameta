@@ -37,6 +37,12 @@
 | POST | `/r-script` | Script R reprodutível |
 | GET | `/health` | Status + versões |
 
+#### `/kappa` (implementado na Etapa 1)
+- Entrada: `{ "rater_a": [...], "rater_b": [...] }`, um código (texto) por item, mesmo tamanho nas duas listas e sem valores ausentes (o backend manda `<empty>` para campo vazio).
+- Saída (`result`): `items`, `agreeing_items`, `agreement_percent` (`irr::agree`, tolerância 0) e `kappa`, `z`, `p_value` (`irr::kappa2`, sem pesos). Números que não existem saem como `null`, com aviso: `kappa_needs_two_items` (menos de 2 itens) ou `kappa_undefined_single_code` (os dois avaliadores usaram um único código).
+- Uso na dupla extração (bloco D de 7.5.1, decidido com o responsável em 2026-11-14): a **% de concordância** usa todos os números e categorias comparados; o **kappa de Cohen** usa só os campos de categoria (tipo de dispersão, valor final ou mudança, maior é melhor, ajustado, grupo/linha registrado), porque o kappa foi feito para respostas em categorias. São duas chamadas a `/kappa`.
+- Valores de referência: `stats-r/fixtures/kappa.json`, gerado por `stats-r/fixtures/scripts/generate-kappa.R` (dataset público `irr::diagnoses` e um caso fictício marcado como tal). Regerar com `scripts/generate-fixtures.sh`.
+
 ### 8.4 Referência das medidas e modelos (para documentação e conferência, não para reimplementar)
 - Medidas (`escalc`): `MD`, `SMD` (g de Hedges, com correção para amostra pequena), `ROM` (opcional), `OR`, `RR`, `RD`.
 - Efeito fixo: média ponderada pelo inverso da variância.

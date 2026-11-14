@@ -1,0 +1,35 @@
+{
+  "generated_by": "fixtures/scripts/generate-kappa.R",
+  "r_version": "4.6.2",
+  "irr_version": "0.85",
+  "cases": [
+    {
+      "name": "irr_diagnoses_raters_1_2",
+      "description": "irr::diagnoses, raters 1 and 2 (public dataset)",
+      "rater_a": ["4. Neurosis", "2. Personality Disorder", "2. Personality Disorder", "5. Other", "2. Personality Disorder", "1. Depression", "3. Schizophrenia", "1. Depression", "1. Depression", "5. Other", "1. Depression", "1. Depression", "2. Personality Disorder", "1. Depression", "2. Personality Disorder", "3. Schizophrenia", "1. Depression", "1. Depression", "2. Personality Disorder", "1. Depression", "5. Other", "2. Personality Disorder", "2. Personality Disorder", "1. Depression", "1. Depression", "2. Personality Disorder", "1. Depression", "2. Personality Disorder", "1. Depression", "5. Other"],
+      "rater_b": ["4. Neurosis", "2. Personality Disorder", "3. Schizophrenia", "5. Other", "2. Personality Disorder", "1. Depression", "3. Schizophrenia", "1. Depression", "1. Depression", "5. Other", "4. Neurosis", "2. Personality Disorder", "2. Personality Disorder", "4. Neurosis", "2. Personality Disorder", "3. Schizophrenia", "1. Depression", "1. Depression", "2. Personality Disorder", "3. Schizophrenia", "5. Other", "4. Neurosis", "2. Personality Disorder", "1. Depression", "4. Neurosis", "2. Personality Disorder", "1. Depression", "2. Personality Disorder", "3. Schizophrenia", "5. Other"],
+      "expected": {
+        "items": 30,
+        "agreeing_items": 22,
+        "agreement_percent": 73.3333333333333,
+        "kappa": 0.651162790697674,
+        "z": 6.99647076978209,
+        "p_value": 2.62501131942372e-12
+      }
+    },
+    {
+      "name": "fictitious_extraction_categories",
+      "description": "FICTITIOUS: dispersion type and value type codes of two extractors",
+      "rater_a": ["sd", "sd", "se", "ci95", "sd", "final", "final", "change", "true", "true"],
+      "rater_b": ["sd", "se", "se", "ci95", "sd", "final", "change", "change", "true", "false"],
+      "expected": {
+        "items": 10,
+        "agreeing_items": 7,
+        "agreement_percent": 70,
+        "kappa": 0.647058823529412,
+        "z": 5.09565160073287,
+        "p_value": 3.47543770207182e-07
+      }
+    }
+  ]
+}
