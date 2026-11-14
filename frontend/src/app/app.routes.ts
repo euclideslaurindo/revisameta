@@ -54,6 +54,11 @@ export const routes: Routes = [
         path: 'estudos/:studyId',
         loadComponent: () => import('./features/studies/study-page').then((m) => m.StudyPage),
       },
+      {
+        path: 'pdfs/:pdfId',
+        loadComponent: () =>
+          import('./features/pdfs/pdf-viewer-page').then((m) => m.PdfViewerPage),
+      },
     ],
   },
   {

@@ -77,7 +77,8 @@
     "outcome": "An outcome is the result measured in participants, for example an intelligence score.",
     "comparisonGroup": "The groups your question compares within each study, for example operated before and after age 5.",
     "doubleExtraction": "Two people copy the numbers of each article without seeing each other's work. The system compares both versions and points out differences, which prevents typing errors.",
-    "studyVsReport": "A study is a group of patients. The same group can appear in several articles; that is why articles are grouped under the study, and patients are not counted twice."
+    "studyVsReport": "A study is a group of patients. The same group can appear in several articles; that is why articles are grouped under the study, and patients are not counted twice.",
+    "annotation": "A marked passage keeps the page and the exact text of the article a number or a decision came from, so anyone can check it later."
   },
   "notFound": {
     "title": "Page not found",
@@ -211,6 +212,39 @@
     "study": {
       "duplicate_label": "A study with this name already exists in the project.",
       "duplicate_doi": "An article with this DOI already exists in the project."
+    }
+  },
+  "pdfs": {
+    "attach": "Attach the article PDF",
+    "resume": "Resume upload where it stopped",
+    "pages": "{{count}} p.",
+    "page": "P. {{page}}",
+    "phase": {
+      "sending": "Sending:",
+      "processing": "Processing:"
+    },
+    "textStatus": {
+      "pending": "Text being processed",
+      "ready": "Searchable text",
+      "no_text": "No text (looks scanned)",
+      "failed": "Could not read the text"
+    },
+    "errors": {
+      "notPdf": "This file is not a real PDF, even with the .pdf extension. Send the article's original PDF.",
+      "failed": "Could not process this PDF. Try sending it again."
+    },
+    "search": {
+      "title": "Search the text",
+      "label": "Word or passage",
+      "none": "Nothing found.",
+      "noText": "This PDF has no text layer (looks scanned), so search does not work on it."
+    },
+    "annotations": {
+      "title": "Marked passages",
+      "howTo": "Select a passage of the article with the mouse and click \"Mark passage\". It becomes the source of the numbers you extract.",
+      "note": "Note (optional)",
+      "mark": "Mark passage",
+      "selectFirst": "First select a passage of the PDF text."
     }
   }
 }

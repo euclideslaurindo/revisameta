@@ -4,11 +4,12 @@ from app.modules.audit import recorder as _audit_recorder  # noqa: F401 - regist
 from app.modules.audit.models import AuditLog
 from app.modules.auth.models import EmailToken, RefreshToken, User
 from app.modules.jobs.models import BackgroundJob
+from app.modules.pdfs.models import PdfAnnotation, PdfFile
 from app.modules.projects.models import Invitation, Project, ProjectMember
 from app.modules.protocol.models import ComparisonGroup, Outcome
 from app.modules.quotas.models import UsageQuota
 from app.modules.studies.models import Reference, Report, Study
-from app.modules.uploads.models import StoredFile, UploadSession
+from app.modules.uploads.models import PdfPageText, StoredFile, UploadSession
 
 __all__ = [
     "AuditLog",
@@ -17,6 +18,9 @@ __all__ = [
     "EmailToken",
     "Invitation",
     "Outcome",
+    "PdfAnnotation",
+    "PdfFile",
+    "PdfPageText",
     "Project",
     "ProjectMember",
     "Reference",

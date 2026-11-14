@@ -83,6 +83,23 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
     ),
     ("POST", "/api/v1/projects/{project_id}/study-imports/preview", None),
     ("POST", "/api/v1/projects/{project_id}/study-imports", None),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/reports/{report_id}/pdfs",
+        {"upload_id": "{upload_id}"},
+    ),
+    ("GET", "/api/v1/projects/{project_id}/reports/{report_id}/pdfs", None),
+    ("GET", "/api/v1/projects/{project_id}/pdfs/{pdf_id}", None),
+    ("DELETE", "/api/v1/projects/{project_id}/pdfs/{pdf_id}", None),
+    ("GET", "/api/v1/projects/{project_id}/pdfs/{pdf_id}/search?q=teste", None),
+    ("GET", "/api/v1/projects/{project_id}/pdfs/{pdf_id}/annotations", None),
+    ("POST", "/api/v1/projects/{project_id}/pdfs/{pdf_id}/annotations", {"page": 1, "quote": "x"}),
+    (
+        "PATCH",
+        "/api/v1/projects/{project_id}/annotations/{annotation_id}",
+        {"version": 1, "note": "x"},
+    ),
+    ("DELETE", "/api/v1/projects/{project_id}/annotations/{annotation_id}", None),
 ]
 
 
@@ -94,7 +111,7 @@ def test_every_project_route_is_covered() -> None:
         if "{project_id}" in path
         for method in operations
     }
-    covered = {(method, path) for method, path, _ in PROJECT_ROUTES}
+    covered = {(method, path.split("?")[0]) for method, path, _ in PROJECT_ROUTES}
     assert registered == covered
 
 
@@ -141,7 +158,8 @@ async def _setup(client: AsyncClient, make_user: MakeUser) -> tuple[LoggedUser, 
                 headers=owner.headers,
             )
         ).json()["id"],
-        **(await _study_ids(client, owner, project["id"])),
+        **(study_ids := await _study_ids(client, owner, project["id"])),
+        **(await _pdf_ids(client, owner, project["id"], study_ids["report_id"], upload["id"])),
         "group_id": (
             await client.post(
                 f"/api/v1/projects/{project['id']}/comparison-groups",
@@ -167,6 +185,25 @@ async def _study_ids(client: AsyncClient, owner: LoggedUser, project_id: str) ->
         "report_id": report["id"],
         "reference_id": report["reference"]["id"],
     }
+
+
+async def _pdf_ids(
+    client: AsyncClient, owner: LoggedUser, project_id: str, report_id: str, upload_id: str
+) -> dict[str, str]:
+    base = f"/api/v1/projects/{project_id}"
+    pdf = (
+        await client.post(
+            f"{base}/reports/{report_id}/pdfs", json={"upload_id": upload_id}, headers=owner.headers
+        )
+    ).json()
+    annotation = (
+        await client.post(
+            f"{base}/pdfs/{pdf['id']}/annotations",
+            json={"page": 1, "quote": "trecho"},
+            headers=owner.headers,
+        )
+    ).json()
+    return {"pdf_id": pdf["id"], "annotation_id": annotation["id"]}
 
 
 def _fill(value: Any, ids: dict[str, str]) -> Any:

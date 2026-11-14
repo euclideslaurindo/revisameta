@@ -3,6 +3,7 @@
 1. Checks the real file type from the first bytes (not the extension).
 2. Streams the object to compute SHA-256 without loading it in memory.
 3. Deduplicates: the same content is stored once (`ref_count`).
+4. Extracts the text of each page (pypdfium2), once per distinct file.
 Progress is written to the job so the UI can follow it.
 """
 
@@ -16,6 +17,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from app.integrations.storage import Storage
 from app.modules.jobs.models import BackgroundJob, JobStatus
+from app.modules.pdfs.text import extract_text
 from app.modules.uploads.models import StoredFile, UploadSession, UploadStatus
 
 logger = logging.getLogger(__name__)
@@ -81,7 +83,7 @@ async def process_upload(
     async for chunk in storage.iter_chunks(upload.storage_key, HASH_CHUNK):
         digest.update(chunk)
         read += len(chunk)
-        progress = min(95, 1 + int(94 * read / max(upload.size_bytes, 1)))
+        progress = min(60, 1 + int(59 * read / max(upload.size_bytes, 1)))
         if progress - last_reported >= 5:
             last_reported = progress
             await _set_job(maker, job_id, progress=progress)
@@ -112,8 +114,16 @@ async def process_upload(
         row.stored_file_id = stored.id
         await session.commit()
         stored_id = stored.id
+        needs_text = stored.text_status in ("pending", "failed")
 
     await storage.delete(upload.storage_key)
+    if needs_text:
+        await _set_job(maker, job_id, progress=65)
+        await extract_text(maker, storage, stored_id)
+    async with maker() as session:
+        final = await session.get(StoredFile, stored_id)
+        page_count = final.page_count if final else None
+        text_status = final.text_status if final else "failed"
     await _set_job(
         maker,
         job_id,
@@ -124,5 +134,7 @@ async def process_upload(
             "sha256": sha256,
             "size_bytes": read,
             "deduplicated": deduplicated,
+            "page_count": page_count,
+            "text_status": text_status,
         },
     )

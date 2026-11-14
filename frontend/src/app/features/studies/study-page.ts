@@ -24,6 +24,7 @@ import { StudyDesign } from '../../core/api/models/study-design';
 import { StudyOut } from '../../core/api/models/study-out';
 import { ConfirmData, ConfirmDialog } from '../../shared/confirm-dialog';
 import { FormError } from '../../shared/form-error';
+import { ReportPdfs } from '../pdfs/report-pdfs';
 import { ProjectContext } from '../project/project-context';
 import { STUDY_DESIGNS } from './designs';
 
@@ -41,6 +42,7 @@ import { STUDY_DESIGNS } from './designs';
     MatSelectModule,
     MatTooltipModule,
     FormError,
+    ReportPdfs,
   ],
   template: `
     <a routerLink=".." class="back">← {{ 'project.nav.studies' | transloco }}</a>
@@ -90,6 +92,7 @@ import { STUDY_DESIGNS } from './designs';
                     @if (report.reference.year) { · {{ report.reference.year }} }
                     @if (report.reference.doi) { · DOI {{ report.reference.doi }} }
                   </div>
+                  <rm-report-pdfs [projectId]="projectId()" [reportId]="report.id" [canUpload]="canUploadPdf()" />
                 </div>
                 @if (canEdit() && s.reports.length > 1) {
                   <button mat-button type="button" (click)="removeArticle(s, report)">{{ 'common.delete' | transloco }}</button>
@@ -171,6 +174,10 @@ export class StudyPage {
     const roles = this.context.project()?.my_roles ?? [];
     return roles.includes('admin') || roles.includes('extractor');
   });
+  protected readonly canUploadPdf = computed(() => {
+    const roles = this.context.project()?.my_roles ?? [];
+    return roles.some((r) => r === 'admin' || r === 'reviewer' || r === 'extractor');
+  });
 
   protected readonly articleForm = inject(NonNullableFormBuilder).group({
     title: ['', Validators.required],
@@ -183,7 +190,7 @@ export class StudyPage {
     effect(() => void this.load(this.studyId()));
   }
 
-  private projectId(): string {
+  protected projectId(): string {
     return this.context.project()!.id;
   }
 

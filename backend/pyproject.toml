@@ -24,6 +24,7 @@ dependencies = [
     "python-magic>=0.4.27",   # real file type detection (libmagic)
     "python-multipart>=0.0.20", # multipart form uploads (study list import)
     "openpyxl>=3.1.5",         # read XLSX imports (read-only, streamed)
+    "pypdfium2>=5.15",         # PDF text per page (BSD/Apache; PyMuPDF is AGPL, ADR-012)
 ]
 
 [dependency-groups]
