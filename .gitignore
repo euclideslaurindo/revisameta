@@ -33,3 +33,7 @@ Thumbs.db
 desktop.ini
 .idea/
 .vscode/
+
+# Backups and rclone credentials (never commit)
+backups/
+ops/rclone/

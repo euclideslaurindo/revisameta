@@ -1,5 +1,5 @@
 # Thin wrapper over scripts/*.sh (ADR-010). On Windows, run the scripts directly in Git Bash.
-.PHONY: up up-lite down test test-backend test-stats-r stats-r-lock logs
+.PHONY: up up-lite down test test-backend test-stats-r stats-r-lock logs backup test-backup
 
 up:
 	docker compose up -d
@@ -23,3 +23,9 @@ test-stats-r:
 
 stats-r-lock:
 	scripts/stats-r-lock.sh
+
+backup:
+	scripts/backup.sh
+
+test-backup:
+	scripts/test-backup.sh

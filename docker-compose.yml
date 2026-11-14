@@ -149,6 +149,25 @@ services:
       - "127.0.0.1:8025:8025"
     networks: [internal, edge]
 
+  # ---- Operations (profile "ops"): encrypted backup and restore (docs/deploy.md) --
+  backup:
+    build: ./ops/backup
+    profiles: [ops]
+    env_file: .env
+    environment:
+      PGHOST: postgres
+      S3_ENDPOINT: http://storage:9000
+      RCLONE_CONFIG: /config/rclone/rclone.conf
+    volumes:
+      - ./backups:/backups
+      - ./ops/rclone:/config/rclone
+    depends_on:
+      postgres:
+        condition: service_healthy
+      storage:
+        condition: service_healthy
+    networks: [internal, edge]  # edge: off-site upload
+
   # ---- Tests (profile "test"): isolated database and Redis --------------------
   postgres-test:
     image: postgres:16.16-alpine

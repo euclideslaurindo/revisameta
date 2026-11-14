@@ -47,3 +47,31 @@
 - Healthchecks.io avisa se o backup do dia não rodou.
 - **Teste de restauração** documentado e executado antes de cada mudança de fase.
 - Retenção de projetos: projetos sem acesso há muito tempo recebem aviso por e-mail e podem ser arquivados (prazo a definir, 17).
+
+---
+
+## Como usar o backup (implementado na Etapa 0)
+
+O backup roda num container próprio (`ops/backup`, perfil `ops` do Compose), com cliente do Postgres, rclone e GnuPG. Nada precisa ser instalado no computador.
+
+| Ação | Comando (Git Bash ou Linux) |
+|---|---|
+| Fazer um backup agora | `scripts/backup.sh` |
+| Restaurar (substitui **todos** os dados atuais; pede confirmação) | `scripts/restore.sh revisameta_<data>.tar.gpg` |
+| Configurar a cópia fora da máquina (uma vez, interativo) | `scripts/backup-setup-remote.sh` |
+| Teste de restauração completo | `scripts/test-backup.sh` |
+
+**O que vai no arquivo:** dump do banco (`pg_dump` formato custom) + todos os objetos do bucket + um manifesto. O pacote é criptografado com **GPG simétrico AES-256** usando `BACKUP_PASSPHRASE` do `.env` **antes** de sair do container. Sem essa frase o backup não pode ser restaurado: guarde-a num gerenciador de senhas, fora deste computador.
+
+**Onde fica:** `./backups/` (fora do Git). Retenção automática: os 7 dias mais recentes, 4 domingos e 3 dias 1º de mês.
+
+**Cópia fora da máquina (10.8):**
+1. Rode `scripts/backup-setup-remote.sh` e crie um remote (ex.: Google Drive, nome `gdrive`). As credenciais ficam em `ops/rclone/rclone.conf`, fora do Git.
+2. No `.env`, defina `BACKUP_RCLONE_REMOTE=gdrive:revisameta-backups`.
+3. Opcional: crie um check gratuito no Healthchecks.io e coloque a URL em `BACKUP_HEALTHCHECK_URL`; ele avisa se o backup do dia não rodar.
+
+**Agendar diariamente:**
+- **Windows (F0):** Agendador de Tarefas → Criar tarefa básica → Diariamente → Ação "Iniciar um programa": `"C:\Program Files\Git\bin\bash.exe"` com argumentos `-lc "cd /c/Users/<você>/Downloads/revisameta && scripts/backup.sh >> backups/backup.log 2>&1"`. O Docker Desktop precisa estar aberto no horário.
+- **Linux (F1):** `crontab -e` → `30 3 * * * cd /srv/revisameta && scripts/backup.sh >> backups/backup.log 2>&1`.
+
+**Restauração:** o script para `backend` e `worker`, restaura banco e arquivos numa transação e sobe os dois de novo. O teste `scripts/test-backup.sh` foi executado em 2026-11-14: estado antes do backup e depois da restauração idênticos (usuários, projetos, auditoria e arquivos).
