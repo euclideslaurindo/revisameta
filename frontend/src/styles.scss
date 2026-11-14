@@ -256,3 +256,35 @@ mat-tab-nav-panel {
   display: block;
   padding-top: 1rem;
 }
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+.mapping-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0 1rem;
+}
+.full-table {
+  width: 100%;
+}
+.table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+table.sample {
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+table.sample th,
+table.sample td {
+  border: 1px solid #e4e7eb;
+  padding: 0.3rem 0.5rem;
+  white-space: nowrap;
+  text-align: left;
+}
+.file-input input {
+  padding: 0.5rem 0;
+}

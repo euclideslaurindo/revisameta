@@ -7,6 +7,7 @@ from app.modules.jobs.models import BackgroundJob
 from app.modules.projects.models import Invitation, Project, ProjectMember
 from app.modules.protocol.models import ComparisonGroup, Outcome
 from app.modules.quotas.models import UsageQuota
+from app.modules.studies.models import Reference, Report, Study
 from app.modules.uploads.models import StoredFile, UploadSession
 
 __all__ = [
@@ -18,8 +19,11 @@ __all__ = [
     "Outcome",
     "Project",
     "ProjectMember",
+    "Reference",
     "RefreshToken",
+    "Report",
     "StoredFile",
+    "Study",
     "UploadSession",
     "UsageQuota",
     "User",

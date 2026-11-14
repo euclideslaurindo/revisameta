@@ -76,7 +76,8 @@
     "metaAnalysis": "The statistical part that combines the numbers of several studies into a single result.",
     "outcome": "An outcome is the result measured in participants, for example an intelligence score.",
     "comparisonGroup": "The groups your question compares within each study, for example operated before and after age 5.",
-    "doubleExtraction": "Two people copy the numbers of each article without seeing each other's work. The system compares both versions and points out differences, which prevents typing errors."
+    "doubleExtraction": "Two people copy the numbers of each article without seeing each other's work. The system compares both versions and points out differences, which prevents typing errors.",
+    "studyVsReport": "A study is a group of patients. The same group can appear in several articles; that is why articles are grouped under the study, and patients are not counted twice."
   },
   "notFound": {
     "title": "Page not found",
@@ -84,7 +85,8 @@
   },
   "project": {
     "nav": {
-      "protocol": "Protocol"
+      "protocol": "Protocol",
+      "studies": "Studies"
     }
   },
   "protocol": {
@@ -120,6 +122,95 @@
       "labelHint": "E.g.: Surgery before age 5",
       "rule": "Group rule",
       "ruleHint": "E.g.: age at surgery below 5 years. Say what to do if a study uses another cut-off."
+    }
+  },
+  "designs": {
+    "rct": "Randomized controlled trial",
+    "cohort_prospective": "Prospective cohort",
+    "cohort_retrospective": "Retrospective cohort",
+    "case_control": "Case-control",
+    "cross_sectional": "Cross-sectional",
+    "case_series": "Case series",
+    "other": "Other"
+  },
+  "references": {
+    "title": "Article title",
+    "authors": "Authors",
+    "year": "Year"
+  },
+  "studies": {
+    "intro": "Each study is a group of patients. If the same group was published in several articles, they stay together in the same study.",
+    "empty": "No studies yet. Add or import your list.",
+    "new": "New study",
+    "create": "Add study",
+    "import": "Import list (CSV/XLSX)",
+    "label": "Study name",
+    "labelHint": "First author and year, e.g. Ballet 2025",
+    "design": "Study design",
+    "designHint": "Used to suggest the risk of bias tool.",
+    "mainArticle": "Main article",
+    "articles": "Articles",
+    "primary": "Main",
+    "addArticle": "Add article",
+    "addArticleHint": "Use it when another article describes the same patients (e.g. longer follow-up).",
+    "delete": "Delete study",
+    "confirmDelete": "Remove the study \"{{label}}\" and its articles from the review? Its history stays in the audit log.",
+    "confirmRemoveArticle": "Remove the article \"{{title}}\" from this study?",
+    "merge": {
+      "title": "Merge with another study",
+      "hint": "If two registered studies are actually the same patients, merge them so nobody is counted twice.",
+      "other": "Study with the same patients",
+      "action": "Merge studies",
+      "confirm": "The articles of \"{{other}}\" move to \"{{study}}\", and \"{{other}}\" leaves the list. Continue?"
+    }
+  },
+  "import": {
+    "title": "Import study list",
+    "intro": "Send the spreadsheet with the studies already selected. Nothing is saved until you review and confirm.",
+    "step": {
+      "file": "Choose the file",
+      "mapping": "Tell us which column is which",
+      "review": "Review and import"
+    },
+    "rowsFound": "Rows with data found: {{count}}.",
+    "mappingHint": "We suggested the mapping from the column names. Only the title is required; without a study name, we use the first author and year.",
+    "notInFile": "Not in the file",
+    "sample": "First rows of the file",
+    "check": "Check rows",
+    "summary": "Rows ready to import: {{valid}} of {{total}}.",
+    "errorsIntro": "Problems found: {{count}}. These rows will not be imported; fix the spreadsheet and send it again if you want.",
+    "row": "Row",
+    "field": "Field",
+    "problem": "Problem",
+    "confirm": "Import the valid rows ({{count}})",
+    "done": "Studies imported: {{created}}.",
+    "seeStudies": "See studies",
+    "fields": {
+      "label": "Study name",
+      "title": "Article title",
+      "authors": "Authors",
+      "year": "Year",
+      "doi": "DOI",
+      "pmid": "PMID",
+      "journal": "Journal",
+      "design": "Study design",
+      "notes": "Notes"
+    }
+  },
+  "importErrors": {
+    "import": {
+      "missing_title": "The article title is missing.",
+      "missing_label": "The study name is missing (or authors and year to build one).",
+      "invalid_year": "Invalid year. Use four digits, e.g. 2021.",
+      "invalid_design": "Design not recognized. Use, for example, Retrospective cohort or Case-control.",
+      "invalid_doi": "Invalid DOI. It must start with 10., e.g. 10.1000/xyz.",
+      "invalid_pmid": "Invalid PMID. Use digits only.",
+      "duplicate_label_in_file": "This study name appears more than once in the file.",
+      "duplicate_doi_in_file": "This DOI appears more than once in the file."
+    },
+    "study": {
+      "duplicate_label": "A study with this name already exists in the project.",
+      "duplicate_doi": "An article with this DOI already exists in the project."
     }
   }
 }

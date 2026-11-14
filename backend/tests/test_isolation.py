@@ -56,6 +56,33 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
         {"version": 1, "label": "x"},
     ),
     ("DELETE", "/api/v1/projects/{project_id}/comparison-groups/{group_id}", None),
+    ("GET", "/api/v1/projects/{project_id}/studies", None),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/studies",
+        {"label": "X", "design": "other", "reference": {"title": "T"}},
+    ),
+    ("GET", "/api/v1/projects/{project_id}/studies/{study_id}", None),
+    ("PATCH", "/api/v1/projects/{project_id}/studies/{study_id}", {"version": 1, "label": "Y"}),
+    ("DELETE", "/api/v1/projects/{project_id}/studies/{study_id}", None),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/studies/{study_id}/reports",
+        {"reference": {"title": "T2"}},
+    ),
+    ("DELETE", "/api/v1/projects/{project_id}/studies/{study_id}/reports/{report_id}", None),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/studies/{study_id}/merge",
+        {"other_study_id": "{study_id}"},
+    ),
+    (
+        "PATCH",
+        "/api/v1/projects/{project_id}/references/{reference_id}",
+        {"version": 1, "title": "Z"},
+    ),
+    ("POST", "/api/v1/projects/{project_id}/study-imports/preview", None),
+    ("POST", "/api/v1/projects/{project_id}/study-imports", None),
 ]
 
 
@@ -114,6 +141,7 @@ async def _setup(client: AsyncClient, make_user: MakeUser) -> tuple[LoggedUser, 
                 headers=owner.headers,
             )
         ).json()["id"],
+        **(await _study_ids(client, owner, project["id"])),
         "group_id": (
             await client.post(
                 f"/api/v1/projects/{project['id']}/comparison-groups",
@@ -123,6 +151,22 @@ async def _setup(client: AsyncClient, make_user: MakeUser) -> tuple[LoggedUser, 
         ).json()["id"],
     }
     return owner, ids
+
+
+async def _study_ids(client: AsyncClient, owner: LoggedUser, project_id: str) -> dict[str, str]:
+    study = (
+        await client.post(
+            f"/api/v1/projects/{project_id}/studies",
+            json={"label": "Estudo A", "design": "other", "reference": {"title": "Artigo A"}},
+            headers=owner.headers,
+        )
+    ).json()
+    report = study["reports"][0]
+    return {
+        "study_id": study["id"],
+        "report_id": report["id"],
+        "reference_id": report["reference"]["id"],
+    }
 
 
 def _fill(value: Any, ids: dict[str, str]) -> Any:

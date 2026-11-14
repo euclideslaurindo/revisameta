@@ -22,6 +22,8 @@ dependencies = [
     "sse-starlette>=3.7",     # job progress via SSE
     "aiosmtplib>=5.1",        # e-mail (verification, invitations)
     "python-magic>=0.4.27",   # real file type detection (libmagic)
+    "python-multipart>=0.0.20", # multipart form uploads (study list import)
+    "openpyxl>=3.1.5",         # read XLSX imports (read-only, streamed)
 ]
 
 [dependency-groups]
@@ -52,6 +54,7 @@ classmethod-decorators = ["declared_attr", "declared_attr.directive"]
 
 [tool.ruff.lint.per-file-ignores]
 "alembic/versions/**" = ["E501"]
+"app/core/i18n.py" = ["E501"]  # translated message catalog
 "tests/**" = ["S101", "S105", "S106"]
 
 [tool.mypy]

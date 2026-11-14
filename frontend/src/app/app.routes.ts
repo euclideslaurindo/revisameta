@@ -42,6 +42,18 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/protocol/protocol-page').then((m) => m.ProtocolPage),
       },
+      {
+        path: 'estudos',
+        loadComponent: () => import('./features/studies/studies-page').then((m) => m.StudiesPage),
+      },
+      {
+        path: 'estudos/importar',
+        loadComponent: () => import('./features/studies/import-page').then((m) => m.ImportPage),
+      },
+      {
+        path: 'estudos/:studyId',
+        loadComponent: () => import('./features/studies/study-page').then((m) => m.StudyPage),
+      },
     ],
   },
   {
