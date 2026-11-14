@@ -105,7 +105,7 @@ Antes de trabalhar em um módulo, leia o arquivo de `docs/` correspondente.
 |---|---|
 | Importar RIS / BibTeX / PubMed | `rispy`, `bibtexparser`, parser próprio para `.nbib` |
 | Deduplicação aproximada | `rapidfuzz` |
-| Ler PDF (texto, busca, páginas) | `PyMuPDF` |
+| Ler PDF (texto, busca, páginas) | `pypdfium2` (*PyMuPDF é AGPL; ver ADR-012*) |
 | Ler planilhas e CSV | `pandas`, `openpyxl` |
 | Exportar Word / Excel | `python-docx`, `openpyxl` |
 | Cliente HTTP do serviço R | `httpx` (com timeout e retry) |

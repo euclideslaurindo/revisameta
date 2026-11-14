@@ -17,3 +17,4 @@ Formato: **Contexto → Decisão → Consequências**. Status possíveis: Propos
 | [009](009-commits-sem-mencao-a-ia.md) | Commits sem menção a IA | Aceito |
 | [010](010-ambiente-de-desenvolvimento.md) | Ambiente de desenvolvimento local | Aceito |
 | [011](011-frontend-angular-material.md) | Frontend em Angular 22 + Angular Material | Aceito |
+| [012](012-pdf-pypdfium2.md) | Leitura de PDF com pypdfium2 (no lugar do PyMuPDF/AGPL) | Aceito |
