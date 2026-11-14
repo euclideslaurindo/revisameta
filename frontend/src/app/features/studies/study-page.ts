@@ -24,6 +24,7 @@ import { StudyDesign } from '../../core/api/models/study-design';
 import { StudyOut } from '../../core/api/models/study-out';
 import { ConfirmData, ConfirmDialog } from '../../shared/confirm-dialog';
 import { FormError } from '../../shared/form-error';
+import { StudyExtractions } from '../extraction/study-extractions';
 import { ReportPdfs } from '../pdfs/report-pdfs';
 import { ProjectContext } from '../project/project-context';
 import { STUDY_DESIGNS } from './designs';
@@ -43,6 +44,7 @@ import { STUDY_DESIGNS } from './designs';
     MatTooltipModule,
     FormError,
     ReportPdfs,
+    StudyExtractions,
   ],
   template: `
     <a routerLink=".." class="back">← {{ 'project.nav.studies' | transloco }}</a>
@@ -66,6 +68,15 @@ import { STUDY_DESIGNS } from './designs';
             </mat-select>
             <mat-hint>{{ 'studies.designHint' | transloco }}</mat-hint>
           </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="block">
+        <mat-card-header>
+          <mat-card-title><h3>{{ 'extraction.title' | transloco }}</h3></mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <rm-study-extractions [studyId]="s.id" />
         </mat-card-content>
       </mat-card>
 
@@ -124,7 +135,7 @@ import { STUDY_DESIGNS } from './designs';
                 </mat-form-field>
               </div>
               <div class="actions">
-                <button mat-flat-button type="submit" [disabled]="articleForm.invalid || busy()">{{ 'studies.addArticle' | transloco }}</button>
+                <button mat-flat-button type="submit" [disabled]="busy()">{{ 'studies.addArticle' | transloco }}</button>
               </div>
             </form>
           }
@@ -237,6 +248,10 @@ export class StudyPage {
   }
 
   async addArticle(study: StudyOut): Promise<void> {
+    if (this.articleForm.invalid) {
+      this.articleForm.markAllAsTouched();
+      return;
+    }
     const value = this.articleForm.getRawValue();
     const ok = await this.run(() =>
       this.api.invoke(addReport, {

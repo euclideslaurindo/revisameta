@@ -93,7 +93,7 @@ import { STUDY_DESIGNS } from './designs';
             <rm-form-error [error]="error()" />
             <div class="actions">
               <button mat-button type="button" (click)="creating.set(false)">{{ 'common.cancel' | transloco }}</button>
-              <button mat-flat-button type="submit" [disabled]="form.invalid || busy()">{{ 'studies.create' | transloco }}</button>
+              <button mat-flat-button type="submit" [disabled]="busy()">{{ 'studies.create' | transloco }}</button>
             </div>
           </form>
         </mat-card-content>
@@ -164,6 +164,10 @@ export class StudiesPage implements OnInit {
   }
 
   async create(): Promise<void> {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     const value = this.form.getRawValue();
     this.busy.set(true);
     this.error.set(null);

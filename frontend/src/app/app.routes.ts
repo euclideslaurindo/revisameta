@@ -55,6 +55,11 @@ export const routes: Routes = [
         loadComponent: () => import('./features/studies/study-page').then((m) => m.StudyPage),
       },
       {
+        path: 'extracoes/:extractionId',
+        loadComponent: () =>
+          import('./features/extraction/extraction-page').then((m) => m.ExtractionPage),
+      },
+      {
         path: 'pdfs/:pdfId',
         loadComponent: () =>
           import('./features/pdfs/pdf-viewer-page').then((m) => m.PdfViewerPage),

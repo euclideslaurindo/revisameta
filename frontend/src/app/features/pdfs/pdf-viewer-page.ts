@@ -19,44 +19,16 @@ import { searchPdf } from '../../core/api/fn/pdfs/search-pdf';
 import { viewPdf } from '../../core/api/fn/pdfs/view-pdf';
 import { AnnotationOut } from '../../core/api/models/annotation-out';
 import { PdfViewOut } from '../../core/api/models/pdf-view-out';
-import { Rect } from '../../core/api/models/rect';
 import { SearchHit } from '../../core/api/models/search-hit';
 import { AuthService } from '../../core/auth/auth';
 import { FormError } from '../../shared/form-error';
 import { ProjectContext } from '../project/project-context';
+import { readPdfSelection } from './pdf-selection';
 
 // Security (docs/riscos.md 10.1): never run JavaScript embedded in PDFs, and keep the
 // viewer compatible with our CSP (no WebAssembly; pdf.js no longer uses eval).
 pdfDefaultOptions.enableScripting = false;
 pdfDefaultOptions.useWasm = false;
-
-interface Selection {
-  page: number;
-  quote: string;
-  rects: Rect[];
-}
-
-/** Reads the current text selection inside the viewer as page-relative rectangles. */
-function readSelection(): Selection | null {
-  const selection = window.getSelection();
-  if (!selection || selection.isCollapsed || selection.rangeCount === 0) return null;
-  const quote = selection.toString().replace(/\s+/g, ' ').trim();
-  if (!quote) return null;
-  const range = selection.getRangeAt(0);
-  const start = range.startContainer instanceof Element ? range.startContainer : range.startContainer.parentElement;
-  const pageEl = start?.closest<HTMLElement>('.page[data-page-number]');
-  if (!pageEl) return null;
-  const box = pageEl.getBoundingClientRect();
-  const rects = Array.from(range.getClientRects())
-    .filter((r) => r.width > 1 && r.height > 1)
-    .map((r) => ({
-      x: Math.max(0, (r.left - box.left) / box.width),
-      y: Math.max(0, (r.top - box.top) / box.height),
-      w: Math.min(1, r.width / box.width),
-      h: Math.min(1, r.height / box.height),
-    }));
-  return { page: Number(pageEl.dataset['pageNumber']), quote, rects };
-}
 
 @Component({
   selector: 'rm-pdf-viewer-page',
@@ -215,7 +187,7 @@ export class PdfViewerPage {
   }
 
   async mark(): Promise<void> {
-    const selection = readSelection();
+    const selection = readPdfSelection();
     this.selectionMissing.set(!selection);
     if (!selection) return;
     this.busy.set(true);

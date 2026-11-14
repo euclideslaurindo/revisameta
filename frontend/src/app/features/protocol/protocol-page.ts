@@ -128,7 +128,7 @@ import { ProjectContext } from '../project/project-context';
             <mat-checkbox formControlName="higherIsBetter">{{ 'protocol.outcomes.higherBetter' | transloco }}</mat-checkbox>
             <mat-checkbox formControlName="isPrimary">{{ 'protocol.outcomes.primary' | transloco }}</mat-checkbox>
             <div class="actions">
-              <button mat-flat-button type="submit" [disabled]="outcomeForm.invalid || busy()">
+              <button mat-flat-button type="submit" [disabled]="busy()">
                 {{ 'protocol.outcomes.add' | transloco }}
               </button>
             </div>
@@ -179,7 +179,7 @@ import { ProjectContext } from '../project/project-context';
               <mat-hint>{{ 'protocol.groups.ruleHint' | transloco }}</mat-hint>
             </mat-form-field>
             <div class="actions">
-              <button mat-flat-button type="submit" [disabled]="groupForm.invalid || busy()">
+              <button mat-flat-button type="submit" [disabled]="busy()">
                 {{ 'protocol.groups.add' | transloco }}
               </button>
             </div>
@@ -263,6 +263,10 @@ export class ProtocolPage implements OnInit {
   }
 
   async addOutcome(): Promise<void> {
+    if (this.outcomeForm.invalid) {
+      this.outcomeForm.markAllAsTouched();
+      return;
+    }
     const value = this.outcomeForm.getRawValue();
     const ok = await this.run(() =>
       this.api.invoke(createOutcome, {
@@ -288,6 +292,10 @@ export class ProtocolPage implements OnInit {
   }
 
   async addGroup(): Promise<void> {
+    if (this.groupForm.invalid) {
+      this.groupForm.markAllAsTouched();
+      return;
+    }
     const value = this.groupForm.getRawValue();
     const ok = await this.run(() =>
       this.api.invoke(createGroup, {

@@ -74,7 +74,7 @@ import { Turnstile } from '../../shared/turnstile';
             }
 
             <rm-form-error [error]="error()" />
-            <button mat-flat-button type="submit" [disabled]="form.invalid || busy()">
+            <button mat-flat-button type="submit" [disabled]="busy()">
               {{ 'register.submit' | transloco }}
             </button>
           </form>
@@ -106,7 +106,10 @@ export class RegisterPage {
   protected readonly resent = signal(false);
 
   async submit(): Promise<void> {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     this.busy.set(true);
     this.error.set(null);
     const value = this.form.getRawValue();

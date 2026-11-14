@@ -71,7 +71,7 @@ import { FormError } from '../../shared/form-error';
               <button mat-button type="button" (click)="creating.set(false)">
                 {{ 'common.cancel' | transloco }}
               </button>
-              <button mat-flat-button type="submit" [disabled]="form.invalid || busy()">
+              <button mat-flat-button type="submit" [disabled]="busy()">
                 {{ 'projects.create' | transloco }}
               </button>
             </div>
@@ -145,7 +145,10 @@ export class ProjectsPage implements OnInit {
   }
 
   async create(): Promise<void> {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     this.busy.set(true);
     this.error.set(null);
     const value = this.form.getRawValue();

@@ -54,7 +54,7 @@ import { Turnstile } from '../../shared/turnstile';
           }
 
           <rm-form-error [error]="error()" />
-          <button mat-flat-button type="submit" [disabled]="form.invalid || busy()">
+          <button mat-flat-button type="submit" [disabled]="busy()">
             {{ 'login.submit' | transloco }}
           </button>
         </form>
@@ -87,7 +87,10 @@ export class LoginPage {
   protected readonly captcha = signal<string | null>(null);
 
   async submit(): Promise<void> {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
     this.busy.set(true);
     this.error.set(null);
     const { email, password } = this.form.getRawValue();

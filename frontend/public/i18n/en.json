@@ -78,7 +78,8 @@
     "comparisonGroup": "The groups your question compares within each study, for example operated before and after age 5.",
     "doubleExtraction": "Two people copy the numbers of each article without seeing each other's work. The system compares both versions and points out differences, which prevents typing errors.",
     "studyVsReport": "A study is a group of patients. The same group can appear in several articles; that is why articles are grouped under the study, and patients are not counted twice.",
-    "annotation": "A marked passage keeps the page and the exact text of the article a number or a decision came from, so anyone can check it later."
+    "annotation": "A marked passage keeps the page and the exact text of the article a number or a decision came from, so anyone can check it later.",
+    "arm": "Study group (arm): a set of participants the article describes separately, for example those operated before age 5."
   },
   "notFound": {
     "title": "Page not found",
@@ -245,6 +246,97 @@
       "note": "Note (optional)",
       "mark": "Mark passage",
       "selectFirst": "First select a passage of the PDF text."
+    }
+  },
+  "extraction": {
+    "title": "Data extraction",
+    "start": "Start my extraction",
+    "none": "Nobody has started extracting this study yet.",
+    "consensus": "Consensus",
+    "updated": "Updated on",
+    "submit": "Submit extraction",
+    "confirmSubmit": "Submit the extraction? Once submitted, it can no longer be changed.",
+    "outdatedForm": "The project form changed after you started. Check the fields; when you save, the extraction moves to the new version.",
+    "noPdf": "This study has no PDF yet. Attach the article on the study page to extract with the source next to you.",
+    "noTimepoints": "This outcome has no time points in the protocol. Ask the admin to add them.",
+    "addArmsFirst": "Add the study groups above to record the numbers.",
+    "characteristics": "Study characteristics",
+    "status": {
+      "draft": "Draft",
+      "submitted": "Submitted",
+      "locked": "Locked"
+    },
+    "save": {
+      "saved": "All saved",
+      "saving": "Saving…",
+      "unsaved": "Unsaved changes",
+      "error": "Could not save"
+    },
+    "fields": {
+      "country": "Country",
+      "period": "Study period",
+      "centers": "Number of centers",
+      "n_total": "Total n of the study",
+      "eligibility": "Eligibility criteria",
+      "cutoff_used": "Cut-off used by the study (e.g. age at surgery)",
+      "surgery_type": "Type of surgery",
+      "follow_up": "Follow-up time",
+      "funding": "Funding",
+      "conflict_of_interest": "Conflict of interest"
+    },
+    "arms": {
+      "title": "Study groups",
+      "hint": "Record every group as the article presents them (e.g. < 2, 2–5 and > 5 years) and say which protocol group each one matches. If the study has more than two groups, the system combines them, never by hand.",
+      "label": "Group name in the article",
+      "group": "Protocol group",
+      "noGroup": "None (to be combined later)",
+      "new": "New group",
+      "add": "Add group",
+      "confirmDelete": "Remove the group \"{{label}}\"?"
+    },
+    "scale": {
+      "name": "Scale used",
+      "min": "Scale minimum",
+      "max": "Scale maximum"
+    },
+    "dispersion": {
+      "sd": "SD (standard deviation)",
+      "se": "SE (standard error)",
+      "ci95": "95% CI",
+      "iqr": "Median and IQR",
+      "range": "Median and range (min–max)",
+      "not_reported": "Not reported"
+    },
+    "data": {
+      "events": "Events",
+      "total": "Total",
+      "valueType": "Value type",
+      "final": "Final value",
+      "change": "Change from baseline",
+      "mean": "Mean",
+      "dispersionType": "The article reports",
+      "dispersionHint": "Check in the article whether the number is SD or SE.",
+      "dispersionSource": "Where the article says the type",
+      "dispersionSourceHint": "E.g. footnote of Table 2",
+      "sourceLocation": "Source page/table",
+      "annotation": "Marked passage in the PDF",
+      "noAnnotation": "None",
+      "fields": {
+        "sd": "SD",
+        "se": "SE",
+        "ci_low": "95% CI lower",
+        "ci_high": "95% CI upper",
+        "median": "Median",
+        "q1": "1st quartile (Q1)",
+        "q3": "3rd quartile (Q3)",
+        "min": "Minimum",
+        "max": "Maximum"
+      },
+      "errors": {
+        "notANumber": "A value is not a number. Use a comma or a dot for decimals.",
+        "notAnInteger": "n, events and total must be whole numbers.",
+        "dispersionTypeRequired": "Choose what the article reports (SD, SE, CI…) before typing the dispersion."
+      }
     }
   }
 }

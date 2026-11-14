@@ -78,7 +78,8 @@
     "comparisonGroup": "Os grupos que a pergunta compara dentro de cada estudo, por exemplo, operados antes e depois dos 5 anos.",
     "doubleExtraction": "Duas pessoas copiam os números de cada artigo sem ver o trabalho uma da outra. O sistema compara as duas versões e aponta as diferenças, o que evita erros de digitação.",
     "studyVsReport": "Um estudo é um grupo de pacientes. O mesmo grupo pode aparecer em vários artigos; por isso os artigos ficam agrupados no estudo, e os pacientes não são contados duas vezes.",
-    "annotation": "Um trecho marcado guarda a página e o texto exato do artigo de onde veio um número ou uma decisão, para qualquer pessoa conferir depois."
+    "annotation": "Um trecho marcado guarda a página e o texto exato do artigo de onde veio um número ou uma decisão, para qualquer pessoa conferir depois.",
+    "arm": "Grupo do estudo (braço): um conjunto de participantes que o artigo descreve separadamente, por exemplo, os operados antes dos 5 anos."
   },
   "notFound": {
     "title": "Página não encontrada",
@@ -245,6 +246,97 @@
       "note": "Nota (opcional)",
       "mark": "Marcar trecho",
       "selectFirst": "Selecione primeiro um trecho do texto do PDF."
+    }
+  },
+  "extraction": {
+    "title": "Extração de dados",
+    "start": "Começar minha extração",
+    "none": "Ninguém começou a extração deste estudo ainda.",
+    "consensus": "Consenso",
+    "updated": "Atualizada em",
+    "submit": "Enviar extração",
+    "confirmSubmit": "Enviar a extração? Depois de enviada, ela não pode mais ser alterada.",
+    "outdatedForm": "O formulário do projeto mudou depois que você começou. Confira os campos; ao salvar, a extração passa para a versão nova.",
+    "noPdf": "Este estudo ainda não tem PDF. Anexe o artigo na página do estudo para extrair com a fonte ao lado.",
+    "noTimepoints": "Este desfecho não tem momentos de medida no protocolo. Peça ao administrador para cadastrá-los.",
+    "addArmsFirst": "Cadastre os grupos do estudo acima para registrar os números.",
+    "characteristics": "Características do estudo",
+    "status": {
+      "draft": "Rascunho",
+      "submitted": "Enviada",
+      "locked": "Travada"
+    },
+    "save": {
+      "saved": "Tudo salvo",
+      "saving": "Salvando…",
+      "unsaved": "Alterações não salvas",
+      "error": "Não foi possível salvar"
+    },
+    "fields": {
+      "country": "País",
+      "period": "Período do estudo",
+      "centers": "Número de centros",
+      "n_total": "n total do estudo",
+      "eligibility": "Critérios de elegibilidade",
+      "cutoff_used": "Ponto de corte usado pelo estudo (ex.: idade na cirurgia)",
+      "surgery_type": "Tipo de cirurgia",
+      "follow_up": "Tempo de seguimento",
+      "funding": "Financiamento",
+      "conflict_of_interest": "Conflito de interesse"
+    },
+    "arms": {
+      "title": "Grupos do estudo",
+      "hint": "Registre todos os grupos como o artigo apresenta (ex.: < 2, 2–5 e > 5 anos) e diga a qual grupo do protocolo cada um corresponde. Se o estudo tiver mais de dois grupos, a combinação será feita pelo sistema, nunca à mão.",
+      "label": "Nome do grupo no artigo",
+      "group": "Grupo do protocolo",
+      "noGroup": "Nenhum (será combinado depois)",
+      "new": "Novo grupo",
+      "add": "Adicionar grupo",
+      "confirmDelete": "Remover o grupo \"{{label}}\"?"
+    },
+    "scale": {
+      "name": "Escala usada",
+      "min": "Valor mínimo da escala",
+      "max": "Valor máximo da escala"
+    },
+    "dispersion": {
+      "sd": "DP (desvio padrão)",
+      "se": "EP (erro padrão)",
+      "ci95": "IC 95%",
+      "iqr": "Mediana e IIQ",
+      "range": "Mediana e amplitude (mín.–máx.)",
+      "not_reported": "Não informado"
+    },
+    "data": {
+      "events": "Eventos",
+      "total": "Total",
+      "valueType": "Tipo de valor",
+      "final": "Valor final",
+      "change": "Mudança desde a linha de base",
+      "mean": "Média",
+      "dispersionType": "O artigo informa",
+      "dispersionHint": "Confira no artigo se o número é DP ou EP.",
+      "dispersionSource": "Onde o artigo diz o tipo",
+      "dispersionSourceHint": "Ex.: rodapé da Tabela 2",
+      "sourceLocation": "Página/tabela de origem",
+      "annotation": "Trecho marcado no PDF",
+      "noAnnotation": "Nenhum",
+      "fields": {
+        "sd": "DP",
+        "se": "EP",
+        "ci_low": "IC 95% inferior",
+        "ci_high": "IC 95% superior",
+        "median": "Mediana",
+        "q1": "1º quartil (Q1)",
+        "q3": "3º quartil (Q3)",
+        "min": "Mínimo",
+        "max": "Máximo"
+      },
+      "errors": {
+        "notANumber": "Há um valor que não é número. Use vírgula ou ponto para decimais.",
+        "notAnInteger": "n, eventos e total precisam ser números inteiros.",
+        "dispersionTypeRequired": "Escolha o que o artigo informa (DP, EP, IC…) antes de digitar a dispersão."
+      }
     }
   }
 }
