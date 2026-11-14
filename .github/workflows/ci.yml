@@ -1,0 +1,141 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  commit-messages:
+    name: Commit messages (no AI mentions)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+      - run: scripts/check-commit-messages.sh HEAD
+
+  secrets:
+    name: Secret scan (gitleaks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+      - name: gitleaks
+        run: |
+          docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.30.1 \
+            git /repo --redact --no-banner
+
+  backend:
+    name: Backend (ruff, mypy, pytest)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    services:
+      postgres:
+        image: postgres:16.16-alpine
+        env:
+          POSTGRES_DB: revisameta_test
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: test
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U test -d revisameta_test"
+          --health-interval 2s --health-timeout 3s --health-retries 30
+      redis:
+        image: redis:8.8.4-alpine
+        ports: ["6379:6379"]
+      storage:
+        image: rustfs/rustfs:1.0.5
+        env:
+          RUSTFS_ACCESS_KEY: test-access
+          RUSTFS_SECRET_KEY: test-secret-key
+          RUSTFS_VOLUMES: /data
+          RUSTFS_CONSOLE_ENABLE: "false"
+        ports: ["9000:9000"]
+        options: >-
+          --health-cmd "curl -fsS http://127.0.0.1:9000/health"
+          --health-interval 2s --health-timeout 3s --health-retries 30
+    env:
+      APP_ENV: test
+      POSTGRES_HOST: localhost
+      POSTGRES_DB: revisameta_test
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      REDIS_URL: redis://localhost:6379/0
+      JWT_SECRET: test-secret-not-for-production-use-0123456789
+      S3_ENDPOINT: http://localhost:9000
+      S3_PUBLIC_ENDPOINT: http://localhost:9000
+      S3_ACCESS_KEY: test-access
+      S3_SECRET_KEY: test-secret-key
+      S3_BUCKET: test-files
+      UPLOAD_PART_SIZE_MB: "5"
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libmagic1
+      - uses: astral-sh/setup-uv@v10.3.3
+        with:
+          version: "0.13.8"
+          enable-cache: true
+      - run: uv python install 3.12
+      - run: uv sync --frozen
+      - run: uv run ruff check .
+      - run: uv run ruff format --check .
+      - run: uv run mypy app
+      - run: uv run pytest
+      - name: Dependency audit (pip-audit)
+        run: |
+          uv export --frozen --no-dev --no-emit-project --format requirements-txt > /tmp/requirements.txt
+          uvx pip-audit==2.10.1 -r /tmp/requirements.txt --disable-pip --require-hashes
+
+  frontend:
+    name: Frontend (eslint, vitest, build)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci --no-audit --no-fund
+      - run: npx ng lint
+      - run: npx ng test --watch=false
+      - run: npx ng build --configuration production
+      - name: Dependency audit (npm audit, high and critical)
+        run: npm audit --omit=dev --audit-level=high
+
+  stats-r:
+    name: Statistics service (testthat, lintr)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: docker/setup-buildx-action@v4.4.1
+      - uses: docker/build-push-action@v7.4.0
+        with:
+          context: stats-r
+          target: runtime
+          tags: revisameta-stats-r:ci
+          load: true
+          cache-from: type=gha,scope=stats-r
+          cache-to: type=gha,mode=max,scope=stats-r
+      - name: testthat and lintr
+        run: |
+          docker run --rm revisameta-stats-r:ci Rscript -e '
+            testthat::test_dir("tests/testthat", reporter = "summary", stop_on_failure = TRUE)
+            lints <- lintr::lint_dir(".")
+            print(lints)
+            if (length(lints) > 0) quit(status = 1)
+          '
