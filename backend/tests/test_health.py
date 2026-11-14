@@ -67,7 +67,12 @@ async def test_public_config_has_no_secrets(client: AsyncClient) -> None:
     r = await client.get("/api/v1/public-config")
     assert r.status_code == 200
     body = r.json()
-    assert set(body) == {"turnstile_enabled", "turnstile_site_key", "terms_version", "pdf_max_size_mb"}
+    assert set(body) == {
+        "turnstile_enabled",
+        "turnstile_site_key",
+        "terms_version",
+        "pdf_max_size_mb",
+    }
     assert "secret" not in r.text.lower()
 
 
