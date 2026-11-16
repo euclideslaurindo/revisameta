@@ -1,0 +1,166 @@
+{
+  "generated_by": "fixtures/scripts/generate-conversions.R",
+  "r_version": "4.6.2",
+  "metafor_version": "5.2.1",
+  "tolerance": 1e-06,
+  "conversions": [
+    {
+      "name": "se_to_sd_fictitious",
+      "request": {
+        "kind": "se_to_sd",
+        "se": 2.68823536600788,
+        "n": 23
+      },
+      "expected": {
+        "sd": 12.8923239103847
+      }
+    },
+    {
+      "name": "ci_to_sd_fictitious",
+      "request": {
+        "kind": "ci_to_sd",
+        "ci_lb": 81.9678316563266,
+        "ci_ub": 92.2386199565767,
+        "n": 31
+      },
+      "expected": {
+        "sd": 14.0004162764533
+      }
+    },
+    {
+      "name": "median_iqr_range_fictitious",
+      "request": {
+        "kind": "median_to_mean_sd",
+        "min": 61,
+        "q1": 78,
+        "median": 86,
+        "q3": 95,
+        "max": 121,
+        "n": 40
+      },
+      "expected": {
+        "mean": 86.9102194618258,
+        "sd": 13.5842697676007
+      }
+    },
+    {
+      "name": "median_iqr_only_fictitious",
+      "request": {
+        "kind": "median_to_mean_sd",
+        "q1": 78,
+        "median": 86,
+        "q3": 95,
+        "n": 40
+      },
+      "expected": {
+        "mean": 86.354875,
+        "sd": 13.0718083251502
+      }
+    },
+    {
+      "name": "median_range_only_fictitious",
+      "request": {
+        "kind": "median_to_mean_sd",
+        "min": 61,
+        "median": 86,
+        "max": 121,
+        "n": 40
+      },
+      "expected": {
+        "mean": 87.0047517435169,
+        "sd": 13.9123614567715
+      }
+    },
+    {
+      "name": "adjusted_or_ci_fictitious",
+      "request": {
+        "kind": "effect_ci_to_log",
+        "estimate": 1.84,
+        "ci_lb": 1.21,
+        "ci_ub": 2.79
+      },
+      "expected": {
+        "yi": 0.609765571620894,
+        "vi": 0.0454208072058006
+      }
+    },
+    {
+      "name": "t_to_smd_fictitious",
+      "request": {
+        "kind": "t_to_smd",
+        "t": 2.37,
+        "n1": 26,
+        "n2": 29,
+        "favours": "group2"
+      },
+      "expected": {
+        "yi": -0.630986298998363,
+        "vi": 0.076563785350625
+      }
+    },
+    {
+      "name": "p_to_smd_fictitious",
+      "request": {
+        "kind": "p_to_smd",
+        "p": 0.013,
+        "n1": 26,
+        "n2": 29,
+        "favours": "group1"
+      },
+      "expected": {
+        "yi": 0.684372098324507,
+        "vi": 0.077202162254638
+      }
+    }
+  ],
+  "combine": [
+    {
+      "name": "combine_three_arms_fictitious",
+      "request": {
+        "type": "continuous",
+        "groups": [
+          {
+            "n": 23,
+            "mean": 85.6739130434783,
+            "sd": 12.8923239103847
+          },
+          {
+            "n": 31,
+            "mean": 87.1032258064516,
+            "sd": 14.0004162764533
+          },
+          {
+            "n": 17,
+            "mean": 78.4705882352941,
+            "sd": 13.8304358529423
+          }
+        ]
+      },
+      "expected": {
+        "n": 71,
+        "mean": 84.5732394366197,
+        "sd": 13.8651253947911
+      }
+    },
+    {
+      "name": "combine_dichotomous_fictitious",
+      "request": {
+        "type": "dichotomous",
+        "groups": [
+          {
+            "events": 7,
+            "total": 31
+          },
+          {
+            "events": 4,
+            "total": 28
+          }
+        ]
+      },
+      "expected": {
+        "events": 11,
+        "total": 59
+      }
+    }
+  ]
+}

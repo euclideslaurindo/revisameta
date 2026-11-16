@@ -108,3 +108,38 @@ function(req, res) {
   }
   out
 }
+
+#* Data conversions (8.5): SE or CI to SD, median to mean/SD, ratio effect + CI to the
+#* log scale, t or p to SMD. Each item says the method and whether it is estimated.
+#* Body: { conversions: [{ kind, ... }] }
+#* @post /convert
+#* @serializer unboxedJSON list(digits = NA, na = "null")
+function(req, res) {
+  spec <- tryCatch(jsonlite::fromJSON(req$postBody, simplifyVector = FALSE), error = function(e) NULL)
+  if (is.null(spec)) {
+    res$status <- 422
+    return(envelope(errors = "body must be JSON"))
+  }
+  out <- convert(spec)
+  if (!isTRUE(out$ok)) {
+    res$status <- 422
+  }
+  out
+}
+
+#* Several arms into one group (Cochrane Handbook formula).
+#* Body: { type: continuous|dichotomous, groups: [{n, mean, sd} | {events, total}] }
+#* @post /combine-groups
+#* @serializer unboxedJSON list(digits = NA, na = "null")
+function(req, res) {
+  spec <- tryCatch(jsonlite::fromJSON(req$postBody, simplifyVector = FALSE), error = function(e) NULL)
+  if (is.null(spec)) {
+    res$status <- 422
+    return(envelope(errors = "body must be JSON"))
+  }
+  out <- combine_groups(spec)
+  if (!isTRUE(out$ok)) {
+    res$status <- 422
+  }
+  out
+}

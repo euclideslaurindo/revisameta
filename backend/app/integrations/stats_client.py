@@ -97,6 +97,14 @@ class StatsClient:
         """Pooled effect, heterogeneity and prediction interval (metafor::rma + predict)."""
         return await self._request("POST", "/meta-analysis", json=spec)
 
+    async def convert(self, conversions: list[dict[str, Any]]) -> StatsResponse:
+        """Data conversions (8.5); each item reports its method and whether it is estimated."""
+        return await self._request("POST", "/convert", json={"conversions": conversions})
+
+    async def combine_groups(self, spec: dict[str, Any]) -> StatsResponse:
+        """Several arms into one group (Cochrane Handbook formula)."""
+        return await self._request("POST", "/combine-groups", json=spec)
+
     async def rob_plot(self, spec: dict[str, Any]) -> StatsResponse:
         """Risk-of-bias traffic light or summary (robvis, or ggplot2 with the same look)."""
         return await self._request("POST", "/rob-plots", json=spec)

@@ -19,16 +19,16 @@ import pytest
 from app.integrations.stats_client import StatsClient
 
 
-def _fixture() -> dict[str, Any]:
+def _fixture(name: str = "meta-analysis.json") -> dict[str, Any]:
     for base in (
         Path(__file__).resolve().parents[2] / "stats-r" / "fixtures",
         Path("/stats-fixtures"),
     ):
-        path = base / "meta-analysis.json"
+        path = base / name
         if path.exists():
             data: dict[str, Any] = json.loads(path.read_text(encoding="utf-8"))
             return data
-    raise FileNotFoundError("stats-r/fixtures/meta-analysis.json not found")
+    raise FileNotFoundError(f"stats-r/fixtures/{name} not found")
 
 
 FIXTURE = _fixture()
@@ -69,3 +69,25 @@ async def test_effect_sizes_match_metafor() -> None:
     assert response.ok
     for study, yi in zip(response.result["studies"], case["expected"]["yi"], strict=True):
         _close(study["yi"], yi, case["name"], "yi")
+
+
+CONVERSIONS = _fixture("conversions.json")
+
+
+async def test_conversions_match_the_reference() -> None:
+    cases = CONVERSIONS["conversions"]
+    response = await StatsClient().convert([c["request"] for c in cases])
+    assert response.ok
+    tol = CONVERSIONS["tolerance"]
+    for case, got in zip(cases, response.result["conversions"], strict=True):
+        assert got["ok"], case["name"]
+        for key, expected in case["expected"].items():
+            assert math.isclose(got["output"][key], expected, abs_tol=tol), case["name"]
+
+
+@pytest.mark.parametrize("case", CONVERSIONS["combine"], ids=lambda c: c["name"])
+async def test_combine_groups_matches_the_reference(case: dict[str, Any]) -> None:
+    response = await StatsClient().combine_groups(case["request"])
+    assert response.ok
+    for key, expected in case["expected"].items():
+        assert math.isclose(response.result[key], expected, abs_tol=CONVERSIONS["tolerance"])

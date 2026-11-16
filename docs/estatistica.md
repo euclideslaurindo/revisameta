@@ -82,3 +82,12 @@
 ### Endpoints do passo 1
 - `POST /effect-sizes`: `yi`, `vi`, EP e IC 95% de cada estudo (`escalc`).
 - `POST /meta-analysis`: efeito combinado, EP, IC, estatística (t com Hartung-Knapp, z sem ele), valor p, intervalo de predição, τ², I², H², Q (gl e p), peso de cada estudo e, nas medidas de razão, os valores na escala original (exp). Com k < 2 não roda; com k < 5 avisa que a heterogeneidade é instável.
+
+### Endpoints do passo 2 (conversões e combinação de braços)
+- `POST /convert`: recebe uma lista de conversões e responde item a item. Cada item traz o valor original, o convertido, o método e a situação: `converted`, `estimated` (mediana→média) ou `derived` (t/p→SMD). Uma entrada impossível é recusada só naquele item, nunca adivinhada.
+  - `se_to_sd`: DP = EP × √n.
+  - `ci_to_sd`: DP a partir do IC 95% da média, com a distribuição t (n − 1 graus de liberdade), que para n grande coincide com o valor da normal (Cochrane Handbook 6.5.2.2).
+  - `median_to_mean_sd`: Wan et al. (2014) / Luo et al. (2018) via `metafor::conv.fivenum(method = "luo/wan")`, com mínimo/máximo, IIQ ou os dois. Avisa se o teste de assimetria do metafor indicar distribuição assimétrica (`skewness_detected`).
+  - `effect_ci_to_log`: OR, RR ou HR com IC 95% → yᵢ = log(efeito) e vᵢ pela largura do IC na escala log (`metafor::conv.wald`). Recusa se o efeito estiver fora do próprio IC.
+  - `t_to_smd` e `p_to_smd`: g de Hedges a partir da estatística t ou do valor p bicaudal exato (`escalc` com `ti` ou `pi`). O sinal vem do lado que o estudo favorece (`favours`: `group1` ou `group2`).
+- `POST /combine-groups`: junta vários braços num grupo. Para dados contínuos usa a fórmula do Cochrane Handbook (tabela 6.5.a), aplicada par a par, o que é exato para qualquer número de grupos. Para dados dicotômicos soma eventos e totais.
