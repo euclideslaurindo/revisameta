@@ -113,6 +113,7 @@ export type { RobConsensusIn } from './models/rob-consensus-in';
 export type { RobConsensusRef } from './models/rob-consensus-ref';
 export type { RobDecideIn } from './models/rob-decide-in';
 export type { RobDecisionOut } from './models/rob-decision-out';
+export type { RobFormat } from './models/rob-format';
 export type { RobItemOut } from './models/rob-item-out';
 export type { RobProjectAgreementOut } from './models/rob-project-agreement-out';
 export type { RobReviewerOut } from './models/rob-reviewer-out';

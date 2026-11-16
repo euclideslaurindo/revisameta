@@ -14,6 +14,8 @@ import { Api } from '../../core/api/api';
 import { listRobTools } from '../../core/api/fn/risk-of-bias/list-rob-tools';
 import { robPlot } from '../../core/api/fn/risk-of-bias/rob-plot';
 import { robTable } from '../../core/api/fn/risk-of-bias/rob-table';
+import { exportRiskOfBias } from '../../core/api/fn/exports/export-risk-of-bias';
+import { RobFormat } from '../../core/api/models/rob-format';
 import { listOutcomes } from '../../core/api/fn/protocol/list-outcomes';
 import { OutcomeOut } from '../../core/api/models/outcome-out';
 import { TableOut } from '../../core/api/models/table-out';
@@ -232,6 +234,49 @@ export function cellClass(key: string | null | undefined): string {
             }
           </mat-card-content>
         </mat-card>
+
+        <mat-card class="block">
+          <mat-card-header>
+            <mat-card-title
+              ><h3>{{ 'rob.export.title' | transloco }}</h3></mat-card-title
+            >
+          </mat-card-header>
+          <mat-card-content>
+            <p class="muted">{{ 'rob.export.intro' | transloco }}</p>
+            <div class="row">
+              <mat-form-field subscriptSizing="dynamic">
+                <mat-label>{{ 'rob.export.format' | transloco }}</mat-label>
+                <mat-select [(ngModel)]="fileFormat">
+                  @for (f of formats(); track f) {
+                    <mat-option [value]="f">{{ 'rob.export.formats.' + f | transloco }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              @if (fileFormat === 'csv') {
+                <mat-form-field subscriptSizing="dynamic">
+                  <mat-label>{{ 'rob.export.csvStyle' | transloco }}</mat-label>
+                  <mat-select [(ngModel)]="csvStyle">
+                    <mat-option value="excel">{{ 'export.csv.excel' | transloco }}</mat-option>
+                    <mat-option value="r">{{ 'export.csv.r' | transloco }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              }
+            </div>
+            @if (fileFormat === 'robvis') {
+              <p class="muted">{{ 'rob.export.robvisHint' | transloco }}</p>
+            } @else {
+              <p class="muted">{{ 'rob.export.langHint' | transloco }}</p>
+            }
+            <button
+              mat-flat-button
+              type="button"
+              [disabled]="busy() || (d.pending.length > 0 && !acknowledged)"
+              (click)="exportFile()"
+            >
+              {{ 'export.download' | transloco }}
+            </button>
+          </mat-card-content>
+        </mat-card>
       }
     }
   `,
@@ -258,6 +303,15 @@ export class RobTablePage implements OnInit, OnDestroy {
   protected timepoint: string | null = null;
   protected outputLang: 'pt-BR' | 'en' = 'pt-BR';
   protected acknowledged = false;
+  protected fileFormat: RobFormat = 'xlsx';
+  protected csvStyle: 'excel' | 'r' = 'excel';
+
+  /** robvis CSV only for the instruments robvis has a template for (ADR-013). */
+  protected readonly formats = computed<RobFormat[]>(() => {
+    const key = this.tools().find((t) => t.id === this.selectedTool())?.template_key;
+    const robvis = key === 'rob2' || key === 'robins_i_2016';
+    return robvis ? ['xlsx', 'docx', 'csv', 'robvis'] : ['xlsx', 'docx', 'csv'];
+  });
 
   protected readonly needsTarget = computed(() => {
     const tool = this.tools().find((t) => t.id === this.selectedTool());
@@ -381,6 +435,32 @@ export class RobTablePage implements OnInit, OnDestroy {
       this.clearPreview();
       this.previewKind.set(kind);
       this.previewUrl.set(URL.createObjectURL(response.body));
+    } catch (error) {
+      this.error.set(await withJsonBody(error));
+    } finally {
+      this.busy.set(false);
+    }
+  }
+
+  async exportFile(): Promise<void> {
+    if (!this.formats().includes(this.fileFormat)) this.fileFormat = 'xlsx';
+    this.busy.set(true);
+    this.error.set(null);
+    try {
+      const response = await this.api.invoke$Response(exportRiskOfBias, {
+        project_id: this.projectId(),
+        tool_id: this.toolId!,
+        outcome_id: this.needsTarget() ? this.outcomeId : null,
+        timepoint: this.needsTarget() ? this.timepoint : null,
+        file_format: this.fileFormat,
+        csv_style: this.csvStyle,
+        lang: this.outputLang,
+        acknowledge_missing: this.acknowledged,
+      });
+      saveFile(
+        response.body,
+        fileNameFrom(response.headers.get('content-disposition'), `rob.${this.fileFormat}`),
+      );
     } catch (error) {
       this.error.set(await withJsonBody(error));
     } finally {

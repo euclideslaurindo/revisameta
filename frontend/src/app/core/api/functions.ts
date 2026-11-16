@@ -163,6 +163,8 @@ export type { ExtractionExportStatus$Params as ExtractionExportStatus$Params } f
 export { extractionExportStatus as extractionExportStatus } from './fn/exports/extraction-export-status';
 export type { ExportExtraction$Params as ExportExtraction$Params } from './fn/exports/export-extraction';
 export { exportExtraction as exportExtraction } from './fn/exports/export-extraction';
+export type { ExportRiskOfBias$Params as ExportRiskOfBias$Params } from './fn/exports/export-risk-of-bias';
+export { exportRiskOfBias as exportRiskOfBias } from './fn/exports/export-risk-of-bias';
 export type { RobCatalog$Params as RobCatalog$Params } from './fn/risk-of-bias/rob-catalog';
 export { robCatalog as robCatalog } from './fn/risk-of-bias/rob-catalog';
 export type { ListRobTools$Params as ListRobTools$Params } from './fn/risk-of-bias/list-rob-tools';

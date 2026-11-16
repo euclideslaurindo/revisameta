@@ -1,3 +1,4 @@
+import uuid
 from typing import Annotated
 from urllib.parse import quote
 
@@ -5,7 +6,7 @@ from fastapi import APIRouter, Depends, Query, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_session
-from app.modules.exports import extraction
+from app.modules.exports import extraction, risk_of_bias
 from app.modules.projects.access import ProjectContext, member_access
 
 router = APIRouter(prefix="/projects/{project_id}/exports", tags=["exports"])
@@ -42,6 +43,35 @@ async def export_extraction(
         session,
         ctx,
         mode=mode,
+        fmt=file_format,
+        csv_style=csv_style,
+        lang=lang,
+        acknowledge_missing=acknowledge_missing,
+    )
+    disposition = f"attachment; filename=\"{name}\"; filename*=UTF-8''{quote(name)}"
+    return Response(content=content, media_type=media, headers={"Content-Disposition": disposition})
+
+
+@router.get("/risk-of-bias", response_class=Response, responses=FILE_RESPONSE)  # type: ignore[arg-type]
+async def export_risk_of_bias(
+    tool_id: uuid.UUID,
+    outcome_id: Annotated[uuid.UUID | None, Query()] = None,
+    timepoint: Annotated[str | None, Query(max_length=60)] = None,
+    file_format: Annotated[risk_of_bias.RobFormat, Query()] = risk_of_bias.RobFormat.XLSX,
+    csv_style: Annotated[extraction.CsvStyle, Query()] = extraction.CsvStyle.EXCEL,
+    lang: Annotated[str, Query(pattern="^(pt-BR|en)$")] = "pt-BR",
+    acknowledge_missing: Annotated[bool, Query()] = False,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> Response:
+    """Consolidated risk of bias as robvis CSV, CSV, XLSX or DOCX. Never leaves studies out
+    silently."""
+    content, name, media = await risk_of_bias.export(
+        session,
+        ctx,
+        tool_id=tool_id,
+        outcome_id=outcome_id,
+        timepoint=timepoint,
         fmt=file_format,
         csv_style=csv_style,
         lang=lang,

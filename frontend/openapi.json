@@ -4495,6 +4495,139 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/exports/risk-of-bias": {
+      "get": {
+        "tags": [
+          "exports"
+        ],
+        "summary": "Export Risk Of Bias",
+        "description": "Consolidated risk of bias as robvis CSV, CSV, XLSX or DOCX. Never leaves studies out\nsilently.",
+        "operationId": "export_risk_of_bias",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "tool_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Tool Id"
+            }
+          },
+          {
+            "name": "outcome_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Outcome Id"
+            }
+          },
+          {
+            "name": "timepoint",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 60
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Timepoint"
+            }
+          },
+          {
+            "name": "file_format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/RobFormat",
+              "default": "xlsx"
+            }
+          },
+          {
+            "name": "csv_style",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CsvStyle",
+              "default": "excel"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "pattern": "^(pt-BR|en)$",
+              "default": "pt-BR",
+              "title": "Lang"
+            }
+          },
+          {
+            "name": "acknowledge_missing",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Acknowledge Missing"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The exported file.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/projects/{project_id}/rob/catalog": {
       "get": {
         "tags": [
@@ -12451,6 +12584,16 @@
           "decided_at"
         ],
         "title": "RobDecisionOut"
+      },
+      "RobFormat": {
+        "type": "string",
+        "enum": [
+          "robvis",
+          "csv",
+          "xlsx",
+          "docx"
+        ],
+        "title": "RobFormat"
       },
       "RobItemOut": {
         "properties": {

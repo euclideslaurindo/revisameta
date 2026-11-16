@@ -131,6 +131,16 @@ Divergências encontradas nos documentos oficiais estão registradas em `source_
 - **Gráficos** (`POST /rob/plots`): semáforo ou resumo por domínio, em SVG ou PNG a 300 dpi, no idioma escolhido para a saída. Se algum estudo ficaria de fora, o gráfico só sai com confirmação explícita (`rob.plot_missing_studies`), e a resposta informa quantos ficaram de fora. Engine: ver ADR-013.
 - Respostas a perguntas puladas pelas regras do instrumento aparecem como "não se aplica".
 
+## Exportações (passo 5)
+- `GET /exports/risk-of-bias` (mesma tabela consolidada, mesmo instrumento e resultado):
+  - **XLSX**: abas Leia-me (projeto, instrumento e versão, resultado, data, origem dos dados, aviso de que JBI/NOS não têm nota total, estudos que ficaram de fora e por quê), Risco de viés, Legenda das colunas e Justificativas do consenso.
+  - **DOCX**: as mesmas informações, em paisagem, com as células coloridas e o texto do julgamento (nunca só a cor).
+  - **CSV**: só a tabela, para Excel em português (`;`, UTF-8 com BOM) ou para o R (`,`).
+  - **CSV do robvis**: formato de entrada do robvis (`Study, D1…Dn, Overall, Weight`), com os julgamentos nas palavras que o robvis espera, em inglês. Só para RoB 2 e ROBINS-I 2016, os instrumentos que o robvis desenha (ADR-013); nos outros, a exportação é recusada com uma mensagem clara.
+- **Nunca em silêncio** (lição L2): se algum estudo do instrumento não tem consenso enviado, o arquivo só sai com confirmação explícita (`rob.export_missing_studies`), e o leia-me lista quais ficaram de fora.
+- Os rótulos seguem o idioma escolhido para a saída, independente do idioma da tela (ADR-008).
+- Nova dependência: `python-docx` (MIT, mantida; já prevista na seção 3.2).
+
 ## Fora desta etapa
 - Uso na meta-análise (sensibilidade sem alto risco, subgrupo por risco de viés) → Etapas 3 e 4. Forest plot com semáforo → Etapa 4.
 - IA como segunda opinião (IA4) → Etapa 7.

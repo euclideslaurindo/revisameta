@@ -775,6 +775,20 @@
       "summary": "Summary by domain",
       "downloadSvg": "Download SVG",
       "downloadPng": "Download PNG (300 dpi)"
+    },
+    "export": {
+      "title": "Export the table",
+      "intro": "Uses the same language chosen for the plots. Studies without a submitted consensus are only left out with the confirmation above, and the file says which.",
+      "format": "Format",
+      "formats": {
+        "xlsx": "XLSX spreadsheet (with read-me, legend and justifications)",
+        "docx": "DOCX document",
+        "csv": "CSV",
+        "robvis": "CSV in the robvis format"
+      },
+      "robvisHint": "robvis input format (Study, D1…Dn, Overall, Weight), with the judgements in English, as robvis expects.",
+      "langHint": "Labels follow the language chosen for the plots.",
+      "csvStyle": "CSV type"
     }
   }
 }

@@ -775,6 +775,20 @@
       "summary": "Resumo por domínio",
       "downloadSvg": "Baixar SVG",
       "downloadPng": "Baixar PNG (300 dpi)"
+    },
+    "export": {
+      "title": "Exportar a tabela",
+      "intro": "Usa o mesmo idioma escolhido para os gráficos. Estudos sem consenso enviado só ficam de fora com a confirmação acima, e o arquivo diz quais foram.",
+      "format": "Formato",
+      "formats": {
+        "xlsx": "Planilha XLSX (com leia-me, legenda e justificativas)",
+        "docx": "Documento DOCX",
+        "csv": "CSV",
+        "robvis": "CSV no formato do robvis"
+      },
+      "robvisHint": "Formato de entrada do robvis (Study, D1…Dn, Overall, Weight), com os julgamentos em inglês, como o robvis espera.",
+      "langHint": "Os rótulos saem no idioma escolhido para os gráficos.",
+      "csvStyle": "Tipo de CSV"
     }
   }
 }

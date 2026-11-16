@@ -215,6 +215,7 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
         {"key": "overall", "choice": "a"},
     ),
     ("GET", "/api/v1/projects/{project_id}/rob/agreement", None),
+    ("GET", "/api/v1/projects/{project_id}/exports/risk-of-bias?tool_id={tool_id}", None),
     ("GET", "/api/v1/projects/{project_id}/rob/table?tool_id={tool_id}", None),
     (
         "POST",

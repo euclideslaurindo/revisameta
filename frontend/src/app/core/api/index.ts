@@ -119,6 +119,7 @@ export type { RobConsensusIn } from './models/rob-consensus-in';
 export type { RobConsensusRef } from './models/rob-consensus-ref';
 export type { RobDecideIn } from './models/rob-decide-in';
 export type { RobDecisionOut } from './models/rob-decision-out';
+export type { RobFormat } from './models/rob-format';
 export type { RobItemOut } from './models/rob-item-out';
 export type { RobProjectAgreementOut } from './models/rob-project-agreement-out';
 export type { RobReviewerOut } from './models/rob-reviewer-out';
@@ -314,6 +315,8 @@ export type { ExtractionExportStatus$Params as ExtractionExportStatus$Params } f
 export { extractionExportStatus as extractionExportStatus } from './fn/exports/extraction-export-status';
 export type { ExportExtraction$Params as ExportExtraction$Params } from './fn/exports/export-extraction';
 export { exportExtraction as exportExtraction } from './fn/exports/export-extraction';
+export type { ExportRiskOfBias$Params as ExportRiskOfBias$Params } from './fn/exports/export-risk-of-bias';
+export { exportRiskOfBias as exportRiskOfBias } from './fn/exports/export-risk-of-bias';
 export type { RobCatalog$Params as RobCatalog$Params } from './fn/risk-of-bias/rob-catalog';
 export { robCatalog as robCatalog } from './fn/risk-of-bias/rob-catalog';
 export type { ListRobTools$Params as ListRobTools$Params } from './fn/risk-of-bias/list-rob-tools';
