@@ -10,7 +10,7 @@ from app.core.errors import AppError
 from app.db.session import get_session
 from app.integrations.stats_client import StatsClient, get_stats_client
 from app.modules.projects.access import ProjectContext, admin_access, member_access
-from app.modules.risk_of_bias import assessments, consensus, consolidated, importer, tools
+from app.modules.risk_of_bias import assessments, consensus, consolidated, importer, review, tools
 from app.modules.studies.importer import MAX_FILE_BYTES as MAX_IMPORT_BYTES
 from app.modules.studies.importer import ImportReport
 
@@ -307,3 +307,55 @@ async def run_rob_import(
         mapping=parsed,
         dry_run=dry_run,
     )
+
+
+# ---- Review and stage lock -----------------------------------------------------------
+
+
+@router.get("/review")
+async def rob_review(
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> review.RobReviewOut:
+    """Where every study stands, and whether the stage can be locked."""
+    return await review.review(session, ctx)
+
+
+@router.post("/review/lock")
+async def lock_rob(
+    ctx: ProjectContext = Depends(admin_access),
+    session: AsyncSession = Depends(get_session),
+) -> review.RobReviewOut:
+    """Locks the risk-of-bias stage once every study is finished."""
+    return await review.lock(session, ctx)
+
+
+@router.post("/review/unlock")
+async def unlock_rob(
+    body: review.JustificationIn,
+    ctx: ProjectContext = Depends(admin_access),
+    session: AsyncSession = Depends(get_session),
+) -> review.RobReviewOut:
+    return await review.unlock(session, ctx, body)
+
+
+@router.post("/assessments/{assessment_id}/reopen")
+async def reopen_rob_consensus(
+    assessment_id: uuid.UUID,
+    body: review.JustificationIn,
+    ctx: ProjectContext = Depends(admin_access),
+    session: AsyncSession = Depends(get_session),
+) -> review.RobReviewOut:
+    """Puts a submitted consensus back to draft to correct it (justified)."""
+    return await review.reopen(session, ctx, assessment_id, body)
+
+
+@router.post("/assessments/{assessment_id}/discard-import")
+async def discard_rob_import(
+    assessment_id: uuid.UUID,
+    body: review.JustificationIn,
+    ctx: ProjectContext = Depends(admin_access),
+    session: AsyncSession = Depends(get_session),
+) -> review.RobReviewOut:
+    """Discards an imported assessment (soft delete) so it can be imported again."""
+    return await review.discard_import(session, ctx, assessment_id, body)

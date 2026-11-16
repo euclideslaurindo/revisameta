@@ -44,6 +44,9 @@ import { RobToolEditor, localized } from './rob-tool-editor';
         <a mat-flat-button [routerLink]="['/projetos', projectId(), 'risco-de-vies', 'tabela']">
           {{ 'rob.table.open' | transloco }}
         </a>
+        <a mat-stroked-button [routerLink]="['/projetos', projectId(), 'risco-de-vies', 'revisao']">
+          {{ 'rob.review.open' | transloco }}
+        </a>
         @if (isAdmin()) {
           <a
             mat-stroked-button

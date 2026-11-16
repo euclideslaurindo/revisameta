@@ -47,6 +47,21 @@ As lacunas do passo 4 foram fechadas em 2026-11-14: editor do formulário de car
 Templates configuráveis (ROBINS-I, RoB 2, JBI, NOS, genérico), dupla avaliação cega, conflitos, consenso, tabela consolidada, gráficos robvis (versão fixada do GitHub, com "Sem informação" testado), solução para JBI/NOS, exportações, importação da tabela consolidada já existente.
 *Saída:* a avaliação de um estudo feita à mão bate com a do sistema; os gráficos saem iguais aos do robvis web com os mesmos dados; a planilha atual do grupo é importada sem perda.
 
+**Etapa 2 — implementação concluída em 2026-11-16; faltam as conferências com o grupo.**
+
+| Critério | Situação |
+|---|---|
+| Templates ROBINS-I (2016 e V2), RoB 2, ROBINS-E, JBI (todos os desenhos), NOS e genérico, com versão registrada | `tests/test_rob_tools.py`; estrutura sem o texto oficial (regra 0.1.7) |
+| Algoritmos oficiais de julgamento por domínio e geral | `tests/test_rob_algorithm.py`: caminhos de cada fluxograma e sorteio de respostas para as regras de "pular pergunta" |
+| Dupla avaliação cega, conflitos, consenso e kappa | `tests/test_rob_assessments.py`, `tests/test_rob_consensus.py`; kappa contra o `irr` em `stats-r/tests/testthat/test-kappa.R` |
+| Tabela consolidada e gráficos (robvis fixado; "Sem informação" e "Grave" juntos; muitos estudos e nomes longos) | `tests/test_rob_consolidated.py`, `stats-r/tests/testthat/test-rob-plots.R`; JBI/NOS/ROBINS-I V2/ROBINS-E no ADR-013 |
+| Exportações (CSV do robvis, CSV, XLSX, DOCX), nunca em branco em silêncio | `tests/test_rob_exports.py` |
+| Importação da tabela consolidada existente | `tests/test_rob_import.py` |
+| Revisão e trava da etapa | `tests/test_rob_review.py` |
+| A avaliação de um estudo feita à mão bate com a do sistema | **Pendente:** os algoritmos já batem com os exemplos dos manuais; falta conferir um estudo real com o grupo |
+| Os gráficos saem iguais aos do robvis web com os mesmos dados | **Parcial:** RoB 2 e ROBINS-I 2016 são desenhados pelo próprio robvis (template `Generic`, com rótulos traduzidos); falta comparar lado a lado com o robvis web usando uma tabela do grupo. Os demais instrumentos usam o gráfico próprio do ADR-013 |
+| A planilha atual do grupo é importada sem perda | **Pendente:** depende do arquivo do grupo (pergunta 17.5) |
+
 **Etapa 3 — Meta-análise (P0)**
 Serviço R completo (8.3), conversões, combinação de braços, blocos B e E de 7.5.1 (detector de EP, recálculo de p/IC, influência), assistente passo a passo, regras de ponto de corte, forest plot, intervalo de predição, histórico de análises com marcação de "desatualizada", script R exportável, Modo Aprendizado na tela de resultados.
 *Saída:* todos os testes de referência (11.1) passam; o script exportado reproduz os números em um R limpo; o detector acusa os casos sintéticos de EP digitado como DP.

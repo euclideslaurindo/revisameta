@@ -812,6 +812,37 @@
         "overall_justification": "Justificativa do julgamento geral"
       },
       "done": "{{created}} avaliação(ões) importada(s). Elas aparecem como importadas na tabela e nas exportações."
+    },
+    "review": {
+      "open": "Revisão e trava da etapa",
+      "title": "Revisão do risco de viés",
+      "intro": "Antes de travar a etapa, confira onde cada estudo está. A etapa só trava com todos os estudos concluídos: instrumento confirmado, pelo menos uma avaliação final (consenso enviado ou importação) e nada pela metade. Travada, nenhuma resposta ou julgamento pode ser alterado.",
+      "progress": "{{ready}} de {{total}} estudo(s) concluído(s).",
+      "locked": "O risco de viés está travado: nada pode ser alterado. Para corrigir algo, destrave com uma justificativa.",
+      "lock": "Travar o risco de viés",
+      "unlock": "Destravar o risco de viés",
+      "unlockReason": "Por que destravar?",
+      "lockHint": "O botão fica disponível quando todos os estudos estiverem concluídos.",
+      "reopen": "Reabrir o consenso para corrigir",
+      "discard": "Descartar a importação",
+      "why": "Por quê? (fica no histórico)",
+      "history": "Histórico da etapa",
+      "state": {
+        "ready": "concluído",
+        "no_tool": "sem instrumento confirmado",
+        "no_assessment": "nenhuma avaliação",
+        "in_progress": "em andamento"
+      },
+      "target": {
+        "done": "avaliação final pronta",
+        "consensus_pending": "falta o consenso",
+        "in_progress": "avaliações individuais em andamento"
+      },
+      "action": {
+        "lock": "Risco de viés travado",
+        "unlock": "Risco de viés destravado",
+        "reopen": "Consenso reaberto ou importação descartada"
+      }
     }
   }
 }

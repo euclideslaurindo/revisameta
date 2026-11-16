@@ -812,6 +812,37 @@
         "overall_justification": "Justification of the overall judgement"
       },
       "done": "{{created}} assessment(s) imported. They show as imported in the table and in the exports."
+    },
+    "review": {
+      "open": "Stage review and lock",
+      "title": "Risk-of-bias review",
+      "intro": "Before locking the stage, check where every study stands. The stage only locks with every study finished: instrument confirmed, at least one final assessment (submitted consensus or import) and nothing half done. Once locked, no answer or judgement can change.",
+      "progress": "{{ready}} of {{total}} study(ies) finished.",
+      "locked": "Risk of bias is locked: nothing can change. To fix something, unlock it with a justification.",
+      "lock": "Lock risk of bias",
+      "unlock": "Unlock risk of bias",
+      "unlockReason": "Why unlock?",
+      "lockHint": "The button becomes available when every study is finished.",
+      "reopen": "Reopen the consensus to fix it",
+      "discard": "Discard the import",
+      "why": "Why? (kept in the history)",
+      "history": "Stage history",
+      "state": {
+        "ready": "finished",
+        "no_tool": "no confirmed instrument",
+        "no_assessment": "no assessment",
+        "in_progress": "in progress"
+      },
+      "target": {
+        "done": "final assessment ready",
+        "consensus_pending": "consensus missing",
+        "in_progress": "individual assessments in progress"
+      },
+      "action": {
+        "lock": "Risk of bias locked",
+        "unlock": "Risk of bias unlocked",
+        "reopen": "Consensus reopened or import discarded"
+      }
     }
   }
 }

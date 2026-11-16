@@ -149,6 +149,11 @@ Divergências encontradas nos documentos oficiais estão registradas em `source_
 - **Resultado:** avaliações `kind = imported`, enviadas, sem perguntas sinalizadoras (exceto as respostas dos checklists). Aparecem como "importada" na tabela e nas exportações e ficam na auditoria.
 - **Limitação conhecida:** num checklist com perguntas por desfecho (JBI), cada estudo é importado para um único desfecho e momento.
 
+## Revisão e trava (passo 7)
+- `GET /rob/review` mostra cada estudo: instrumento confirmado e, para o estudo ou cada resultado avaliado, se a avaliação final está pronta, se falta o consenso ou se as avaliações individuais estão em andamento.
+- **Trava** (`POST /rob/review/lock`, só admin): exige todos os estudos concluídos, ou seja, instrumento confirmado, pelo menos uma avaliação final (consenso enviado ou importação) e nada pela metade. As avaliações finais passam a `locked`, e toda escrita da etapa é recusada (`stage.locked`). **Destravar** exige justificativa.
+- Com a etapa aberta, o admin pode **reabrir um consenso** enviado para corrigir, ou **descartar uma importação** (soft delete) para importar de novo. As duas ações exigem justificativa e ficam no histórico da etapa.
+
 ## Fora desta etapa
 - Uso na meta-análise (sensibilidade sem alto risco, subgrupo por risco de viés) → Etapas 3 e 4. Forest plot com semáforo → Etapa 4.
 - IA como segunda opinião (IA4) → Etapa 7.

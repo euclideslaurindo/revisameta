@@ -211,6 +211,16 @@ export type { PreviewRobImport$Params as PreviewRobImport$Params } from './fn/ri
 export { previewRobImport as previewRobImport } from './fn/risk-of-bias/preview-rob-import';
 export type { RunRobImport$Params as RunRobImport$Params } from './fn/risk-of-bias/run-rob-import';
 export { runRobImport as runRobImport } from './fn/risk-of-bias/run-rob-import';
+export type { RobReview$Params as RobReview$Params } from './fn/risk-of-bias/rob-review';
+export { robReview as robReview } from './fn/risk-of-bias/rob-review';
+export type { LockRob$Params as LockRob$Params } from './fn/risk-of-bias/lock-rob';
+export { lockRob as lockRob } from './fn/risk-of-bias/lock-rob';
+export type { UnlockRob$Params as UnlockRob$Params } from './fn/risk-of-bias/unlock-rob';
+export { unlockRob as unlockRob } from './fn/risk-of-bias/unlock-rob';
+export type { ReopenRobConsensus$Params as ReopenRobConsensus$Params } from './fn/risk-of-bias/reopen-rob-consensus';
+export { reopenRobConsensus as reopenRobConsensus } from './fn/risk-of-bias/reopen-rob-consensus';
+export type { DiscardRobImport$Params as DiscardRobImport$Params } from './fn/risk-of-bias/discard-rob-import';
+export { discardRobImport as discardRobImport } from './fn/risk-of-bias/discard-rob-import';
 export type { MyUsage$Params as MyUsage$Params } from './fn/quotas/my-usage';
 export { myUsage as myUsage } from './fn/quotas/my-usage';
 export type { UserUsage$Params as UserUsage$Params } from './fn/quotas/user-usage';

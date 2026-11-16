@@ -6095,6 +6095,300 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/rob/review": {
+      "get": {
+        "tags": [
+          "risk_of_bias"
+        ],
+        "summary": "Rob Review",
+        "description": "Where every study stands, and whether the stage can be locked.",
+        "operationId": "rob_review",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RobReviewOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/rob/review/lock": {
+      "post": {
+        "tags": [
+          "risk_of_bias"
+        ],
+        "summary": "Lock Rob",
+        "description": "Locks the risk-of-bias stage once every study is finished.",
+        "operationId": "lock_rob",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RobReviewOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/rob/review/unlock": {
+      "post": {
+        "tags": [
+          "risk_of_bias"
+        ],
+        "summary": "Unlock Rob",
+        "operationId": "unlock_rob",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JustificationIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RobReviewOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/rob/assessments/{assessment_id}/reopen": {
+      "post": {
+        "tags": [
+          "risk_of_bias"
+        ],
+        "summary": "Reopen Rob Consensus",
+        "description": "Puts a submitted consensus back to draft to correct it (justified).",
+        "operationId": "reopen_rob_consensus",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "assessment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Assessment Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JustificationIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RobReviewOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/rob/assessments/{assessment_id}/discard-import": {
+      "post": {
+        "tags": [
+          "risk_of_bias"
+        ],
+        "summary": "Discard Rob Import",
+        "description": "Discards an imported assessment (soft delete) so it can be imported again.",
+        "operationId": "discard_rob_import",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "assessment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Assessment Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/JustificationIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RobReviewOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/me/usage": {
       "get": {
         "tags": [
@@ -13048,6 +13342,50 @@
         ],
         "title": "RobProjectAgreementOut"
       },
+      "RobReviewOut": {
+        "properties": {
+          "locked": {
+            "type": "boolean",
+            "title": "Locked"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "ready": {
+            "type": "integer",
+            "title": "Ready"
+          },
+          "can_lock": {
+            "type": "boolean",
+            "title": "Can Lock"
+          },
+          "studies": {
+            "items": {
+              "$ref": "#/components/schemas/StudyReview"
+            },
+            "type": "array",
+            "title": "Studies"
+          },
+          "history": {
+            "items": {
+              "$ref": "#/components/schemas/StageEventOut"
+            },
+            "type": "array",
+            "title": "History"
+          }
+        },
+        "type": "object",
+        "required": [
+          "locked",
+          "total",
+          "ready",
+          "can_lock",
+          "studies",
+          "history"
+        ],
+        "title": "RobReviewOut"
+      },
       "RobReviewerOut": {
         "properties": {
           "assessment_id": {
@@ -13390,6 +13728,90 @@
         ],
         "title": "StudyOut"
       },
+      "StudyReview": {
+        "properties": {
+          "study_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Study Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "tool_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tool Id"
+          },
+          "tool_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tool Key"
+          },
+          "tool_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tool Version"
+          },
+          "tool_name": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "string"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tool Name"
+          },
+          "targets": {
+            "items": {
+              "$ref": "#/components/schemas/TargetState"
+            },
+            "type": "array",
+            "title": "Targets"
+          },
+          "state": {
+            "type": "string",
+            "title": "State"
+          }
+        },
+        "type": "object",
+        "required": [
+          "study_id",
+          "label",
+          "tool_id",
+          "tool_key",
+          "tool_version",
+          "tool_name",
+          "targets",
+          "state"
+        ],
+        "title": "StudyReview"
+      },
       "StudyToolIn": {
         "properties": {
           "tool_id": {
@@ -13635,6 +14057,81 @@
           "timepoints"
         ],
         "title": "TargetOut"
+      },
+      "TargetState": {
+        "properties": {
+          "outcome_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outcome Id"
+          },
+          "outcome_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outcome Name"
+          },
+          "timepoint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timepoint"
+          },
+          "state": {
+            "type": "string",
+            "title": "State"
+          },
+          "final_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Final Id"
+          },
+          "final_kind": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Final Kind"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome_id",
+          "outcome_name",
+          "timepoint",
+          "state",
+          "final_id",
+          "final_kind"
+        ],
+        "title": "TargetState"
       },
       "TextsIn": {
         "properties": {
