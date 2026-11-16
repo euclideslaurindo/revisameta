@@ -62,3 +62,23 @@
 | Vários braços → um grupo | n, média e DP combinados | Fórmula do Cochrane Handbook |
 | Efeito + IC (ex.: OR ajustado) | yᵢ e vᵢ | Log da medida; EP pela largura do IC na escala log (ver `conv.wald`) |
 | OR ↔ SMD | Para combinar contínuos e dicotômicos | P2, só com aprovação explícita e aviso |
+
+## Decisões da Etapa 3 (2026-11-16)
+- **Plano aprovado em 7 passos:**
+  1. Base estatística com fixtures.
+  2. Conversões e combinação de braços.
+  3. Plano de análise e regras no protocolo.
+  4. Montagem dos dados e bloqueios.
+  5. Assistente.
+  6. Blocos B e E de 7.5.1.
+  7. Histórico e script R.
+- **Hartung-Knapp sempre ligado por padrão** nos efeitos aleatórios (REML + `test = "knha"`), em qualquer número de estudos, sempre trocável e registrado na análise. Evita um corte arbitrário de "poucos estudos". No efeito fixo ele não se aplica: o serviço usa Wald e avisa (`knha_not_for_fixed_effect`).
+- **Efeito fixo:** `method = "EE"` do metafor (chamado de "FE" na API).
+- **Zero eventos nos dois grupos** (OR/RR): estudo fora do pooling (`drop00`), com o aviso `double_zero_excluded`. A correção de continuidade padrão do `escalc` (0,5 só nos estudos com célula zero) é avisada com `continuity_correction_applied`.
+- **Direção:** em MD, SMD e ROM, "maior é pior" inverte o sinal só no serviço R (`higher_is_better = false`), com o aviso `direction_inverted`.
+- **Avisos do metafor** nunca escapam como avisos soltos do R: viram códigos na resposta. O aviso do metafor sobre SMD muito grande aparece só uma vez por processo, então o detector de EP no lugar de DP (passo 6) não depende dele.
+- **Grupo 1** é o grupo experimental/exposto (ex.: cirurgia antes dos 5 anos) e o **grupo 2** é o de comparação.
+
+### Endpoints do passo 1
+- `POST /effect-sizes`: `yi`, `vi`, EP e IC 95% de cada estudo (`escalc`).
+- `POST /meta-analysis`: efeito combinado, EP, IC, estatística (t com Hartung-Knapp, z sem ele), valor p, intervalo de predição, τ², I², H², Q (gl e p), peso de cada estudo e, nas medidas de razão, os valores na escala original (exp). Com k < 2 não roda; com k < 5 avisa que a heterogeneidade é instável.

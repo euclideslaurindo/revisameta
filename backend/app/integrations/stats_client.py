@@ -89,6 +89,14 @@ class StatsClient:
         """% of equal codes and Cohen's kappa between two raters (irr, in R)."""
         return await self._request("POST", "/kappa", json={"rater_a": rater_a, "rater_b": rater_b})
 
+    async def effect_sizes(self, spec: dict[str, Any]) -> StatsResponse:
+        """Effect and variance of each study (metafor::escalc)."""
+        return await self._request("POST", "/effect-sizes", json=spec)
+
+    async def meta_analysis(self, spec: dict[str, Any]) -> StatsResponse:
+        """Pooled effect, heterogeneity and prediction interval (metafor::rma + predict)."""
+        return await self._request("POST", "/meta-analysis", json=spec)
+
     async def rob_plot(self, spec: dict[str, Any]) -> StatsResponse:
         """Risk-of-bias traffic light or summary (robvis, or ggplot2 with the same look)."""
         return await self._request("POST", "/rob-plots", json=spec)

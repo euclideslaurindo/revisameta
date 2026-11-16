@@ -79,8 +79,24 @@ jobs:
       S3_SECRET_KEY: test-secret-key
       S3_BUCKET: test-files
       UPLOAD_PART_SIZE_MB: "5"
+      # The statistical reference tests (11.1, item 3) call the real R service.
+      STATS_R_URL: http://localhost:8000
     steps:
       - uses: actions/checkout@v7.0.1
+      - uses: docker/setup-buildx-action@v4.4.1
+      - uses: docker/build-push-action@v7.4.0
+        with:
+          context: stats-r
+          target: runtime
+          tags: revisameta-stats-r:ci
+          load: true
+          cache-from: type=gha,scope=stats-r
+      - name: Start the R service
+        working-directory: .
+        run: |
+          docker run -d --name stats-r -p 8000:8000 revisameta-stats-r:ci
+          for i in $(seq 1 60); do curl -fsS http://localhost:8000/health && exit 0; sleep 2; done
+          docker logs stats-r; exit 1
       - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libmagic1
       - uses: astral-sh/setup-uv@v10.3.3
         with:

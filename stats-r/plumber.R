@@ -74,3 +74,37 @@ function(req, res) {
   }
   out
 }
+
+#* Effect and variance of each study (metafor::escalc), on the analysis scale.
+#* Body: { measure, data: {label, m1i... | ai, n1i, ci, n2i | yi, vi}, higher_is_better }
+#* @post /effect-sizes
+#* @serializer unboxedJSON list(digits = NA, na = "null")
+function(req, res) {
+  spec <- tryCatch(jsonlite::fromJSON(req$postBody, simplifyVector = FALSE), error = function(e) NULL)
+  if (is.null(spec)) {
+    res$status <- 422
+    return(envelope(errors = "body must be JSON"))
+  }
+  out <- effect_sizes_result(spec)
+  if (!isTRUE(out$ok)) {
+    res$status <- 422
+  }
+  out
+}
+
+#* Meta-analysis (metafor::rma + predict): pooled effect, heterogeneity, prediction interval.
+#* Body: { measure, method: REML|DL|PM|FE, test: knha|z, data, higher_is_better }
+#* @post /meta-analysis
+#* @serializer unboxedJSON list(digits = NA, na = "null")
+function(req, res) {
+  spec <- tryCatch(jsonlite::fromJSON(req$postBody, simplifyVector = FALSE), error = function(e) NULL)
+  if (is.null(spec)) {
+    res$status <- 422
+    return(envelope(errors = "body must be JSON"))
+  }
+  out <- meta_analysis(spec)
+  if (!isTRUE(out$ok)) {
+    res$status <- 422
+  }
+  out
+}
