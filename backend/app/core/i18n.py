@@ -22,6 +22,7 @@ MESSAGES: dict[Language, dict[str, str]] = {
             "Recarregue para ver a versão mais recente."
         ),
         "error.rate_limited": "Muitas tentativas. Aguarde um pouco e tente de novo.",
+        "error.stats_failed": "O serviço de estatística não conseguiu gerar o resultado.",
         "error.stats_unavailable": (
             "O serviço de estatística está fora do ar no momento. Nada foi salvo. "
             "Tente de novo em alguns minutos."
@@ -85,6 +86,8 @@ MESSAGES: dict[Language, dict[str, str]] = {
         "rob.not_a_conflict": "Este item não é um conflito entre os dois revisores.",
         "rob.reason_required": "Explique em poucas palavras por que o consenso é diferente dos dois revisores.",
         "rob.undecided_conflicts": "Ainda há {count} conflito(s) sem decisão. Decida todos antes de enviar o consenso.",
+        "rob.nothing_to_plot": "Nenhum estudo tem consenso enviado para este instrumento e resultado; não há o que desenhar.",
+        "rob.plot_missing_studies": "{count} estudo(s) ainda sem consenso enviado ficariam de fora do gráfico. Confirme para gerar mesmo assim.",
         "rob.incomplete": "Ainda faltam {count} item(ns) para enviar a avaliação.",
         "rob.unknown_template": "Este instrumento não existe no catálogo.",
         "rob.already_enabled": "Este instrumento, nesta versão, já está habilitado no projeto.",
@@ -159,6 +162,7 @@ MESSAGES: dict[Language, dict[str, str]] = {
             "Reload to see the latest version."
         ),
         "error.rate_limited": "Too many attempts. Please wait a moment and try again.",
+        "error.stats_failed": "The statistics service could not produce the result.",
         "error.stats_unavailable": (
             "The statistics service is unavailable right now. Nothing was saved. "
             "Please try again in a few minutes."
@@ -222,6 +226,8 @@ MESSAGES: dict[Language, dict[str, str]] = {
         "rob.not_a_conflict": "This item is not a conflict between the two reviewers.",
         "rob.reason_required": "Briefly explain why the consensus differs from both reviewers.",
         "rob.undecided_conflicts": "There are still {count} undecided conflict(s). Decide all of them before submitting the consensus.",
+        "rob.nothing_to_plot": "No study has a submitted consensus for this instrument and result; there is nothing to draw.",
+        "rob.plot_missing_studies": "{count} study(ies) without a submitted consensus would be left out of the plot. Confirm to draw it anyway.",
         "rob.incomplete": "There are still {count} item(s) to complete before submitting.",
         "rob.unknown_template": "This instrument is not in the catalog.",
         "rob.already_enabled": "This instrument, in this version, is already enabled in the project.",

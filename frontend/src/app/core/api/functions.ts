@@ -201,6 +201,10 @@ export type { DecideRobConflict$Params as DecideRobConflict$Params } from './fn/
 export { decideRobConflict as decideRobConflict } from './fn/risk-of-bias/decide-rob-conflict';
 export type { RobAgreement$Params as RobAgreement$Params } from './fn/risk-of-bias/rob-agreement';
 export { robAgreement as robAgreement } from './fn/risk-of-bias/rob-agreement';
+export type { RobTable$Params as RobTable$Params } from './fn/risk-of-bias/rob-table';
+export { robTable as robTable } from './fn/risk-of-bias/rob-table';
+export type { RobPlot$Params as RobPlot$Params } from './fn/risk-of-bias/rob-plot';
+export { robPlot as robPlot } from './fn/risk-of-bias/rob-plot';
 export type { MyUsage$Params as MyUsage$Params } from './fn/quotas/my-usage';
 export { myUsage as myUsage } from './fn/quotas/my-usage';
 export type { UserUsage$Params as UserUsage$Params } from './fn/quotas/user-usage';

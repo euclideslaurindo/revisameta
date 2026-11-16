@@ -125,6 +125,12 @@ Divergências encontradas nos documentos oficiais estão registradas em `source_
 - **Concordância** (R, `/kappa`): por par, % de itens iguais e kappa de Cohen sobre todos os itens (todos são categorias). No projeto, % e kappa só nos julgamentos (domínios e geral) de todos os pares. Se o R estiver fora do ar, a tela funciona e avisa.
 - **Visibilidade:** depois de criado, o consenso é visível a todos os membros; as avaliações individuais continuam cegas para os outros revisores.
 
+## Tabela consolidada e gráficos (passo 4)
+- **Tabela** (`GET /rob/table`): um quadro por instrumento. Estudos x domínios (RoB 2, ROBINS) ou estudos x perguntas (JBI, Newcastle-Ottawa, genérico), mais o julgamento geral. Instrumentos por resultado, e checklists com perguntas por desfecho, mostram um desfecho e um momento por vez.
+- **Só entra o consenso enviado** (ou a avaliação importada, passo 6). Os outros estudos aparecem numa lista à parte, com o motivo: nenhuma avaliação, avaliações em andamento ou consenso não enviado.
+- **Gráficos** (`POST /rob/plots`): semáforo ou resumo por domínio, em SVG ou PNG a 300 dpi, no idioma escolhido para a saída. Se algum estudo ficaria de fora, o gráfico só sai com confirmação explícita (`rob.plot_missing_studies`), e a resposta informa quantos ficaram de fora. Engine: ver ADR-013.
+- Respostas a perguntas puladas pelas regras do instrumento aparecem como "não se aplica".
+
 ## Fora desta etapa
 - Uso na meta-análise (sensibilidade sem alto risco, subgrupo por risco de viés) → Etapas 3 e 4. Forest plot com semáforo → Etapa 4.
 - IA como segunda opinião (IA4) → Etapa 7.

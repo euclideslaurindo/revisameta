@@ -1,12 +1,14 @@
 import uuid
+from typing import Annotated
+from urllib.parse import quote
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Query, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_session
 from app.integrations.stats_client import StatsClient, get_stats_client
 from app.modules.projects.access import ProjectContext, admin_access, member_access
-from app.modules.risk_of_bias import assessments, consensus, tools
+from app.modules.risk_of_bias import assessments, consensus, consolidated, tools
 
 router = APIRouter(prefix="/projects/{project_id}/rob", tags=["risk_of_bias"])
 
@@ -207,3 +209,43 @@ async def rob_agreement(
 ) -> consensus.RobProjectAgreementOut:
     """Agreement between reviewers on domain and overall judgements (% and kappa)."""
     return await consensus.project_agreement(session, ctx, stats)
+
+
+# ---- Consolidated table and plots ----------------------------------------------------
+
+FILE_RESPONSE = {
+    200: {
+        "description": "The figure.",
+        "content": {"application/octet-stream": {"schema": {"type": "string", "format": "binary"}}},
+    }
+}
+
+
+@router.get("/table")
+async def rob_table(
+    tool_id: uuid.UUID,
+    outcome_id: Annotated[uuid.UUID | None, Query()] = None,
+    timepoint: Annotated[str | None, Query(max_length=60)] = None,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> consolidated.TableOut:
+    """Studies x domains (or questions) from submitted consensus assessments."""
+    return await consolidated.table(session, ctx, tool_id, outcome_id, timepoint)
+
+
+@router.post("/plots", response_class=Response, responses=FILE_RESPONSE)  # type: ignore[arg-type]
+async def rob_plot(
+    body: consolidated.PlotIn,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+    stats: StatsClient = Depends(get_stats_client),
+) -> Response:
+    """Traffic light or summary plot (SVG, or PNG at 300 dpi), drawn by the R service."""
+    content, media, left_out = await consolidated.plot(session, ctx, stats, body)
+    name = consolidated.plot_file_name(ctx, body)
+    disposition = f"attachment; filename=\"{name}\"; filename*=UTF-8''{quote(name)}"
+    return Response(
+        content=content,
+        media_type=media,
+        headers={"Content-Disposition": disposition, "X-Left-Out-Studies": str(len(left_out))},
+    )

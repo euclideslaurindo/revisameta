@@ -53,3 +53,24 @@ function(req, res) {
   }
   out
 }
+
+#* Risk-of-bias traffic light or summary plot (robvis, or ggplot2 with the same look).
+#* Body: { kind, format, overall, columns: [{key, short, name}], levels: [{key, label}],
+#*        studies: [{label, values: {column: level}, overall}], texts: {...} }
+#* @post /rob-plots
+#* @serializer unboxedJSON list(digits = NA, na = "null")
+function(req, res) {
+  spec <- tryCatch(
+    jsonlite::fromJSON(req$postBody, simplifyVector = FALSE),
+    error = function(e) NULL
+  )
+  if (is.null(spec)) {
+    res$status <- 422
+    return(envelope(errors = "body must be JSON"))
+  }
+  out <- rob_plot(spec)
+  if (!isTRUE(out$ok)) {
+    res$status <- 422
+  }
+  out
+}

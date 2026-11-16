@@ -89,6 +89,10 @@ class StatsClient:
         """% of equal codes and Cohen's kappa between two raters (irr, in R)."""
         return await self._request("POST", "/kappa", json={"rater_a": rater_a, "rater_b": rater_b})
 
+    async def rob_plot(self, spec: dict[str, Any]) -> StatsResponse:
+        """Risk-of-bias traffic light or summary (robvis, or ggplot2 with the same look)."""
+        return await self._request("POST", "/rob-plots", json=spec)
+
 
 def get_stats_client() -> StatsClient:
     return StatsClient()

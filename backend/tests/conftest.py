@@ -190,6 +190,8 @@ from app.integrations.stats_client import StatsClient, get_stats_client  # noqa:
 
 META = {"r_version": "4.6.2", "packages": {"irr": "0.85"}, "params": {}}
 # Canned answer of the fake R service (not a computed value).
+# A tiny placeholder figure returned by the fake /rob-plots (base64 of "<svg/>").
+FAKE_SVG_BASE64 = "PHN2Zy8+"
 FAKE_KAPPA = {"items": 0, "agreeing_items": 0, "agreement_percent": 50.0, "kappa": 0.25}
 
 
@@ -203,6 +205,11 @@ class FakeR:
             raise httpx.ConnectError("R is down")
         body = json.loads(request.content)
         self.calls.append(body)
+        if request.url.path == "/rob-plots":
+            result = {"content_type": "image/svg+xml", "file_base64": FAKE_SVG_BASE64}
+            return httpx.Response(
+                200, json={"ok": True, "result": result, "warnings": [], "errors": [], "meta": META}
+            )
         n = len(body["rater_a"])
         agreeing = sum(1 for a, b in zip(body["rater_a"], body["rater_b"], strict=True) if a == b)
         result = {**FAKE_KAPPA, "items": n, "agreeing_items": agreeing}

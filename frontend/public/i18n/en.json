@@ -749,6 +749,32 @@
         "b": "Decided by {{name}}: reviewer B’s answer.",
         "consensus": "Decided by {{name}}: value edited in the consensus."
       }
+    },
+    "table": {
+      "open": "Consolidated table and plots",
+      "back": "Risk of bias",
+      "title": "Consolidated risk-of-bias table",
+      "intro": "One table per instrument, built only from submitted consensus assessments. Instruments assessed per result show one outcome and time point at a time.",
+      "tool": "Instrument",
+      "study": "Study",
+      "imported": "imported",
+      "empty": "No study has a submitted consensus for this instrument and result.",
+      "pending": "{{count}} study(ies) are not yet in the table or the plots:",
+      "reason": {
+        "no_assessment": "no assessment started",
+        "in_progress": "individual assessments in progress",
+        "consensus_pending": "consensus not submitted yet"
+      }
+    },
+    "plots": {
+      "title": "Plots (robvis)",
+      "intro": "Drawn by the R service with robvis, or with the same look when robvis has no template for the instrument (JBI, Newcastle-Ottawa, ROBINS-I V2, ROBINS-E). The plot’s language does not depend on the screen language.",
+      "lang": "Plot language",
+      "acknowledge": "Draw anyway, leaving out {{count}} study(ies) without a submitted consensus",
+      "traffic_light": "Traffic light",
+      "summary": "Summary by domain",
+      "downloadSvg": "Download SVG",
+      "downloadPng": "Download PNG (300 dpi)"
     }
   }
 }

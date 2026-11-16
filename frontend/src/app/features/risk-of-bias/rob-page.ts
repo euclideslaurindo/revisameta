@@ -3,6 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterLink } from '@angular/router';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 import { Api } from '../../core/api/api';
@@ -23,6 +24,7 @@ import { RobToolEditor, localized } from './rob-tool-editor';
 @Component({
   selector: 'rm-rob-page',
   imports: [
+    RouterLink,
     TranslocoPipe,
     MatButtonModule,
     MatCardModule,
@@ -37,6 +39,13 @@ import { RobToolEditor, localized } from './rob-tool-editor';
       <span class="term" tabindex="0" [matTooltip]="'glossary.riskOfBias' | transloco">?</span>
     </p>
     <rm-form-error [error]="error()" />
+    @if (tools().length) {
+      <p>
+        <a mat-flat-button [routerLink]="['/projetos', projectId(), 'risco-de-vies', 'tabela']">
+          {{ 'rob.table.open' | transloco }}
+        </a>
+      </p>
+    }
 
     <mat-card class="block">
       <mat-card-header>

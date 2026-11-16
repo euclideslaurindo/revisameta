@@ -749,6 +749,32 @@
         "b": "Decidido por {{name}}: resposta do revisor B.",
         "consensus": "Decidido por {{name}}: valor editado no consenso."
       }
+    },
+    "table": {
+      "open": "Tabela consolidada e gráficos",
+      "back": "Risco de viés",
+      "title": "Tabela consolidada de risco de viés",
+      "intro": "Um quadro por instrumento, montado só com os consensos enviados. Instrumentos avaliados por resultado mostram um desfecho e um momento por vez.",
+      "tool": "Instrumento",
+      "study": "Estudo",
+      "imported": "importada",
+      "empty": "Nenhum estudo tem consenso enviado para este instrumento e resultado.",
+      "pending": "{{count}} estudo(s) ainda não entram na tabela nem nos gráficos:",
+      "reason": {
+        "no_assessment": "nenhuma avaliação iniciada",
+        "in_progress": "avaliações individuais em andamento",
+        "consensus_pending": "consenso ainda não enviado"
+      }
+    },
+    "plots": {
+      "title": "Gráficos (robvis)",
+      "intro": "Gerados pelo serviço R com o robvis, ou com o mesmo visual quando o robvis não tem modelo para o instrumento (JBI, Newcastle-Ottawa, ROBINS-I V2, ROBINS-E). O idioma do gráfico não depende do idioma da tela.",
+      "lang": "Idioma do gráfico",
+      "acknowledge": "Gerar mesmo assim, deixando de fora {{count}} estudo(s) sem consenso enviado",
+      "traffic_light": "Semáforo",
+      "summary": "Resumo por domínio",
+      "downloadSvg": "Baixar SVG",
+      "downloadPng": "Baixar PNG (300 dpi)"
     }
   }
 }

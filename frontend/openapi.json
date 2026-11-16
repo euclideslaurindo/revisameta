@@ -5691,6 +5691,159 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/rob/table": {
+      "get": {
+        "tags": [
+          "risk_of_bias"
+        ],
+        "summary": "Rob Table",
+        "description": "Studies x domains (or questions) from submitted consensus assessments.",
+        "operationId": "rob_table",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "tool_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Tool Id"
+            }
+          },
+          {
+            "name": "outcome_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Outcome Id"
+            }
+          },
+          {
+            "name": "timepoint",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 60
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Timepoint"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TableOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/rob/plots": {
+      "post": {
+        "tags": [
+          "risk_of_bias"
+        ],
+        "summary": "Rob Plot",
+        "description": "Traffic light or summary plot (SVG, or PNG at 300 dpi), drawn by the R service.",
+        "operationId": "rob_plot",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlotIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The figure.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/me/usage": {
       "get": {
         "tags": [
@@ -7322,6 +7475,37 @@
           "characteristics"
         ],
         "title": "CharacteristicsUpdate"
+      },
+      "ColumnOut": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "short": {
+            "type": "string",
+            "title": "Short"
+          },
+          "name": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Name"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "short",
+          "name",
+          "kind"
+        ],
+        "title": "ColumnOut"
       },
       "ComparisonOut": {
         "properties": {
@@ -10869,6 +11053,100 @@
         ],
         "title": "PendingAlert"
       },
+      "PendingOut": {
+        "properties": {
+          "study_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Study Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "study_id",
+          "label",
+          "reason"
+        ],
+        "title": "PendingOut"
+      },
+      "PlotIn": {
+        "properties": {
+          "tool_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Tool Id"
+          },
+          "outcome_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outcome Id"
+          },
+          "timepoint": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 60
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timepoint"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "traffic_light",
+              "summary"
+            ],
+            "title": "Kind"
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "svg",
+              "png"
+            ],
+            "title": "Format"
+          },
+          "lang": {
+            "type": "string",
+            "enum": [
+              "pt-BR",
+              "en"
+            ],
+            "title": "Lang",
+            "default": "pt-BR"
+          },
+          "acknowledge_missing": {
+            "type": "boolean",
+            "title": "Acknowledge Missing",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "tool_id",
+          "kind",
+          "format"
+        ],
+        "title": "PlotIn"
+      },
       "Preview": {
         "properties": {
           "columns": {
@@ -12464,6 +12742,63 @@
         ],
         "title": "RowError"
       },
+      "RowOut": {
+        "properties": {
+          "study_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Study Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "assessment_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Assessment Id"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "values": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Values"
+          },
+          "overall": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overall"
+          }
+        },
+        "type": "object",
+        "required": [
+          "study_id",
+          "label",
+          "assessment_id",
+          "kind",
+          "values",
+          "overall"
+        ],
+        "title": "RowOut"
+      },
       "SearchHit": {
         "properties": {
           "page": {
@@ -12775,6 +13110,82 @@
           "version"
         ],
         "title": "StudyUpdate"
+      },
+      "TableOut": {
+        "properties": {
+          "tool_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Tool Id"
+          },
+          "outcome_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outcome Id"
+          },
+          "timepoint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timepoint"
+          },
+          "needs_target": {
+            "type": "boolean",
+            "title": "Needs Target"
+          },
+          "columns": {
+            "items": {
+              "$ref": "#/components/schemas/ColumnOut"
+            },
+            "type": "array",
+            "title": "Columns"
+          },
+          "levels": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Levels"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/RowOut"
+            },
+            "type": "array",
+            "title": "Rows"
+          },
+          "pending": {
+            "items": {
+              "$ref": "#/components/schemas/PendingOut"
+            },
+            "type": "array",
+            "title": "Pending"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tool_id",
+          "outcome_id",
+          "timepoint",
+          "needs_target",
+          "columns",
+          "levels",
+          "rows",
+          "pending"
+        ],
+        "title": "TableOut"
       },
       "TargetOut": {
         "properties": {
