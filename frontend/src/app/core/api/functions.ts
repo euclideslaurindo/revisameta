@@ -207,6 +207,10 @@ export type { RobTable$Params as RobTable$Params } from './fn/risk-of-bias/rob-t
 export { robTable as robTable } from './fn/risk-of-bias/rob-table';
 export type { RobPlot$Params as RobPlot$Params } from './fn/risk-of-bias/rob-plot';
 export { robPlot as robPlot } from './fn/risk-of-bias/rob-plot';
+export type { PreviewRobImport$Params as PreviewRobImport$Params } from './fn/risk-of-bias/preview-rob-import';
+export { previewRobImport as previewRobImport } from './fn/risk-of-bias/preview-rob-import';
+export type { RunRobImport$Params as RunRobImport$Params } from './fn/risk-of-bias/run-rob-import';
+export { runRobImport as runRobImport } from './fn/risk-of-bias/run-rob-import';
 export type { MyUsage$Params as MyUsage$Params } from './fn/quotas/my-usage';
 export { myUsage as myUsage } from './fn/quotas/my-usage';
 export type { UserUsage$Params as UserUsage$Params } from './fn/quotas/user-usage';

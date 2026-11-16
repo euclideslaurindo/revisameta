@@ -5977,6 +5977,124 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/rob/imports/preview": {
+      "post": {
+        "tags": [
+          "risk_of_bias"
+        ],
+        "summary": "Preview Rob Import",
+        "description": "Columns, a sample and a suggested mapping to the instrument's columns. Nothing is saved.",
+        "operationId": "preview_rob_import",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_preview_rob_import"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RobPreview"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/rob/imports": {
+      "post": {
+        "tags": [
+          "risk_of_bias"
+        ],
+        "summary": "Run Rob Import",
+        "description": "Validates every row; with dry_run=false creates the imported assessments.",
+        "operationId": "run_rob_import",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_run_rob_import"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ImportReport"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/me/usage": {
       "get": {
         "tags": [
@@ -7501,6 +7619,26 @@
         ],
         "title": "Body_preview_import"
       },
+      "Body_preview_rob_import": {
+        "properties": {
+          "tool_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Tool Id"
+          },
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tool_id",
+          "file"
+        ],
+        "title": "Body_preview_rob_import"
+      },
       "Body_run_import": {
         "properties": {
           "file": {
@@ -7525,6 +7663,61 @@
           "mapping"
         ],
         "title": "Body_run_import"
+      },
+      "Body_run_rob_import": {
+        "properties": {
+          "tool_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Tool Id"
+          },
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          },
+          "mapping": {
+            "type": "string",
+            "title": "Mapping",
+            "description": "JSON: {\"study\": \"Column\", \"overall\": \"Column\", ...}"
+          },
+          "outcome_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Outcome Id"
+          },
+          "timepoint": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 60
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timepoint"
+          },
+          "dry_run": {
+            "type": "boolean",
+            "title": "Dry Run",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "tool_id",
+          "file",
+          "mapping"
+        ],
+        "title": "Body_run_rob_import"
       },
       "CatalogItem": {
         "properties": {
@@ -12764,6 +12957,61 @@
         ],
         "title": "RobItemOut"
       },
+      "RobPreview": {
+        "properties": {
+          "columns": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Columns"
+          },
+          "sample": {
+            "items": {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "title": "Sample"
+          },
+          "row_count": {
+            "type": "integer",
+            "title": "Row Count"
+          },
+          "targets": {
+            "items": {
+              "$ref": "#/components/schemas/TargetColumn"
+            },
+            "type": "array",
+            "title": "Targets"
+          },
+          "suggested_mapping": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Suggested Mapping"
+          }
+        },
+        "type": "object",
+        "required": [
+          "columns",
+          "sample",
+          "row_count",
+          "targets",
+          "suggested_mapping"
+        ],
+        "title": "RobPreview"
+      },
       "RobProjectAgreementOut": {
         "properties": {
           "pairs": {
@@ -13329,6 +13577,37 @@
           "pending"
         ],
         "title": "TableOut"
+      },
+      "TargetColumn": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "short": {
+            "type": "string",
+            "title": "Short"
+          },
+          "name": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Name"
+          },
+          "required": {
+            "type": "boolean",
+            "title": "Required"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "short",
+          "name",
+          "required"
+        ],
+        "title": "TargetColumn"
       },
       "TargetOut": {
         "properties": {

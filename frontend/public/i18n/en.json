@@ -222,6 +222,14 @@
     "study": {
       "duplicate_label": "A study with this name already exists in the project.",
       "duplicate_doi": "An article with this DOI already exists in the project."
+    },
+    "rob_import": {
+      "unknown_study": "No study in the project has this name. Register the study first or fix the name.",
+      "duplicate_study": "This study appears more than once in the file.",
+      "other_tool": "This study already uses another risk-of-bias instrument.",
+      "already_assessed": "This study already has a consensus or an import for this result; nothing was overwritten.",
+      "missing_value": "Empty cell in a required item.",
+      "unknown_value": "Value not recognised for this instrument. Use one of its levels (in Portuguese, English or as robvis writes them)."
     }
   },
   "pdfs": {
@@ -789,6 +797,21 @@
       "robvisHint": "robvis input format (Study, D1…Dn, Overall, Weight), with the judgements in English, as robvis expects.",
       "langHint": "Labels follow the language chosen for the plots.",
       "csvStyle": "CSV type"
+    },
+    "import": {
+      "open": "Import existing table",
+      "title": "Import the group's risk-of-bias table",
+      "intro": "For projects already under way: the group's consolidated table (robvis format or any CSV/XLSX) becomes assessments marked as imported. Each row needs a study already registered, with the same name. Nothing is overwritten: studies that already have a consensus or an import are refused.",
+      "step": {
+        "file": "Instrument and file"
+      },
+      "mappingHint": "Say which file column matches each item. Values may be in Portuguese, in English or as robvis writes them (Low, Some concerns, Serious…). Values the system does not recognise show up as errors on the row; nothing is guessed.",
+      "fields": {
+        "study": "Study",
+        "overall": "Overall judgement",
+        "overall_justification": "Justification of the overall judgement"
+      },
+      "done": "{{created}} assessment(s) imported. They show as imported in the table and in the exports."
     }
   }
 }

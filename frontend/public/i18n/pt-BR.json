@@ -222,6 +222,14 @@
     "study": {
       "duplicate_label": "Já existe um estudo com este nome no projeto.",
       "duplicate_doi": "Já existe um artigo com este DOI no projeto."
+    },
+    "rob_import": {
+      "unknown_study": "Nenhum estudo do projeto tem este nome. Cadastre o estudo antes ou corrija o nome.",
+      "duplicate_study": "Este estudo aparece mais de uma vez no arquivo.",
+      "other_tool": "Este estudo já usa outro instrumento de risco de viés.",
+      "already_assessed": "Este estudo já tem consenso ou importação para este resultado; nada foi sobrescrito.",
+      "missing_value": "Célula vazia num item obrigatório.",
+      "unknown_value": "Valor não reconhecido para este instrumento. Use um dos níveis dele (em português, inglês ou como o robvis escreve)."
     }
   },
   "pdfs": {
@@ -789,6 +797,21 @@
       "robvisHint": "Formato de entrada do robvis (Study, D1…Dn, Overall, Weight), com os julgamentos em inglês, como o robvis espera.",
       "langHint": "Os rótulos saem no idioma escolhido para os gráficos.",
       "csvStyle": "Tipo de CSV"
+    },
+    "import": {
+      "open": "Importar tabela existente",
+      "title": "Importar a tabela de risco de viés do grupo",
+      "intro": "Para projetos já em andamento: a tabela consolidada que o grupo já tem (no formato do robvis ou em qualquer CSV/XLSX) vira avaliações marcadas como importadas. Cada linha precisa de um estudo já cadastrado, com o mesmo nome. Nada é sobrescrito: estudos que já têm consenso ou importação são recusados.",
+      "step": {
+        "file": "Instrumento e arquivo"
+      },
+      "mappingHint": "Diga qual coluna do arquivo corresponde a cada item. Os valores podem estar em português, em inglês ou como o robvis escreve (Low, Some concerns, Serious…). Valores que o sistema não reconhece aparecem como erro na linha; nada é adivinhado.",
+      "fields": {
+        "study": "Estudo",
+        "overall": "Julgamento geral",
+        "overall_justification": "Justificativa do julgamento geral"
+      },
+      "done": "{{created}} avaliação(ões) importada(s). Elas aparecem como importadas na tabela e nas exportações."
     }
   }
 }

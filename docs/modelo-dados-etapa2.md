@@ -141,6 +141,14 @@ Divergências encontradas nos documentos oficiais estão registradas em `source_
 - Os rótulos seguem o idioma escolhido para a saída, independente do idioma da tela (ADR-008).
 - Nova dependência: `python-docx` (MIT, mantida; já prevista na seção 3.2).
 
+## Importação da tabela existente (passo 6)
+- `POST /rob/imports/preview` e `POST /rob/imports` (só admin), no mesmo padrão da importação de estudos: prévia com sugestão de colunas, simulação com erros por linha e importação das linhas válidas.
+- **Formato:** robvis (`Study, D1…Dn, Overall, Weight`; a coluna `Weight` é ignorada) ou qualquer CSV/XLSX com o mapeamento feito na tela. Em checklists (JBI, NOS, genérico), as colunas são as perguntas e só estudo e julgamento geral são obrigatórios. Uma coluna opcional pode trazer a justificativa do julgamento geral.
+- **Valores:** só os níveis do instrumento, escritos em português, em inglês, como o robvis escreve ("Low", "Some concerns", "Serious risk"…) ou pelo código. Qualquer outro valor vira erro na linha (`rob_import.unknown_value`), nunca um palpite.
+- **Estudos:** cada linha precisa de um estudo já cadastrado, encontrado pelo nome. Se o estudo ainda não tinha instrumento confirmado, a importação confirma este. São recusados: estudo desconhecido, repetido no arquivo, com outro instrumento ou que já tem consenso ou importação para o resultado. Nada é sobrescrito.
+- **Resultado:** avaliações `kind = imported`, enviadas, sem perguntas sinalizadoras (exceto as respostas dos checklists). Aparecem como "importada" na tabela e nas exportações e ficam na auditoria.
+- **Limitação conhecida:** num checklist com perguntas por desfecho (JBI), cada estudo é importado para um único desfecho e momento.
+
 ## Fora desta etapa
 - Uso na meta-análise (sensibilidade sem alto risco, subgrupo por risco de viés) → Etapas 3 e 4. Forest plot com semáforo → Etapa 4.
 - IA como segunda opinião (IA4) → Etapa 7.

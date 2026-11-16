@@ -1,14 +1,18 @@
+import json
 import uuid
 from typing import Annotated
 from urllib.parse import quote
 
-from fastapi import APIRouter, Depends, Query, Response, status
+from fastapi import APIRouter, Depends, File, Form, Query, Response, UploadFile, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.errors import AppError
 from app.db.session import get_session
 from app.integrations.stats_client import StatsClient, get_stats_client
 from app.modules.projects.access import ProjectContext, admin_access, member_access
-from app.modules.risk_of_bias import assessments, consensus, consolidated, tools
+from app.modules.risk_of_bias import assessments, consensus, consolidated, importer, tools
+from app.modules.studies.importer import MAX_FILE_BYTES as MAX_IMPORT_BYTES
+from app.modules.studies.importer import ImportReport
 
 router = APIRouter(prefix="/projects/{project_id}/rob", tags=["risk_of_bias"])
 
@@ -248,4 +252,58 @@ async def rob_plot(
         content=content,
         media_type=media,
         headers={"Content-Disposition": disposition, "X-Left-Out-Studies": str(len(left_out))},
+    )
+
+
+# ---- Import of an existing consolidated table ----------------------------------------
+
+
+async def _read_upload(file: UploadFile) -> bytes:
+    content = await file.read(MAX_IMPORT_BYTES + 1)
+    if len(content) > MAX_IMPORT_BYTES:
+        raise AppError("import.too_large", status_code=413, limit=MAX_IMPORT_BYTES // (1024 * 1024))
+    return content
+
+
+@router.post("/imports/preview")
+async def preview_rob_import(
+    tool_id: uuid.UUID = Form(...),
+    file: UploadFile = File(...),
+    ctx: ProjectContext = Depends(admin_access),
+    session: AsyncSession = Depends(get_session),
+) -> importer.RobPreview:
+    """Columns, a sample and a suggested mapping to the instrument's columns. Nothing is saved."""
+    return await importer.preview(
+        session, ctx, tool_id, file.filename or "", await _read_upload(file)
+    )
+
+
+@router.post("/imports")
+async def run_rob_import(
+    tool_id: uuid.UUID = Form(...),
+    file: UploadFile = File(...),
+    mapping: str = Form(..., description='JSON: {"study": "Column", "overall": "Column", ...}'),
+    outcome_id: uuid.UUID | None = Form(None),
+    timepoint: str | None = Form(None, max_length=60),
+    dry_run: bool = Form(True),
+    ctx: ProjectContext = Depends(admin_access),
+    session: AsyncSession = Depends(get_session),
+) -> ImportReport:
+    """Validates every row; with dry_run=false creates the imported assessments."""
+    try:
+        parsed = json.loads(mapping)
+    except json.JSONDecodeError as exc:
+        raise AppError("rob_import.invalid_mapping", status_code=422) from exc
+    if not isinstance(parsed, dict) or not all(isinstance(v, str) for v in parsed.values()):
+        raise AppError("rob_import.invalid_mapping", status_code=422)
+    return await importer.run(
+        session,
+        ctx,
+        tool_id=tool_id,
+        outcome_id=outcome_id,
+        timepoint=timepoint or None,
+        filename=file.filename or "",
+        content=await _read_upload(file),
+        mapping=parsed,
+        dry_run=dry_run,
     )
