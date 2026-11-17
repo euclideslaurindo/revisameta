@@ -215,6 +215,11 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
         {"key": "overall", "choice": "a"},
     ),
     ("GET", "/api/v1/projects/{project_id}/rob/agreement", None),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/analyses/preview",
+        {"outcome_id": "{tool_id}", "timepoint": "x"},
+    ),
     ("GET", "/api/v1/projects/{project_id}/analysis-plan", None),
     ("PUT", "/api/v1/projects/{project_id}/analysis-plan", {"version": 1}),
     ("GET", "/api/v1/projects/{project_id}/rob/review", None),

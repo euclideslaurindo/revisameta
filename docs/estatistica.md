@@ -103,3 +103,37 @@
 - **Desfechos:** medida (`auto`, MD, SMD; ou OR, RR, RD nos dicotômicos), conferida contra o tipo do desfecho, e momento da análise principal.
 - **Modelo:** REML + Hartung-Knapp por padrão. No efeito fixo, o Hartung-Knapp é desligado automaticamente.
 - **Sensibilidades e subgrupos planejados.** O que for rodado fora do plano será marcado como "não planejada" (passos 4 e 5).
+
+### Montagem dos dados (passo 4)
+- `POST /projects/{id}/analyses/preview` (`app/modules/analysis/assembly.py`): para um desfecho e um momento, diz quais estudos entram, com quais números, e por que os outros ficam de fora. Nada é salvo. É a base do passo 1 do assistente.
+- **Divisão de tarefas:** o backend só escolhe e organiza os dados. Todas as contas são feitas pelo R:
+  - conversões (EP, IC ou mediana → DP);
+  - combinação de braços do mesmo grupo (fórmula do Cochrane);
+  - efeito de cada estudo (`escalc`).
+  
+  Cada estudo termina como yᵢ/vᵢ na escala da análise, com o registro do que foi feito com os números.
+- **De onde vêm os dados:** só do consenso enviado ou travado. Os braços entram pelo mapeamento para os grupos do plano (grupo 1 × grupo 2), e o corte do estudo é checado contra a regra do plano.
+- **Direção por estudo:** cada estudo usa a direção da própria escala ("maior é melhor"). A inversão de sinal acontece no R, que agora aceita a direção por estudo (`data.higher_is_better`).
+- **Conjuntos que nunca se misturam:**
+  - "não ajustado": dados brutos dos grupos e efeitos informados não ajustados;
+  - "ajustado": OR/RR ajustados com IC, convertidos para a escala log pelo R.
+  
+  O plano diz qual roda; com a política "separado", a pessoa escolhe.
+- **Medida automática:**
+  - dicotômico → RR;
+  - contínuo com a mesma escala em todos os estudos → MD;
+  - contínuo com escalas diferentes → SMD.
+  
+  Uma medida escolhida diferente da do plano é marcada como "não planejada", assim como um momento ou desfecho fora do plano.
+- **Motivos para um estudo ficar de fora** (códigos traduzidos na tela):
+  - `no_consensus`;
+  - `cutoff_incompatible`, `cutoff_not_numeric`, `cutoff_missing`;
+  - `no_data_for_result`, `no_comparison_in_plan`, `missing_group`, `missing_arm_data`;
+  - `missing_n`, `missing_mean`, `missing_dispersion`, `missing_events`;
+  - `mixed_value_type_in_study`;
+  - `no_adjusted_effect`, `reported_measure_differs`, `reported_effect_without_ci`;
+  - `conversion_failed`, `combination_failed`;
+  - `no_effect_double_zero`.
+- **Marcas de estudos que entram:** `converted`, `estimated` (mediana → média), `derived`, `arms_combined`, `reported_effect`, `adjusted`, `cutoff_tolerated` e `open_alerts` (alertas de extração ainda abertos).
+- **Bloqueios da análise:** menos de 2 estudos (`fewer_than_two_studies`), SMD misturando valor final e mudança (`smd_mixed_final_change`) e estudo repetido (`duplicate_study`). Avisos: poucos estudos, dados estimados, alertas abertos, direção invertida, mistura de valor final e mudança na MD.
+- **Testes:** usam o serviço R real. Os estudos de `dat.normand1999` e `dat.bcg` montados no banco precisam dar os mesmos yᵢ/vᵢ das fixtures do metafor.

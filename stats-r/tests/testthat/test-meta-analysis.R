@@ -58,6 +58,19 @@ test_that("'higher is worse' inverts the sign here, and only here", {
   expect_true("direction_inverted" %in% out$warnings)
 })
 
+test_that("each study can say its own scale direction", {
+  case <- Filter(function(c) c$name == "dat.normand1999_MD_REML_knha", fixtures$cases)[[1]]
+  request <- list(measure = "MD", data = case$request$data)
+  k <- length(request$data$label)
+  request$data$higher_is_better <- as.list(c(FALSE, rep(TRUE, k - 1)))
+  out <- effect_sizes_result(request)
+  yi <- vapply(out$result$studies, function(s) s$yi, numeric(1))
+  expect_equal(yi[1], -case$expected$yi[[1]], tolerance = tol)
+  expect_equal(yi[-1], unlist(case$expected$yi)[-1], tolerance = tol)
+  expect_true(out$result$studies[[1]]$inverted)
+  expect_false(out$result$studies[[2]]$inverted)
+})
+
 test_that("zero events in both groups leaves the study out of OR/RR, with a warning", {
   request <- list(
     measure = "OR", method = "REML", test = "knha",

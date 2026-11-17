@@ -116,16 +116,26 @@ effect_sizes <- function(spec) {
   }
   yi <- as.numeric(es$yi)
   vi <- as.numeric(es$vi)
-  inverted <- spec$measure %in% CONTINUOUS && isFALSE(spec$higher_is_better)
+  # MD, SMD and log ratio of means: "higher is worse" flips the sign of the effect.
+  # Either for every study (spec$higher_is_better) or per study, when each study used
+  # its own scale (data$higher_is_better). This is the only place where it happens.
+  flip <- rep(FALSE, length(yi))
+  if (spec$measure %in% CONTINUOUS) {
+    if (!is.null(data$higher_is_better)) {
+      flip <- vapply(data$higher_is_better, function(v) isFALSE(as.logical(v)), logical(1))
+    } else if (isFALSE(spec$higher_is_better)) {
+      flip <- rep(TRUE, length(yi))
+    }
+  }
+  inverted <- any(flip)
   if (inverted) {
-    # MD, SMD and log ratio of means: "higher is worse" flips the sign of the effect.
-    yi <- -yi
+    yi[flip] <- -yi[flip]
     warnings <- c(warnings, "direction_inverted")
   }
   if (anyNA(yi)) {
     warnings <- c(warnings, "studies_without_effect")
   }
-  list(labels = labels, yi = yi, vi = vi, warnings = unique(warnings), inverted = inverted)
+  list(labels = labels, yi = yi, vi = vi, warnings = unique(warnings), inverted = inverted, flip = flip)
 }
 
 study_table <- function(es, weights = NULL) {
@@ -140,6 +150,7 @@ study_table <- function(es, weights = NULL) {
       ci_lb = es$yi[i] - z * sei[i],
       ci_ub = es$yi[i] + z * sei[i],
       included = !is.na(es$yi[i]),
+      inverted = if (is.null(es$flip)) FALSE else es$flip[i],
       weight = if (is.null(weights) || is.na(es$yi[i])) NA_real_ else unname(weights[es$labels[i]])
     )
   })

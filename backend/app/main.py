@@ -13,6 +13,7 @@ from app.core.rate_limit import limiter
 from app.db import models as _models  # noqa: F401 - register mappers and audit listener
 from app.db.session import dispose_engine
 from app.integrations.storage import Storage
+from app.modules.analysis.router import router as analysis_router
 from app.modules.auth.router import router as auth_router
 from app.modules.exports.router import router as exports_router
 from app.modules.extraction.router import router as extraction_router
@@ -83,6 +84,7 @@ def create_app() -> FastAPI:
         extraction_router,
         exports_router,
         rob_router,
+        analysis_router,
         quotas_router,
         uploads_router,
         jobs_router,
