@@ -8538,6 +8538,62 @@
         ],
         "title": "CharacteristicsUpdate"
       },
+      "ChecksPlan": {
+        "properties": {
+          "sd_ratio": {
+            "type": "number",
+            "exclusiveMaximum": 1.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Sd Ratio",
+            "default": 0.5
+          },
+          "se_closeness": {
+            "type": "number",
+            "maximum": 1.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Se Closeness",
+            "default": 0.5
+          },
+          "min_studies": {
+            "type": "integer",
+            "maximum": 20.0,
+            "minimum": 3.0,
+            "title": "Min Studies",
+            "default": 3
+          },
+          "p_factor": {
+            "type": "number",
+            "maximum": 1000.0,
+            "exclusiveMinimum": 1.0,
+            "title": "P Factor",
+            "default": 10
+          },
+          "smd_limit": {
+            "type": "number",
+            "maximum": 10.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Smd Limit",
+            "default": 2
+          },
+          "ratio_low": {
+            "type": "number",
+            "exclusiveMaximum": 1.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Ratio Low",
+            "default": 0.1
+          },
+          "ratio_high": {
+            "type": "number",
+            "maximum": 1000.0,
+            "exclusiveMinimum": 1.0,
+            "title": "Ratio High",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "title": "ChecksPlan",
+        "description": "Thresholds of the plausibility checks (7.5.1 blocks B and E).\n\nDefaults approved on 2026-11-17 (docs/estatistica.md): they only produce warnings."
+      },
       "ColumnOut": {
         "properties": {
           "key": {
@@ -12498,6 +12554,9 @@
           "model": {
             "$ref": "#/components/schemas/ModelPlan"
           },
+          "checks": {
+            "$ref": "#/components/schemas/ChecksPlan"
+          },
           "sensitivity": {
             "items": {
               "type": "string",
@@ -12586,6 +12645,9 @@
           },
           "model": {
             "$ref": "#/components/schemas/ModelPlan"
+          },
+          "checks": {
+            "$ref": "#/components/schemas/ChecksPlan"
           },
           "sensitivity": {
             "items": {
@@ -15081,6 +15143,14 @@
             "type": "boolean",
             "title": "Inverted",
             "default": false
+          },
+          "checks": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Checks"
           }
         },
         "type": "object",

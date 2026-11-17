@@ -160,3 +160,35 @@ function(req, res) {
   }
   out
 }
+
+#* Plausibility checks (7.5.1 block B): SD that looks like an SE, reported p value that
+#* does not match the data. Only warnings.
+#* Body: { groups: [{study_id, arm, scale, n, sd}], comparisons: [{study_id, n1, m1, sd1,
+#*         n2, m2, sd2, p_reported}], params }
+#* @post /plausibility-checks
+#* @serializer unboxedJSON list(digits = NA, na = "null")
+function(req, res) {
+  spec <- tryCatch(jsonlite::fromJSON(req$postBody, simplifyVector = FALSE), error = function(e) NULL)
+  if (is.null(spec)) {
+    res$status <- 422
+    return(envelope(errors = "body must be JSON"))
+  }
+  plausibility_checks(spec)
+}
+
+#* Influence diagnostics and improbable effects (7.5.1 block E).
+#* Body: { measure, method, test, data: {label, yi, vi}, params }
+#* @post /influence
+#* @serializer unboxedJSON list(digits = NA, na = "null")
+function(req, res) {
+  spec <- tryCatch(jsonlite::fromJSON(req$postBody, simplifyVector = FALSE), error = function(e) NULL)
+  if (is.null(spec)) {
+    res$status <- 422
+    return(envelope(errors = "body must be JSON"))
+  }
+  out <- influence_checks(spec)
+  if (!isTRUE(out$ok)) {
+    res$status <- 422
+  }
+  out
+}

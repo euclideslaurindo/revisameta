@@ -440,3 +440,69 @@ async def test_run_is_refused_while_the_assembly_has_a_block(
         json={"outcome_id": p["outcome"], "timepoint": "5 anos"},
     )
     assert r.status_code == 409 and r.json()["code"] == "analysis.blocked"
+
+
+async def test_plausibility_checks_flag_se_typed_as_sd(
+    client: AsyncClient, make_user: MakeUser, session: AsyncSession
+) -> None:
+    """Synthetic case (11.2): FICTITIOUS studies, one with the SE typed as the SD."""
+    ana, p, seed = await _setup(client, make_user, session)
+    control = {"n": 40, "mean": 85.0, "sd": 15.0, "dispersion_type": "sd"}
+    for label, sd in (("A", 15.0), ("B", 14.0), ("C", 16.0), ("D", round(15 / 40**0.5, 4))):
+        await seed.study(
+            label, [(0, {"n": 40, "mean": 92.0, "sd": sd, "dispersion_type": "sd"}), (1, control)]
+        )
+    out = await _preview(client, ana, p)
+    flagged = {s["label"]: s for s in out["studies"] if s["checks"]}
+    assert set(flagged) == {"D"}
+    check = flagged["D"]["checks"][0]
+    assert check["code"] == "possible_se_as_sd" and check["values"]["typical_sd"] == 15.0
+    assert "possible_se_as_sd" in flagged["D"]["flags"] and flagged["D"]["included"]
+    assert "plausibility_alerts" in out["warnings"]
+
+    # The thresholds come from the analysis plan.
+    plan = (await client.get(f"{p['base']}/analysis-plan", headers=ana.headers)).json()
+    assert plan["checks"]["sd_ratio"] == 0.5
+    await client.put(
+        f"{p['base']}/analysis-plan",
+        headers=ana.headers,
+        json={
+            **{k: plan[k] for k in ("comparison", "adjusted", "model")},
+            "version": plan["version"],
+            "checks": {**plan["checks"], "sd_ratio": 0.05},
+        },
+    )
+    assert not any(s["checks"] for s in (await _preview(client, ana, p))["studies"])
+
+    # Block E after the model: influence (metafor's criteria) flags study D.
+    r = await client.post(
+        f"{p['base']}/analyses/run",
+        headers=ana.headers,
+        json={"outcome_id": p["outcome"], "timepoint": "5 anos", "measure": "SMD"},
+    )
+    assert r.status_code == 200, r.text
+    run = r.json()
+    d = next(s for s in run["assembly"]["studies"] if s["label"] == "D")
+    assert "influential" in d["flags"] and "influential_studies" in run["warnings"]
+
+
+async def test_reported_p_that_does_not_match_the_data_is_flagged(
+    client: AsyncClient, make_user: MakeUser, session: AsyncSession
+) -> None:
+    ana, p, seed = await _setup(client, make_user, session)
+    other = {"n": 30, "mean": 85.0, "sd": 12.0, "dispersion_type": "sd"}
+    # FICTITIOUS: a 7-point difference with SD 12 and n 30 is clearly not p = 0.9.
+    await seed.study(
+        "P errado",
+        [
+            (0, {"n": 30, "mean": 92.0, "sd": 12.0, "dispersion_type": "sd", "p_value": 0.9}),
+            (1, other),
+        ],
+    )
+    await seed.study(
+        "Outro", [(0, {"n": 30, "mean": 90.0, "sd": 12.0, "dispersion_type": "sd"}), (1, other)]
+    )
+    out = await _preview(client, ana, p)
+    row = next(s for s in out["studies"] if s["label"] == "P errado")
+    assert row["checks"][0]["code"] == "p_inconsistent"
+    assert row["checks"][0]["values"]["p_reported"] == 0.9

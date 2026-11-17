@@ -241,6 +241,19 @@ interface OutcomeRow {
           <mat-hint>{{ 'plan.subgroups.hint' | transloco }}</mat-hint>
         </mat-form-field>
 
+        <h3>
+          {{ 'plan.checks.title' | transloco }}
+          <span class="term" tabindex="0" [matTooltip]="'plan.checks.help' | transloco">?</span>
+        </h3>
+        <div class="row">
+          @for (c of checkFields; track c) {
+            <mat-form-field subscriptSizing="dynamic">
+              <mat-label>{{ 'plan.checks.' + c | transloco }}</mat-label>
+              <input matInput type="number" [(ngModel)]="checks[c]" [disabled]="!isAdmin()" />
+            </mat-form-field>
+          }
+        </div>
+
         <mat-form-field subscriptSizing="dynamic" class="wide block-field">
           <mat-label>{{ 'plan.notes' | transloco }}</mat-label>
           <textarea
@@ -297,6 +310,16 @@ export class AnalysisPlanEditor implements OnInit {
   protected sensitivity = new Set<Sensitivity>();
   protected subgroups = '';
   protected notes = '';
+  protected readonly checkFields = [
+    'sd_ratio',
+    'se_closeness',
+    'min_studies',
+    'p_factor',
+    'smd_limit',
+    'ratio_low',
+    'ratio_high',
+  ] as const;
+  protected checks: Record<string, number> = {};
 
   private projectId(): string {
     return this.context.project()!.id;
@@ -335,6 +358,7 @@ export class AnalysisPlanEditor implements OnInit {
     this.sensitivity = new Set(plan.sensitivity ?? []);
     this.subgroups = (plan.subgroups ?? []).join('\n');
     this.notes = plan.notes ?? '';
+    this.checks = { ...(plan.checks ?? {}) } as Record<string, number>;
     const planned = new Map((plan.outcomes ?? []).map((o) => [o.outcome_id, o]));
     this.rows.set(
       outcomes.map((outcome) => {
@@ -388,6 +412,7 @@ export class AnalysisPlanEditor implements OnInit {
       sensitivity: [...this.sensitivity],
       subgroups: this.subgroups.split('\n'),
       notes: this.notes.trim() || null,
+      checks: this.checks as PlanIn['checks'],
     };
     try {
       const plan = await this.api.invoke(saveAnalysisPlan, {

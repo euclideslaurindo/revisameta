@@ -29,6 +29,7 @@ export type { BodyRunImport } from './models/body-run-import';
 export type { BodyRunRobImport } from './models/body-run-rob-import';
 export type { CatalogItem } from './models/catalog-item';
 export type { CharacteristicsUpdate } from './models/characteristics-update';
+export type { ChecksPlan } from './models/checks-plan';
 export type { ColumnOut } from './models/column-out';
 export type { ComparisonOut } from './models/comparison-out';
 export type { ComparisonPlan } from './models/comparison-plan';

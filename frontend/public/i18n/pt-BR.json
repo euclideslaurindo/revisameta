@@ -927,7 +927,18 @@
     },
     "notes": "Observações do plano",
     "save": "Salvar plano",
-    "saved": "Plano salvo."
+    "saved": "Plano salvo.",
+    "checks": {
+      "title": "Limiares dos alertas de plausibilidade",
+      "help": "Valores padrão aprovados pelo grupo. Os alertas só avisam; nada é bloqueado ou corrigido sozinho.",
+      "sd_ratio": "DP menor que esta fração do típico",
+      "se_closeness": "Tolerância de DP×√n ao típico",
+      "min_studies": "Mínimo de estudos na mesma escala",
+      "p_factor": "Diferença máxima entre valores p (vezes)",
+      "smd_limit": "SMD improvável acima de",
+      "ratio_low": "OR/RR improvável abaixo de",
+      "ratio_high": "OR/RR improvável acima de"
+    }
   },
   "meta": {
     "intro": "O assistente guia a meta-análise em cinco passos. Todas as contas são feitas pelo serviço estatístico (metafor); a tela só mostra e explica os resultados.",
@@ -981,7 +992,11 @@
       "reported_effect": "efeito do artigo",
       "adjusted": "ajustado",
       "cutoff_tolerated": "corte aceito pela faixa",
-      "open_alerts": "alertas abertos"
+      "open_alerts": "alertas abertos",
+      "possible_se_as_sd": "possível EP no lugar de DP",
+      "p_inconsistent": "valor p não confere",
+      "influential": "estudo influente",
+      "improbable_effect": "efeito improvável"
     },
     "flagHelp": {
       "converted": "O DP foi calculado a partir do EP ou do IC informado.",
@@ -991,7 +1006,11 @@
       "reported_effect": "Usa o efeito já calculado pelo artigo, com IC.",
       "adjusted": "Efeito ajustado para fatores de confusão.",
       "cutoff_tolerated": "O corte do estudo é diferente do da pergunta, mas está na faixa aceita pelo plano.",
-      "open_alerts": "A extração ainda tem alertas sem resolver. Confira os dados antes de interpretar."
+      "open_alerts": "A extração ainda tem alertas sem resolver. Confira os dados antes de interpretar.",
+      "possible_se_as_sd": "O DP é bem menor que o dos outros estudos da mesma escala e parece um erro-padrão. Confira no artigo (rodapé da tabela).",
+      "p_inconsistent": "O valor p recalculado com médias, DP e n não bate com o do artigo. Pode haver erro de digitação ou de tipo de dispersão.",
+      "influential": "Este estudo muda muito o resultado (critério do metafor). Confira os dados deste estudo antes de interpretar.",
+      "improbable_effect": "O efeito deste estudo é muito grande para ser comum. Confira os dados antes de interpretar."
     },
     "block": {
       "fewer_than_two_studies": "É preciso pelo menos 2 estudos para uma meta-análise.",
@@ -1086,7 +1105,11 @@
       "mixed_final_change": "Há estudos com valor final e outros com mudança desde a linha de base (permitido na MD).",
       "double_zero_excluded": "Estudos com zero eventos nos dois grupos ficaram de fora do OR/RR.",
       "continuity_correction_applied": "Foi aplicada a correção de continuidade (0,5) em estudos com zero eventos em um grupo.",
-      "knha_not_for_fixed_effect": "O ajuste de Hartung-Knapp não se aplica ao efeito fixo."
+      "knha_not_for_fixed_effect": "O ajuste de Hartung-Knapp não se aplica ao efeito fixo.",
+      "plausibility_alerts": "Há alertas de plausibilidade (possível EP no lugar de DP ou valor p que não confere). Confira os estudos marcados no passo 1.",
+      "influential_studies": "Há estudos influentes: o resultado muda bastante sem eles. Confira os dados desses estudos antes de interpretar.",
+      "improbable_effects": "Há estudos com efeito improvável. Confira os dados antes de interpretar.",
+      "influence_needs_three_studies": "Com menos de 3 estudos não dá para avaliar a influência de cada um."
     },
     "forest": {
       "title": "Forest plot"
@@ -1100,6 +1123,10 @@
       "prediction": "A linha pontilhada em volta do losango é o intervalo de predição: onde provavelmente cairia o efeito de um novo estudo.",
       "weights": "O tamanho do quadrado e a porcentagem mostram o peso de cada estudo no resultado.",
       "marks": "Estudos com * , † ou ‡ têm dados estimados, convertidos ou derivados (veja a nota embaixo do gráfico)."
+    },
+    "check": {
+      "possible_se_as_sd": "{{arm}}: o DP ({{sd}}, n = {{n}}) é bem menor que o DP típico desta escala ({{typical}}), e DP×√n = {{times}} fica perto dele. Este valor pode ser um EP. Confira no artigo.",
+      "p_inconsistent": "O artigo informa p = {{reported}}, mas com as médias, DP e n digitados o p seria {{recomputed}}. Confira os números e o tipo de dispersão."
     }
   }
 }

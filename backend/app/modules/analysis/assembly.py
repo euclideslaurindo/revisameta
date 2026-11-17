@@ -79,6 +79,7 @@ class StudyRow(BaseModel):
     yi: float | None = None
     vi: float | None = None
     inverted: bool = False
+    checks: list[dict[str, Any]] = Field(default_factory=list)  # plausibility alerts (7.5.1)
 
 
 class AssemblyOut(BaseModel):
@@ -187,6 +188,8 @@ class _ArmPlan:
     total: float | None = None
     convert: dict[str, Any] | None = None  # one /convert item, when needed
     problem: str | None = None
+    typed_sd: bool = False  # the SD was typed as an SD (only those can be an SE in disguise)
+    p_reported: float | None = None
 
 
 def _continuous_arm(arm: StudyArm, row: OutcomeData) -> _ArmPlan:
@@ -196,8 +199,10 @@ def _continuous_arm(arm: StudyArm, row: OutcomeData) -> _ArmPlan:
         plan.problem = "missing_n"
         return plan
     kind = row.dispersion_type
+    plan.p_reported = _f(row.p_value)
     if kind == "sd" and row.sd is not None and plan.mean is not None:
         plan.sd = _f(row.sd)
+        plan.typed_sd = True
     elif kind == "se" and row.se is not None and plan.mean is not None:
         plan.convert = {"kind": "se_to_sd", "se": _f(row.se), "n": n}
     elif (
@@ -403,6 +408,8 @@ async def assemble(
         pending.append((row, sides, None))
 
     await _compute(stats, measure, outcome.type, pending)
+    if outcome.type == "continuous":
+        await _plausibility(stats, plan, pending)
     included = [r for r in rows_out if r.included]
 
     blocks: list[str] = []
@@ -422,6 +429,8 @@ async def assemble(
         warnings.append("studies_with_open_alerts")
     if any(r.inverted for r in included):
         warnings.append("direction_inverted")
+    if any(r.checks for r in included):
+        warnings.append("plausibility_alerts")
     labels = [r.label for r in included]
     if len(labels) != len(set(labels)):
         blocks.append("duplicate_study")
@@ -584,3 +593,70 @@ async def _compute(
 
     for row, _, _ in pending:
         row.included = not row.reasons and row.yi is not None and row.vi is not None
+
+
+# ---- Plausibility checks (7.5.1 block B) -----------------------------------------------
+
+
+async def _plausibility(
+    stats: StatsClient,
+    plan: AnalysisPlan,
+    pending: list[tuple[StudyRow, dict[str, list[_ArmPlan]], dict[str, Any] | None]],
+) -> None:
+    """SDs that look like SEs and reported p values that do not match the data.
+
+    Only warnings: the study stays in, marked, and the alert explains what to check.
+    """
+    groups: list[dict[str, Any]] = []
+    comparisons: list[dict[str, Any]] = []
+    rows: dict[str, StudyRow] = {}
+    for row, sides, reported in pending:
+        if reported is not None or not sides:
+            continue
+        key = str(row.study_id)
+        rows[key] = row
+        for plans in sides.values():
+            for arm in plans:
+                if arm.typed_sd and arm.sd is not None and arm.n:
+                    groups.append(
+                        {
+                            "study_id": key,
+                            "arm": arm.label,
+                            "scale": row.scale_name or "",
+                            "n": arm.n,
+                            "sd": arm.sd,
+                        }
+                    )
+        g1, g2 = sides.get("group1", []), sides.get("group2", [])
+        if len(g1) == 1 and len(g2) == 1:
+            a, b = g1[0], g2[0]
+            p = a.p_reported if a.p_reported is not None else b.p_reported
+            if p is not None and None not in (a.n, a.mean, a.sd, b.n, b.mean, b.sd):
+                comparisons.append(
+                    {
+                        "study_id": key,
+                        "n1": a.n,
+                        "m1": a.mean,
+                        "sd1": a.sd,
+                        "n2": b.n,
+                        "m2": b.mean,
+                        "sd2": b.sd,
+                        "p_reported": p,
+                    }
+                )
+    if not groups and not comparisons:
+        return
+    response = await stats.plausibility_checks(
+        {
+            "groups": groups,
+            "comparisons": comparisons,
+            "params": plan.checks.model_dump(),
+        }
+    )
+    for alert in response.result.get("alerts", []):
+        target = rows.get(alert["study_id"])
+        if target is None:
+            continue
+        target.checks.append(alert)
+        if alert["code"] not in target.flags:
+            target.flags.append(alert["code"])

@@ -126,6 +126,9 @@ type Method = 'REML' | 'DL' | 'PM' | 'FE';
                       'meta.flag.' + f | transloco
                     }}</span>
                   }
+                  @for (c of s.checks ?? []; track $index) {
+                    <div class="alert-item" role="status">{{ checkText(c) }}</div>
+                  }
                 </div>
               </li>
             }
@@ -627,6 +630,20 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
     return this.t('meta.summary.prediction', {
       lb: this.onScale(p['pi_lb']),
       ub: this.onScale(p['pi_ub']),
+    });
+  }
+
+  /** One plausibility alert in words, with the numbers R used. */
+  protected checkText(check: Record<string, unknown>): string {
+    const v = (check['values'] ?? {}) as Record<string, number>;
+    return this.t('meta.check.' + String(check['code']), {
+      arm: check['arm'] ?? '',
+      sd: this.fmt(v['sd']),
+      n: v['n'],
+      typical: this.fmt(v['typical_sd']),
+      times: this.fmt(v['sd_times_sqrt_n']),
+      reported: this.fmtP(v['p_reported']),
+      recomputed: this.fmtP(v['p_recomputed']),
     });
   }
 

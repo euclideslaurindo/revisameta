@@ -3,6 +3,9 @@
 
 import { GroupValues } from '../models/group-values';
 export interface StudyRow {
+  checks?: Array<{
+[key: string]: any;
+}>;
   conversions: Array<{
 [key: string]: any;
 }>;

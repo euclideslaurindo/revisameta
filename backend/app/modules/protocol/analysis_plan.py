@@ -92,12 +92,28 @@ class ModelPlan(BaseModel):
         return self
 
 
+class ChecksPlan(BaseModel):
+    """Thresholds of the plausibility checks (7.5.1 blocks B and E).
+
+    Defaults approved on 2026-11-17 (docs/estatistica.md): they only produce warnings.
+    """
+
+    sd_ratio: float = Field(default=0.5, gt=0, lt=1)
+    se_closeness: float = Field(default=0.5, gt=0, le=1)
+    min_studies: int = Field(default=3, ge=3, le=20)
+    p_factor: float = Field(default=10, gt=1, le=1000)
+    smd_limit: float = Field(default=2, gt=0, le=10)
+    ratio_low: float = Field(default=0.1, gt=0, lt=1)
+    ratio_high: float = Field(default=10, gt=1, le=1000)
+
+
 class AnalysisPlan(BaseModel):
     comparison: ComparisonPlan | None = None
     cutoff: CutoffPlan | None = None
     adjusted: Literal["separate", "adjusted_only", "unadjusted_only"] = "separate"
     outcomes: list[OutcomePlan] = Field(default_factory=list, max_length=50)
     model: ModelPlan = Field(default_factory=ModelPlan)
+    checks: ChecksPlan = Field(default_factory=ChecksPlan)
     sensitivity: list[Literal[SENSITIVITY]] = Field(default_factory=list)  # type: ignore[valid-type]
     subgroups: list[str] = Field(default_factory=list, max_length=20)
     notes: str | None = Field(default=None, max_length=4000)

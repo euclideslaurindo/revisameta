@@ -927,7 +927,18 @@
     },
     "notes": "Notes on the plan",
     "save": "Save plan",
-    "saved": "Plan saved."
+    "saved": "Plan saved.",
+    "checks": {
+      "title": "Thresholds of the plausibility alerts",
+      "help": "Defaults approved by the group. Alerts only warn; nothing is blocked or corrected on its own.",
+      "sd_ratio": "SD below this fraction of the typical",
+      "se_closeness": "Tolerance of SD×√n to the typical",
+      "min_studies": "Minimum studies on the same scale",
+      "p_factor": "Largest difference between p values (times)",
+      "smd_limit": "Improbable SMD above",
+      "ratio_low": "Improbable OR/RR below",
+      "ratio_high": "Improbable OR/RR above"
+    }
   },
   "meta": {
     "intro": "The wizard guides the meta-analysis in five steps. Every calculation is done by the statistics service (metafor); the screen only shows and explains the results.",
@@ -981,7 +992,11 @@
       "reported_effect": "article's effect",
       "adjusted": "adjusted",
       "cutoff_tolerated": "cut-off within range",
-      "open_alerts": "open alerts"
+      "open_alerts": "open alerts",
+      "possible_se_as_sd": "possible SE instead of SD",
+      "p_inconsistent": "p value does not match",
+      "influential": "influential study",
+      "improbable_effect": "improbable effect"
     },
     "flagHelp": {
       "converted": "The SD was computed from the reported SE or CI.",
@@ -991,7 +1006,11 @@
       "reported_effect": "Uses the effect already computed by the article, with its CI.",
       "adjusted": "Effect adjusted for confounding factors.",
       "cutoff_tolerated": "The study's cut-off differs from the question's but is within the range accepted by the plan.",
-      "open_alerts": "The extraction still has unresolved alerts. Check the data before interpreting."
+      "open_alerts": "The extraction still has unresolved alerts. Check the data before interpreting.",
+      "possible_se_as_sd": "The SD is much smaller than in the other studies on the same scale and looks like a standard error. Check the article (table footnote).",
+      "p_inconsistent": "The p value recomputed from means, SDs and n does not match the article's. There may be a typing or dispersion-type mistake.",
+      "influential": "This study changes the result a lot (metafor's criteria). Check its data before interpreting.",
+      "improbable_effect": "This study's effect is too large to be common. Check the data before interpreting."
     },
     "block": {
       "fewer_than_two_studies": "A meta-analysis needs at least 2 studies.",
@@ -1086,7 +1105,11 @@
       "mixed_final_change": "Some studies report final values and others changes from baseline (allowed with the MD).",
       "double_zero_excluded": "Studies with zero events in both groups were left out of the OR/RR.",
       "continuity_correction_applied": "A continuity correction (0.5) was applied to studies with zero events in one group.",
-      "knha_not_for_fixed_effect": "The Hartung-Knapp adjustment does not apply to a fixed effect."
+      "knha_not_for_fixed_effect": "The Hartung-Knapp adjustment does not apply to a fixed effect.",
+      "plausibility_alerts": "There are plausibility alerts (possible SE instead of SD or a p value that does not match). Check the studies marked in step 1.",
+      "influential_studies": "There are influential studies: the result changes a lot without them. Check their data before interpreting.",
+      "improbable_effects": "Some studies have an improbable effect. Check the data before interpreting.",
+      "influence_needs_three_studies": "With fewer than 3 studies the influence of each one cannot be assessed."
     },
     "forest": {
       "title": "Forest plot"
@@ -1100,6 +1123,10 @@
       "prediction": "The dotted line around the diamond is the prediction interval: where a new study's effect would probably fall.",
       "weights": "The size of the square and the percentage show each study's weight in the result.",
       "marks": "Studies with *, † or ‡ have estimated, converted or derived data (see the note under the plot)."
+    },
+    "check": {
+      "possible_se_as_sd": "{{arm}}: the SD ({{sd}}, n = {{n}}) is much smaller than the typical SD of this scale ({{typical}}), and SD×√n = {{times}} is close to it. This value may be an SE. Check the article.",
+      "p_inconsistent": "The article reports p = {{reported}}, but with the typed means, SDs and n the p would be {{recomputed}}. Check the numbers and the dispersion type."
     }
   }
 }

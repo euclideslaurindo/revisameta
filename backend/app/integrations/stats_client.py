@@ -109,6 +109,14 @@ class StatsClient:
         """Forest plot with weights, pooled effect and prediction interval."""
         return await self._request("POST", "/forest-plot", json=spec)
 
+    async def plausibility_checks(self, spec: dict[str, Any]) -> StatsResponse:
+        """SD that looks like an SE, reported p that does not match the data (warnings)."""
+        return await self._request("POST", "/plausibility-checks", json=spec)
+
+    async def influence(self, spec: dict[str, Any]) -> StatsResponse:
+        """Influence diagnostics and improbable effects of the fitted model."""
+        return await self._request("POST", "/influence", json=spec)
+
     async def rob_plot(self, spec: dict[str, Any]) -> StatsResponse:
         """Risk-of-bias traffic light or summary (robvis, or ggplot2 with the same look)."""
         return await self._request("POST", "/rob-plots", json=spec)

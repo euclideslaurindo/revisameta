@@ -140,6 +140,22 @@ async def run(
     response = await stats.meta_analysis(request)
     if not response.ok:
         raise AppError("error.stats_failed", status_code=502)
+    warnings = [*assembly.warnings, *response.warnings]
+    influence = await stats.influence({**request, "params": plan.checks.model_dump()})
+    if influence.ok:
+        by_label = {s["label"]: s for s in influence.result.get("studies", [])}
+        for study in assembly.studies:
+            info = by_label.get(study.label)
+            if not study.included or info is None:
+                continue
+            for flag, key in (("influential", "influential"), ("improbable_effect", "improbable")):
+                if info.get(key) and flag not in study.flags:
+                    study.flags.append(flag)
+        if any(s.get("influential") for s in by_label.values()):
+            warnings.append("influential_studies")
+        if any(s.get("improbable") for s in by_label.values()):
+            warnings.append("improbable_effects")
+        warnings += influence.warnings
     group1, group2 = await _groups(session, ctx)
     return RunOut(
         assembly=assembly,
@@ -147,7 +163,7 @@ async def run(
         test=test,
         not_planned=not_planned,
         result=response.result,
-        warnings=list(dict.fromkeys([*assembly.warnings, *response.warnings])),
+        warnings=list(dict.fromkeys(warnings)),
         r_meta=response.meta.model_dump(),
         group1_label=group1,
         group2_label=group2,
