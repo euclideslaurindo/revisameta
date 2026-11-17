@@ -616,3 +616,21 @@ main:has(.extraction-layout) {
   margin: 1rem 0;
   background: #ffffff;
 }
+
+.result-table {
+  border-collapse: collapse;
+  margin: 1rem 0;
+  th,
+  td {
+    padding: 0.35rem 0.75rem;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: left;
+  }
+}
+.lead {
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+.small {
+  font-size: 0.8rem;
+}

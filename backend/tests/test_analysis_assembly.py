@@ -363,3 +363,80 @@ async def test_too_few_studies_and_adjusted_effects_apart(
     assert next(r for r in adjusted["studies"] if r["label"] == "A")["reasons"] == [
         "no_adjusted_effect"
     ]
+
+
+async def test_run_through_the_api_matches_metafor(
+    client: AsyncClient, make_user: MakeUser, session: AsyncSession
+) -> None:
+    """11.1, item 3: the same data through the API give the fixture's result."""
+    ana, p, seed = await _setup(client, make_user, session)
+    d = _case("dat.normand1999_MD_REML_knha")["request"]["data"]
+    for i, label in enumerate(d["label"]):
+        await seed.study(
+            label,
+            [
+                (
+                    0,
+                    {
+                        "n": d["n1i"][i],
+                        "mean": float(d["m1i"][i]),
+                        "sd": float(d["sd1i"][i]),
+                        "dispersion_type": "sd",
+                    },
+                ),
+                (
+                    1,
+                    {
+                        "n": d["n2i"][i],
+                        "mean": float(d["m2i"][i]),
+                        "sd": float(d["sd2i"][i]),
+                        "dispersion_type": "sd",
+                    },
+                ),
+            ],
+        )
+    url = f"{p['base']}/analyses/run"
+    body = {"outcome_id": p["outcome"], "timepoint": "5 anos"}
+    for method, test in (("REML", "knha"), ("DL", "z"), ("FE", "z")):
+        r = await client.post(
+            url, json={**body, "method": method, "test": test}, headers=ana.headers
+        )
+        assert r.status_code == 200, r.text
+        out = r.json()
+        expected = _case(f"dat.normand1999_MD_{method}_{test}")["expected"]
+        pooled, het = out["result"]["pooled"], out["result"]["heterogeneity"]
+        for key in ("estimate", "ci_lb", "ci_ub", "pi_lb", "pi_ub", "p_value"):
+            assert math.isclose(pooled[key], expected[key], abs_tol=TOL), (method, key)
+        assert math.isclose(het["i2"], expected["i2"], abs_tol=TOL)
+        assert out["not_planned"] == ([] if method == "REML" else ["model"])
+    assert out["r_meta"]["packages"]["metafor"] == META["metafor_version"]
+    assert out["group1_label"] and out["favours_right"] == "group1"
+
+    r = await client.post(
+        f"{p['base']}/analyses/forest-plot",
+        json={**body, "format": "svg", "lang": "en"},
+        headers=ana.headers,
+    )
+    assert r.status_code == 200, r.text
+    assert r.headers["content-type"].startswith("image/svg+xml")
+    assert b"<svg" in r.content[:500]
+    assert "forest-plot_escore" in r.headers["content-disposition"]
+
+
+async def test_run_is_refused_while_the_assembly_has_a_block(
+    client: AsyncClient, make_user: MakeUser, session: AsyncSession
+) -> None:
+    ana, p, seed = await _setup(client, make_user, session)
+    await seed.study(
+        "A",
+        [
+            (0, {"n": 30, "mean": 92.0, "sd": 12.0, "dispersion_type": "sd"}),
+            (1, {"n": 32, "mean": 85.0, "sd": 11.0, "dispersion_type": "sd"}),
+        ],
+    )
+    r = await client.post(
+        f"{p['base']}/analyses/run",
+        headers=ana.headers,
+        json={"outcome_id": p["outcome"], "timepoint": "5 anos"},
+    )
+    assert r.status_code == 409 and r.json()["code"] == "analysis.blocked"

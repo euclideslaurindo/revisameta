@@ -87,7 +87,10 @@
     "robKappa": "Agreement between the two reviewers on answers and judgements. Cohen’s kappa discounts the agreement expected by chance: 1 is full agreement; 0 is what chance alone would give.",
     "analysisPlan": "Plan registered before seeing the data. Deciding after seeing the results can unintentionally lead to choosing the analysis that gives the expected answer.",
     "adjusted": "Adjusted estimate: result corrected for confounding factors (common in observational studies). Mixing adjusted and unadjusted in the same result can distort the comparison.",
-    "hartungKnapp": "Adjustment that makes the confidence interval more honest when there are few studies, using the t distribution. It usually widens the interval."
+    "hartungKnapp": "Adjustment that makes the confidence interval more honest when there are few studies, using the t distribution. It usually widens the interval.",
+    "i2": "I²: percentage of the variation between studies that is not explained by chance.",
+    "tau2": "τ² (tau²): variance of the true effect between studies.",
+    "predictionInterval": "Range where a new similar study's effect would probably fall. It is wider than the CI when the studies differ."
   },
   "notFound": {
     "title": "Page not found",
@@ -100,7 +103,8 @@
       "pending": "Pending checks",
       "review": "Final review",
       "export": "Export",
-      "rob": "Risk of bias"
+      "rob": "Risk of bias",
+      "meta": "Meta-analysis"
     }
   },
   "protocol": {
@@ -924,5 +928,178 @@
     "notes": "Notes on the plan",
     "save": "Save plan",
     "saved": "Plan saved."
+  },
+  "meta": {
+    "intro": "The wizard guides the meta-analysis in five steps. Every calculation is done by the statistics service (metafor); the screen only shows and explains the results.",
+    "noPlan": "The analysis plan has not been saved yet; the wizard uses the defaults.",
+    "goToPlan": "Define the plan",
+    "next": "Continue",
+    "back": "Back",
+    "run": "Run the meta-analysis",
+    "group1": "group 1",
+    "group2": "group 2",
+    "step1": {
+      "title": "Outcome and studies",
+      "outcome": "Outcome",
+      "timepoint": "Time point",
+      "dataSet": "Data set",
+      "included": "{{k}} of {{total}} study(ies) enter this analysis.",
+      "in": "in",
+      "out": "out"
+    },
+    "dataSet": {
+      "unadjusted": "Unadjusted (group data)",
+      "adjusted": "Adjusted (adjusted effects from the article)"
+    },
+    "reason": {
+      "no_consensus": "The extraction of this study has no submitted consensus yet.",
+      "cutoff_incompatible": "The study's cut-off is not accepted by the plan's rule.",
+      "cutoff_not_numeric": "The study's cut-off was not entered as a number (e.g. 5).",
+      "cutoff_missing": "The study did not report its cut-off.",
+      "no_data_for_result": "There are no data for this outcome at this time point.",
+      "no_comparison_in_plan": "The plan does not say yet which are group 1 and group 2.",
+      "missing_group": "The study does not have both comparison groups mapped.",
+      "missing_arm_data": "Data of one of the study's groups are missing.",
+      "missing_n": "The number of participants of a group is missing.",
+      "missing_mean": "The mean (or median) of a group is missing.",
+      "missing_dispersion": "The dispersion (SD, SE, CI, IQR or range) is missing.",
+      "missing_events": "Events or total of a group are missing.",
+      "mixed_value_type_in_study": "One group has a final value and the other a change from baseline.",
+      "no_adjusted_effect": "The study has no adjusted effect for this outcome.",
+      "reported_measure_differs": "The effect reported by the article uses another measure.",
+      "reported_effect_without_ci": "The effect reported by the article has no CI.",
+      "conversion_failed": "The reported numbers could not be converted.",
+      "combination_failed": "The study's arms could not be combined.",
+      "no_effect_double_zero": "Zero events in both groups: the study does not enter the OR/RR.",
+      "no_effect": "The effect of this study could not be computed."
+    },
+    "flag": {
+      "converted": "converted",
+      "estimated": "estimated",
+      "derived": "derived",
+      "arms_combined": "arms combined",
+      "reported_effect": "article's effect",
+      "adjusted": "adjusted",
+      "cutoff_tolerated": "cut-off within range",
+      "open_alerts": "open alerts"
+    },
+    "flagHelp": {
+      "converted": "The SD was computed from the reported SE or CI.",
+      "estimated": "Mean and SD were estimated from the median (Wan/Luo). Consider a sensitivity analysis without this study.",
+      "derived": "The effect was derived from the t statistic or the p value.",
+      "arms_combined": "Several arms of the study were combined into one group (Cochrane formula).",
+      "reported_effect": "Uses the effect already computed by the article, with its CI.",
+      "adjusted": "Effect adjusted for confounding factors.",
+      "cutoff_tolerated": "The study's cut-off differs from the question's but is within the range accepted by the plan.",
+      "open_alerts": "The extraction still has unresolved alerts. Check the data before interpreting."
+    },
+    "block": {
+      "fewer_than_two_studies": "A meta-analysis needs at least 2 studies.",
+      "smd_mixed_final_change": "The SMD cannot mix final values and changes from baseline. Use the MD or analyse them separately.",
+      "duplicate_study": "The same study appears twice: patients would be counted twice."
+    },
+    "step2": {
+      "title": "Effect measure",
+      "recommended": "Recommended: {{measure}}.",
+      "measure": "Measure",
+      "auto": "Use the recommended one"
+    },
+    "measureReason": {
+      "plan": "It is the measure of the analysis plan.",
+      "chosen": "You chose this measure.",
+      "auto_same_scale": "All studies use the same scale.",
+      "auto_different_scales": "The studies use different scales, so the effects need to be standardized.",
+      "auto_dichotomous": "The outcome is an event (yes/no)."
+    },
+    "measure": {
+      "MD": "Mean difference (MD)",
+      "SMD": "Standardized mean difference (Hedges’ g)",
+      "OR": "Odds ratio (OR)",
+      "RR": "Risk ratio (RR)",
+      "RD": "Risk difference (RD)"
+    },
+    "measureHelp": {
+      "MD": "Difference between the group means, in the scale's unit. Use it when all studies measure with the same scale.",
+      "SMD": "Mean difference divided by the standard deviation: allows pooling different scales (IQ, Bayley...). 0.2 is small, 0.5 medium and 0.8 large, as a general reference.",
+      "OR": "How much the odds of the event change in group 1 versus group 2. 1 = no difference.",
+      "RR": "How many times the risk of the event is higher (or lower) in group 1. 1 = no difference. Usually easier to explain than the OR.",
+      "RD": "Absolute difference between the groups' risks. 0 = no difference."
+    },
+    "step3": {
+      "title": "Direction",
+      "intro": "Check each study's scale. Where \"higher is worse\", the statistics service inverts the sign of the effect, so all of them point the same way in the plot.",
+      "noScale": "scale not reported",
+      "higherBetter": "higher is better",
+      "higherWorse": "higher is worse",
+      "inverted": "sign inverted"
+    },
+    "step4": {
+      "title": "Model",
+      "intro": "The default comes from the analysis plan. Changing it here is allowed, but the analysis is marked \"not planned\"."
+    },
+    "methodHelp": {
+      "REML": "Random effects: assumes the true effect varies from study to study. REML is the recommended estimator.",
+      "DL": "Random effects with the classic DerSimonian-Laird estimator. It may underestimate the variation with few studies.",
+      "PM": "Random effects with the Paule-Mandel estimator.",
+      "FE": "Fixed effect: assumes every study measures the same true effect. Rare in observational studies."
+    },
+    "step5": {
+      "title": "Result",
+      "empty": "Run the meta-analysis in step 4."
+    },
+    "notPlanned": "Not planned analysis: differs from the plan in",
+    "notPlannedItem": {
+      "measure": "measure",
+      "timepoint": "time point",
+      "outcome": "outcome",
+      "data_set": "data set",
+      "model": "model"
+    },
+    "summary": {
+      "favours": "Considering {{k}} study(ies), for the outcome {{outcome}} ({{timepoint}}), the result favoured {{favoured}}: {{measure}} = {{effect}}.",
+      "none": "Considering {{k}} study(ies), for the outcome {{outcome}} ({{timepoint}}), there was no clear difference between {{group1}} and {{group2}}: {{measure}} = {{effect}}. The 95% CI includes the value of no difference.",
+      "heterogeneity": "Heterogeneity was {{level}} (I² = {{i2}}%).",
+      "prediction": "A new similar study would probably have an effect between {{lb}} and {{ub}} (prediction interval)."
+    },
+    "heterogeneity": {
+      "low": "low",
+      "moderate": "moderate",
+      "substantial": "substantial",
+      "considerable": "considerable"
+    },
+    "res": {
+      "effect": "Pooled effect ({{measure}})",
+      "ci": "95% CI",
+      "to": "to",
+      "p": "p value",
+      "pi": "95% prediction interval",
+      "df": "df",
+      "model": "Model",
+      "versions": "Computed in R {{r}} with metafor {{metafor}}."
+    },
+    "warning": {
+      "few_studies": "Fewer than 5 studies: heterogeneity estimates (I², τ²) are unstable.",
+      "few_studies_heterogeneity_unstable": "Fewer than 5 studies: heterogeneity estimates are unstable.",
+      "estimated_data": "There are estimated data (mean from the median). Consider a sensitivity analysis without them.",
+      "studies_with_open_alerts": "Some studies have unresolved extraction alerts. Check the data before interpreting.",
+      "direction_inverted": "The sign of some studies was inverted because their scale is \"higher is worse\".",
+      "mixed_final_change": "Some studies report final values and others changes from baseline (allowed with the MD).",
+      "double_zero_excluded": "Studies with zero events in both groups were left out of the OR/RR.",
+      "continuity_correction_applied": "A continuity correction (0.5) was applied to studies with zero events in one group.",
+      "knha_not_for_fixed_effect": "The Hartung-Knapp adjustment does not apply to a fixed effect."
+    },
+    "forest": {
+      "title": "Forest plot"
+    },
+    "howToRead": {
+      "title": "How to read this plot",
+      "square": "Each row is a study. The square is that study's effect.",
+      "line": "The horizontal line is the study's 95% confidence interval: the shorter, the more precise the study.",
+      "null": "The vertical dotted line marks \"no difference\" (0 for MD/SMD, 1 for OR/RR). An interval crossing it shows no clear difference.",
+      "diamond": "The diamond at the bottom is the pooled effect: its centre is the estimate and its tips the 95% CI.",
+      "prediction": "The dotted line around the diamond is the prediction interval: where a new study's effect would probably fall.",
+      "weights": "The size of the square and the percentage show each study's weight in the result.",
+      "marks": "Studies with *, † or ‡ have estimated, converted or derived data (see the note under the plot)."
+    }
   }
 }

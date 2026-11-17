@@ -225,6 +225,12 @@ export type { ReopenRobConsensus$Params as ReopenRobConsensus$Params } from './f
 export { reopenRobConsensus as reopenRobConsensus } from './fn/risk-of-bias/reopen-rob-consensus';
 export type { DiscardRobImport$Params as DiscardRobImport$Params } from './fn/risk-of-bias/discard-rob-import';
 export { discardRobImport as discardRobImport } from './fn/risk-of-bias/discard-rob-import';
+export type { PreviewAnalysis$Params as PreviewAnalysis$Params } from './fn/analysis/preview-analysis';
+export { previewAnalysis as previewAnalysis } from './fn/analysis/preview-analysis';
+export type { RunAnalysis$Params as RunAnalysis$Params } from './fn/analysis/run-analysis';
+export { runAnalysis as runAnalysis } from './fn/analysis/run-analysis';
+export type { AnalysisForestPlot$Params as AnalysisForestPlot$Params } from './fn/analysis/analysis-forest-plot';
+export { analysisForestPlot as analysisForestPlot } from './fn/analysis/analysis-forest-plot';
 export type { MyUsage$Params as MyUsage$Params } from './fn/quotas/my-usage';
 export { myUsage as myUsage } from './fn/quotas/my-usage';
 export type { UserUsage$Params as UserUsage$Params } from './fn/quotas/user-usage';

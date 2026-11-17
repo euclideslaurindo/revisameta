@@ -93,6 +93,11 @@ export const routes: Routes = [
         loadComponent: () => import('./features/risk-of-bias/rob-page').then((m) => m.RobPage),
       },
       {
+        path: 'meta-analise',
+        loadComponent: () =>
+          import('./features/meta-analysis/meta-analysis-page').then((m) => m.MetaAnalysisPage),
+      },
+      {
         path: 'conferencia',
         loadComponent: () => import('./features/extraction/review-page').then((m) => m.ReviewPage),
       },

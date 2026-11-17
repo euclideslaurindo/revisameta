@@ -87,7 +87,10 @@
     "robKappa": "Concordância entre os dois revisores nas respostas e nos julgamentos. O kappa de Cohen desconta a concordância que aconteceria por acaso: 1 é concordância total; 0 é o que se esperaria por sorte.",
     "analysisPlan": "Plano registrado antes de ver os dados. Decidir depois de ver os resultados pode, sem querer, levar a escolher a análise que dá o resultado esperado.",
     "adjusted": "Estimativa ajustada: resultado corrigido para fatores de confusão (comum em estudos observacionais). Misturar ajustadas e não ajustadas no mesmo resultado pode distorcer a comparação.",
-    "hartungKnapp": "Ajuste que deixa o intervalo de confiança mais honesto quando há poucos estudos, usando a distribuição t. Costuma alargar o intervalo."
+    "hartungKnapp": "Ajuste que deixa o intervalo de confiança mais honesto quando há poucos estudos, usando a distribuição t. Costuma alargar o intervalo.",
+    "i2": "I²: porcentagem da variação entre os estudos que não é explicada pelo acaso.",
+    "tau2": "τ² (tau²): variância do efeito verdadeiro entre os estudos.",
+    "predictionInterval": "Faixa onde provavelmente cairia o efeito de um novo estudo parecido. É mais larga que o IC quando os estudos diferem entre si."
   },
   "notFound": {
     "title": "Página não encontrada",
@@ -100,7 +103,8 @@
       "pending": "Pendências",
       "review": "Conferência final",
       "export": "Exportar",
-      "rob": "Risco de viés"
+      "rob": "Risco de viés",
+      "meta": "Meta-análise"
     }
   },
   "protocol": {
@@ -924,5 +928,178 @@
     "notes": "Observações do plano",
     "save": "Salvar plano",
     "saved": "Plano salvo."
+  },
+  "meta": {
+    "intro": "O assistente guia a meta-análise em cinco passos. Todas as contas são feitas pelo serviço estatístico (metafor); a tela só mostra e explica os resultados.",
+    "noPlan": "O plano de análise ainda não foi salvo; o assistente usa os padrões.",
+    "goToPlan": "Definir o plano",
+    "next": "Continuar",
+    "back": "Voltar",
+    "run": "Rodar a meta-análise",
+    "group1": "grupo 1",
+    "group2": "grupo 2",
+    "step1": {
+      "title": "Desfecho e estudos",
+      "outcome": "Desfecho",
+      "timepoint": "Momento",
+      "dataSet": "Conjunto de dados",
+      "included": "{{k}} de {{total}} estudo(s) entram nesta análise.",
+      "in": "entra",
+      "out": "fica de fora"
+    },
+    "dataSet": {
+      "unadjusted": "Não ajustado (dados dos grupos)",
+      "adjusted": "Ajustado (efeitos ajustados do artigo)"
+    },
+    "reason": {
+      "no_consensus": "A extração deste estudo ainda não tem consenso enviado.",
+      "cutoff_incompatible": "O ponto de corte do estudo não é aceito pela regra do plano.",
+      "cutoff_not_numeric": "O ponto de corte do estudo não foi informado como número (ex.: 5).",
+      "cutoff_missing": "O estudo não informou o ponto de corte.",
+      "no_data_for_result": "Não há dados deste desfecho neste momento.",
+      "no_comparison_in_plan": "O plano ainda não diz qual é o grupo 1 e o grupo 2.",
+      "missing_group": "O estudo não tem os dois grupos de comparação mapeados.",
+      "missing_arm_data": "Falta o dado de um dos grupos do estudo.",
+      "missing_n": "Falta o número de participantes de um grupo.",
+      "missing_mean": "Falta a média (ou a mediana) de um grupo.",
+      "missing_dispersion": "Falta a medida de dispersão (DP, EP, IC, IIQ ou amplitude).",
+      "missing_events": "Faltam eventos ou total de um grupo.",
+      "mixed_value_type_in_study": "Um grupo tem valor final e o outro, mudança desde a linha de base.",
+      "no_adjusted_effect": "O estudo não tem efeito ajustado para este desfecho.",
+      "reported_measure_differs": "O efeito informado pelo artigo usa outra medida.",
+      "reported_effect_without_ci": "O efeito informado pelo artigo não tem IC.",
+      "conversion_failed": "Não foi possível converter os números informados.",
+      "combination_failed": "Não foi possível combinar os braços do estudo.",
+      "no_effect_double_zero": "Zero eventos nos dois grupos: o estudo não entra no OR/RR.",
+      "no_effect": "Não foi possível calcular o efeito deste estudo."
+    },
+    "flag": {
+      "converted": "convertido",
+      "estimated": "estimado",
+      "derived": "derivado",
+      "arms_combined": "braços combinados",
+      "reported_effect": "efeito do artigo",
+      "adjusted": "ajustado",
+      "cutoff_tolerated": "corte aceito pela faixa",
+      "open_alerts": "alertas abertos"
+    },
+    "flagHelp": {
+      "converted": "O DP foi calculado a partir do EP ou do IC informado.",
+      "estimated": "Média e DP foram estimados a partir da mediana (Wan/Luo). Vale testar a análise sem este estudo.",
+      "derived": "O efeito foi derivado da estatística t ou do valor p.",
+      "arms_combined": "Vários braços do estudo foram combinados num grupo (fórmula do Cochrane).",
+      "reported_effect": "Usa o efeito já calculado pelo artigo, com IC.",
+      "adjusted": "Efeito ajustado para fatores de confusão.",
+      "cutoff_tolerated": "O corte do estudo é diferente do da pergunta, mas está na faixa aceita pelo plano.",
+      "open_alerts": "A extração ainda tem alertas sem resolver. Confira os dados antes de interpretar."
+    },
+    "block": {
+      "fewer_than_two_studies": "É preciso pelo menos 2 estudos para uma meta-análise.",
+      "smd_mixed_final_change": "A SMD não pode misturar valor final e mudança desde a linha de base. Use MD ou analise separado.",
+      "duplicate_study": "O mesmo estudo aparece duas vezes: os pacientes seriam contados em dobro."
+    },
+    "step2": {
+      "title": "Medida de efeito",
+      "recommended": "Recomendada: {{measure}}.",
+      "measure": "Medida",
+      "auto": "Usar a recomendada"
+    },
+    "measureReason": {
+      "plan": "É a medida do plano de análise.",
+      "chosen": "Você escolheu esta medida.",
+      "auto_same_scale": "Todos os estudos usam a mesma escala.",
+      "auto_different_scales": "Os estudos usam escalas diferentes, então os efeitos precisam ser padronizados.",
+      "auto_dichotomous": "O desfecho é de eventos (sim/não)."
+    },
+    "measure": {
+      "MD": "Diferença de médias (MD)",
+      "SMD": "Diferença de médias padronizada (g de Hedges)",
+      "OR": "Razão de chances (OR)",
+      "RR": "Risco relativo (RR)",
+      "RD": "Diferença de risco (RD)"
+    },
+    "measureHelp": {
+      "MD": "Diferença entre as médias dos grupos, na unidade da escala. Use quando todos medem com a mesma escala.",
+      "SMD": "Diferença de médias dividida pelo desvio-padrão: permite juntar escalas diferentes (QI, Bayley...). 0,2 é pequeno, 0,5 médio e 0,8 grande, como referência geral.",
+      "OR": "Quanto as chances do evento mudam no grupo 1 em relação ao grupo 2. 1 = sem diferença.",
+      "RR": "Quantas vezes o risco do evento é maior (ou menor) no grupo 1. 1 = sem diferença. Costuma ser mais fácil de explicar que o OR.",
+      "RD": "Diferença absoluta entre os riscos dos grupos. 0 = sem diferença."
+    },
+    "step3": {
+      "title": "Direção",
+      "intro": "Confira a escala de cada estudo. Onde \"maior é pior\", o sinal do efeito é invertido pelo serviço estatístico, para que todos apontem para o mesmo lado no gráfico.",
+      "noScale": "escala não informada",
+      "higherBetter": "maior é melhor",
+      "higherWorse": "maior é pior",
+      "inverted": "sinal invertido"
+    },
+    "step4": {
+      "title": "Modelo",
+      "intro": "O padrão vem do plano de análise. Mudar aqui é permitido, mas a análise fica marcada como \"não planejada\"."
+    },
+    "methodHelp": {
+      "REML": "Efeitos aleatórios: supõe que o efeito verdadeiro varia de estudo para estudo. REML é o estimador recomendado.",
+      "DL": "Efeitos aleatórios com o estimador clássico de DerSimonian-Laird. Pode subestimar a variação com poucos estudos.",
+      "PM": "Efeitos aleatórios com o estimador de Paule-Mandel.",
+      "FE": "Efeito fixo: supõe que todos os estudos medem o mesmo efeito verdadeiro. Raro em estudos observacionais."
+    },
+    "step5": {
+      "title": "Resultado",
+      "empty": "Rode a meta-análise no passo 4."
+    },
+    "notPlanned": "Análise não planejada: difere do plano em",
+    "notPlannedItem": {
+      "measure": "medida",
+      "timepoint": "momento",
+      "outcome": "desfecho",
+      "data_set": "conjunto de dados",
+      "model": "modelo"
+    },
+    "summary": {
+      "favours": "Considerando {{k}} estudo(s), no desfecho {{outcome}} ({{timepoint}}), o resultado favoreceu {{favoured}}: {{measure}} = {{effect}}.",
+      "none": "Considerando {{k}} estudo(s), no desfecho {{outcome}} ({{timepoint}}), não houve diferença clara entre {{group1}} e {{group2}}: {{measure}} = {{effect}}. O IC 95% inclui o valor de nenhuma diferença.",
+      "heterogeneity": "A heterogeneidade foi {{level}} (I² = {{i2}}%).",
+      "prediction": "Um novo estudo parecido provavelmente teria um efeito entre {{lb}} e {{ub}} (intervalo de predição)."
+    },
+    "heterogeneity": {
+      "low": "baixa",
+      "moderate": "moderada",
+      "substantial": "substancial",
+      "considerable": "considerável"
+    },
+    "res": {
+      "effect": "Efeito combinado ({{measure}})",
+      "ci": "IC 95%",
+      "to": "a",
+      "p": "Valor p",
+      "pi": "Intervalo de predição 95%",
+      "df": "gl",
+      "model": "Modelo",
+      "versions": "Calculado no R {{r}} com metafor {{metafor}}."
+    },
+    "warning": {
+      "few_studies": "Menos de 5 estudos: as estimativas de heterogeneidade (I², τ²) são instáveis.",
+      "few_studies_heterogeneity_unstable": "Menos de 5 estudos: as estimativas de heterogeneidade são instáveis.",
+      "estimated_data": "Há dados estimados (média a partir da mediana). Vale uma análise de sensibilidade sem eles.",
+      "studies_with_open_alerts": "Há estudos com alertas de extração sem resolver. Confira os dados antes de interpretar.",
+      "direction_inverted": "O sinal de alguns estudos foi invertido porque a escala deles é \"maior é pior\".",
+      "mixed_final_change": "Há estudos com valor final e outros com mudança desde a linha de base (permitido na MD).",
+      "double_zero_excluded": "Estudos com zero eventos nos dois grupos ficaram de fora do OR/RR.",
+      "continuity_correction_applied": "Foi aplicada a correção de continuidade (0,5) em estudos com zero eventos em um grupo.",
+      "knha_not_for_fixed_effect": "O ajuste de Hartung-Knapp não se aplica ao efeito fixo."
+    },
+    "forest": {
+      "title": "Forest plot"
+    },
+    "howToRead": {
+      "title": "Como ler este gráfico",
+      "square": "Cada linha é um estudo. O quadrado é o efeito daquele estudo.",
+      "line": "A linha horizontal é o intervalo de confiança de 95% do estudo: quanto mais curta, mais preciso o estudo.",
+      "null": "A linha pontilhada vertical marca \"nenhuma diferença\" (0 na MD/SMD, 1 no OR/RR). Um intervalo que cruza essa linha não mostra diferença clara.",
+      "diamond": "O losango embaixo é o efeito combinado: o centro é a estimativa e as pontas, o IC 95%.",
+      "prediction": "A linha pontilhada em volta do losango é o intervalo de predição: onde provavelmente cairia o efeito de um novo estudo.",
+      "weights": "O tamanho do quadrado e a porcentagem mostram o peso de cada estudo no resultado.",
+      "marks": "Estudos com * , † ou ‡ têm dados estimados, convertidos ou derivados (veja a nota embaixo do gráfico)."
+    }
   }
 }

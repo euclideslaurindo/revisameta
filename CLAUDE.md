@@ -187,7 +187,7 @@ revisameta/
 - `cd frontend && npm test` / `npm run lint`
 - `cd stats-r && Rscript -e 'testthat::test_dir("tests/testthat")'`
 - `cd e2e && npx playwright test`
-- `make seed-demo` — cria projeto de demonstração com dataset público
+- `make seed-demo EMAIL=...` / `scripts/seed-demo.sh <e-mail>` — cria projeto de demonstração com dataset público (`dat.normand1999`) para um usuário existente
 - `docker compose --profile lite up -d` — versão leve (1 worker, 1 processo R) para máquinas com pouca RAM
 - `make tunnel` — expõe o sistema local pelo Cloudflare Tunnel (10.6) *(adiado: fora da Etapa 0, ver docs/roteiro.md)*
 - `scripts/backup.sh` / `scripts/restore.sh <arquivo>` — backup criptografado e restauração (10.8); teste: `scripts/test-backup.sh`

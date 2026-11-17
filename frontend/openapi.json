@@ -6494,6 +6494,184 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/analyses/preview": {
+      "post": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Preview Analysis",
+        "description": "Which studies enter the analysis, with which numbers, and why the others do not.\n\nEvery number is computed by the R service; nothing is saved.",
+        "operationId": "preview_analysis",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssemblyIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssemblyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/analyses/run": {
+      "post": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Run Analysis",
+        "description": "Runs the model in the R service. Refused while the assembly has a block.",
+        "operationId": "run_analysis",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RunIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/analyses/forest-plot": {
+      "post": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Analysis Forest Plot",
+        "description": "Forest plot (SVG, or PNG at 300 dpi) in the chosen output language.",
+        "operationId": "analysis_forest_plot",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForestIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The figure.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/me/usage": {
       "get": {
         "tags": [
@@ -7748,6 +7926,165 @@
           "version"
         ],
         "title": "ArmUpdate"
+      },
+      "AssemblyIn": {
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Outcome Id"
+          },
+          "timepoint": {
+            "type": "string",
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Timepoint"
+          },
+          "measure": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "MD",
+                  "SMD",
+                  "OR",
+                  "RR",
+                  "RD"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Measure"
+          },
+          "data_set": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "unadjusted",
+                  "adjusted"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Set"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome_id",
+          "timepoint"
+        ],
+        "title": "AssemblyIn"
+      },
+      "AssemblyOut": {
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Outcome Id"
+          },
+          "outcome_name": {
+            "type": "string",
+            "title": "Outcome Name"
+          },
+          "outcome_type": {
+            "type": "string",
+            "title": "Outcome Type"
+          },
+          "timepoint": {
+            "type": "string",
+            "title": "Timepoint"
+          },
+          "measure": {
+            "type": "string",
+            "enum": [
+              "MD",
+              "SMD",
+              "OR",
+              "RR",
+              "RD"
+            ],
+            "title": "Measure"
+          },
+          "measure_reason": {
+            "type": "string",
+            "title": "Measure Reason"
+          },
+          "data_set": {
+            "type": "string",
+            "enum": [
+              "unadjusted",
+              "adjusted"
+            ],
+            "title": "Data Set"
+          },
+          "k": {
+            "type": "integer",
+            "title": "K"
+          },
+          "studies": {
+            "items": {
+              "$ref": "#/components/schemas/StudyRow"
+            },
+            "type": "array",
+            "title": "Studies"
+          },
+          "blocks": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Blocks"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "not_planned": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Not Planned"
+          },
+          "request": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome_id",
+          "outcome_name",
+          "outcome_type",
+          "timepoint",
+          "measure",
+          "measure_reason",
+          "data_set",
+          "k",
+          "studies",
+          "blocks",
+          "warnings",
+          "not_planned",
+          "request"
+        ],
+        "title": "AssemblyOut"
       },
       "AssessmentOut": {
         "properties": {
@@ -9235,6 +9572,110 @@
         ],
         "title": "FinalReviewOut"
       },
+      "ForestIn": {
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Outcome Id"
+          },
+          "timepoint": {
+            "type": "string",
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Timepoint"
+          },
+          "measure": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "MD",
+                  "SMD",
+                  "OR",
+                  "RR",
+                  "RD"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Measure"
+          },
+          "data_set": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "unadjusted",
+                  "adjusted"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Set"
+          },
+          "method": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "REML",
+                  "DL",
+                  "PM",
+                  "FE"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Method"
+          },
+          "test": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "knha",
+                  "z"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Test"
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "svg",
+              "png"
+            ],
+            "title": "Format",
+            "default": "svg"
+          },
+          "lang": {
+            "type": "string",
+            "enum": [
+              "pt-BR",
+              "en"
+            ],
+            "title": "Lang",
+            "default": "pt-BR"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome_id",
+          "timepoint"
+        ],
+        "title": "ForestIn"
+      },
       "FormField": {
         "properties": {
           "key": {
@@ -9531,6 +9972,74 @@
           "version"
         ],
         "title": "GroupUpdate"
+      },
+      "GroupValues": {
+        "properties": {
+          "n": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "N"
+          },
+          "mean": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mean"
+          },
+          "sd": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sd"
+          },
+          "events": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Events"
+          },
+          "total": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total"
+          },
+          "arms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Arms"
+          }
+        },
+        "type": "object",
+        "title": "GroupValues"
       },
       "HTTPValidationError": {
         "properties": {
@@ -13960,6 +14469,185 @@
         ],
         "title": "RowOut"
       },
+      "RunIn": {
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Outcome Id"
+          },
+          "timepoint": {
+            "type": "string",
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Timepoint"
+          },
+          "measure": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "MD",
+                  "SMD",
+                  "OR",
+                  "RR",
+                  "RD"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Measure"
+          },
+          "data_set": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "unadjusted",
+                  "adjusted"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Set"
+          },
+          "method": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "REML",
+                  "DL",
+                  "PM",
+                  "FE"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Method"
+          },
+          "test": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "knha",
+                  "z"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Test"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome_id",
+          "timepoint"
+        ],
+        "title": "RunIn"
+      },
+      "RunOut": {
+        "properties": {
+          "assembly": {
+            "$ref": "#/components/schemas/AssemblyOut"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "REML",
+              "DL",
+              "PM",
+              "FE"
+            ],
+            "title": "Method"
+          },
+          "test": {
+            "type": "string",
+            "enum": [
+              "knha",
+              "z"
+            ],
+            "title": "Test"
+          },
+          "not_planned": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Not Planned"
+          },
+          "result": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Result"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "r_meta": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "R Meta"
+          },
+          "group1_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Group1 Label"
+          },
+          "group2_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Group2 Label"
+          },
+          "favours_right": {
+            "type": "string",
+            "enum": [
+              "group1",
+              "group2"
+            ],
+            "title": "Favours Right"
+          }
+        },
+        "type": "object",
+        "required": [
+          "assembly",
+          "method",
+          "test",
+          "not_planned",
+          "result",
+          "warnings",
+          "r_meta",
+          "group1_label",
+          "group2_label",
+          "favours_right"
+        ],
+        "title": "RunOut"
+      },
       "SearchHit": {
         "properties": {
           "page": {
@@ -14243,6 +14931,176 @@
           "state"
         ],
         "title": "StudyReview"
+      },
+      "StudyRow": {
+        "properties": {
+          "study_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Study Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "included": {
+            "type": "boolean",
+            "title": "Included"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons"
+          },
+          "flags": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Flags"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source"
+          },
+          "value_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value Type"
+          },
+          "scale_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scale Name"
+          },
+          "higher_is_better": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Higher Is Better"
+          },
+          "cutoff": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cutoff"
+          },
+          "cutoff_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cutoff Status"
+          },
+          "group1": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GroupValues"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "group2": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GroupValues"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "conversions": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Conversions"
+          },
+          "yi": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Yi"
+          },
+          "vi": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Vi"
+          },
+          "inverted": {
+            "type": "boolean",
+            "title": "Inverted",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "study_id",
+          "label",
+          "included",
+          "reasons",
+          "flags",
+          "source",
+          "value_type",
+          "scale_name",
+          "higher_is_better",
+          "cutoff",
+          "cutoff_status",
+          "group1",
+          "group2",
+          "conversions"
+        ],
+        "title": "StudyRow"
       },
       "StudyToolIn": {
         "properties": {

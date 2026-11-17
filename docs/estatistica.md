@@ -137,3 +137,19 @@
 - **Marcas de estudos que entram:** `converted`, `estimated` (mediana → média), `derived`, `arms_combined`, `reported_effect`, `adjusted`, `cutoff_tolerated` e `open_alerts` (alertas de extração ainda abertos).
 - **Bloqueios da análise:** menos de 2 estudos (`fewer_than_two_studies`), SMD misturando valor final e mudança (`smd_mixed_final_change`) e estudo repetido (`duplicate_study`). Avisos: poucos estudos, dados estimados, alertas abertos, direção invertida, mistura de valor final e mudança na MD.
 - **Testes:** usam o serviço R real. Os estudos de `dat.normand1999` e `dat.bcg` montados no banco precisam dar os mesmos yᵢ/vᵢ das fixtures do metafor.
+
+### Assistente e forest plot (passo 5)
+- `POST /analyses/run` roda o modelo no R com os dados montados no passo 4. É recusado com `analysis.blocked` enquanto houver bloqueio, e não salva nada (o histórico chega no passo 7). Modelo ou teste diferentes do plano entram em `not_planned`. A resposta traz as versões do R e dos pacotes (8.1).
+- `POST /analyses/forest-plot`: `metafor::forest` com pesos, efeito combinado, intervalo de predição e o lado que cada direção favorece, escrito com o nome dos grupos do plano. O gráfico sai em SVG ou PNG a 300 dpi, no idioma escolhido (vírgula decimal em português). Estudos com dados estimados (*), convertidos (†) ou derivados (‡) são marcados, com nota explicando. Nas medidas de razão, o eixo usa valores redondos (0,1 / 0,2 / 0,5 / 1 / 2 / 5).
+- **Lado favorecido:** em desfechos contínuos, depois da inversão por estudo feita no R, "maior" sempre significa "melhor", então efeito positivo favorece o grupo 1. Em desfechos dicotômicos, depende de o evento ser desejável (direção do desfecho).
+- **Tela "Meta-análise"** (aba do projeto), em cinco passos:
+  1. desfecho, momento e conjunto de dados, com cada estudo que entra ou fica de fora e o motivo;
+  2. medida, com a recomendada e o porquê;
+  3. direção da escala de cada estudo;
+  4. modelo;
+  5. resultado.
+- **Resultado em linguagem simples:** frases traduzidas preenchidas só com os números do R. O resultado "favorece" um grupo só quando o IC 95% exclui o valor nulo. A leitura do I² usa as faixas do Cochrane Handbook (10.10.2), com cortes 40, 60 e 75. O painel "Como ler este gráfico" faz parte do Modo Aprendizado.
+- **Teste de ponta a ponta pela API** (11.1, item 3): os estudos de `dat.normand1999` montados no banco dão o mesmo efeito combinado, IC, intervalo de predição, p e I² das fixtures do metafor, com REML+Hartung-Knapp, DerSimonian-Laird e efeito fixo.
+
+### Projeto de demonstração
+- `make seed-demo EMAIL=...` (ou `scripts/seed-demo.sh <e-mail>`) cria, para um usuário existente, um projeto marcado como demonstração com os 9 estudos de `dat.normand1999`: tempo de internação após AVC, unidade especializada × cuidado habitual. Os números são lidos da fixture do metafor, nunca digitados. Como tempo de internação é "maior é pior", a demonstração também mostra a inversão de sinal.

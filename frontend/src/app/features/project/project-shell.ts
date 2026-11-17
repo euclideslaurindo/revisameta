@@ -64,6 +64,15 @@ import { ProjectContext } from './project-context';
         </a>
         <a
           mat-tab-link
+          routerLink="meta-analise"
+          routerLinkActive
+          #meta="routerLinkActive"
+          [active]="meta.isActive"
+        >
+          {{ 'project.nav.meta' | transloco }}
+        </a>
+        <a
+          mat-tab-link
           routerLink="exportar"
           routerLinkActive
           #exports="routerLinkActive"

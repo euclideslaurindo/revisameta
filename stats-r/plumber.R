@@ -143,3 +143,20 @@ function(req, res) {
   }
   out
 }
+
+#* Forest plot (metafor::forest) with weights, pooled effect and prediction interval.
+#* Body: { measure, method, test, data: {label, yi, vi}, markers, texts, decimal_mark, format }
+#* @post /forest-plot
+#* @serializer unboxedJSON list(digits = NA, na = "null")
+function(req, res) {
+  spec <- tryCatch(jsonlite::fromJSON(req$postBody, simplifyVector = FALSE), error = function(e) NULL)
+  if (is.null(spec)) {
+    res$status <- 422
+    return(envelope(errors = "body must be JSON"))
+  }
+  out <- forest_plot(spec)
+  if (!isTRUE(out$ok)) {
+    res$status <- 422
+  }
+  out
+}

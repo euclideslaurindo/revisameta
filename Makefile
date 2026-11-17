@@ -1,5 +1,5 @@
 # Thin wrapper over scripts/*.sh (ADR-010). On Windows, run the scripts directly in Git Bash.
-.PHONY: up up-lite down test test-backend test-stats-r stats-r-lock logs backup test-backup
+.PHONY: up up-lite down test test-backend test-stats-r stats-r-lock logs backup test-backup seed-demo
 
 up:
 	docker compose up -d
@@ -29,3 +29,7 @@ backup:
 
 test-backup:
 	scripts/test-backup.sh
+
+# make seed-demo EMAIL=someone@example.org
+seed-demo:
+	scripts/seed-demo.sh $(EMAIL)
