@@ -25,6 +25,7 @@ import { GroupOut } from '../../core/api/models/group-out';
 import { OutcomeOut } from '../../core/api/models/outcome-out';
 import { ConfirmDialog, ConfirmData } from '../../shared/confirm-dialog';
 import { FormError } from '../../shared/form-error';
+import { AnalysisPlanEditor } from './analysis-plan-editor';
 import { FormEditor } from './form-editor';
 import { ProjectContext } from '../project/project-context';
 
@@ -44,6 +45,7 @@ import { ProjectContext } from '../project/project-context';
     MatTooltipModule,
     FormError,
     FormEditor,
+    AnalysisPlanEditor,
   ],
   template: `
     <p class="muted">{{ 'protocol.intro' | transloco }}</p>
@@ -215,6 +217,8 @@ import { ProjectContext } from '../project/project-context';
         }
       </mat-card-content>
     </mat-card>
+
+    <rm-analysis-plan-editor />
 
     <rm-form-editor />
   `,

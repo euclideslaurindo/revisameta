@@ -84,7 +84,10 @@
     "agreement": "Shows how often the two extractors typed the same values. Low agreement means the extraction process is worth checking.",
     "kappa": "Cohen's kappa measures agreement beyond what chance alone would give: 1 is full agreement; 0 is what luck would produce. Here it is computed only on category fields (dispersion type, final value or change, higher is better, adjusted), because it was made for categorical answers.",
     "riskOfBias": "Risk of bias is the chance that the way a study was done distorted its result. Each instrument assesses it by domains (for example, confounding or missing data), with questions that help judge each domain.",
-    "robKappa": "Agreement between the two reviewers on answers and judgements. Cohen’s kappa discounts the agreement expected by chance: 1 is full agreement; 0 is what chance alone would give."
+    "robKappa": "Agreement between the two reviewers on answers and judgements. Cohen’s kappa discounts the agreement expected by chance: 1 is full agreement; 0 is what chance alone would give.",
+    "analysisPlan": "Plan registered before seeing the data. Deciding after seeing the results can unintentionally lead to choosing the analysis that gives the expected answer.",
+    "adjusted": "Adjusted estimate: result corrected for confounding factors (common in observational studies). Mixing adjusted and unadjusted in the same result can distort the comparison.",
+    "hartungKnapp": "Adjustment that makes the confidence interval more honest when there are few studies, using the t distribution. It usually widens the interval."
   },
   "notFound": {
     "title": "Page not found",
@@ -844,5 +847,82 @@
         "reopen": "Consensus reopened or import discarded"
       }
     }
+  },
+  "plan": {
+    "title": "Analysis plan",
+    "intro": "Decide here, before seeing the results, how the meta-analysis will be done. Every analysis is compared with this plan: whatever differs shows as \"not planned\". Changes are kept in the audit log.",
+    "notDefined": "The plan has not been saved yet. The values below are the suggested defaults.",
+    "comparison": {
+      "title": "Comparison",
+      "hint": "The effect is always group 1 versus group 2.",
+      "needGroups": "Register both comparison groups above to choose the order.",
+      "group1": "Group 1 (exposed, e.g. early surgery)",
+      "group2": "Group 2 (comparison)"
+    },
+    "cutoff": {
+      "title": "Cut-off",
+      "help": "Age (or another value) that separates the two groups in the review question. Each study reports the cut-off it used in the extraction form, as a number.",
+      "value": "Cut-off of the question",
+      "unit": "Unit",
+      "years": "years",
+      "months": "months",
+      "rule": "Studies with another cut-off",
+      "strict": "Strict: only the same cut-off",
+      "tolerant": "Tolerant: accept a range",
+      "min": "Lowest accepted cut-off",
+      "max": "Highest accepted cut-off",
+      "strictHint": "Only studies that used exactly this cut-off enter the meta-analysis.",
+      "tolerantHint": "Studies with a cut-off within the range enter; the result gets a subgroup and a sensitivity analysis by cut-off."
+    },
+    "adjusted": {
+      "title": "Adjusted estimates",
+      "label": "What to do with effects adjusted for confounders",
+      "separate": "Analyse adjusted and unadjusted separately (default)",
+      "adjusted_only": "Use adjusted estimates only",
+      "unadjusted_only": "Use unadjusted estimates only"
+    },
+    "outcomes": {
+      "title": "Meta-analysis outcomes",
+      "empty": "Register the outcomes above.",
+      "measure": "Effect measure",
+      "timepoint": "Time point of the main analysis",
+      "anyTimepoint": "Choose when running"
+    },
+    "measures": {
+      "auto": "Automatic (recommended by the system)",
+      "MD": "Mean difference (MD)",
+      "SMD": "Standardized mean difference (Hedges’ g)",
+      "OR": "Odds ratio (OR)",
+      "RR": "Risk ratio (RR)",
+      "RD": "Risk difference (RD)"
+    },
+    "model": {
+      "title": "Model",
+      "method": "Model and estimator",
+      "methods": {
+        "REML": "Random effects, REML (default)",
+        "DL": "Random effects, DerSimonian-Laird",
+        "PM": "Random effects, Paule-Mandel",
+        "FE": "Fixed effect"
+      },
+      "knha": "Hartung-Knapp adjustment (recommended)"
+    },
+    "sensitivity": {
+      "title": "Planned sensitivity analyses",
+      "leave_one_out": "Leave one study out at a time",
+      "exclude_high_risk_of_bias": "Without studies at high risk of bias",
+      "exclude_estimated_data": "Without estimated data (e.g. mean from the median)",
+      "fixed_vs_random": "Fixed instead of random effects",
+      "other_estimator": "Another heterogeneity estimator",
+      "by_cutoff": "By cut-off"
+    },
+    "subgroups": {
+      "title": "Planned subgroups",
+      "label": "One per line",
+      "hint": "E.g. type of surgery, risk of bias."
+    },
+    "notes": "Notes on the plan",
+    "save": "Save plan",
+    "saved": "Plan saved."
   }
 }

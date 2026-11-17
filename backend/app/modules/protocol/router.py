@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_session
 from app.modules.projects.access import ProjectContext, admin_access, member_access
-from app.modules.protocol import service
+from app.modules.protocol import analysis_plan, service
 from app.modules.protocol.schemas import (
     GroupCreate,
     GroupOut,
@@ -88,3 +88,18 @@ async def delete_group(
     session: AsyncSession = Depends(get_session),
 ) -> None:
     await service.delete_group(session, ctx, group_id)
+
+
+@router.get("/analysis-plan")
+async def get_analysis_plan(ctx: ProjectContext = Depends(member_access)) -> analysis_plan.PlanOut:
+    """The pre-defined analysis plan; analyses that differ from it are marked "not planned"."""
+    return analysis_plan.plan_out(ctx)
+
+
+@router.put("/analysis-plan")
+async def save_analysis_plan(
+    body: analysis_plan.PlanIn,
+    ctx: ProjectContext = Depends(admin_access),
+    session: AsyncSession = Depends(get_session),
+) -> analysis_plan.PlanOut:
+    return await analysis_plan.save_plan(session, ctx, body)

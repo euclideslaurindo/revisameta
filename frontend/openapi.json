@@ -1533,6 +1533,111 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/analysis-plan": {
+      "get": {
+        "tags": [
+          "protocol"
+        ],
+        "summary": "Get Analysis Plan",
+        "description": "The pre-defined analysis plan; analyses that differ from it are marked \"not planned\".",
+        "operationId": "get_analysis_plan",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "protocol"
+        ],
+        "summary": "Save Analysis Plan",
+        "operationId": "save_analysis_plan",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/projects/{project_id}/studies": {
       "get": {
         "tags": [
@@ -8216,6 +8321,26 @@
         ],
         "title": "ComparisonOut"
       },
+      "ComparisonPlan": {
+        "properties": {
+          "group1_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Group1 Id"
+          },
+          "group2_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Group2 Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "group1_id",
+          "group2_id"
+        ],
+        "title": "ComparisonPlan"
+      },
       "ConfirmDirectionIn": {
         "properties": {
           "outcome_id": {
@@ -8268,6 +8393,65 @@
           "r"
         ],
         "title": "CsvStyle"
+      },
+      "CutoffPlan": {
+        "properties": {
+          "value": {
+            "type": "number",
+            "maximum": 1000.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Value"
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "years",
+              "months"
+            ],
+            "title": "Unit",
+            "default": "years"
+          },
+          "rule": {
+            "type": "string",
+            "enum": [
+              "strict",
+              "tolerant"
+            ],
+            "title": "Rule",
+            "default": "strict"
+          },
+          "tolerance_min": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000.0,
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tolerance Min"
+          },
+          "tolerance_max": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1000.0,
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tolerance Max"
+          }
+        },
+        "type": "object",
+        "required": [
+          "value"
+        ],
+        "title": "CutoffPlan"
       },
       "DataSource": {
         "type": "string",
@@ -10153,6 +10337,32 @@
         ],
         "title": "MissingStudy"
       },
+      "ModelPlan": {
+        "properties": {
+          "method": {
+            "type": "string",
+            "enum": [
+              "REML",
+              "DL",
+              "PM",
+              "FE"
+            ],
+            "title": "Method",
+            "default": "REML"
+          },
+          "test": {
+            "type": "string",
+            "enum": [
+              "knha",
+              "z"
+            ],
+            "title": "Test",
+            "default": "knha"
+          }
+        },
+        "type": "object",
+        "title": "ModelPlan"
+      },
       "NumberCheck": {
         "properties": {
           "status": {
@@ -11227,6 +11437,45 @@
         ],
         "title": "OutcomeOut"
       },
+      "OutcomePlan": {
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Outcome Id"
+          },
+          "measure": {
+            "type": "string",
+            "enum": [
+              "auto",
+              "MD",
+              "SMD",
+              "OR",
+              "RR",
+              "RD"
+            ],
+            "title": "Measure",
+            "default": "auto"
+          },
+          "timepoint": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 60
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Timepoint"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome_id"
+        ],
+        "title": "OutcomePlan"
+      },
       "OutcomeType": {
         "type": "string",
         "enum": [
@@ -11696,6 +11945,189 @@
           "reason"
         ],
         "title": "PendingOut"
+      },
+      "PlanIn": {
+        "properties": {
+          "comparison": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ComparisonPlan"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "cutoff": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CutoffPlan"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "adjusted": {
+            "type": "string",
+            "enum": [
+              "separate",
+              "adjusted_only",
+              "unadjusted_only"
+            ],
+            "title": "Adjusted",
+            "default": "separate"
+          },
+          "outcomes": {
+            "items": {
+              "$ref": "#/components/schemas/OutcomePlan"
+            },
+            "type": "array",
+            "maxItems": 50,
+            "title": "Outcomes"
+          },
+          "model": {
+            "$ref": "#/components/schemas/ModelPlan"
+          },
+          "sensitivity": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "leave_one_out",
+                "exclude_high_risk_of_bias",
+                "exclude_estimated_data",
+                "fixed_vs_random",
+                "other_estimator",
+                "by_cutoff"
+              ]
+            },
+            "type": "array",
+            "title": "Sensitivity"
+          },
+          "subgroups": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Subgroups"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 4000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "version"
+        ],
+        "title": "PlanIn"
+      },
+      "PlanOut": {
+        "properties": {
+          "comparison": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ComparisonPlan"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "cutoff": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CutoffPlan"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "adjusted": {
+            "type": "string",
+            "enum": [
+              "separate",
+              "adjusted_only",
+              "unadjusted_only"
+            ],
+            "title": "Adjusted",
+            "default": "separate"
+          },
+          "outcomes": {
+            "items": {
+              "$ref": "#/components/schemas/OutcomePlan"
+            },
+            "type": "array",
+            "maxItems": 50,
+            "title": "Outcomes"
+          },
+          "model": {
+            "$ref": "#/components/schemas/ModelPlan"
+          },
+          "sensitivity": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "leave_one_out",
+                "exclude_high_risk_of_bias",
+                "exclude_estimated_data",
+                "fixed_vs_random",
+                "other_estimator",
+                "by_cutoff"
+              ]
+            },
+            "type": "array",
+            "title": "Sensitivity"
+          },
+          "subgroups": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Subgroups"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 4000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Notes"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "defined": {
+            "type": "boolean",
+            "title": "Defined"
+          }
+        },
+        "type": "object",
+        "required": [
+          "version",
+          "defined"
+        ],
+        "title": "PlanOut"
       },
       "PlotIn": {
         "properties": {

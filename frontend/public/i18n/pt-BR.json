@@ -84,7 +84,10 @@
     "agreement": "Mostra o quanto os dois extratores digitaram os mesmos valores. Uma concordância baixa indica que vale conferir o processo de extração.",
     "kappa": "O kappa de Cohen mede a concordância descontando a que aconteceria por acaso: 1 é concordância total; 0 é o que se esperaria por sorte. Aqui ele é calculado só nos campos de categoria (tipo de dispersão, valor final ou mudança, maior é melhor, ajustado), porque foi feito para respostas em categorias.",
     "riskOfBias": "Risco de viés é a chance de o jeito como o estudo foi feito ter distorcido o resultado. Cada instrumento avalia isso por domínios (por exemplo, confundimento ou dados faltantes), com perguntas que ajudam a julgar cada domínio.",
-    "robKappa": "Concordância entre os dois revisores nas respostas e nos julgamentos. O kappa de Cohen desconta a concordância que aconteceria por acaso: 1 é concordância total; 0 é o que se esperaria por sorte."
+    "robKappa": "Concordância entre os dois revisores nas respostas e nos julgamentos. O kappa de Cohen desconta a concordância que aconteceria por acaso: 1 é concordância total; 0 é o que se esperaria por sorte.",
+    "analysisPlan": "Plano registrado antes de ver os dados. Decidir depois de ver os resultados pode, sem querer, levar a escolher a análise que dá o resultado esperado.",
+    "adjusted": "Estimativa ajustada: resultado corrigido para fatores de confusão (comum em estudos observacionais). Misturar ajustadas e não ajustadas no mesmo resultado pode distorcer a comparação.",
+    "hartungKnapp": "Ajuste que deixa o intervalo de confiança mais honesto quando há poucos estudos, usando a distribuição t. Costuma alargar o intervalo."
   },
   "notFound": {
     "title": "Página não encontrada",
@@ -844,5 +847,82 @@
         "reopen": "Consenso reaberto ou importação descartada"
       }
     }
+  },
+  "plan": {
+    "title": "Plano de análise",
+    "intro": "Decida aqui, antes de ver os resultados, como a meta-análise será feita. Toda análise compara o que foi feito com este plano: o que for diferente aparece como \"não planejada\". Mudanças ficam registradas na auditoria.",
+    "notDefined": "O plano ainda não foi salvo. Os valores abaixo são os padrões sugeridos.",
+    "comparison": {
+      "title": "Comparação",
+      "hint": "O efeito é sempre calculado como grupo 1 em relação ao grupo 2.",
+      "needGroups": "Cadastre os dois grupos de comparação acima para escolher a ordem.",
+      "group1": "Grupo 1 (exposto, ex.: cirurgia precoce)",
+      "group2": "Grupo 2 (comparação)"
+    },
+    "cutoff": {
+      "title": "Ponto de corte",
+      "help": "Idade (ou outro valor) que separa os dois grupos na pergunta da revisão. Cada estudo informa o corte que usou no formulário de extração, como número.",
+      "value": "Corte da pergunta",
+      "unit": "Unidade",
+      "years": "anos",
+      "months": "meses",
+      "rule": "Estudos com outro corte",
+      "strict": "Estrita: só o mesmo corte",
+      "tolerant": "Tolerante: aceitar uma faixa",
+      "min": "Menor corte aceito",
+      "max": "Maior corte aceito",
+      "strictHint": "Só entram na meta-análise os estudos que usaram exatamente este corte.",
+      "tolerantHint": "Entram os estudos com corte dentro da faixa; o resultado ganha subgrupo e sensibilidade por corte."
+    },
+    "adjusted": {
+      "title": "Estimativas ajustadas",
+      "label": "O que fazer com efeitos ajustados para confundidores",
+      "separate": "Analisar ajustadas e não ajustadas separadamente (padrão)",
+      "adjusted_only": "Usar só as estimativas ajustadas",
+      "unadjusted_only": "Usar só as estimativas não ajustadas"
+    },
+    "outcomes": {
+      "title": "Desfechos da meta-análise",
+      "empty": "Cadastre os desfechos acima.",
+      "measure": "Medida de efeito",
+      "timepoint": "Momento da análise principal",
+      "anyTimepoint": "Escolher na hora"
+    },
+    "measures": {
+      "auto": "Automática (recomendada pelo sistema)",
+      "MD": "Diferença de médias (MD)",
+      "SMD": "Diferença de médias padronizada (g de Hedges)",
+      "OR": "Razão de chances (OR)",
+      "RR": "Risco relativo (RR)",
+      "RD": "Diferença de risco (RD)"
+    },
+    "model": {
+      "title": "Modelo",
+      "method": "Modelo e estimador",
+      "methods": {
+        "REML": "Efeitos aleatórios, REML (padrão)",
+        "DL": "Efeitos aleatórios, DerSimonian-Laird",
+        "PM": "Efeitos aleatórios, Paule-Mandel",
+        "FE": "Efeito fixo"
+      },
+      "knha": "Ajuste de Hartung-Knapp (recomendado)"
+    },
+    "sensitivity": {
+      "title": "Análises de sensibilidade planejadas",
+      "leave_one_out": "Retirar um estudo por vez",
+      "exclude_high_risk_of_bias": "Sem os estudos de alto risco de viés",
+      "exclude_estimated_data": "Sem os dados estimados (ex.: média a partir da mediana)",
+      "fixed_vs_random": "Efeito fixo em vez de aleatório",
+      "other_estimator": "Outro estimador de heterogeneidade",
+      "by_cutoff": "Por ponto de corte"
+    },
+    "subgroups": {
+      "title": "Subgrupos planejados",
+      "label": "Um por linha",
+      "hint": "Ex.: tipo de cirurgia, risco de viés."
+    },
+    "notes": "Observações do plano",
+    "save": "Salvar plano",
+    "saved": "Plano salvo."
   }
 }

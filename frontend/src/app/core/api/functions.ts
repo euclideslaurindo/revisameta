@@ -67,6 +67,10 @@ export type { DeleteGroup$Params as DeleteGroup$Params } from './fn/protocol/del
 export { deleteGroup as deleteGroup } from './fn/protocol/delete-group';
 export type { UpdateGroup$Params as UpdateGroup$Params } from './fn/protocol/update-group';
 export { updateGroup as updateGroup } from './fn/protocol/update-group';
+export type { GetAnalysisPlan$Params as GetAnalysisPlan$Params } from './fn/protocol/get-analysis-plan';
+export { getAnalysisPlan as getAnalysisPlan } from './fn/protocol/get-analysis-plan';
+export type { SaveAnalysisPlan$Params as SaveAnalysisPlan$Params } from './fn/protocol/save-analysis-plan';
+export { saveAnalysisPlan as saveAnalysisPlan } from './fn/protocol/save-analysis-plan';
 export type { ListStudies$Params as ListStudies$Params } from './fn/studies/list-studies';
 export { listStudies as listStudies } from './fn/studies/list-studies';
 export type { CreateStudy$Params as CreateStudy$Params } from './fn/studies/create-study';

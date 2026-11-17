@@ -91,3 +91,15 @@
   - `effect_ci_to_log`: OR, RR ou HR com IC 95% → yᵢ = log(efeito) e vᵢ pela largura do IC na escala log (`metafor::conv.wald`). Recusa se o efeito estiver fora do próprio IC.
   - `t_to_smd` e `p_to_smd`: g de Hedges a partir da estatística t ou do valor p bicaudal exato (`escalc` com `ti` ou `pi`). O sinal vem do lado que o estudo favorece (`favours`: `group1` ou `group2`).
 - `POST /combine-groups`: junta vários braços num grupo. Para dados contínuos usa a fórmula do Cochrane Handbook (tabela 6.5.a), aplicada par a par, o que é exato para qualquer número de grupos. Para dados dicotômicos soma eventos e totais.
+
+### Plano de análise (passo 3)
+- `GET/PUT /projects/{id}/analysis-plan` (salvar: só admin, com trava otimista pela versão do projeto). O plano fica em `projects.analysis_plan`, validado no backend (`app/modules/protocol/analysis_plan.py`), e cada mudança fica na auditoria. Na tela, ele é editado na página Protocolo.
+- **Comparação:** qual grupo do protocolo é o grupo 1 (exposto) e qual é o grupo 2. O efeito é sempre grupo 1 em relação ao grupo 2.
+- **Ponto de corte:** valor e unidade da pergunta, com a regra para estudos com outro corte:
+  - **estrita:** só o mesmo corte;
+  - **tolerante:** uma faixa aceita, com subgrupo e sensibilidade por corte.
+- **Corte de cada estudo:** vem do campo "ponto de corte usado pelo estudo" da extração e só é aceito como número puro ("5", "5,5"). Um texto como "< 5 anos" nunca é interpretado: o estudo aparece com o motivo "corte não informado como número" (`cutoff_status`). No formulário padrão de projetos novos, o campo passou a ser numérico.
+- **Estimativas ajustadas:** `separate` (padrão; ajustadas e não ajustadas nunca entram juntas), `adjusted_only` ou `unadjusted_only`.
+- **Desfechos:** medida (`auto`, MD, SMD; ou OR, RR, RD nos dicotômicos), conferida contra o tipo do desfecho, e momento da análise principal.
+- **Modelo:** REML + Hartung-Knapp por padrão. No efeito fixo, o Hartung-Knapp é desligado automaticamente.
+- **Sensibilidades e subgrupos planejados.** O que for rodado fora do plano será marcado como "não planejada" (passos 4 e 5).

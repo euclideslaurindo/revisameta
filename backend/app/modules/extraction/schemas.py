@@ -56,7 +56,7 @@ DEFAULT_FORM = FormSchema(
         FormField(key="centers", type="number", label_key="extraction.fields.centers"),
         FormField(key="n_total", type="number", label_key="extraction.fields.n_total"),
         FormField(key="eligibility", type="textarea", label_key="extraction.fields.eligibility"),
-        FormField(key="cutoff_used", type="text", label_key="extraction.fields.cutoff_used"),
+        FormField(key="cutoff_used", type="number", label_key="extraction.fields.cutoff_used"),
         FormField(key="surgery_type", type="text", label_key="extraction.fields.surgery_type"),
         FormField(key="follow_up", type="text", label_key="extraction.fields.follow_up"),
         FormField(key="funding", type="text", label_key="extraction.fields.funding"),
