@@ -6672,6 +6672,284 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/analyses": {
+      "post": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Save Analysis",
+        "description": "Runs and saves the analysis with its data, parameters, result and versions.",
+        "operationId": "save_analysis",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalysisOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "List Analyses",
+        "description": "Saved analyses, newest first, each saying whether its data changed since.",
+        "operationId": "list_analyses",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AnalysisSummary"
+                  },
+                  "title": "Response List Analyses"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/analyses/{analysis_id}": {
+      "get": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Get Analysis",
+        "operationId": "get_analysis",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "analysis_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Analysis Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalysisOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Delete Analysis",
+        "description": "Removes it from the history (soft delete: nothing is erased).",
+        "operationId": "delete_analysis",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "analysis_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Analysis Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/analyses/{analysis_id}/r-script": {
+      "get": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Analysis R Script",
+        "description": "A .R file that reproduces the saved analysis in a clean R session.",
+        "operationId": "analysis_r_script",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "analysis_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Analysis Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The figure.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/me/usage": {
       "get": {
         "tags": [
@@ -7399,6 +7677,350 @@
           "version"
         ],
         "title": "AlertOut"
+      },
+      "AnalysisOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Outcome Id"
+          },
+          "outcome_name": {
+            "type": "string",
+            "title": "Outcome Name"
+          },
+          "timepoint": {
+            "type": "string",
+            "title": "Timepoint"
+          },
+          "measure": {
+            "type": "string",
+            "title": "Measure"
+          },
+          "method": {
+            "type": "string",
+            "title": "Method"
+          },
+          "test": {
+            "type": "string",
+            "title": "Test"
+          },
+          "data_set": {
+            "type": "string",
+            "title": "Data Set"
+          },
+          "k": {
+            "type": "integer",
+            "title": "K"
+          },
+          "planned": {
+            "type": "boolean",
+            "title": "Planned"
+          },
+          "not_planned": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Not Planned"
+          },
+          "estimate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimate"
+          },
+          "ci_lb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ci Lb"
+          },
+          "ci_ub": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ci Ub"
+          },
+          "i2": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "I2"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "created_by_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created By Name"
+          },
+          "outdated": {
+            "type": "boolean",
+            "title": "Outdated"
+          },
+          "outdated_reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Outdated Reasons"
+          },
+          "input_snapshot": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Input Snapshot"
+          },
+          "result": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Result"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "r_meta": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "R Meta"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "outcome_id",
+          "outcome_name",
+          "timepoint",
+          "measure",
+          "method",
+          "test",
+          "data_set",
+          "k",
+          "planned",
+          "not_planned",
+          "estimate",
+          "ci_lb",
+          "ci_ub",
+          "i2",
+          "note",
+          "created_at",
+          "created_by_name",
+          "outdated",
+          "outdated_reasons",
+          "input_snapshot",
+          "result",
+          "warnings",
+          "r_meta"
+        ],
+        "title": "AnalysisOut"
+      },
+      "AnalysisSummary": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Outcome Id"
+          },
+          "outcome_name": {
+            "type": "string",
+            "title": "Outcome Name"
+          },
+          "timepoint": {
+            "type": "string",
+            "title": "Timepoint"
+          },
+          "measure": {
+            "type": "string",
+            "title": "Measure"
+          },
+          "method": {
+            "type": "string",
+            "title": "Method"
+          },
+          "test": {
+            "type": "string",
+            "title": "Test"
+          },
+          "data_set": {
+            "type": "string",
+            "title": "Data Set"
+          },
+          "k": {
+            "type": "integer",
+            "title": "K"
+          },
+          "planned": {
+            "type": "boolean",
+            "title": "Planned"
+          },
+          "not_planned": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Not Planned"
+          },
+          "estimate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimate"
+          },
+          "ci_lb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ci Lb"
+          },
+          "ci_ub": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ci Ub"
+          },
+          "i2": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "I2"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "created_by_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created By Name"
+          },
+          "outdated": {
+            "type": "boolean",
+            "title": "Outdated"
+          },
+          "outdated_reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Outdated Reasons"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "outcome_id",
+          "outcome_name",
+          "timepoint",
+          "measure",
+          "method",
+          "test",
+          "data_set",
+          "k",
+          "planned",
+          "not_planned",
+          "estimate",
+          "ci_lb",
+          "ci_ub",
+          "i2",
+          "note",
+          "created_at",
+          "created_by_name",
+          "outdated",
+          "outdated_reasons"
+        ],
+        "title": "AnalysisSummary"
       },
       "AnnotationIn": {
         "properties": {
@@ -14709,6 +15331,104 @@
           "favours_right"
         ],
         "title": "RunOut"
+      },
+      "SaveIn": {
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Outcome Id"
+          },
+          "timepoint": {
+            "type": "string",
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Timepoint"
+          },
+          "measure": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "MD",
+                  "SMD",
+                  "OR",
+                  "RR",
+                  "RD"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Measure"
+          },
+          "data_set": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "unadjusted",
+                  "adjusted"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Set"
+          },
+          "method": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "REML",
+                  "DL",
+                  "PM",
+                  "FE"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Method"
+          },
+          "test": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "knha",
+                  "z"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Test"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome_id",
+          "timepoint"
+        ],
+        "title": "SaveIn"
       },
       "SearchHit": {
         "properties": {

@@ -1,5 +1,6 @@
 """Imports every model so Alembic and the mapper registry see all tables."""
 
+from app.modules.analysis.models import Analysis
 from app.modules.audit import recorder as _audit_recorder  # noqa: F401 - registers listener
 from app.modules.audit.models import AuditLog
 from app.modules.auth.models import EmailToken, RefreshToken, User
@@ -29,6 +30,7 @@ from app.modules.studies.models import Reference, Report, Study
 from app.modules.uploads.models import PdfPageText, StoredFile, UploadSession
 
 __all__ = [
+    "Analysis",
     "AuditLog",
     "BackgroundJob",
     "CheckAlert",

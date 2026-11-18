@@ -66,6 +66,20 @@ Templates configuráveis (ROBINS-I, RoB 2, JBI, NOS, genérico), dupla avaliaç�
 Serviço R completo (8.3), conversões, combinação de braços, blocos B e E de 7.5.1 (detector de EP, recálculo de p/IC, influência), assistente passo a passo, regras de ponto de corte, forest plot, intervalo de predição, histórico de análises com marcação de "desatualizada", script R exportável, Modo Aprendizado na tela de resultados.
 *Saída:* todos os testes de referência (11.1) passam; o script exportado reproduz os números em um R limpo; o detector acusa os casos sintéticos de EP digitado como DP.
 
+**Etapa 3 — implementação concluída em 2026-11-17; falta o teste de interface automatizado.**
+
+| Critério | Situação |
+|---|---|
+| Testes de referência no R (11.1, itens 1 e 2): 28 casos de `dat.bcg` e `dat.normand1999` (REML, DL, Paule-Mandel, efeito fixo, com e sem Hartung-Knapp), tolerância 1e-6 | `stats-r/tests/testthat/test-meta-analysis.R`; fixtures geradas pelo metafor (`scripts/generate-fixtures.sh`) |
+| Mesmos dados pelo cliente Python e pela API (11.1, item 3) | `backend/tests/test_stats_reference.py` (serviço R real, também no CI); `test_analysis_assembly.py`: estudos montados no banco dão os mesmos yᵢ/vᵢ e o mesmo efeito combinado do metafor |
+| Mesmos dados pela interface (11.1, item 4) | **Pendente:** ainda não há Playwright no repositório. Conferido à mão no projeto de demonstração (MD = 15,11; IC −6,11 a 36,32, igual à fixture com o sinal invertido) |
+| O script R exportado reproduz os números num R limpo (11.1, item 5) | `stats-r/tests/testthat/test-r-script.R` roda o script num processo `Rscript --vanilla` novo. Também conferido com um script baixado do app (diferença máxima 3,6e-14) |
+| Conversões e combinação de braços (8.5) | `stats-r/tests/testthat/test-conversions.R`, `backend/tests/test_stats_reference.py` |
+| O detector acusa os casos sintéticos de EP digitado como DP (bloco B) | `stats-r/tests/testthat/test-plausibility.R`, `backend/tests/test_analysis_assembly.py`. Nos dados reais da demonstração houve 3 falsos positivos (ver `docs/estatistica.md`); os limiares devem ser revistos com os dados do grupo |
+| Influência e efeitos improváveis (bloco E) | Iguais ao `influence()` do metafor (`test-plausibility.R`) |
+| Bloqueios (k < 2, SMD misturando final e mudança, estudo repetido), regras de corte, ajustadas à parte | `backend/tests/test_analysis_assembly.py`, `test_analysis_plan.py` |
+| Histórico com marcação de "desatualizada" (bloco G) | `test_saved_analyses_become_outdated_and_export_the_r_script` |
+
 **Etapa 4 — Sensibilidade e subgrupos (P1)**
 Leave-one-out, exclusão por risco de viés e por dados estimados, subgrupos, funnel/Egger com avisos, síntese narrativa, forest plot combinado com o semáforo de risco de viés.
 *Saída:* resultados batem com o metafor nas fixtures.

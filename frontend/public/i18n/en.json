@@ -1127,6 +1127,23 @@
     "check": {
       "possible_se_as_sd": "{{arm}}: the SD ({{sd}}, n = {{n}}) is much smaller than the typical SD of this scale ({{typical}}), and SD×√n = {{times}} is close to it. This value may be an SE. Check the article.",
       "p_inconsistent": "The article reports p = {{reported}}, but with the typed means, SDs and n the p would be {{recomputed}}. Check the numbers and the dispersion type."
+    },
+    "history": {
+      "title": "Analysis history",
+      "help": "Each saved analysis keeps the exact data, the settings, the result and the R versions. If a consensus value changes later it shows as outdated; run it again to update.",
+      "empty": "No saved analysis yet.",
+      "note": "Note (optional)",
+      "save": "Save to history",
+      "saved": "Analysis saved to the history.",
+      "notPlanned": "not planned",
+      "outdated": "outdated",
+      "script": "Download R script",
+      "remove": "Remove from history",
+      "confirmRemove": "Remove this analysis from the history? It stays stored in the database and the audit log.",
+      "reason": {
+        "data_changed": "A number of a study in this analysis was corrected after it was saved.",
+        "studies_changed": "A study gained or lost its consensus after it was saved: the studies that enter may have changed."
+      }
     }
   }
 }

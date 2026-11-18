@@ -230,6 +230,15 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
         "/api/v1/projects/{project_id}/analyses/forest-plot",
         {"outcome_id": "{tool_id}", "timepoint": "x"},
     ),
+    ("GET", "/api/v1/projects/{project_id}/analyses", None),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/analyses",
+        {"outcome_id": "{tool_id}", "timepoint": "x"},
+    ),
+    ("GET", "/api/v1/projects/{project_id}/analyses/{analysis_id}", None),
+    ("DELETE", "/api/v1/projects/{project_id}/analyses/{analysis_id}", None),
+    ("GET", "/api/v1/projects/{project_id}/analyses/{analysis_id}/r-script", None),
     ("GET", "/api/v1/projects/{project_id}/analysis-plan", None),
     ("PUT", "/api/v1/projects/{project_id}/analysis-plan", {"version": 1}),
     ("GET", "/api/v1/projects/{project_id}/rob/review", None),
@@ -325,6 +334,8 @@ async def _setup(client: AsyncClient, make_user: MakeUser) -> tuple[LoggedUser, 
     ids.update(
         await _extraction_ids(client, owner, project["id"], ids["study_id"], ids["outcome_id"])
     )
+    # Any id of this project's kind: the outsider must get 404 before it is even read.
+    ids["analysis_id"] = ids["study_id"]
     ids["tool_id"] = (
         await client.post(
             f"/api/v1/projects/{project['id']}/rob/tools",

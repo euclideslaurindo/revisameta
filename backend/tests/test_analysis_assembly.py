@@ -506,3 +506,61 @@ async def test_reported_p_that_does_not_match_the_data_is_flagged(
     row = next(s for s in out["studies"] if s["label"] == "P errado")
     assert row["checks"][0]["code"] == "p_inconsistent"
     assert row["checks"][0]["values"]["p_reported"] == 0.9
+
+
+async def test_saved_analyses_become_outdated_and_export_the_r_script(
+    client: AsyncClient, make_user: MakeUser, session: AsyncSession
+) -> None:
+    ana, p, seed = await _setup(client, make_user, session)
+    leo = await make_user("Leo")
+    from tests.test_consensus import _join
+
+    await _join(client, ana, leo, p["pid"], ["reader"])
+    other = {"n": 32, "mean": 85.0, "sd": 11.0, "dispersion_type": "sd"}
+    a_id = await seed.study(
+        "A", [(0, {"n": 30, "mean": 92.0, "sd": 12.0, "dispersion_type": "sd"}), (1, other)]
+    )
+    await seed.study(
+        "B", [(0, {"n": 28, "mean": 90.0, "sd": 13.0, "dispersion_type": "sd"}), (1, other)]
+    )
+    url = f"{p['base']}/analyses"
+    body = {"outcome_id": p["outcome"], "timepoint": "5 anos", "note": "Análise principal"}
+
+    assert (await client.post(url, json=body, headers=leo.headers)).status_code == 403
+    r = await client.post(url, json=body, headers=ana.headers)
+    assert r.status_code == 201, r.text
+    saved = r.json()
+    assert saved["k"] == 2 and saved["planned"] is True and saved["outdated"] is False
+    assert saved["note"] == "Análise principal" and saved["created_by_name"] == "Ana"
+    assert saved["r_meta"]["packages"]["metafor"] == META["metafor_version"]
+    assert [s["label"] for s in saved["input_snapshot"]["studies"] if s["included"]] == ["A", "B"]
+
+    # A corrected number in a consensus marks the analysis as outdated.
+    extraction = (
+        await session.scalars(select(Extraction).where(Extraction.study_id == a_id))
+    ).one()
+    extraction.data_version += 1
+    await session.commit()
+    listed = (await client.get(url, headers=leo.headers)).json()
+    assert listed[0]["outdated"] is True and listed[0]["outdated_reasons"] == ["data_changed"]
+    # A study that gains a consensus changes who would enter.
+    await seed.study(
+        "C", [(0, {"n": 25, "mean": 91.0, "sd": 12.0, "dispersion_type": "sd"}), (1, other)]
+    )
+    listed = (await client.get(url, headers=leo.headers)).json()
+    assert listed[0]["outdated_reasons"] == ["data_changed", "studies_changed"]
+
+    # The R script holds the saved data and the same model call.
+    r = await client.get(f"{url}/{saved['id']}/r-script", headers=leo.headers)
+    assert r.status_code == 200, r.text
+    script = r.text
+    assert "library(metafor)" in script and 'study = c("A", "B")' in script
+    assert 'method = "REML", test = "knha"' in script
+    assert (
+        r.headers["content-disposition"].endswith('.R"') or ".R" in r.headers["content-disposition"]
+    )
+
+    # Leaving the history never erases anything; readers cannot do it.
+    assert (await client.delete(f"{url}/{saved['id']}", headers=leo.headers)).status_code == 403
+    assert (await client.delete(f"{url}/{saved['id']}", headers=ana.headers)).status_code == 204
+    assert (await client.get(url, headers=ana.headers)).json() == []

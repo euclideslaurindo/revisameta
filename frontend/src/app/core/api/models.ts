@@ -3,6 +3,8 @@
 
 export type { AgreementOut } from './models/agreement-out';
 export type { AlertOut } from './models/alert-out';
+export type { AnalysisOut } from './models/analysis-out';
+export type { AnalysisSummary } from './models/analysis-summary';
 export type { AnnotationIn } from './models/annotation-in';
 export type { AnnotationOut } from './models/annotation-out';
 export type { AnnotationUpdate } from './models/annotation-update';
@@ -137,6 +139,7 @@ export type { RowError } from './models/row-error';
 export type { RowOut } from './models/row-out';
 export type { RunIn } from './models/run-in';
 export type { RunOut } from './models/run-out';
+export type { SaveIn } from './models/save-in';
 export type { SearchHit } from './models/search-hit';
 export type { StageEventOut } from './models/stage-event-out';
 export type { StartIn } from './models/start-in';

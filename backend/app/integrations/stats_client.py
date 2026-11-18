@@ -117,6 +117,10 @@ class StatsClient:
         """Influence diagnostics and improbable effects of the fitted model."""
         return await self._request("POST", "/influence", json=spec)
 
+    async def r_script(self, spec: dict[str, Any]) -> StatsResponse:
+        """Reproducible R script of a saved analysis."""
+        return await self._request("POST", "/r-script", json=spec)
+
     async def rob_plot(self, spec: dict[str, Any]) -> StatsResponse:
         """Risk-of-bias traffic light or summary (robvis, or ggplot2 with the same look)."""
         return await self._request("POST", "/rob-plots", json=spec)

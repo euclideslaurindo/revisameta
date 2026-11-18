@@ -176,6 +176,23 @@ function(req, res) {
   plausibility_checks(spec)
 }
 
+#* Reproducible R script of a saved analysis (yi, vi per study and the rma() call).
+#* Body: { measure, method, test, data: {label, yi, vi}, info }
+#* @post /r-script
+#* @serializer unboxedJSON list(digits = NA, na = "null")
+function(req, res) {
+  spec <- tryCatch(jsonlite::fromJSON(req$postBody, simplifyVector = FALSE), error = function(e) NULL)
+  if (is.null(spec)) {
+    res$status <- 422
+    return(envelope(errors = "body must be JSON"))
+  }
+  out <- r_script(spec)
+  if (!isTRUE(out$ok)) {
+    res$status <- 422
+  }
+  out
+}
+
 #* Influence diagnostics and improbable effects (7.5.1 block E).
 #* Body: { measure, method, test, data: {label, yi, vi}, params }
 #* @post /influence

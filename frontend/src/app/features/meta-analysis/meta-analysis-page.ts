@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -15,7 +16,12 @@ import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { Api } from '../../core/api/api';
 import { analysisForestPlot } from '../../core/api/fn/analysis/analysis-forest-plot';
 import { previewAnalysis } from '../../core/api/fn/analysis/preview-analysis';
+import { analysisRScript } from '../../core/api/fn/analysis/analysis-r-script';
+import { deleteAnalysis } from '../../core/api/fn/analysis/delete-analysis';
+import { listAnalyses } from '../../core/api/fn/analysis/list-analyses';
 import { runAnalysis } from '../../core/api/fn/analysis/run-analysis';
+import { saveAnalysis } from '../../core/api/fn/analysis/save-analysis';
+import { AnalysisSummary } from '../../core/api/models/analysis-summary';
 import { getAnalysisPlan } from '../../core/api/fn/protocol/get-analysis-plan';
 import { listOutcomes } from '../../core/api/fn/protocol/list-outcomes';
 import { AssemblyOut } from '../../core/api/models/assembly-out';
@@ -25,6 +31,7 @@ import { RunOut } from '../../core/api/models/run-out';
 import { withJsonBody } from '../../core/errors/problem';
 import { fileNameFrom, saveFile } from '../../shared/download';
 import { FormError } from '../../shared/form-error';
+import { LocalDatePipe } from '../../shared/local-date.pipe';
 import { ProjectContext } from '../project/project-context';
 import { favoured, formatNumber, formatP, heterogeneity, shown } from './meta-reading';
 
@@ -47,10 +54,12 @@ type Method = 'REML' | 'DL' | 'PM' | 'FE';
     MatCheckboxModule,
     MatExpansionModule,
     MatFormFieldModule,
+    MatInputModule,
     MatSelectModule,
     MatStepperModule,
     MatTooltipModule,
     FormError,
+    LocalDatePipe,
   ],
   template: `
     <p class="muted">
@@ -370,6 +379,20 @@ type Method = 'REML' | 'DL' | 'PM' | 'FE';
                 | transloco: { r: r.r_meta['r_version'], metafor: r.r_meta['packages']['metafor'] }
             }}
           </p>
+          @if (canSave()) {
+            <div class="row">
+              <mat-form-field subscriptSizing="dynamic" class="wide">
+                <mat-label>{{ 'meta.history.note' | transloco }}</mat-label>
+                <input matInput [(ngModel)]="note" maxlength="500" />
+              </mat-form-field>
+              <button mat-flat-button type="button" [disabled]="busy()" (click)="save()">
+                {{ 'meta.history.save' | transloco }}
+              </button>
+            </div>
+            @if (savedNow()) {
+              <p class="notice notice-ok" role="status">{{ 'meta.history.saved' | transloco }}</p>
+            }
+          }
         } @else {
           <p class="muted">{{ 'meta.step5.empty' | transloco }}</p>
         }
@@ -378,6 +401,63 @@ type Method = 'REML' | 'DL' | 'PM' | 'FE';
         </div>
       </mat-step>
     </mat-stepper>
+
+    <h2>
+      {{ 'meta.history.title' | transloco }}
+      <span class="term" tabindex="0" [matTooltip]="'meta.history.help' | transloco">?</span>
+    </h2>
+    @if (history().length === 0) {
+      <p class="empty">{{ 'meta.history.empty' | transloco }}</p>
+    }
+    <ul class="item-list">
+      @for (h of history(); track h.id) {
+        <li class="stack-item">
+          <div>
+            <strong>{{ h.outcome_name }} · {{ h.timepoint }}</strong>
+            <span class="badge">{{ h.measure }} · k = {{ h.k }}</span>
+            @if (!h.planned) {
+              <span class="badge badge-block">{{ 'meta.history.notPlanned' | transloco }}</span>
+            }
+            @if (h.outdated) {
+              <span class="badge badge-block">{{ 'meta.history.outdated' | transloco }}</span>
+            }
+            <div>
+              {{ h.measure }} = {{ onScaleOf(h.estimate, h.measure) }} ({{
+                'meta.res.ci' | transloco
+              }}
+              {{ onScaleOf(h.ci_lb, h.measure) }} {{ 'meta.res.to' | transloco }}
+              {{ onScaleOf(h.ci_ub, h.measure) }}) · I² = {{ fmt(h.i2 ?? undefined, 1) }}%
+            </div>
+            <div class="muted">
+              {{ 'plan.model.methods.' + h.method | transloco
+              }}{{ h.test === 'knha' ? ' · Hartung-Knapp' : '' }} · {{ h.created_by_name }} ·
+              {{ h.created_at | localDate: 'short' }}
+              @if (h.note) {
+                · {{ h.note }}
+              }
+            </div>
+            @for (reason of h.outdated_reasons; track reason) {
+              <div class="alert-item">{{ 'meta.history.reason.' + reason | transloco }}</div>
+            }
+          </div>
+          <div class="actions">
+            <button
+              mat-stroked-button
+              type="button"
+              [disabled]="busy()"
+              (click)="downloadScript(h.id)"
+            >
+              {{ 'meta.history.script' | transloco }}
+            </button>
+            @if (canSave()) {
+              <button mat-button type="button" [disabled]="busy()" (click)="remove(h.id)">
+                {{ 'meta.history.remove' | transloco }}
+              </button>
+            }
+          </div>
+        </li>
+      }
+    </ul>
   `,
 })
 export class MetaAnalysisPage implements OnInit, OnDestroy {
@@ -395,6 +475,13 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
   protected readonly busy = signal(false);
   protected readonly error = signal<unknown>(null);
   protected readonly methods: Method[] = ['REML', 'DL', 'PM', 'FE'];
+  protected readonly history = signal<AnalysisSummary[]>([]);
+  protected readonly savedNow = signal(false);
+  protected readonly canSave = computed(() => {
+    const roles = this.context.project()?.my_roles ?? [];
+    return roles.includes('admin') || roles.includes('statistician');
+  });
+  protected note = '';
   protected readonly howToRead = [
     'square',
     'line',
@@ -432,6 +519,7 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
         this.api.invoke(getAnalysisPlan, { project_id }),
       ]);
       this.outcomes.set(outcomes);
+      await this.loadHistory();
       this.plan.set(plan);
       this.method = plan.model?.method ?? 'REML';
       this.knha = (plan.model?.test ?? 'knha') === 'knha';
@@ -489,8 +577,58 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
     });
   }
 
+  private async loadHistory(): Promise<void> {
+    this.history.set(await this.api.invoke(listAnalyses, { project_id: this.projectId() }));
+  }
+
+  async save(): Promise<void> {
+    if (!this.outcomeId || !this.timepoint) return;
+    this.savedNow.set(false);
+    await this.guard(async () => {
+      await this.api.invoke(saveAnalysis, {
+        project_id: this.projectId(),
+        body: {
+          ...this.body(),
+          method: this.method,
+          test: this.method === 'FE' || !this.knha ? 'z' : 'knha',
+          note: this.note.trim() || null,
+        },
+      });
+      this.note = '';
+      this.savedNow.set(true);
+      await this.loadHistory();
+    });
+  }
+
+  async downloadScript(id: string): Promise<void> {
+    await this.guard(async () => {
+      const response = await this.api.invoke$Response(analysisRScript, {
+        project_id: this.projectId(),
+        analysis_id: id,
+      });
+      saveFile(
+        response.body,
+        fileNameFrom(response.headers.get('content-disposition'), 'meta-analise.R'),
+      );
+    });
+  }
+
+  async remove(id: string): Promise<void> {
+    if (!window.confirm(this.t('meta.history.confirmRemove'))) return;
+    await this.guard(async () => {
+      await this.api.invoke(deleteAnalysis, { project_id: this.projectId(), analysis_id: id });
+      await this.loadHistory();
+    });
+  }
+
+  protected onScaleOf(value: number | null | undefined, measure: string): string {
+    if (value === null || value === undefined) return '—';
+    return this.fmt(shown(value, measure));
+  }
+
   async run(): Promise<void> {
     if (!this.outcomeId || !this.timepoint) return;
+    this.savedNow.set(false);
     await this.guard(async () => {
       const result = await this.api.invoke(runAnalysis, {
         project_id: this.projectId(),

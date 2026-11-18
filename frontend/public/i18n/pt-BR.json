@@ -1127,6 +1127,23 @@
     "check": {
       "possible_se_as_sd": "{{arm}}: o DP ({{sd}}, n = {{n}}) é bem menor que o DP típico desta escala ({{typical}}), e DP×√n = {{times}} fica perto dele. Este valor pode ser um EP. Confira no artigo.",
       "p_inconsistent": "O artigo informa p = {{reported}}, mas com as médias, DP e n digitados o p seria {{recomputed}}. Confira os números e o tipo de dispersão."
+    },
+    "history": {
+      "title": "Histórico de análises",
+      "help": "Cada análise salva guarda os dados exatos, os parâmetros, o resultado e as versões do R. Se um dado do consenso mudar depois, ela aparece como desatualizada; rode de novo para atualizar.",
+      "empty": "Nenhuma análise salva ainda.",
+      "note": "Observação (opcional)",
+      "save": "Salvar no histórico",
+      "saved": "Análise salva no histórico.",
+      "notPlanned": "não planejada",
+      "outdated": "desatualizada",
+      "script": "Baixar script R",
+      "remove": "Remover do histórico",
+      "confirmRemove": "Remover esta análise do histórico? Ela continua guardada no banco e na auditoria.",
+      "reason": {
+        "data_changed": "Um número de um estudo desta análise foi corrigido depois que ela foi salva.",
+        "studies_changed": "Algum estudo ganhou ou perdeu o consenso depois que ela foi salva: os estudos que entram podem ter mudado."
+      }
     }
   }
 }

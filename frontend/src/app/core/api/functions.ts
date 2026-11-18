@@ -231,6 +231,16 @@ export type { RunAnalysis$Params as RunAnalysis$Params } from './fn/analysis/run
 export { runAnalysis as runAnalysis } from './fn/analysis/run-analysis';
 export type { AnalysisForestPlot$Params as AnalysisForestPlot$Params } from './fn/analysis/analysis-forest-plot';
 export { analysisForestPlot as analysisForestPlot } from './fn/analysis/analysis-forest-plot';
+export type { ListAnalyses$Params as ListAnalyses$Params } from './fn/analysis/list-analyses';
+export { listAnalyses as listAnalyses } from './fn/analysis/list-analyses';
+export type { SaveAnalysis$Params as SaveAnalysis$Params } from './fn/analysis/save-analysis';
+export { saveAnalysis as saveAnalysis } from './fn/analysis/save-analysis';
+export type { GetAnalysis$Params as GetAnalysis$Params } from './fn/analysis/get-analysis';
+export { getAnalysis as getAnalysis } from './fn/analysis/get-analysis';
+export type { DeleteAnalysis$Params as DeleteAnalysis$Params } from './fn/analysis/delete-analysis';
+export { deleteAnalysis as deleteAnalysis } from './fn/analysis/delete-analysis';
+export type { AnalysisRScript$Params as AnalysisRScript$Params } from './fn/analysis/analysis-r-script';
+export { analysisRScript as analysisRScript } from './fn/analysis/analysis-r-script';
 export type { MyUsage$Params as MyUsage$Params } from './fn/quotas/my-usage';
 export { myUsage as myUsage } from './fn/quotas/my-usage';
 export type { UserUsage$Params as UserUsage$Params } from './fn/quotas/user-usage';
