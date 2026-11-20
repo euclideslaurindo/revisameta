@@ -1194,6 +1194,17 @@
         "subgroup_with_one_study": "A subgroup has a single study: its value is only that study's effect.",
         "subgroup_with_few_studies": "A subgroup has fewer than 3 studies: the estimate is unstable."
       }
+    },
+    "pb": {
+      "title": "Publication bias",
+      "help": "Small studies with 'negative' results are sometimes not published. The funnel plot and Egger's test look for that sign, but other things (such as heterogeneity) produce the same shape.",
+      "run": "Analyse publication bias",
+      "fewTitle": "Caution: only {{k}} studies.",
+      "few": "With fewer than 10 studies, the funnel plot and Egger's test have little power and cannot support a conclusion. Do not claim there is or there is not publication bias based on them.",
+      "egger": "Egger's test (funnel asymmetry): {{stat}} = {{value}}, p = {{p}}.",
+      "eggerHelp": "Tests whether small studies show different effects from large ones. A small p suggests asymmetry, which may be publication bias or another cause; a large p does not prove there is no bias.",
+      "funnel": "Funnel plot",
+      "funnelHelp": "Each dot is a study: the effect on the horizontal axis and the standard error on the vertical one (larger studies at the top). Without bias, the dots spread symmetrically inside the funnel."
     }
   }
 }

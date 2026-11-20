@@ -235,6 +235,10 @@ export type { SensitivityAnalysis$Params as SensitivityAnalysis$Params } from '.
 export { sensitivityAnalysis as sensitivityAnalysis } from './fn/analysis/sensitivity-analysis';
 export type { SubgroupAnalysis$Params as SubgroupAnalysis$Params } from './fn/analysis/subgroup-analysis';
 export { subgroupAnalysis as subgroupAnalysis } from './fn/analysis/subgroup-analysis';
+export type { EggerTest$Params as EggerTest$Params } from './fn/analysis/egger-test';
+export { eggerTest as eggerTest } from './fn/analysis/egger-test';
+export type { AnalysisFunnelPlot$Params as AnalysisFunnelPlot$Params } from './fn/analysis/analysis-funnel-plot';
+export { analysisFunnelPlot as analysisFunnelPlot } from './fn/analysis/analysis-funnel-plot';
 export type { ListAnalyses$Params as ListAnalyses$Params } from './fn/analysis/list-analyses';
 export { listAnalyses as listAnalyses } from './fn/analysis/list-analyses';
 export type { SaveAnalysis$Params as SaveAnalysis$Params } from './fn/analysis/save-analysis';

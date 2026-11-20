@@ -209,3 +209,13 @@
 - O subgrupo conta como "planejado" quando o nome dele está na lista de subgrupos do plano de análise.
 - **Fixtures:** `stats-r/fixtures/subgroup.json` (metafor chamado direto: `dat.bcg` por tipo de alocação, com REML+Hartung-Knapp, DL e efeito fixo). Pela API, os 13 estudos montados no banco com a alocação como característica dão os mesmos valores.
 - **Correção no cliente do R:** quando o R responde um erro de validação, ele manda o `result` vazio como `[]`. O cliente tratava isso como "serviço fora do ar" (503). Agora o erro chega com a mensagem certa (teste em `test_stats_reference.py`).
+
+### Viés de publicação: funnel plot e teste de Egger (Etapa 4, passo 3)
+- `POST /analyses/egger` e `POST /analyses/funnel-plot`: os mesmos estudos, modelo e teste da análise principal.
+- **No R:**
+  - `/egger` usa `metafor::regtest(fit, model = "rma", predictor = "sei")`. Devolve a estatística (t com Hartung-Knapp, z sem ele), o p e a estimativa-limite. Recusa com menos de 3 estudos.
+  - `/funnel-plot` usa `metafor::funnel` e devolve SVG, ou PNG a 300 dpi.
+- **Menos de 10 estudos** (regra 0.2): as duas respostas trazem o aviso `fewer_than_ten_studies`. O backend devolve `few_studies`, e a tela mostra um aviso forte dizendo que o resultado não serve como conclusão.
+- **Fixtures:** `stats-r/fixtures/egger.json`, gerado chamando o metafor direto:
+  - `dat.bcg` (13 estudos) com REML+Hartung-Knapp, DL e efeito fixo;
+  - `dat.normand1999` (9 estudos), caso que precisa trazer o aviso.

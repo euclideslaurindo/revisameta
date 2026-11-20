@@ -6,7 +6,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_session
 from app.integrations.stats_client import StatsClient, get_stats_client
-from app.modules.analysis import assembly, history, run, sensitivity, subgroups
+from app.modules.analysis import (
+    assembly,
+    history,
+    publication_bias,
+    run,
+    sensitivity,
+    subgroups,
+)
 from app.modules.projects.access import ProjectContext, member_access
 
 router = APIRouter(prefix="/projects/{project_id}/analyses", tags=["analysis"])
@@ -78,6 +85,30 @@ async def subgroup_analysis(
 ) -> subgroups.SubgroupOut:
     """One model per subgroup (form field, risk of bias or cut-off) and the test of differences."""
     return await subgroups.subgroups(session, ctx, stats, body)
+
+
+@router.post("/egger")
+async def egger_test(
+    body: run.RunIn,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+    stats: StatsClient = Depends(get_stats_client),
+) -> publication_bias.EggerOut:
+    """Egger's test for small-study effects; says when there are fewer than 10 studies."""
+    return await publication_bias.egger(session, ctx, stats, body)
+
+
+@router.post("/funnel-plot", response_class=Response, responses=FILE_RESPONSE)  # type: ignore[arg-type]
+async def analysis_funnel_plot(
+    body: publication_bias.FunnelIn,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+    stats: StatsClient = Depends(get_stats_client),
+) -> Response:
+    """Funnel plot (SVG, or PNG at 300 dpi)."""
+    content, media, name = await publication_bias.funnel_plot(session, ctx, stats, body)
+    disposition = f"attachment; filename=\"{name}\"; filename*=UTF-8''{quote(name)}"
+    return Response(content=content, media_type=media, headers={"Content-Disposition": disposition})
 
 
 # ---- History (saved analyses) and the reproducible R script ---------------------------

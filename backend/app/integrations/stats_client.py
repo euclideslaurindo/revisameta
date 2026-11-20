@@ -135,6 +135,14 @@ class StatsClient:
         """One model per subgroup and the test for subgroup differences."""
         return await self._request("POST", "/subgroup", json=spec)
 
+    async def egger(self, spec: dict[str, Any]) -> StatsResponse:
+        """Egger's regression test (metafor::regtest)."""
+        return await self._request("POST", "/egger", json=spec)
+
+    async def funnel_plot(self, spec: dict[str, Any]) -> StatsResponse:
+        """Funnel plot (metafor::funnel) as SVG or PNG."""
+        return await self._request("POST", "/funnel-plot", json=spec)
+
     async def rob_plot(self, spec: dict[str, Any]) -> StatsResponse:
         """Risk-of-bias traffic light or summary (robvis, or ggplot2 with the same look)."""
         return await self._request("POST", "/rob-plots", json=spec)

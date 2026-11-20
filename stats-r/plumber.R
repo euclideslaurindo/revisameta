@@ -227,6 +227,40 @@ function(req, res) {
   out
 }
 
+#* Egger's regression test (metafor::regtest); warns when k < 10.
+#* Body: { measure, method, test, data: {label, yi, vi} }
+#* @post /egger
+#* @serializer unboxedJSON list(digits = NA, na = "null")
+function(req, res) {
+  spec <- tryCatch(jsonlite::fromJSON(req$postBody, simplifyVector = FALSE), error = function(e) NULL)
+  if (is.null(spec)) {
+    res$status <- 422
+    return(envelope(errors = "body must be JSON"))
+  }
+  out <- egger_test(spec)
+  if (!isTRUE(out$ok)) {
+    res$status <- 422
+  }
+  out
+}
+
+#* Funnel plot (metafor::funnel); warns when k < 10.
+#* Body: { measure, method, test, data: {label, yi, vi}, format, texts, decimal_mark }
+#* @post /funnel-plot
+#* @serializer unboxedJSON list(digits = NA, na = "null")
+function(req, res) {
+  spec <- tryCatch(jsonlite::fromJSON(req$postBody, simplifyVector = FALSE), error = function(e) NULL)
+  if (is.null(spec)) {
+    res$status <- 422
+    return(envelope(errors = "body must be JSON"))
+  }
+  out <- funnel_plot(spec)
+  if (!isTRUE(out$ok)) {
+    res$status <- 422
+  }
+  out
+}
+
 #* Influence diagnostics and improbable effects (7.5.1 block E).
 #* Body: { measure, method, test, data: {label, yi, vi}, params }
 #* @post /influence

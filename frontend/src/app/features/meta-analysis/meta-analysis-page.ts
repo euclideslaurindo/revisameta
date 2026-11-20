@@ -15,6 +15,9 @@ import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 import { Api } from '../../core/api/api';
 import { analysisForestPlot } from '../../core/api/fn/analysis/analysis-forest-plot';
+import { analysisFunnelPlot } from '../../core/api/fn/analysis/analysis-funnel-plot';
+import { eggerTest } from '../../core/api/fn/analysis/egger-test';
+import { EggerOut } from '../../core/api/models/egger-out';
 import { previewAnalysis } from '../../core/api/fn/analysis/preview-analysis';
 import { analysisRScript } from '../../core/api/fn/analysis/analysis-r-script';
 import { deleteAnalysis } from '../../core/api/fn/analysis/delete-analysis';
@@ -539,6 +542,65 @@ type Method = 'REML' | 'DL' | 'PM' | 'FE';
             }
           }
 
+          <h3>
+            {{ 'meta.pb.title' | transloco }}
+            <span class="term" tabindex="0" [matTooltip]="'meta.pb.help' | transloco">?</span>
+          </h3>
+          <div class="row">
+            <button
+              mat-stroked-button
+              type="button"
+              [disabled]="busy()"
+              (click)="runPublicationBias()"
+            >
+              {{ 'meta.pb.run' | transloco }}
+            </button>
+            @if (funnelUrl()) {
+              <button
+                mat-stroked-button
+                type="button"
+                [disabled]="busy()"
+                (click)="downloadFunnel('svg')"
+              >
+                {{ 'rob.plots.downloadSvg' | transloco }}
+              </button>
+              <button
+                mat-stroked-button
+                type="button"
+                [disabled]="busy()"
+                (click)="downloadFunnel('png')"
+              >
+                {{ 'rob.plots.downloadPng' | transloco }}
+              </button>
+            }
+          </div>
+          @if (egger(); as eg) {
+            @if (eg.few_studies) {
+              <p class="notice notice-warn" role="alert">
+                <strong>{{ 'meta.pb.fewTitle' | transloco: { k: eg.k } }}</strong>
+                {{ 'meta.pb.few' | transloco }}
+              </p>
+            }
+            <p>
+              {{
+                'meta.pb.egger'
+                  | transloco
+                    : {
+                        stat: eg.result['test'] === 't' ? 't' : 'z',
+                        value: fmt(eg.result['statistic'], 2),
+                        p: fmtP(eg.result['p_value']),
+                      }
+              }}
+              <span class="term" tabindex="0" [matTooltip]="'meta.pb.eggerHelp' | transloco"
+                >?</span
+              >
+            </p>
+          }
+          @if (funnelUrl(); as url) {
+            <img class="rob-plot" [src]="url" [alt]="'meta.pb.funnel' | transloco" />
+            <p class="muted">{{ 'meta.pb.funnelHelp' | transloco }}</p>
+          }
+
           <mat-accordion>
             <mat-expansion-panel>
               <mat-expansion-panel-header>
@@ -651,6 +713,8 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
   protected readonly assembly = signal<AssemblyOut | null>(null);
   protected readonly result = signal<RunOut | null>(null);
   protected readonly forestUrl = signal<string | null>(null);
+  protected readonly funnelUrl = signal<string | null>(null);
+  protected readonly egger = signal<EggerOut | null>(null);
   protected readonly busy = signal(false);
   protected readonly error = signal<unknown>(null);
   protected readonly methods: Method[] = ['REML', 'DL', 'PM', 'FE'];
@@ -737,6 +801,7 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.clearForest();
+    this.clearPublicationBias();
   }
 
   protected timepoints(): string[] {
@@ -886,6 +951,7 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
     this.savedNow.set(false);
     this.sens.set(null);
     this.sub.set(null);
+    this.clearPublicationBias();
     await this.guard(async () => {
       const result = await this.api.invoke(runAnalysis, {
         project_id: this.projectId(),
@@ -938,6 +1004,44 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
       saveFile(
         response.body,
         fileNameFrom(response.headers.get('content-disposition'), `forest.${format}`),
+      );
+    });
+  }
+
+  private clearPublicationBias(): void {
+    const url = this.funnelUrl();
+    if (url) URL.revokeObjectURL(url);
+    this.funnelUrl.set(null);
+    this.egger.set(null);
+  }
+
+  async runPublicationBias(): Promise<void> {
+    if (!this.result()) return;
+    await this.guard(async () => {
+      const body = this.forestBody('svg');
+      const egger = await this.api.invoke(eggerTest, {
+        project_id: this.projectId(),
+        body: { ...this.body(), method: body.method, test: body.test },
+      });
+      const response = await this.api.invoke$Response(analysisFunnelPlot, {
+        project_id: this.projectId(),
+        body,
+      });
+      this.clearPublicationBias();
+      this.egger.set(egger);
+      this.funnelUrl.set(URL.createObjectURL(response.body));
+    });
+  }
+
+  async downloadFunnel(format: 'svg' | 'png'): Promise<void> {
+    await this.guard(async () => {
+      const response = await this.api.invoke$Response(analysisFunnelPlot, {
+        project_id: this.projectId(),
+        body: this.forestBody(format),
+      });
+      saveFile(
+        response.body,
+        fileNameFrom(response.headers.get('content-disposition'), `funnel.${format}`),
       );
     });
   }

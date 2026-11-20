@@ -1194,6 +1194,17 @@
         "subgroup_with_one_study": "Há subgrupo com um único estudo: o valor dele é só o efeito daquele estudo.",
         "subgroup_with_few_studies": "Há subgrupo com menos de 3 estudos: a estimativa é instável."
       }
+    },
+    "pb": {
+      "title": "Viés de publicação",
+      "help": "Estudos pequenos com resultado 'negativo' às vezes não são publicados. O funnel plot e o teste de Egger procuram esse sinal, mas outras coisas (como heterogeneidade) produzem o mesmo desenho.",
+      "run": "Analisar viés de publicação",
+      "fewTitle": "Atenção: só {{k}} estudos.",
+      "few": "Com menos de 10 estudos, o funnel plot e o teste de Egger têm pouco poder e não servem como conclusão. Não afirme que há ou que não há viés de publicação com base neles.",
+      "egger": "Teste de Egger (assimetria do funil): {{stat}} = {{value}}, p = {{p}}.",
+      "eggerHelp": "Testa se os estudos pequenos mostram efeitos diferentes dos grandes. Um p pequeno sugere assimetria, que pode ser viés de publicação ou outra causa; um p grande não prova que não há viés.",
+      "funnel": "Funnel plot",
+      "funnelHelp": "Cada ponto é um estudo: o efeito no eixo horizontal e o erro-padrão no vertical (estudos maiores ficam no alto). Sem viés, os pontos se espalham de forma simétrica dentro do funil."
     }
   }
 }

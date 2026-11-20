@@ -104,3 +104,16 @@ async def test_errors_from_r_reach_the_backend_as_errors_not_as_r_down() -> None
     assert response.ok is False
     assert response.result == {}
     assert response.errors == ["at least two subgroups with studies are needed"]
+
+
+EGGER = _fixture("egger.json")
+
+
+@pytest.mark.parametrize("case", EGGER["cases"], ids=lambda c: c["name"])
+async def test_egger_matches_metafor(case: dict[str, Any]) -> None:
+    response = await StatsClient().egger(case["request"])
+    assert response.ok
+    for key in ("statistic", "p_value", "limit_estimate"):
+        assert math.isclose(response.result[key], case["expected"][key], abs_tol=EGGER["tolerance"])
+    # Fewer than 10 studies: the answer must say so (CLAUDE.md 0.2).
+    assert ("fewer_than_ten_studies" in response.warnings) is case["expected"]["few_studies"]
