@@ -19,3 +19,4 @@ Formato: **Contexto → Decisão → Consequências**. Status possíveis: Propos
 | [011](011-frontend-angular-material.md) | Frontend em Angular 22 + Angular Material | Aceito |
 | [012](012-pdf-pypdfium2.md) | Leitura de PDF com pypdfium2 (no lugar do PyMuPDF/AGPL) | Aceito |
 | [013](013-graficos-jbi-nos.md) | Gráficos de risco de viés para JBI, Newcastle-Ottawa e ROBINS-I V2 | Aceito |
+| [014](014-forest-com-semaforo.md) | Forest plot com o semáforo do risco de viés ao lado | Aceito |

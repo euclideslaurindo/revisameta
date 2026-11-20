@@ -3,7 +3,8 @@ test_that("plumber.R parses: every route and serializer annotation is valid", {
   paths <- vapply(router$endpoints[[1]], function(e) e$path, character(1))
   expected <- c(
     "/health", "/kappa", "/rob-plots", "/effect-sizes", "/meta-analysis", "/convert", "/combine-groups",
-    "/forest-plot", "/plausibility-checks", "/influence", "/r-script"
+    "/forest-plot", "/plausibility-checks", "/influence", "/r-script",
+    "/leave-one-out"
   )
   expect_true(all(expected %in% paths))
 })

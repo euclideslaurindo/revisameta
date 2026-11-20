@@ -6672,6 +6672,65 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/analyses/sensitivity": {
+      "post": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Sensitivity Analysis",
+        "description": "Reruns the analysis changing one thing (leave one out, risk of bias, model...).",
+        "operationId": "sensitivity_analysis",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SensitivityIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensitivityOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/projects/{project_id}/analyses": {
       "post": {
         "tags": [
@@ -15430,6 +15489,141 @@
         ],
         "title": "SaveIn"
       },
+      "ScenarioResult": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "method": {
+            "type": "string",
+            "title": "Method"
+          },
+          "test": {
+            "type": "string",
+            "title": "Test"
+          },
+          "k": {
+            "type": "integer",
+            "title": "K"
+          },
+          "left_out": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Left Out"
+          },
+          "estimate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimate"
+          },
+          "ci_lb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ci Lb"
+          },
+          "ci_ub": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ci Ub"
+          },
+          "pi_lb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pi Lb"
+          },
+          "pi_ub": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pi Ub"
+          },
+          "p_value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P Value"
+          },
+          "i2": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "I2"
+          },
+          "tau2": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tau2"
+          },
+          "problem": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Problem"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "method",
+          "test",
+          "k",
+          "left_out"
+        ],
+        "title": "ScenarioResult"
+      },
       "SearchHit": {
         "properties": {
           "page": {
@@ -15447,6 +15641,171 @@
           "snippet"
         ],
         "title": "SearchHit"
+      },
+      "SensitivityIn": {
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Outcome Id"
+          },
+          "timepoint": {
+            "type": "string",
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Timepoint"
+          },
+          "measure": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "MD",
+                  "SMD",
+                  "OR",
+                  "RR",
+                  "RD"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Measure"
+          },
+          "data_set": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "unadjusted",
+                  "adjusted"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Set"
+          },
+          "method": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "REML",
+                  "DL",
+                  "PM",
+                  "FE"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Method"
+          },
+          "test": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "knha",
+                  "z"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Test"
+          },
+          "scenario": {
+            "type": "string",
+            "enum": [
+              "leave_one_out",
+              "exclude_high_risk_of_bias",
+              "exclude_estimated_data",
+              "fixed_vs_random",
+              "other_estimator"
+            ],
+            "title": "Scenario"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome_id",
+          "timepoint",
+          "scenario"
+        ],
+        "title": "SensitivityIn"
+      },
+      "SensitivityOut": {
+        "properties": {
+          "scenario": {
+            "type": "string",
+            "enum": [
+              "leave_one_out",
+              "exclude_high_risk_of_bias",
+              "exclude_estimated_data",
+              "fixed_vs_random",
+              "other_estimator"
+            ],
+            "title": "Scenario"
+          },
+          "planned": {
+            "type": "boolean",
+            "title": "Planned"
+          },
+          "measure": {
+            "type": "string",
+            "title": "Measure"
+          },
+          "main": {
+            "$ref": "#/components/schemas/ScenarioResult"
+          },
+          "scenarios": {
+            "items": {
+              "$ref": "#/components/schemas/ScenarioResult"
+            },
+            "type": "array",
+            "title": "Scenarios"
+          },
+          "leave_one_out": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Leave One Out"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "no_assessment": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "No Assessment"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scenario",
+          "planned",
+          "measure",
+          "main",
+          "scenarios",
+          "leave_one_out",
+          "warnings",
+          "no_assessment"
+        ],
+        "title": "SensitivityOut"
       },
       "StageEventOut": {
         "properties": {

@@ -1144,6 +1144,39 @@
         "data_changed": "A number of a study in this analysis was corrected after it was saved.",
         "studies_changed": "A study gained or lost its consensus after it was saved: the studies that enter may have changed."
       }
+    },
+    "sens": {
+      "title": "Sensitivity analyses",
+      "help": "They redo the analysis changing one thing at a time, to see whether the conclusion holds. Those marked \"planned\" are in the analysis plan.",
+      "planned": "planned",
+      "notPlanned": "This sensitivity analysis is not in the analysis plan: report it as not planned.",
+      "omitted": "Without the study",
+      "analysis": "Analysis",
+      "leftOut": "Left out",
+      "noAssessment": "No final risk-of-bias assessment (left out): {{studies}}.",
+      "scenario": {
+        "leave_one_out": "Leave one study out",
+        "exclude_high_risk_of_bias": "Without high risk of bias",
+        "exclude_estimated_data": "Without estimated data",
+        "fixed_vs_random": "Fixed × random effects",
+        "other_estimator": "Other estimators"
+      },
+      "label": {
+        "main": "Main analysis",
+        "without_high_risk": "Without studies at high risk of bias",
+        "without_estimated": "Without estimated or derived data",
+        "FE": "Fixed effect",
+        "REML": "Random effects, REML",
+        "DL": "Random effects, DerSimonian-Laird",
+        "PM": "Random effects, Paule-Mandel"
+      },
+      "problem": {
+        "not_enough_studies": "fewer than 2 studies: not computed"
+      },
+      "warning": {
+        "studies_without_risk_of_bias": "Some studies have no final risk-of-bias assessment for this result yet and were left out of this analysis.",
+        "leave_one_out_needs_three_studies": "Leaving one study out needs at least 3 studies."
+      }
     }
   }
 }

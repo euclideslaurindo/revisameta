@@ -121,6 +121,10 @@ class StatsClient:
         """Reproducible R script of a saved analysis."""
         return await self._request("POST", "/r-script", json=spec)
 
+    async def leave_one_out(self, spec: dict[str, Any]) -> StatsResponse:
+        """The model refitted without each study in turn (metafor::leave1out)."""
+        return await self._request("POST", "/leave-one-out", json=spec)
+
     async def rob_plot(self, spec: dict[str, Any]) -> StatsResponse:
         """Risk-of-bias traffic light or summary (robvis, or ggplot2 with the same look)."""
         return await self._request("POST", "/rob-plots", json=spec)

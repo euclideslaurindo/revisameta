@@ -169,3 +169,31 @@
 - `GET /analyses` lista o histórico e `GET /analyses/{id}` abre uma análise. `DELETE` só tira do histórico (soft delete; nada é apagado de verdade).
 - **"Desatualizada":** cada análise guarda a versão dos dados do consenso de cada estudo (`sources`). Se um número for corrigido (`data_version` sobe), o motivo é `data_changed`. Se um estudo ganhar ou perder o consenso, é `studies_changed`. A análise nunca é recalculada em silêncio: a pessoa roda de novo.
 - **Script R** (`GET /analyses/{id}/r-script`, gerado pelo `/r-script` do R): traz os yᵢ/vᵢ com 17 dígitos significativos, a mesma chamada `rma()` (método, teste, nível) e `predict`/`forest`. No cabeçalho, comentários registram projeto, desfecho, grupos, modelo, versões e, por estudo, as conversões e inversões já aplicadas.
+
+## Decisões da Etapa 4 (2026-11-19)
+- **Plano em 5 passos:**
+  1. Sensibilidade (um estudo de fora por vez, sem alto risco de viés, sem dados estimados, outro modelo ou estimador).
+  2. Subgrupos com teste de diferença.
+  3. Funnel plot e Egger, com aviso forte se k < 10.
+  4. Síntese narrativa.
+  5. Forest plot com o semáforo do risco de viés.
+- **Subgrupos:** τ² **separado** em cada subgrupo (uma meta-análise por subgrupo) e o teste Q entre subgrupos. É o padrão do RevMan e do Cochrane Handbook.
+- **"Alto risco de viés"** na sensibilidade é o **pior nível de cada instrumento**:
+  - RoB 2: alto;
+  - ROBINS-I (2016 e V2): grave e crítico;
+  - ROBINS-E: alto e muito alto;
+  - JBI, NOS e genérico: o pior nível da regra do grupo.
+  
+  Estudos sem avaliação final de risco de viés ficam de fora dessa análise, com aviso.
+- **Síntese narrativa:** a direção do efeito dos estudos que não entram na meta-análise é **registrada pelo revisor** (favorece o grupo 1, favorece o grupo 2, sem diferença ou incerto), com justificativa e trecho do artigo. O sistema não deduz direção de dados incompletos.
+- **Forest plot com o semáforo:** `metafor::forest` com colunas próprias para os domínios e o julgamento geral (ADR-014).
+
+### Sensibilidade (Etapa 4, passo 1)
+- `POST /analyses/sensitivity` refaz a análise principal mudando uma coisa. Todos os números vêm do R.
+  - `leave_one_out`: o modelo sem cada estudo, um de cada vez (`metafor::leave1out`, endpoint `/leave-one-out`). Precisa de pelo menos 3 estudos.
+  - `exclude_high_risk_of_bias`: sem os estudos no pior nível do instrumento (regra da Etapa 4), lido da avaliação final (consenso ou importação) para o mesmo resultado. Estudos sem avaliação final ficam de fora com aviso, e a lista deles aparece na tela.
+  - `exclude_estimated_data`: sem estudos com números estimados (média a partir da mediana) ou derivados (de t ou p).
+  - `fixed_vs_random`: efeito fixo se o modelo principal for aleatório, e REML caso contrário.
+  - `other_estimator`: os outros estimadores (REML, DL, Paule-Mandel).
+- Um cenário que fica com menos de 2 estudos não é calculado e diz isso (`not_enough_studies`). Um cenário fora da lista do plano é marcado como "não planejada".
+- **Fixtures:** `stats-r/fixtures/leave-one-out.json` (gerada pelo `leave1out` do metafor, com `dat.bcg` e `dat.normand1999`). Pela API, os estudos de `dat.normand1999` montados no banco dão os mesmos valores do `leave1out` e das fixtures de efeito fixo e DerSimonian-Laird.

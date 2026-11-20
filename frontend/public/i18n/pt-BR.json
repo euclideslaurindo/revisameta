@@ -1144,6 +1144,39 @@
         "data_changed": "Um número de um estudo desta análise foi corrigido depois que ela foi salva.",
         "studies_changed": "Algum estudo ganhou ou perdeu o consenso depois que ela foi salva: os estudos que entram podem ter mudado."
       }
+    },
+    "sens": {
+      "title": "Análises de sensibilidade",
+      "help": "Refazem a análise mudando uma coisa de cada vez, para ver se a conclusão se mantém. As marcadas como \"planejada\" estão no plano de análise.",
+      "planned": "planejada",
+      "notPlanned": "Esta análise de sensibilidade não está no plano de análise: relate como não planejada.",
+      "omitted": "Sem o estudo",
+      "analysis": "Análise",
+      "leftOut": "Ficaram de fora",
+      "noAssessment": "Sem avaliação final de risco de viés (ficaram de fora): {{studies}}.",
+      "scenario": {
+        "leave_one_out": "Retirar um estudo por vez",
+        "exclude_high_risk_of_bias": "Sem alto risco de viés",
+        "exclude_estimated_data": "Sem dados estimados",
+        "fixed_vs_random": "Efeito fixo × aleatório",
+        "other_estimator": "Outros estimadores"
+      },
+      "label": {
+        "main": "Análise principal",
+        "without_high_risk": "Sem os estudos de alto risco de viés",
+        "without_estimated": "Sem os dados estimados ou derivados",
+        "FE": "Efeito fixo",
+        "REML": "Efeitos aleatórios, REML",
+        "DL": "Efeitos aleatórios, DerSimonian-Laird",
+        "PM": "Efeitos aleatórios, Paule-Mandel"
+      },
+      "problem": {
+        "not_enough_studies": "menos de 2 estudos: não calculado"
+      },
+      "warning": {
+        "studies_without_risk_of_bias": "Alguns estudos ainda não têm avaliação final de risco de viés para este resultado e ficaram de fora desta análise.",
+        "leave_one_out_needs_three_studies": "Retirar um estudo por vez precisa de pelo menos 3 estudos."
+      }
     }
   }
 }

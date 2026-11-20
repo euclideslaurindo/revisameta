@@ -21,6 +21,8 @@ import { deleteAnalysis } from '../../core/api/fn/analysis/delete-analysis';
 import { listAnalyses } from '../../core/api/fn/analysis/list-analyses';
 import { runAnalysis } from '../../core/api/fn/analysis/run-analysis';
 import { saveAnalysis } from '../../core/api/fn/analysis/save-analysis';
+import { sensitivityAnalysis } from '../../core/api/fn/analysis/sensitivity-analysis';
+import { SensitivityOut } from '../../core/api/models/sensitivity-out';
 import { AnalysisSummary } from '../../core/api/models/analysis-summary';
 import { getAnalysisPlan } from '../../core/api/fn/protocol/get-analysis-plan';
 import { listOutcomes } from '../../core/api/fn/protocol/list-outcomes';
@@ -360,6 +362,100 @@ type Method = 'REML' | 'DL' | 'PM' | 'FE';
             <img class="rob-plot" [src]="url" [alt]="'meta.forest.title' | transloco" />
           }
 
+          <h3>
+            {{ 'meta.sens.title' | transloco }}
+            <span class="term" tabindex="0" [matTooltip]="'meta.sens.help' | transloco">?</span>
+          </h3>
+          <div class="actions">
+            @for (sc of scenarios; track sc) {
+              <button
+                mat-stroked-button
+                type="button"
+                [disabled]="busy()"
+                (click)="runSensitivity(sc)"
+              >
+                {{ 'meta.sens.scenario.' + sc | transloco }}
+                @if (plannedSensitivity().includes(sc)) {
+                  <span class="badge">{{ 'meta.sens.planned' | transloco }}</span>
+                }
+              </button>
+            }
+          </div>
+          @if (sens(); as sv) {
+            @if (!sv.planned) {
+              <p class="notice notice-warn" role="status">
+                {{ 'meta.sens.notPlanned' | transloco }}
+              </p>
+            }
+            @for (w of sv.warnings; track w) {
+              <div class="alert-item">{{ 'meta.sens.warning.' + w | transloco }}</div>
+            }
+            @if (sv.no_assessment.length) {
+              <p class="muted">
+                {{ 'meta.sens.noAssessment' | transloco: { studies: sv.no_assessment.join(', ') } }}
+              </p>
+            }
+            @if (sv.leave_one_out.length) {
+              <table class="result-table">
+                <thead>
+                  <tr>
+                    <th scope="col">{{ 'meta.sens.omitted' | transloco }}</th>
+                    <th scope="col">{{ sv.measure }} ({{ 'meta.res.ci' | transloco }})</th>
+                    <th scope="col">I²</th>
+                    <th scope="col">{{ 'meta.res.p' | transloco }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (row of sv.leave_one_out; track $index) {
+                    <tr>
+                      <td>{{ row['omitted'] }}</td>
+                      <td>
+                        {{ onScaleOf(row['estimate'], sv.measure) }} ({{
+                          onScaleOf(row['ci_lb'], sv.measure)
+                        }}
+                        {{ 'meta.res.to' | transloco }} {{ onScaleOf(row['ci_ub'], sv.measure) }})
+                      </td>
+                      <td>{{ fmt(row['i2'], 1) }}%</td>
+                      <td>{{ fmtP(row['p_value']) }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            } @else {
+              <table class="result-table">
+                <thead>
+                  <tr>
+                    <th scope="col">{{ 'meta.sens.analysis' | transloco }}</th>
+                    <th scope="col">k</th>
+                    <th scope="col">{{ sv.measure }} ({{ 'meta.res.ci' | transloco }})</th>
+                    <th scope="col">I²</th>
+                    <th scope="col">{{ 'meta.sens.leftOut' | transloco }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (row of [sv.main].concat(sv.scenarios); track $index) {
+                    <tr>
+                      <td>{{ 'meta.sens.label.' + row.label | transloco }}</td>
+                      <td>{{ row.k }}</td>
+                      <td>
+                        @if (row.problem) {
+                          {{ 'meta.sens.problem.' + row.problem | transloco }}
+                        } @else {
+                          {{ onScaleOf(row.estimate, sv.measure) }} ({{
+                            onScaleOf(row.ci_lb, sv.measure)
+                          }}
+                          {{ 'meta.res.to' | transloco }} {{ onScaleOf(row.ci_ub, sv.measure) }})
+                        }
+                      </td>
+                      <td>{{ row.problem ? '—' : fmt(row.i2 ?? undefined, 1) + '%' }}</td>
+                      <td>{{ row.left_out.join(', ') || '—' }}</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            }
+          }
+
           <mat-accordion>
             <mat-expansion-panel>
               <mat-expansion-panel-header>
@@ -482,6 +578,17 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
     return roles.includes('admin') || roles.includes('statistician');
   });
   protected note = '';
+  protected readonly sens = signal<SensitivityOut | null>(null);
+  protected readonly scenarios = [
+    'leave_one_out',
+    'exclude_high_risk_of_bias',
+    'exclude_estimated_data',
+    'fixed_vs_random',
+    'other_estimator',
+  ] as const;
+  protected readonly plannedSensitivity = computed(
+    () => (this.plan()?.sensitivity ?? []) as string[],
+  );
   protected readonly howToRead = [
     'square',
     'line',
@@ -626,9 +733,27 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
     return this.fmt(shown(value, measure));
   }
 
+  async runSensitivity(scenario: (typeof this.scenarios)[number]): Promise<void> {
+    if (!this.outcomeId || !this.timepoint) return;
+    await this.guard(async () => {
+      this.sens.set(
+        await this.api.invoke(sensitivityAnalysis, {
+          project_id: this.projectId(),
+          body: {
+            ...this.body(),
+            method: this.method,
+            test: this.method === 'FE' || !this.knha ? 'z' : 'knha',
+            scenario,
+          },
+        }),
+      );
+    });
+  }
+
   async run(): Promise<void> {
     if (!this.outcomeId || !this.timepoint) return;
     this.savedNow.set(false);
+    this.sens.set(null);
     await this.guard(async () => {
       const result = await this.api.invoke(runAnalysis, {
         project_id: this.projectId(),

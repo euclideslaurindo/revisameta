@@ -193,6 +193,23 @@ function(req, res) {
   out
 }
 
+#* Leave-one-out sensitivity analysis (metafor::leave1out).
+#* Body: { measure, method, test, data: {label, yi, vi} }
+#* @post /leave-one-out
+#* @serializer unboxedJSON list(digits = NA, na = "null")
+function(req, res) {
+  spec <- tryCatch(jsonlite::fromJSON(req$postBody, simplifyVector = FALSE), error = function(e) NULL)
+  if (is.null(spec)) {
+    res$status <- 422
+    return(envelope(errors = "body must be JSON"))
+  }
+  out <- leave_one_out(spec)
+  if (!isTRUE(out$ok)) {
+    res$status <- 422
+  }
+  out
+}
+
 #* Influence diagnostics and improbable effects (7.5.1 block E).
 #* Body: { measure, method, test, data: {label, yi, vi}, params }
 #* @post /influence

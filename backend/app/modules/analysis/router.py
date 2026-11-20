@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_session
 from app.integrations.stats_client import StatsClient, get_stats_client
-from app.modules.analysis import assembly, history, run
+from app.modules.analysis import assembly, history, run, sensitivity
 from app.modules.projects.access import ProjectContext, member_access
 
 router = APIRouter(prefix="/projects/{project_id}/analyses", tags=["analysis"])
@@ -56,6 +56,17 @@ async def analysis_forest_plot(
     content, media, name = await run.forest_plot(session, ctx, stats, body)
     disposition = f"attachment; filename=\"{name}\"; filename*=UTF-8''{quote(name)}"
     return Response(content=content, media_type=media, headers={"Content-Disposition": disposition})
+
+
+@router.post("/sensitivity")
+async def sensitivity_analysis(
+    body: sensitivity.SensitivityIn,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+    stats: StatsClient = Depends(get_stats_client),
+) -> sensitivity.SensitivityOut:
+    """Reruns the analysis changing one thing (leave one out, risk of bias, model...)."""
+    return await sensitivity.sensitivity(session, ctx, stats, body)
 
 
 # ---- History (saved analyses) and the reproducible R script ---------------------------
