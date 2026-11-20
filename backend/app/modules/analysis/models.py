@@ -39,3 +39,21 @@ class Analysis(BusinessMixin, AuditedMixin, Base):
     warnings: Mapped[list[str]] = mapped_column(JSONB, default=list)
     r_meta: Mapped[dict[str, Any]] = mapped_column(JSONB)
     note: Mapped[str | None] = mapped_column(String(500))
+
+
+class NarrativeEntry(BusinessMixin, AuditedMixin, Base):
+    """Narrative synthesis (docs/modulos.md 7.7): the direction of the effect of a study
+    that could not enter the meta-analysis of a result, as recorded by a reviewer.
+
+    direction: favours_group1 | favours_group2 | no_clear_difference | mixed | not_reported.
+    One live row per study and result (outcome + timepoint); changes are audited.
+    """
+
+    __tablename__ = "narrative_entries"
+
+    project_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("projects.id"), index=True)
+    study_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("studies.id"))
+    outcome_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("outcomes.id"))
+    timepoint: Mapped[str] = mapped_column(String(60))
+    direction: Mapped[str] = mapped_column(String(24))
+    note: Mapped[str | None] = mapped_column(String(1000))

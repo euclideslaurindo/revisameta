@@ -9,6 +9,7 @@ from app.integrations.stats_client import StatsClient, get_stats_client
 from app.modules.analysis import (
     assembly,
     history,
+    narrative,
     publication_bias,
     run,
     sensitivity,
@@ -109,6 +110,28 @@ async def analysis_funnel_plot(
     content, media, name = await publication_bias.funnel_plot(session, ctx, stats, body)
     disposition = f"attachment; filename=\"{name}\"; filename*=UTF-8''{quote(name)}"
     return Response(content=content, media_type=media, headers={"Content-Disposition": disposition})
+
+
+@router.post("/narrative")
+async def narrative_table(
+    body: assembly.AssemblyIn,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+    stats: StatsClient = Depends(get_stats_client),
+) -> narrative.NarrativeOut:
+    """Studies left out of the meta-analysis of a result, with the direction recorded."""
+    return await narrative.table(session, ctx, stats, body)
+
+
+@router.put("/narrative/{study_id}")
+async def record_narrative(
+    study_id: uuid.UUID,
+    body: narrative.NarrativeIn,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> narrative.NarrativeRow:
+    """Records the direction of the effect of one study (admin, statistician, extractor)."""
+    return await narrative.record(session, ctx, study_id, body)
 
 
 # ---- History (saved analyses) and the reproducible R script ---------------------------

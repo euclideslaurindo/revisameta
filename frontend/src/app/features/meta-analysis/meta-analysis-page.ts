@@ -17,6 +17,11 @@ import { Api } from '../../core/api/api';
 import { analysisForestPlot } from '../../core/api/fn/analysis/analysis-forest-plot';
 import { analysisFunnelPlot } from '../../core/api/fn/analysis/analysis-funnel-plot';
 import { eggerTest } from '../../core/api/fn/analysis/egger-test';
+import { narrativeTable } from '../../core/api/fn/analysis/narrative-table';
+import { recordNarrative } from '../../core/api/fn/analysis/record-narrative';
+import { listGroups } from '../../core/api/fn/protocol/list-groups';
+import { NarrativeOut } from '../../core/api/models/narrative-out';
+import { NarrativeRow } from '../../core/api/models/narrative-row';
 import { EggerOut } from '../../core/api/models/egger-out';
 import { previewAnalysis } from '../../core/api/fn/analysis/preview-analysis';
 import { analysisRScript } from '../../core/api/fn/analysis/analysis-r-script';
@@ -153,6 +158,76 @@ type Method = 'REML' | 'DL' | 'PM' | 'FE';
           </ul>
           @for (b of a.blocks; track b) {
             <p class="notice notice-error" role="alert">{{ 'meta.block.' + b | transloco }}</p>
+          }
+
+          <h3>
+            {{ 'meta.nar.title' | transloco }}
+            <span class="term" tabindex="0" [matTooltip]="'meta.nar.help' | transloco">?</span>
+          </h3>
+          @if (narrative(); as nt) {
+            @if (!nt.rows.length) {
+              <p class="muted">{{ 'meta.nar.empty' | transloco }}</p>
+            } @else {
+              @if (nt.missing) {
+                <p class="notice notice-warn" role="status">
+                  {{ 'meta.nar.missing' | transloco: { n: nt.missing } }}
+                </p>
+              }
+              <table class="result-table">
+                <thead>
+                  <tr>
+                    <th scope="col">{{ 'meta.nar.study' | transloco }}</th>
+                    <th scope="col">{{ 'meta.nar.why' | transloco }}</th>
+                    <th scope="col">{{ 'meta.nar.direction' | transloco }}</th>
+                    <th scope="col">{{ 'meta.nar.note' | transloco }}</th>
+                    <th scope="col">
+                      <span class="sr-only">{{ 'meta.nar.save' | transloco }}</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (row of nt.rows; track row.study_id) {
+                    <tr>
+                      <td>{{ row.label }}</td>
+                      <td>
+                        @if (row.in_meta_analysis) {
+                          <span class="badge">{{ 'meta.nar.nowIncluded' | transloco }}</span>
+                        }
+                        @for (r of row.reasons; track r) {
+                          <div class="muted">{{ 'meta.reason.' + r | transloco }}</div>
+                        }
+                      </td>
+                      <td>
+                        <mat-form-field subscriptSizing="dynamic">
+                          <mat-label>{{ 'meta.nar.direction' | transloco }}</mat-label>
+                          <mat-select [(ngModel)]="draft(row).direction">
+                            @for (d of directions; track d) {
+                              <mat-option [value]="d">{{ directionText(d) }}</mat-option>
+                            }
+                          </mat-select>
+                        </mat-form-field>
+                      </td>
+                      <td>
+                        <mat-form-field subscriptSizing="dynamic">
+                          <mat-label>{{ 'meta.nar.note' | transloco }}</mat-label>
+                          <input matInput maxlength="1000" [(ngModel)]="draft(row).note" />
+                        </mat-form-field>
+                      </td>
+                      <td>
+                        <button
+                          mat-stroked-button
+                          type="button"
+                          [disabled]="busy() || !draft(row).direction"
+                          (click)="saveNarrative(row)"
+                        >
+                          {{ 'meta.nar.save' | transloco }}
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            }
           }
         }
         <div class="actions">
@@ -715,6 +790,16 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
   protected readonly forestUrl = signal<string | null>(null);
   protected readonly funnelUrl = signal<string | null>(null);
   protected readonly egger = signal<EggerOut | null>(null);
+  protected readonly narrative = signal<NarrativeOut | null>(null);
+  protected readonly groupLabels = signal<Record<string, string>>({});
+  protected readonly directions = [
+    'favours_group1',
+    'favours_group2',
+    'no_clear_difference',
+    'mixed',
+    'not_reported',
+  ] as const;
+  private drafts = new Map<string, { direction: NarrativeRow['direction']; note: string }>();
   protected readonly busy = signal(false);
   protected readonly error = signal<unknown>(null);
   protected readonly methods: Method[] = ['REML', 'DL', 'PM', 'FE'];
@@ -782,6 +867,8 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
         form.schema.fields.filter((f) => f.type === 'select' || f.type === 'text'),
       );
       this.plan.set(plan);
+      const groups = await this.api.invoke(listGroups, { project_id });
+      this.groupLabels.set(Object.fromEntries(groups.map((g) => [g.id, g.label])));
       this.method = plan.model?.method ?? 'REML';
       this.knha = (plan.model?.test ?? 'knha') === 'knha';
       this.dataSet = plan.adjusted === 'adjusted_only' ? 'adjusted' : 'unadjusted';
@@ -836,6 +923,7 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
       this.assembly.set(
         await this.api.invoke(previewAnalysis, { project_id: this.projectId(), body: this.body() }),
       );
+      await this.loadNarrative();
     });
   }
 
@@ -1005,6 +1093,58 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
         response.body,
         fileNameFrom(response.headers.get('content-disposition'), `forest.${format}`),
       );
+    });
+  }
+
+  private async loadNarrative(): Promise<void> {
+    this.drafts.clear();
+    this.narrative.set(
+      await this.api.invoke(narrativeTable, { project_id: this.projectId(), body: this.body() }),
+    );
+  }
+
+  protected draft(row: NarrativeRow): { direction: NarrativeRow['direction']; note: string } {
+    let d = this.drafts.get(row.study_id);
+    if (!d) {
+      d = { direction: row.direction ?? null, note: row.note ?? '' };
+      this.drafts.set(row.study_id, d);
+    }
+    return d;
+  }
+
+  protected directionText(direction: string): string {
+    const comparison = this.plan()?.comparison;
+    const labels = this.groupLabels();
+    const group =
+      direction === 'favours_group1'
+        ? comparison && labels[comparison.group1_id]
+        : direction === 'favours_group2'
+          ? comparison && labels[comparison.group2_id]
+          : null;
+    if (direction === 'favours_group1' || direction === 'favours_group2') {
+      return this.t('meta.nar.favours', {
+        group: group || this.t('meta.' + direction.replace('favours_', '')),
+      });
+    }
+    return this.t('meta.nar.dir.' + direction);
+  }
+
+  async saveNarrative(row: NarrativeRow): Promise<void> {
+    const d = this.draft(row);
+    if (!d.direction) return;
+    await this.guard(async () => {
+      await this.api.invoke(recordNarrative, {
+        project_id: this.projectId(),
+        study_id: row.study_id,
+        body: {
+          outcome_id: this.outcomeId!,
+          timepoint: this.timepoint!,
+          direction: d.direction!,
+          note: d.note.trim() || null,
+          version: row.version ?? null,
+        },
+      });
+      await this.loadNarrative();
     });
   }
 

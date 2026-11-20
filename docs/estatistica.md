@@ -219,3 +219,11 @@
 - **Fixtures:** `stats-r/fixtures/egger.json`, gerado chamando o metafor direto:
   - `dat.bcg` (13 estudos) com REML+Hartung-Knapp, DL e efeito fixo;
   - `dat.normand1999` (9 estudos), caso que precisa trazer o aviso.
+
+### Síntese narrativa (Etapa 4, passo 4)
+- `POST /analyses/narrative` (qualquer membro lê) e `PUT /analyses/narrative/{study_id}` (admin, estatístico ou extrator registram).
+- A tabela lista os estudos que ficaram fora da meta-análise de um resultado (desfecho + momento), com os motivos da montagem.
+- **A direção é registrada por uma pessoa, nunca deduzida pelo sistema** (decisão da Etapa 4). São 5 opções, no formato SWiM: favorece o grupo 1, favorece o grupo 2, sem diferença clara, resultados mistos, não informado. Há também uma observação opcional (ex.: onde está no artigo).
+- Fica guardada no modelo `narrative_entries`, com uma linha por estudo e resultado. Toda mudança vai para a auditoria e usa trava otimista: editar exige a versão lida.
+- Se um estudo com direção registrada passar a entrar na meta-análise, ele continua na tabela, marcado como "agora entra na meta-análise". Nada some em silêncio.
+- A seção fica no passo 1 do assistente e funciona mesmo quando a meta-análise não pode rodar (ex.: k < 2).

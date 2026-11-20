@@ -1205,6 +1205,24 @@
       "eggerHelp": "Testa se os estudos pequenos mostram efeitos diferentes dos grandes. Um p pequeno sugere assimetria, que pode ser viés de publicação ou outra causa; um p grande não prova que não há viés.",
       "funnel": "Funnel plot",
       "funnelHelp": "Cada ponto é um estudo: o efeito no eixo horizontal e o erro-padrão no vertical (estudos maiores ficam no alto). Sem viés, os pontos se espalham de forma simétrica dentro do funil."
+    },
+    "nar": {
+      "title": "Síntese narrativa",
+      "help": "Estudos que não puderam entrar na meta-análise deste desfecho continuam na revisão. Leia cada um e registre para que lado o resultado aponta; o sistema não decide isso.",
+      "empty": "Todos os estudos com dados entraram na meta-análise: não há nada para a síntese narrativa.",
+      "missing": "{{n}} estudo(s) fora da meta-análise ainda sem direção registrada.",
+      "study": "Estudo",
+      "why": "Por que ficou de fora",
+      "direction": "Direção do efeito",
+      "note": "Observação (ex.: onde está no artigo)",
+      "save": "Salvar",
+      "nowIncluded": "Agora entra na meta-análise",
+      "favours": "Favorece {{group}}",
+      "dir": {
+        "no_clear_difference": "Sem diferença clara",
+        "mixed": "Resultados mistos",
+        "not_reported": "Não informado"
+      }
     }
   }
 }

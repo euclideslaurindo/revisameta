@@ -6909,6 +6909,134 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/analyses/narrative": {
+      "post": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Narrative Table",
+        "description": "Studies left out of the meta-analysis of a result, with the direction recorded.",
+        "operationId": "narrative_table",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssemblyIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NarrativeOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/analyses/narrative/{study_id}": {
+      "put": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Record Narrative",
+        "description": "Records the direction of the effect of one study (admin, statistician, extractor).",
+        "operationId": "record_narrative",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "study_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Study Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NarrativeIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NarrativeRow"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/projects/{project_id}/analyses": {
       "post": {
         "tags": [
@@ -11927,6 +12055,187 @@
         },
         "type": "object",
         "title": "ModelPlan"
+      },
+      "NarrativeIn": {
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Outcome Id"
+          },
+          "timepoint": {
+            "type": "string",
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Timepoint"
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "favours_group1",
+              "favours_group2",
+              "no_clear_difference",
+              "mixed",
+              "not_reported"
+            ],
+            "title": "Direction"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome_id",
+          "timepoint",
+          "direction"
+        ],
+        "title": "NarrativeIn"
+      },
+      "NarrativeOut": {
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Outcome Id"
+          },
+          "outcome_name": {
+            "type": "string",
+            "title": "Outcome Name"
+          },
+          "timepoint": {
+            "type": "string",
+            "title": "Timepoint"
+          },
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/NarrativeRow"
+            },
+            "type": "array",
+            "title": "Rows"
+          },
+          "missing": {
+            "type": "integer",
+            "title": "Missing"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome_id",
+          "outcome_name",
+          "timepoint",
+          "rows",
+          "missing"
+        ],
+        "title": "NarrativeOut"
+      },
+      "NarrativeRow": {
+        "properties": {
+          "study_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Study Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "in_meta_analysis": {
+            "type": "boolean",
+            "title": "In Meta Analysis"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons"
+          },
+          "direction": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "favours_group1",
+                  "favours_group2",
+                  "no_clear_difference",
+                  "mixed",
+                  "not_reported"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Direction"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "study_id",
+          "label",
+          "in_meta_analysis",
+          "reasons",
+          "direction",
+          "note",
+          "version",
+          "updated_at"
+        ],
+        "title": "NarrativeRow"
       },
       "NumberCheck": {
         "properties": {

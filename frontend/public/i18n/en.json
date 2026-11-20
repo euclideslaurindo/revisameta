@@ -1205,6 +1205,24 @@
       "eggerHelp": "Tests whether small studies show different effects from large ones. A small p suggests asymmetry, which may be publication bias or another cause; a large p does not prove there is no bias.",
       "funnel": "Funnel plot",
       "funnelHelp": "Each dot is a study: the effect on the horizontal axis and the standard error on the vertical one (larger studies at the top). Without bias, the dots spread symmetrically inside the funnel."
+    },
+    "nar": {
+      "title": "Narrative synthesis",
+      "help": "Studies that could not enter the meta-analysis of this outcome are still part of the review. Read each one and record which way its result points; the system does not decide this.",
+      "empty": "Every study with data entered the meta-analysis: there is nothing for the narrative synthesis.",
+      "missing": "{{n}} study(ies) out of the meta-analysis still without a recorded direction.",
+      "study": "Study",
+      "why": "Why it was left out",
+      "direction": "Direction of the effect",
+      "note": "Note (e.g. where it is in the article)",
+      "save": "Save",
+      "nowIncluded": "Now enters the meta-analysis",
+      "favours": "Favours {{group}}",
+      "dir": {
+        "no_clear_difference": "No clear difference",
+        "mixed": "Mixed results",
+        "not_reported": "Not reported"
+      }
     }
   }
 }

@@ -239,6 +239,10 @@ export type { EggerTest$Params as EggerTest$Params } from './fn/analysis/egger-t
 export { eggerTest as eggerTest } from './fn/analysis/egger-test';
 export type { AnalysisFunnelPlot$Params as AnalysisFunnelPlot$Params } from './fn/analysis/analysis-funnel-plot';
 export { analysisFunnelPlot as analysisFunnelPlot } from './fn/analysis/analysis-funnel-plot';
+export type { NarrativeTable$Params as NarrativeTable$Params } from './fn/analysis/narrative-table';
+export { narrativeTable as narrativeTable } from './fn/analysis/narrative-table';
+export type { RecordNarrative$Params as RecordNarrative$Params } from './fn/analysis/record-narrative';
+export { recordNarrative as recordNarrative } from './fn/analysis/record-narrative';
 export type { ListAnalyses$Params as ListAnalyses$Params } from './fn/analysis/list-analyses';
 export { listAnalyses as listAnalyses } from './fn/analysis/list-analyses';
 export type { SaveAnalysis$Params as SaveAnalysis$Params } from './fn/analysis/save-analysis';
