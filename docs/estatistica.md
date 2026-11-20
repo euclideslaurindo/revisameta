@@ -197,3 +197,15 @@
   - `other_estimator`: os outros estimadores (REML, DL, Paule-Mandel).
 - Um cenário que fica com menos de 2 estudos não é calculado e diz isso (`not_enough_studies`). Um cenário fora da lista do plano é marcado como "não planejada".
 - **Fixtures:** `stats-r/fixtures/leave-one-out.json` (gerada pelo `leave1out` do metafor, com `dat.bcg` e `dat.normand1999`). Pela API, os estudos de `dat.normand1999` montados no banco dão os mesmos valores do `leave1out` e das fixtures de efeito fixo e DerSimonian-Laird.
+
+### Subgrupos (Etapa 4, passo 2)
+- `POST /analyses/subgroups`: o subgrupo de cada estudo vem de:
+  - um campo de texto ou de seleção do formulário de extração (consenso);
+  - o julgamento geral final de risco de viés para o resultado;
+  - o ponto de corte do estudo.
+  
+  Estudos sem valor ficam de fora e são listados.
+- **No R** (`/subgroup`): uma meta-análise por subgrupo, cada uma com seu τ² (decisão da Etapa 4). O teste de diferença é o Q de Cochran entre as estimativas dos subgrupos, combinadas com efeito fixo (gl = número de subgrupos − 1). Um subgrupo com um único estudo mostra o efeito desse estudo e gera aviso; um subgrupo com menos de 3 estudos também avisa.
+- O subgrupo conta como "planejado" quando o nome dele está na lista de subgrupos do plano de análise.
+- **Fixtures:** `stats-r/fixtures/subgroup.json` (metafor chamado direto: `dat.bcg` por tipo de alocação, com REML+Hartung-Knapp, DL e efeito fixo). Pela API, os 13 estudos montados no banco com a alocação como característica dão os mesmos valores.
+- **Correção no cliente do R:** quando o R responde um erro de validação, ele manda o `result` vazio como `[]`. O cliente tratava isso como "serviço fora do ar" (503). Agora o erro chega com a mensagem certa (teste em `test_stats_reference.py`).

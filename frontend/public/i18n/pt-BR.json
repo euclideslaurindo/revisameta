@@ -1177,6 +1177,23 @@
         "studies_without_risk_of_bias": "Alguns estudos ainda não têm avaliação final de risco de viés para este resultado e ficaram de fora desta análise.",
         "leave_one_out_needs_three_studies": "Retirar um estudo por vez precisa de pelo menos 3 estudos."
       }
+    },
+    "sub": {
+      "title": "Subgrupos",
+      "help": "Analisa separado por uma característica dos estudos e testa se o efeito difere entre os subgrupos. Com poucos estudos por subgrupo, o teste tem pouco poder: interprete com cautela.",
+      "variable": "Separar por",
+      "byRisk": "Risco de viés (julgamento geral)",
+      "byCutoff": "Ponto de corte do estudo",
+      "run": "Analisar subgrupos",
+      "notPlanned": "Este subgrupo não está no plano de análise: relate como análise não planejada.",
+      "group": "Subgrupo",
+      "test": "Teste de diferença entre subgrupos: Q = {{q}}, gl = {{df}}, p = {{p}}.",
+      "testHelp": "Compara os efeitos dos subgrupos. Um p pequeno sugere que o efeito muda conforme a característica, mas não prova causa: os estudos podem diferir em outras coisas.",
+      "leftOut": "Sem informação para esta característica (ficaram de fora): {{studies}}.",
+      "warning": {
+        "subgroup_with_one_study": "Há subgrupo com um único estudo: o valor dele é só o efeito daquele estudo.",
+        "subgroup_with_few_studies": "Há subgrupo com menos de 3 estudos: a estimativa é instável."
+      }
     }
   }
 }

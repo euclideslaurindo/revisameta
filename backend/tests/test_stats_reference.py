@@ -91,3 +91,16 @@ async def test_combine_groups_matches_the_reference(case: dict[str, Any]) -> Non
     assert response.ok
     for key, expected in case["expected"].items():
         assert math.isclose(response.result[key], expected, abs_tol=CONVERSIONS["tolerance"])
+
+
+async def test_errors_from_r_reach_the_backend_as_errors_not_as_r_down() -> None:
+    """R writes an empty result as []; a validation error must not look like an outage."""
+    response = await StatsClient().subgroup(
+        {
+            "measure": "MD",
+            "data": {"label": ["A", "B"], "yi": [1, 2], "vi": [0.1, 0.2], "group": [None, None]},
+        }
+    )
+    assert response.ok is False
+    assert response.result == {}
+    assert response.errors == ["at least two subgroups with studies are needed"]

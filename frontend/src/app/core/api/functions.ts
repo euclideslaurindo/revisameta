@@ -233,6 +233,8 @@ export type { AnalysisForestPlot$Params as AnalysisForestPlot$Params } from './f
 export { analysisForestPlot as analysisForestPlot } from './fn/analysis/analysis-forest-plot';
 export type { SensitivityAnalysis$Params as SensitivityAnalysis$Params } from './fn/analysis/sensitivity-analysis';
 export { sensitivityAnalysis as sensitivityAnalysis } from './fn/analysis/sensitivity-analysis';
+export type { SubgroupAnalysis$Params as SubgroupAnalysis$Params } from './fn/analysis/subgroup-analysis';
+export { subgroupAnalysis as subgroupAnalysis } from './fn/analysis/subgroup-analysis';
 export type { ListAnalyses$Params as ListAnalyses$Params } from './fn/analysis/list-analyses';
 export { listAnalyses as listAnalyses } from './fn/analysis/list-analyses';
 export type { SaveAnalysis$Params as SaveAnalysis$Params } from './fn/analysis/save-analysis';

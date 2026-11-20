@@ -10,7 +10,7 @@ import logging
 from typing import Any
 
 import httpx
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from app.core.config import get_settings
 from app.core.errors import ServiceUnavailableError
@@ -35,6 +35,12 @@ class StatsResponse(BaseModel):
     warnings: list[str] = Field(default_factory=list)
     errors: list[str] = Field(default_factory=list)
     meta: StatsMeta
+
+    @field_validator("result", mode="before")
+    @classmethod
+    def _empty_result(cls, value: Any) -> Any:
+        # R writes an empty result as [] (an empty list), e.g. in validation errors.
+        return {} if value == [] else value
 
 
 class StatsClient:
@@ -124,6 +130,10 @@ class StatsClient:
     async def leave_one_out(self, spec: dict[str, Any]) -> StatsResponse:
         """The model refitted without each study in turn (metafor::leave1out)."""
         return await self._request("POST", "/leave-one-out", json=spec)
+
+    async def subgroup(self, spec: dict[str, Any]) -> StatsResponse:
+        """One model per subgroup and the test for subgroup differences."""
+        return await self._request("POST", "/subgroup", json=spec)
 
     async def rob_plot(self, spec: dict[str, Any]) -> StatsResponse:
         """Risk-of-bias traffic light or summary (robvis, or ggplot2 with the same look)."""

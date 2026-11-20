@@ -49,6 +49,7 @@ class Seeder:
         higher_is_better: bool = True,
         outcome_id: str | None = None,
         timepoint: str = "5 anos",
+        characteristics: dict[str, Any] | None = None,
     ) -> uuid.UUID:
         pid = uuid.UUID(self.p["pid"])
         study = Study(project_id=pid, label=label, design="cohort_retrospective")
@@ -60,7 +61,7 @@ class Seeder:
             form_id=self.form_id,
             kind="consensus",
             status=status,
-            characteristics={"cutoff_used": cutoff},
+            characteristics={"cutoff_used": cutoff, **(characteristics or {})},
         )
         self.session.add(extraction)
         await self.session.flush()

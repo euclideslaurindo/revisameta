@@ -160,6 +160,8 @@ export type { StudyRow } from './models/study-row';
 export type { StudyToolIn } from './models/study-tool-in';
 export type { StudyToolOut } from './models/study-tool-out';
 export type { StudyUpdate } from './models/study-update';
+export type { SubgroupIn } from './models/subgroup-in';
+export type { SubgroupOut } from './models/subgroup-out';
 export type { TableOut } from './models/table-out';
 export type { TargetColumn } from './models/target-column';
 export type { TargetOut } from './models/target-out';
@@ -412,6 +414,8 @@ export type { AnalysisForestPlot$Params as AnalysisForestPlot$Params } from './f
 export { analysisForestPlot as analysisForestPlot } from './fn/analysis/analysis-forest-plot';
 export type { SensitivityAnalysis$Params as SensitivityAnalysis$Params } from './fn/analysis/sensitivity-analysis';
 export { sensitivityAnalysis as sensitivityAnalysis } from './fn/analysis/sensitivity-analysis';
+export type { SubgroupAnalysis$Params as SubgroupAnalysis$Params } from './fn/analysis/subgroup-analysis';
+export { subgroupAnalysis as subgroupAnalysis } from './fn/analysis/subgroup-analysis';
 export type { ListAnalyses$Params as ListAnalyses$Params } from './fn/analysis/list-analyses';
 export { listAnalyses as listAnalyses } from './fn/analysis/list-analyses';
 export type { SaveAnalysis$Params as SaveAnalysis$Params } from './fn/analysis/save-analysis';

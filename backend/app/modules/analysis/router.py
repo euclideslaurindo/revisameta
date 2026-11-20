@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_session
 from app.integrations.stats_client import StatsClient, get_stats_client
-from app.modules.analysis import assembly, history, run, sensitivity
+from app.modules.analysis import assembly, history, run, sensitivity, subgroups
 from app.modules.projects.access import ProjectContext, member_access
 
 router = APIRouter(prefix="/projects/{project_id}/analyses", tags=["analysis"])
@@ -67,6 +67,17 @@ async def sensitivity_analysis(
 ) -> sensitivity.SensitivityOut:
     """Reruns the analysis changing one thing (leave one out, risk of bias, model...)."""
     return await sensitivity.sensitivity(session, ctx, stats, body)
+
+
+@router.post("/subgroups")
+async def subgroup_analysis(
+    body: subgroups.SubgroupIn,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+    stats: StatsClient = Depends(get_stats_client),
+) -> subgroups.SubgroupOut:
+    """One model per subgroup (form field, risk of bias or cut-off) and the test of differences."""
+    return await subgroups.subgroups(session, ctx, stats, body)
 
 
 # ---- History (saved analyses) and the reproducible R script ---------------------------

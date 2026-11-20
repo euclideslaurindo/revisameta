@@ -1177,6 +1177,23 @@
         "studies_without_risk_of_bias": "Some studies have no final risk-of-bias assessment for this result yet and were left out of this analysis.",
         "leave_one_out_needs_three_studies": "Leaving one study out needs at least 3 studies."
       }
+    },
+    "sub": {
+      "title": "Subgroups",
+      "help": "Analyses separately by a characteristic of the studies and tests whether the effect differs between subgroups. With few studies per subgroup the test has little power: interpret with caution.",
+      "variable": "Split by",
+      "byRisk": "Risk of bias (overall judgement)",
+      "byCutoff": "Study cut-off",
+      "run": "Analyse subgroups",
+      "notPlanned": "This subgroup is not in the analysis plan: report it as a not planned analysis.",
+      "group": "Subgroup",
+      "test": "Test for subgroup differences: Q = {{q}}, df = {{df}}, p = {{p}}.",
+      "testHelp": "Compares the subgroup effects. A small p suggests the effect changes with the characteristic, but does not prove cause: studies may differ in other ways.",
+      "leftOut": "No information for this characteristic (left out): {{studies}}.",
+      "warning": {
+        "subgroup_with_one_study": "A subgroup has a single study: its value is only that study's effect.",
+        "subgroup_with_few_studies": "A subgroup has fewer than 3 studies: the estimate is unstable."
+      }
     }
   }
 }

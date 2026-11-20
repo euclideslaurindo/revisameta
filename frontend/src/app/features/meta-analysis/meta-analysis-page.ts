@@ -22,6 +22,10 @@ import { listAnalyses } from '../../core/api/fn/analysis/list-analyses';
 import { runAnalysis } from '../../core/api/fn/analysis/run-analysis';
 import { saveAnalysis } from '../../core/api/fn/analysis/save-analysis';
 import { sensitivityAnalysis } from '../../core/api/fn/analysis/sensitivity-analysis';
+import { subgroupAnalysis } from '../../core/api/fn/analysis/subgroup-analysis';
+import { getForm } from '../../core/api/fn/extraction/get-form';
+import { FormField } from '../../core/api/models/form-field';
+import { SubgroupOut } from '../../core/api/models/subgroup-out';
 import { SensitivityOut } from '../../core/api/models/sensitivity-out';
 import { AnalysisSummary } from '../../core/api/models/analysis-summary';
 import { getAnalysisPlan } from '../../core/api/fn/protocol/get-analysis-plan';
@@ -456,6 +460,85 @@ type Method = 'REML' | 'DL' | 'PM' | 'FE';
             }
           }
 
+          <h3>
+            {{ 'meta.sub.title' | transloco }}
+            <span class="term" tabindex="0" [matTooltip]="'meta.sub.help' | transloco">?</span>
+          </h3>
+          <div class="row">
+            <mat-form-field subscriptSizing="dynamic" class="wide">
+              <mat-label>{{ 'meta.sub.variable' | transloco }}</mat-label>
+              <mat-select [(ngModel)]="subgroupChoice">
+                <mat-option value="risk_of_bias">{{ 'meta.sub.byRisk' | transloco }}</mat-option>
+                <mat-option value="cutoff">{{ 'meta.sub.byCutoff' | transloco }}</mat-option>
+                @for (f of subgroupFields(); track f.key) {
+                  <mat-option [value]="'field:' + f.key">{{ fieldName(f) }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <button
+              mat-stroked-button
+              type="button"
+              [disabled]="busy() || !subgroupChoice"
+              (click)="runSubgroups()"
+            >
+              {{ 'meta.sub.run' | transloco }}
+            </button>
+          </div>
+          @if (sub(); as sg) {
+            @if (!sg.planned) {
+              <p class="notice notice-warn" role="status">
+                {{ 'meta.sub.notPlanned' | transloco }}
+              </p>
+            }
+            <table class="result-table">
+              <thead>
+                <tr>
+                  <th scope="col">{{ 'meta.sub.group' | transloco }}</th>
+                  <th scope="col">k</th>
+                  <th scope="col">{{ sg.measure }} ({{ 'meta.res.ci' | transloco }})</th>
+                  <th scope="col">I²</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (g of subRows(sg); track g['group']) {
+                  <tr>
+                    <td>{{ groupLabel(sg.variable, g['group']) }}</td>
+                    <td>{{ g['k'] }}</td>
+                    <td>
+                      {{ onScaleOf(g['estimate'], sg.measure) }} ({{
+                        onScaleOf(g['ci_lb'], sg.measure)
+                      }}
+                      {{ 'meta.res.to' | transloco }} {{ onScaleOf(g['ci_ub'], sg.measure) }})
+                    </td>
+                    <td>{{ g['k'] > 1 ? fmt(g['i2'], 1) + '%' : '—' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+            <p>
+              {{
+                'meta.sub.test'
+                  | transloco
+                    : {
+                        q: fmt(sg.result['test']['q'], 2),
+                        df: sg.result['test']['df'],
+                        p: fmtP(sg.result['test']['p_value']),
+                      }
+              }}
+              <span class="term" tabindex="0" [matTooltip]="'meta.sub.testHelp' | transloco"
+                >?</span
+              >
+            </p>
+            @if (sg.left_out.length) {
+              <p class="muted">
+                {{ 'meta.sub.leftOut' | transloco: { studies: sg.left_out.join(', ') } }}
+              </p>
+            }
+            @for (w of sg.warnings; track w) {
+              <div class="alert-item">{{ 'meta.sub.warning.' + w | transloco }}</div>
+            }
+          }
+
           <mat-accordion>
             <mat-expansion-panel>
               <mat-expansion-panel-header>
@@ -579,6 +662,9 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
   });
   protected note = '';
   protected readonly sens = signal<SensitivityOut | null>(null);
+  protected readonly sub = signal<SubgroupOut | null>(null);
+  protected readonly subgroupFields = signal<FormField[]>([]);
+  protected subgroupChoice: string | null = null;
   protected readonly scenarios = [
     'leave_one_out',
     'exclude_high_risk_of_bias',
@@ -627,6 +713,10 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
       ]);
       this.outcomes.set(outcomes);
       await this.loadHistory();
+      const form = await this.api.invoke(getForm, { project_id });
+      this.subgroupFields.set(
+        form.schema.fields.filter((f) => f.type === 'select' || f.type === 'text'),
+      );
       this.plan.set(plan);
       this.method = plan.model?.method ?? 'REML';
       this.knha = (plan.model?.test ?? 'knha') === 'knha';
@@ -733,6 +823,47 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
     return this.fmt(shown(value, measure));
   }
 
+  protected fieldName(field: FormField): string {
+    return field.label || (field.label_key ? this.t(field.label_key) : field.key);
+  }
+
+  protected subRows(sg: SubgroupOut): Record<string, number & string>[] {
+    return (sg.result['subgroups'] ?? []) as Record<string, number & string>[];
+  }
+
+  protected groupLabel(variable: string, value: string): string {
+    if (variable === 'risk_of_bias') {
+      const key = 'rob.judgement.' + value;
+      const text = this.t(key);
+      return text === key ? value : text;
+    }
+    return value;
+  }
+
+  async runSubgroups(): Promise<void> {
+    if (!this.outcomeId || !this.timepoint || !this.subgroupChoice) return;
+    const choice = this.subgroupChoice;
+    const field = choice.startsWith('field:') ? choice.slice(6) : null;
+    const label = field
+      ? this.fieldName(this.subgroupFields().find((f) => f.key === field)!)
+      : this.t(choice === 'cutoff' ? 'meta.sub.byCutoff' : 'meta.sub.byRisk');
+    await this.guard(async () => {
+      this.sub.set(
+        await this.api.invoke(subgroupAnalysis, {
+          project_id: this.projectId(),
+          body: {
+            ...this.body(),
+            method: this.method,
+            test: this.method === 'FE' || !this.knha ? 'z' : 'knha',
+            variable: field ? 'characteristic' : (choice as 'cutoff' | 'risk_of_bias'),
+            key: field,
+            label,
+          },
+        }),
+      );
+    });
+  }
+
   async runSensitivity(scenario: (typeof this.scenarios)[number]): Promise<void> {
     if (!this.outcomeId || !this.timepoint) return;
     await this.guard(async () => {
@@ -754,6 +885,7 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
     if (!this.outcomeId || !this.timepoint) return;
     this.savedNow.set(false);
     this.sens.set(null);
+    this.sub.set(null);
     await this.guard(async () => {
       const result = await this.api.invoke(runAnalysis, {
         project_id: this.projectId(),

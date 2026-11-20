@@ -154,6 +154,8 @@ export type { StudyRow } from './models/study-row';
 export type { StudyToolIn } from './models/study-tool-in';
 export type { StudyToolOut } from './models/study-tool-out';
 export type { StudyUpdate } from './models/study-update';
+export type { SubgroupIn } from './models/subgroup-in';
+export type { SubgroupOut } from './models/subgroup-out';
 export type { TableOut } from './models/table-out';
 export type { TargetColumn } from './models/target-column';
 export type { TargetOut } from './models/target-out';
