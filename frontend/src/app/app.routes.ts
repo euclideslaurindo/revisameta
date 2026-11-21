@@ -42,6 +42,11 @@ export const routes: Routes = [
           import('./features/protocol/protocol-page').then((m) => m.ProtocolPage),
       },
       {
+        path: 'buscas',
+        loadComponent: () =>
+          import('./features/references/searches-page').then((m) => m.SearchesPage),
+      },
+      {
         path: 'estudos',
         loadComponent: () => import('./features/studies/studies-page').then((m) => m.StudiesPage),
       },

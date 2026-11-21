@@ -83,6 +83,11 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
     ),
     ("POST", "/api/v1/projects/{project_id}/study-imports/preview", None),
     ("POST", "/api/v1/projects/{project_id}/study-imports", None),
+    ("POST", "/api/v1/projects/{project_id}/searches", None),
+    ("GET", "/api/v1/projects/{project_id}/searches", None),
+    ("GET", "/api/v1/projects/{project_id}/searches/{search_id}", None),
+    ("DELETE", "/api/v1/projects/{project_id}/searches/{search_id}", None),
+    ("GET", "/api/v1/projects/{project_id}/references", None),
     (
         "POST",
         "/api/v1/projects/{project_id}/reports/{report_id}/pdfs",
@@ -366,6 +371,7 @@ async def _setup(client: AsyncClient, make_user: MakeUser) -> tuple[LoggedUser, 
     )
     # Any id of this project's kind: the outsider must get 404 before it is even read.
     ids["analysis_id"] = ids["study_id"]
+    ids["search_id"] = ids["study_id"]
     ids["tool_id"] = (
         await client.post(
             f"/api/v1/projects/{project['id']}/rob/tools",

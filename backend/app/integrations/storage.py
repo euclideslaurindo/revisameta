@@ -138,6 +138,13 @@ class Storage:
             finally:
                 body.close()
 
+    async def put_fileobj(self, key: str, fileobj: Any, content_type: str) -> None:
+        """Streams a file object to storage (multipart under the hood), never all in memory."""
+        async with self._client() as s3:
+            await s3.upload_fileobj(
+                fileobj, self.bucket, key, ExtraArgs={"ContentType": content_type}
+            )
+
     async def size(self, key: str) -> int:
         async with self._client() as s3:
             response = await s3.head_object(Bucket=self.bucket, Key=key)

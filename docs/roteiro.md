@@ -100,6 +100,42 @@ Ainda falta, como na Etapa 3, o teste de interface automatizado (Playwright).
 Importação RIS/BibTeX/CSV/nbib, deduplicação multicritério com explicação, triagem dupla com kappa, desfazer, lotes por revisor, marcador "útil como referência", motivos de exclusão editáveis, fluxograma e checklist PRISMA.
 *Saída:* importar uma busca real, triar e obter o fluxograma com contagens corretas.
 
+**Etapa 5 — decisões aprovadas em 2026-11-21:**
+- **Passos (um commit cada):**
+  1. Importação RIS/BibTeX/CSV/nbib com a busca registrada.
+  2. Deduplicação.
+  3. Triagem de título/resumo.
+  4. Texto completo com motivos editáveis.
+  5. Priorização por aprendizado de máquina.
+  6. Fluxograma PRISMA, desenhado no R.
+  7. Checklist PRISMA 2020.
+- **Duplicata certa:** DOI ou PMID iguais.
+- **Duplicata provável** exige tudo junto:
+  - título inteiro normalizado com similaridade ≥ 0,95 (`rapidfuzz` `token_sort_ratio`);
+  - mesmo ano (se um dos dois não tem ano, o critério não conta);
+  - mesmo sobrenome do primeiro autor, sem acento;
+  - revista, volume e páginas iguais quando os dois registros têm.
+  
+  Os limiares podem ser configurados por projeto, e a remoção sempre passa por confirmação humana.
+- **Relacionado, nunca duplicata:** títulos que diferem em números ou em palavras como Parte, Errata, Correção, Comentário, Resposta e Retratação.
+- **Conflito na triagem dupla:** qualquer diferença entre os dois revisores, inclusive qualquer "Talvez". Dois "Incluir" passam e dois "Excluir" saem.
+- **Checklist PRISMA 2020:** o texto oficial dos 27 itens entra no sistema (licença CC BY 4.0), com a citação de Page et al. 2021 na tela e nas exportações.
+
+**Etapa 5, passo 1 — importação de buscas (feito):**
+- **Aba "Buscas":** cada arquivo importado é registrado com a base, a data, a estratégia, o nome do arquivo e o formato.
+- **Formatos aceitos:** RIS, PubMed/MEDLINE (.nbib), BibTeX e CSV (separador `;` ou `,`, cabeçalhos em pt ou en). Os leitores são próprios, sem dependência nova.
+- **Como o arquivo é lido:**
+  - O arquivo vai direto para o armazenamento.
+  - O worker copia o arquivo para um temporário em disco e lê linha a linha. As referências são gravadas em lotes de 500. Um arquivo de 20 mil registros é testado.
+  - A codificação é UTF-8 ou, nos arquivos antigos, Windows-1252.
+- **Relatório de leitura** (guarda os 200 primeiros problemas):
+  - registro sem título: não é importado;
+  - DOI, PMID ou ano ilegível: o registro é importado, com o campo vazio e um aviso. Nunca se perde uma referência por um campo secundário.
+- **Duplicatas:** todas ficam guardadas, inclusive o mesmo DOI duas vezes. Quem decide é a deduplicação (passo 2). O DOI continua único só entre as referências dos estudos.
+- **Auditoria:** as referências importadas são gravadas em bloco e auditadas uma vez, pela linha da busca (quem importou, qual arquivo, quantos registros), em vez de 20 mil registros de auditoria.
+- **Quem pode importar e remover:** admin ou revisor. Todos os membros leem.
+- **Remover uma busca** é soft delete: a busca e as referências dela saem da lista, mas nada é apagado.
+
 **Etapa 6 — GRADE, colaboração e entrega (P1)**
 GRADE e Summary of Findings, comentários, notificações, backup/reimportação do projeto, bibliografia, retenção de projetos inativos.
 *Saída:* tabela SoF em DOCX com justificativas; restauração de backup testada; reimportação de um projeto exportado sem perda.

@@ -93,6 +93,16 @@ export type { PreviewImport$Params as PreviewImport$Params } from './fn/studies/
 export { previewImport as previewImport } from './fn/studies/preview-import';
 export type { RunImport$Params as RunImport$Params } from './fn/studies/run-import';
 export { runImport as runImport } from './fn/studies/run-import';
+export type { ListSearches$Params as ListSearches$Params } from './fn/references/list-searches';
+export { listSearches as listSearches } from './fn/references/list-searches';
+export type { ImportSearch$Params as ImportSearch$Params } from './fn/references/import-search';
+export { importSearch as importSearch } from './fn/references/import-search';
+export type { GetSearch$Params as GetSearch$Params } from './fn/references/get-search';
+export { getSearch as getSearch } from './fn/references/get-search';
+export type { DeleteSearch$Params as DeleteSearch$Params } from './fn/references/delete-search';
+export { deleteSearch as deleteSearch } from './fn/references/delete-search';
+export type { ListReferences$Params as ListReferences$Params } from './fn/references/list-references';
+export { listReferences as listReferences } from './fn/references/list-references';
 export type { ListPdfs$Params as ListPdfs$Params } from './fn/pdfs/list-pdfs';
 export { listPdfs as listPdfs } from './fn/pdfs/list-pdfs';
 export type { AttachPdf$Params as AttachPdf$Params } from './fn/pdfs/attach-pdf';

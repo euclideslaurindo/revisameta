@@ -148,6 +148,16 @@ class InlineQueue:
         import uuid
 
         self.enqueued.append((function, kwargs))
+        if function == "import_search_task":
+            from app.modules.references.service import process_search
+
+            await process_search(
+                get_sessionmaker(),
+                Storage(),
+                uuid.UUID(kwargs["search_id"]),
+                uuid.UUID(kwargs["job_id"]),
+            )
+            return
         assert function == "process_upload_task"
         await process_upload(
             get_sessionmaker(),

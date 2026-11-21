@@ -104,7 +104,8 @@
       "review": "Final review",
       "export": "Export",
       "rob": "Risk of bias",
-      "meta": "Meta-analysis"
+      "meta": "Meta-analysis",
+      "searches": "Searches"
     }
   },
   "protocol": {
@@ -213,7 +214,11 @@
       "journal": "Journal",
       "design": "Study design",
       "notes": "Notes"
-    }
+    },
+    "no_title": "record without a title",
+    "bad_doi": "invalid DOI",
+    "bad_pmid": "invalid PMID",
+    "bad_year": "invalid year"
   },
   "importErrors": {
     "import": {
@@ -1226,6 +1231,38 @@
         "mixed": "Mixed results",
         "not_reported": "Not reported"
       }
+    }
+  },
+  "searches": {
+    "title": "Searches",
+    "intro": "Import here the file exported from each database (PubMed, LILACS, Embase...). Record the date and the search strategy: they go into the PRISMA flow diagram and the Methods. Nothing is removed at this step: duplicates are handled later, always with confirmation.",
+    "new": "Import a search",
+    "database": "Database (e.g. PubMed)",
+    "date": "Search date",
+    "strategy": "Search strategy",
+    "strategyHint": "Paste the strategy exactly as it was run in the database.",
+    "file": "Exported file",
+    "formats": "Accepted formats: RIS (.ris), PubMed/MEDLINE (.nbib or .txt), BibTeX (.bib) and CSV. Up to 100 MB.",
+    "import": "Import",
+    "progress": "Reading the file: {{value}}%",
+    "empty": "No search imported yet.",
+    "total": "{{count}} reference(s) imported in total, before removing duplicates.",
+    "records": "{{count}} reference(s)",
+    "skipped": "{{count}} record(s) not imported",
+    "report": "Reading report",
+    "record": "Record {{number}}",
+    "notImported": "(not imported)",
+    "imported": "(imported with the field empty)",
+    "reportCut": "The report shows the first 200 problems.",
+    "preview": "Imported references",
+    "more": "Load more",
+    "remove": "Remove this search",
+    "confirmRemove": "Remove the {{database}} search and its references? Nothing is erased for good: it stays in the history.",
+    "status": {
+      "queued": "Queued",
+      "running": "Reading",
+      "done": "Done",
+      "failed": "Failed"
     }
   }
 }

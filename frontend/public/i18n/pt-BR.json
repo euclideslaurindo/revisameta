@@ -104,7 +104,8 @@
       "review": "Conferência final",
       "export": "Exportar",
       "rob": "Risco de viés",
-      "meta": "Meta-análise"
+      "meta": "Meta-análise",
+      "searches": "Buscas"
     }
   },
   "protocol": {
@@ -213,7 +214,11 @@
       "journal": "Revista",
       "design": "Desenho do estudo",
       "notes": "Observações"
-    }
+    },
+    "no_title": "registro sem título",
+    "bad_doi": "DOI inválido",
+    "bad_pmid": "PMID inválido",
+    "bad_year": "ano inválido"
   },
   "importErrors": {
     "import": {
@@ -1226,6 +1231,38 @@
         "mixed": "Resultados mistos",
         "not_reported": "Não informado"
       }
+    }
+  },
+  "searches": {
+    "title": "Buscas",
+    "intro": "Importe aqui o arquivo exportado de cada base (PubMed, LILACS, Embase...). Registre a data e a estratégia de busca: elas entram no fluxograma PRISMA e no Métodos. Nada é removido nesta etapa: as duplicatas são tratadas depois, sempre com confirmação.",
+    "new": "Importar uma busca",
+    "database": "Base de dados (ex.: PubMed)",
+    "date": "Data da busca",
+    "strategy": "Estratégia de busca",
+    "strategyHint": "Cole a estratégia exatamente como foi rodada na base.",
+    "file": "Arquivo exportado",
+    "formats": "Formatos aceitos: RIS (.ris), PubMed/MEDLINE (.nbib ou .txt), BibTeX (.bib) e CSV. Até 100 MB.",
+    "import": "Importar",
+    "progress": "Lendo o arquivo: {{value}}%",
+    "empty": "Nenhuma busca importada ainda.",
+    "total": "{{count}} referência(s) importada(s) no total, antes da remoção de duplicatas.",
+    "records": "{{count}} referência(s)",
+    "skipped": "{{count}} registro(s) não importado(s)",
+    "report": "Relatório de leitura",
+    "record": "Registro {{number}}",
+    "notImported": "(não importado)",
+    "imported": "(importado com o campo vazio)",
+    "reportCut": "O relatório mostra os 200 primeiros problemas.",
+    "preview": "Referências importadas",
+    "more": "Carregar mais",
+    "remove": "Remover esta busca",
+    "confirmRemove": "Remover a busca de {{database}} e as referências dela? Nada é apagado de vez: fica no histórico.",
+    "status": {
+      "queued": "Na fila",
+      "running": "Lendo",
+      "done": "Concluída",
+      "failed": "Falhou"
     }
   }
 }

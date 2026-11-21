@@ -24,7 +24,13 @@ class StudyDesign(enum.StrEnum):
 
 
 class Reference(BusinessMixin, AuditedMixin, Base):
-    """Bibliographic record. Search import and screening complete it in Etapa 5."""
+    """Bibliographic record.
+
+    References of studies are created by hand or by the list import (search_id is
+    NULL; their DOI is unique in the project). References imported from a search
+    (stage 5) keep every record as it came, duplicates included: deduplication marks
+    them later, always confirmed by a person (docs/modulos.md 7.2).
+    """
 
     __tablename__ = "references"
 
@@ -35,6 +41,14 @@ class Reference(BusinessMixin, AuditedMixin, Base):
     doi: Mapped[str | None] = mapped_column(String(255))  # normalized, lower case
     pmid: Mapped[str | None] = mapped_column(String(20))
     journal: Mapped[str | None] = mapped_column(String(300))
+    search_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("searches.id"), index=True)
+    abstract: Mapped[str | None] = mapped_column(Text)
+    keywords: Mapped[str | None] = mapped_column(Text)
+    volume: Mapped[str | None] = mapped_column(String(40))
+    issue: Mapped[str | None] = mapped_column(String(40))
+    pages: Mapped[str | None] = mapped_column(String(60))
+    url: Mapped[str | None] = mapped_column(String(1000))
+    record_number: Mapped[int | None] = mapped_column(Integer)  # position in the file
 
     __table_args__ = (
         Index(
@@ -42,8 +56,9 @@ class Reference(BusinessMixin, AuditedMixin, Base):
             "project_id",
             "doi",
             unique=True,
-            postgresql_where="deleted_at IS NULL AND doi IS NOT NULL",
+            postgresql_where="deleted_at IS NULL AND doi IS NOT NULL AND search_id IS NULL",
         ),
+        Index("ix_references_project_doi", "project_id", "doi"),
     )
 
 

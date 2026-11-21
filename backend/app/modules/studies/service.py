@@ -40,7 +40,9 @@ async def doi_taken(
 ) -> bool:
     if not doi:
         return False
-    query = select(func.count()).where(Reference.project_id == project_id, Reference.doi == doi)
+    query = select(func.count()).where(
+        Reference.project_id == project_id, Reference.doi == doi, Reference.search_id.is_(None)
+    )
     if exclude is not None:
         query = query.where(Reference.id != exclude)
     return bool(await session.scalar(query))

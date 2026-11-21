@@ -22,6 +22,7 @@ from app.modules.pdfs.router import router as pdfs_router
 from app.modules.projects.router import router as projects_router
 from app.modules.protocol.router import router as protocol_router
 from app.modules.quotas.router import router as quotas_router
+from app.modules.references.router import router as references_router
 from app.modules.risk_of_bias.router import router as rob_router
 from app.modules.studies.router import router as studies_router
 from app.modules.system.router import router as system_router
@@ -80,6 +81,7 @@ def create_app() -> FastAPI:
         projects_router,
         protocol_router,
         studies_router,
+        references_router,
         pdfs_router,
         extraction_router,
         exports_router,

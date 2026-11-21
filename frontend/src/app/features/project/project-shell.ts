@@ -28,6 +28,15 @@ import { ProjectContext } from './project-context';
         </a>
         <a
           mat-tab-link
+          routerLink="buscas"
+          routerLinkActive
+          #searches="routerLinkActive"
+          [active]="searches.isActive"
+        >
+          {{ 'project.nav.searches' | transloco }}
+        </a>
+        <a
+          mat-tab-link
           routerLink="estudos"
           routerLinkActive
           #studies="routerLinkActive"
