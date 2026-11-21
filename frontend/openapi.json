@@ -3082,6 +3082,867 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/screening/settings": {
+      "get": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Get Screening Settings",
+        "operationId": "get_screening_settings",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScreeningSettings"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Put Screening Settings",
+        "description": "Keywords to highlight and blinding (admin).",
+        "operationId": "put_screening_settings",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScreeningSettings"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScreeningSettings"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/screening/queue": {
+      "get": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Screening Queue",
+        "description": "References to screen. While blinding is on, other reviewers' decisions are hidden.",
+        "operationId": "screening_queue",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "view",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "todo",
+                "done",
+                "conflicts",
+                "all"
+              ],
+              "type": "string",
+              "default": "todo",
+              "title": "View"
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "After"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 200,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 200
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Q"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScreeningQueuePage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/screening/counts": {
+      "get": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Screening Counts",
+        "operationId": "screening_counts",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScreeningCounts"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/screening/references/{reference_id}/decision": {
+      "post": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Decide Reference",
+        "description": "Include, exclude or maybe (admin or reviewer). A new decision supersedes mine.",
+        "operationId": "decide_reference",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "reference_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Reference Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScreeningDecideIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScreeningDecisionOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/screening/undo": {
+      "post": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Undo Last Decision",
+        "description": "Withdraws my latest decision; the one before it (if any) comes back.",
+        "operationId": "undo_last_decision",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ScreeningDecisionOut"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ],
+                  "title": "Response Undo Last Decision"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/screening/references/{reference_id}/history": {
+      "get": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Reference History",
+        "operationId": "reference_history",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "reference_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Reference Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ScreeningDecisionOut"
+                  },
+                  "title": "Response Reference History"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/screening/references/{reference_id}/resolution": {
+      "post": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Resolve Conflict",
+        "description": "Final decision of a conflict, with the reason (admin).",
+        "operationId": "resolve_conflict",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "reference_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Reference Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScreeningResolveIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "title": "Response Resolve Conflict"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Reopen Conflict",
+        "operationId": "reopen_conflict",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "reference_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Reference Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/screening/references/{reference_id}/useful": {
+      "put": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Mark Useful",
+        "description": "Excluded but useful to cite in the Introduction or Discussion.",
+        "operationId": "mark_useful",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "reference_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Reference Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScreeningUsefulIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "boolean"
+                  },
+                  "title": "Response Mark Useful"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/screening/assignments": {
+      "get": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "List Assignments",
+        "operationId": "list_assignments",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ScreeningAssignmentSummary"
+                  },
+                  "title": "Response List Assignments"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Assign Batch",
+        "description": "Gives the next references to a reviewer (admin).",
+        "operationId": "assign_batch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScreeningAssignIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScreeningAssignmentSummary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/screening/assignments/{user_id}": {
+      "delete": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Take Back Batch",
+        "description": "Takes back what the reviewer did not decide yet (admin).",
+        "operationId": "take_back_batch",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "User Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/screening/agreement": {
+      "get": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Screening Agreement",
+        "description": "Cohen's kappa between reviewers (computed in R).",
+        "operationId": "screening_agreement",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ScreeningAgreementOut"
+                  },
+                  "title": "Response Screening Agreement"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/projects/{project_id}/reports/{report_id}/pdfs": {
       "post": {
         "tags": [
@@ -17311,6 +18172,475 @@
           "left_out"
         ],
         "title": "ScenarioResult"
+      },
+      "ScreeningAgreementOut": {
+        "properties": {
+          "user_a": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User A"
+          },
+          "user_b": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User B"
+          },
+          "name_a": {
+            "type": "string",
+            "title": "Name A"
+          },
+          "name_b": {
+            "type": "string",
+            "title": "Name B"
+          },
+          "items": {
+            "type": "integer",
+            "title": "Items"
+          },
+          "agreement_percent": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Agreement Percent"
+          },
+          "kappa": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kappa"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_a",
+          "user_b",
+          "name_a",
+          "name_b",
+          "items",
+          "agreement_percent",
+          "kappa",
+          "warnings"
+        ],
+        "title": "ScreeningAgreementOut"
+      },
+      "ScreeningAssignIn": {
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "count": {
+            "type": "integer",
+            "maximum": 5000.0,
+            "minimum": 1.0,
+            "title": "Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "count"
+        ],
+        "title": "ScreeningAssignIn"
+      },
+      "ScreeningAssignmentSummary": {
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "user_name": {
+            "type": "string",
+            "title": "User Name"
+          },
+          "assigned": {
+            "type": "integer",
+            "title": "Assigned"
+          },
+          "decided": {
+            "type": "integer",
+            "title": "Decided"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "user_name",
+          "assigned",
+          "decided"
+        ],
+        "title": "ScreeningAssignmentSummary"
+      },
+      "ScreeningCounts": {
+        "properties": {
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "decided_by_me": {
+            "type": "integer",
+            "title": "Decided By Me"
+          },
+          "left_for_me": {
+            "type": "integer",
+            "title": "Left For Me"
+          },
+          "include": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Include"
+          },
+          "exclude": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Exclude"
+          },
+          "conflict": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Conflict"
+          },
+          "pending": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pending"
+          },
+          "resolved": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resolved"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total",
+          "decided_by_me",
+          "left_for_me",
+          "include",
+          "exclude",
+          "conflict",
+          "pending",
+          "resolved"
+        ],
+        "title": "ScreeningCounts"
+      },
+      "ScreeningDecideIn": {
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": [
+              "include",
+              "exclude",
+              "maybe"
+            ],
+            "title": "Decision"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "decision"
+        ],
+        "title": "ScreeningDecideIn"
+      },
+      "ScreeningDecisionOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "reference_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Reference Id"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "User Id"
+          },
+          "user_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "User Name"
+          },
+          "decision": {
+            "type": "string",
+            "title": "Decision"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "current": {
+            "type": "boolean",
+            "title": "Current"
+          },
+          "undone": {
+            "type": "boolean",
+            "title": "Undone"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "reference_id",
+          "user_id",
+          "decision",
+          "note",
+          "created_at",
+          "current",
+          "undone"
+        ],
+        "title": "ScreeningDecisionOut"
+      },
+      "ScreeningQueueItem": {
+        "properties": {
+          "reference": {
+            "$ref": "#/components/schemas/SearchReferenceOut"
+          },
+          "useful_as_reference": {
+            "type": "boolean",
+            "title": "Useful As Reference"
+          },
+          "my_decision": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "My Decision"
+          },
+          "decisions": {
+            "type": "integer",
+            "title": "Decisions"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "include",
+                  "exclude",
+                  "conflict",
+                  "resolved_include",
+                  "resolved_exclude"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "others": {
+            "items": {
+              "$ref": "#/components/schemas/ScreeningDecisionOut"
+            },
+            "type": "array",
+            "title": "Others"
+          },
+          "assigned_to": {
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "type": "array",
+            "title": "Assigned To"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reference",
+          "useful_as_reference",
+          "my_decision",
+          "decisions",
+          "status",
+          "others",
+          "assigned_to"
+        ],
+        "title": "ScreeningQueueItem"
+      },
+      "ScreeningQueuePage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ScreeningQueueItem"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "next_cursor"
+        ],
+        "title": "ScreeningQueuePage"
+      },
+      "ScreeningResolveIn": {
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": [
+              "include",
+              "exclude"
+            ],
+            "title": "Decision"
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 3,
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "decision",
+          "reason"
+        ],
+        "title": "ScreeningResolveIn"
+      },
+      "ScreeningSettings": {
+        "properties": {
+          "include_keywords": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Include Keywords"
+          },
+          "exclude_keywords": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Exclude Keywords"
+          },
+          "blind": {
+            "type": "boolean",
+            "title": "Blind",
+            "default": true
+          }
+        },
+        "type": "object",
+        "title": "ScreeningSettings"
+      },
+      "ScreeningUsefulIn": {
+        "properties": {
+          "useful": {
+            "type": "boolean",
+            "title": "Useful"
+          }
+        },
+        "type": "object",
+        "required": [
+          "useful"
+        ],
+        "title": "ScreeningUsefulIn"
       },
       "SearchDetail": {
         "properties": {

@@ -105,7 +105,8 @@
       "export": "Exportar",
       "rob": "Risco de viés",
       "meta": "Meta-análise",
-      "searches": "Buscas"
+      "searches": "Buscas",
+      "screening": "Triagem"
     }
   },
   "protocol": {
@@ -1312,6 +1313,90 @@
       "yearMissing": "um dos dois sem ano",
       "numbers": "números diferentes no título",
       "words": "difere em: {{words}}"
+    }
+  },
+  "screening": {
+    "title": "Triagem de título e resumo",
+    "help": "Ler título e resumo e decidir se o estudo pode servir. Dois revisores decidem sem ver um ao outro; quando discordam, o admin resolve.",
+    "intro": "Na dúvida, escolha Talvez: o artigo segue para conferência e nada se perde. Duplicatas confirmadas não aparecem aqui.",
+    "progress": "Você decidiu {{done}}; faltam {{left}} para você.",
+    "overall": "no projeto: {{include}} incluídas, {{exclude}} excluídas, {{conflict}} em conflito, {{pending}} aguardando o segundo revisor",
+    "blindOn": "Triagem cega ligada: você só vê as suas decisões até o admin revelar.",
+    "view": {
+      "todo": "Para decidir",
+      "done": "Já decididas por mim",
+      "conflicts": "Conflitos",
+      "all": "Todas"
+    },
+    "search": "Buscar no título ou resumo",
+    "position": "{{n}} de {{total}}",
+    "noAbstract": "Sem resumo neste registro.",
+    "mine": "Sua decisão: {{d}}",
+    "decide": "Decisão",
+    "decision": {
+      "include": "Incluir",
+      "exclude": "Excluir",
+      "maybe": "Talvez",
+      "none": "sem decisão"
+    },
+    "status": {
+      "pending": "Aguardando o segundo revisor",
+      "include": "Incluída (os dois incluíram)",
+      "exclude": "Excluída (os dois excluíram)",
+      "conflict": "Conflito",
+      "resolved_include": "Conflito resolvido: incluir",
+      "resolved_exclude": "Conflito resolvido: excluir"
+    },
+    "note": "Observação (opcional)",
+    "useful": "Útil como referência",
+    "usefulHelp": "Marque estudos que não entram na revisão mas servem para citar na Introdução ou na Discussão.",
+    "previous": "Anterior",
+    "next": "Próxima",
+    "undo": "Desfazer última",
+    "history": "Histórico",
+    "you": "Você",
+    "undone": "desfeita",
+    "replaced": "substituída",
+    "shortcuts": "Atalhos: I incluir · E excluir · T talvez (ou 1, 2, 3) · U desfazer · ← → navegar.",
+    "emptyView": {
+      "todo": "Nada para você decidir agora. Confira se as buscas foram importadas e as duplicatas resolvidas.",
+      "done": "Você ainda não decidiu nenhuma referência.",
+      "conflicts": "Nenhum conflito.",
+      "all": "Nenhuma referência para triar."
+    },
+    "admin": {
+      "title": "Ferramentas do admin",
+      "settings": "Palavras-chave e cegamento",
+      "includeKw": "Palavras de inclusão (destacadas em verde)",
+      "excludeKw": "Palavras de exclusão (destacadas em vermelho)",
+      "kwHint": "Separe por ponto e vírgula ou por linha. Só destacam o texto: não decidem nada.",
+      "blind": "Triagem cega",
+      "blindHelp": "Com a triagem cega, cada revisor vê só as próprias decisões, também pela API. Desligue apenas quando os revisores terminarem.",
+      "revealAsk": "Desligar a triagem cega? Os revisores vão ver as decisões uns dos outros.",
+      "save": "Salvar",
+      "batches": "Lotes por revisor",
+      "batchesHelp": "Distribua as referências: cada referência vai para até dois revisores, e só eles a decidem. Sem lotes, qualquer revisor pode triar tudo.",
+      "reviewer": "Revisor",
+      "count": "Quantidade",
+      "assign": "Dar lote",
+      "batchLine": "{{assigned}} no lote, {{decided}} decididas",
+      "takeBack": "Recolher o que falta",
+      "agreement": "Concordância entre revisores (kappa)",
+      "kappaHelp": "O kappa de Cohen mede quanto os revisores concordam além do que o acaso explicaria. Vai de -1 a 1: perto de 1 é concordância quase total; perto de 0, o mesmo que o acaso. Calculado pelo serviço estatístico (R).",
+      "noAgreement": "Ainda não há referências decididas pelos dois revisores.",
+      "kappaLine": "{{items}} referências em comum, concordância de {{percent}}%, kappa = {{kappa}}",
+      "kappaBand": {
+        "poor": "concordância pior que o acaso",
+        "slight": "concordância muito fraca",
+        "fair": "concordância fraca",
+        "moderate": "concordância moderada",
+        "substantial": "concordância boa",
+        "almost": "concordância quase perfeita"
+      },
+      "resolve": "Resolver o conflito",
+      "reason": "Motivo da decisão final",
+      "resolveInclude": "Incluir",
+      "resolveExclude": "Excluir"
     }
   }
 }

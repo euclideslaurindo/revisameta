@@ -24,6 +24,7 @@ from app.modules.protocol.router import router as protocol_router
 from app.modules.quotas.router import router as quotas_router
 from app.modules.references.router import router as references_router
 from app.modules.risk_of_bias.router import router as rob_router
+from app.modules.screening.router import router as screening_router
 from app.modules.studies.router import router as studies_router
 from app.modules.system.router import router as system_router
 from app.modules.uploads.router import router as uploads_router
@@ -82,6 +83,7 @@ def create_app() -> FastAPI:
         protocol_router,
         studies_router,
         references_router,
+        screening_router,
         pdfs_router,
         extraction_router,
         exports_router,

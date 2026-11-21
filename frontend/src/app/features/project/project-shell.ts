@@ -37,6 +37,15 @@ import { ProjectContext } from './project-context';
         </a>
         <a
           mat-tab-link
+          routerLink="triagem"
+          routerLinkActive
+          #screening="routerLinkActive"
+          [active]="screening.isActive"
+        >
+          {{ 'project.nav.screening' | transloco }}
+        </a>
+        <a
+          mat-tab-link
           routerLink="estudos"
           routerLinkActive
           #studies="routerLinkActive"

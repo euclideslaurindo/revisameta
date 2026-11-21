@@ -105,7 +105,8 @@
       "export": "Export",
       "rob": "Risk of bias",
       "meta": "Meta-analysis",
-      "searches": "Searches"
+      "searches": "Searches",
+      "screening": "Screening"
     }
   },
   "protocol": {
@@ -1312,6 +1313,90 @@
       "yearMissing": "one of them has no year",
       "numbers": "different numbers in the title",
       "words": "differs in: {{words}}"
+    }
+  },
+  "screening": {
+    "title": "Title and abstract screening",
+    "help": "Read the title and abstract and decide whether the study may be relevant. Two reviewers decide without seeing each other; when they disagree, the admin resolves.",
+    "intro": "When in doubt, choose Maybe: the article goes on to be checked and nothing is lost. Confirmed duplicates do not appear here.",
+    "progress": "You decided {{done}}; {{left}} left for you.",
+    "overall": "in the project: {{include}} included, {{exclude}} excluded, {{conflict}} in conflict, {{pending}} waiting for the second reviewer",
+    "blindOn": "Blind screening is on: you only see your own decisions until the admin reveals them.",
+    "view": {
+      "todo": "To decide",
+      "done": "Decided by me",
+      "conflicts": "Conflicts",
+      "all": "All"
+    },
+    "search": "Search title or abstract",
+    "position": "{{n}} of {{total}}",
+    "noAbstract": "No abstract in this record.",
+    "mine": "Your decision: {{d}}",
+    "decide": "Decision",
+    "decision": {
+      "include": "Include",
+      "exclude": "Exclude",
+      "maybe": "Maybe",
+      "none": "no decision"
+    },
+    "status": {
+      "pending": "Waiting for the second reviewer",
+      "include": "Included (both included)",
+      "exclude": "Excluded (both excluded)",
+      "conflict": "Conflict",
+      "resolved_include": "Conflict resolved: include",
+      "resolved_exclude": "Conflict resolved: exclude"
+    },
+    "note": "Note (optional)",
+    "useful": "Useful as a reference",
+    "usefulHelp": "Mark studies that do not enter the review but are worth citing in the Introduction or Discussion.",
+    "previous": "Previous",
+    "next": "Next",
+    "undo": "Undo last",
+    "history": "History",
+    "you": "You",
+    "undone": "undone",
+    "replaced": "replaced",
+    "shortcuts": "Shortcuts: I include · E exclude · T maybe (or 1, 2, 3) · U undo · ← → move.",
+    "emptyView": {
+      "todo": "Nothing for you to decide now. Check that searches were imported and duplicates resolved.",
+      "done": "You have not decided any reference yet.",
+      "conflicts": "No conflicts.",
+      "all": "No reference to screen."
+    },
+    "admin": {
+      "title": "Admin tools",
+      "settings": "Keywords and blinding",
+      "includeKw": "Inclusion words (highlighted in green)",
+      "excludeKw": "Exclusion words (highlighted in red)",
+      "kwHint": "Separate with semicolons or lines. They only highlight the text: they decide nothing.",
+      "blind": "Blind screening",
+      "blindHelp": "With blind screening each reviewer sees only their own decisions, also through the API. Turn it off only when the reviewers have finished.",
+      "revealAsk": "Turn blind screening off? Reviewers will see each other's decisions.",
+      "save": "Save",
+      "batches": "Batches per reviewer",
+      "batchesHelp": "Share out the references: each reference goes to up to two reviewers, and only they decide on it. Without batches any reviewer can screen everything.",
+      "reviewer": "Reviewer",
+      "count": "How many",
+      "assign": "Give batch",
+      "batchLine": "{{assigned}} in the batch, {{decided}} decided",
+      "takeBack": "Take back what is left",
+      "agreement": "Agreement between reviewers (kappa)",
+      "kappaHelp": "Cohen's kappa measures how much reviewers agree beyond what chance would explain. It goes from -1 to 1: near 1 is almost full agreement; near 0, the same as chance. Computed by the statistics service (R).",
+      "noAgreement": "No reference has been decided by both reviewers yet.",
+      "kappaLine": "{{items}} references in common, {{percent}}% agreement, kappa = {{kappa}}",
+      "kappaBand": {
+        "poor": "agreement worse than chance",
+        "slight": "slight agreement",
+        "fair": "fair agreement",
+        "moderate": "moderate agreement",
+        "substantial": "substantial agreement",
+        "almost": "almost perfect agreement"
+      },
+      "resolve": "Resolve the conflict",
+      "reason": "Reason for the final decision",
+      "resolveInclude": "Include",
+      "resolveExclude": "Exclude"
     }
   }
 }

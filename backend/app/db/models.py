@@ -27,6 +27,11 @@ from app.modules.risk_of_bias.models import (
     RobStudyTool,
     RobTool,
 )
+from app.modules.screening.models import (
+    ScreeningAssignment,
+    ScreeningDecision,
+    ScreeningResolution,
+)
 from app.modules.studies.models import Reference, Report, Study
 from app.modules.uploads.models import PdfPageText, StoredFile, UploadSession
 
@@ -60,6 +65,9 @@ __all__ = [
     "RobJudgement",
     "RobStudyTool",
     "RobTool",
+    "ScreeningAssignment",
+    "ScreeningDecision",
+    "ScreeningResolution",
     "Search",
     "StageEvent",
     "StoredFile",

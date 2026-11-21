@@ -52,6 +52,11 @@ export const routes: Routes = [
           import('./features/references/searches-page').then((m) => m.SearchesPage),
       },
       {
+        path: 'triagem',
+        loadComponent: () =>
+          import('./features/screening/screening-page').then((m) => m.ScreeningPage),
+      },
+      {
         path: 'estudos',
         loadComponent: () => import('./features/studies/studies-page').then((m) => m.StudiesPage),
       },

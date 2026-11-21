@@ -100,6 +100,40 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
     ("POST", "/api/v1/projects/{project_id}/deduplication/confirm-certain", None),
     ("GET", "/api/v1/projects/{project_id}/deduplication/report", None),
     ("GET", "/api/v1/projects/{project_id}/deduplication/report.csv", None),
+    ("GET", "/api/v1/projects/{project_id}/screening/settings", None),
+    ("PUT", "/api/v1/projects/{project_id}/screening/settings", {"blind": True}),
+    ("GET", "/api/v1/projects/{project_id}/screening/queue", None),
+    ("GET", "/api/v1/projects/{project_id}/screening/counts", None),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/screening/references/{reference_id}/decision",
+        {"decision": "include"},
+    ),
+    ("POST", "/api/v1/projects/{project_id}/screening/undo", None),
+    ("GET", "/api/v1/projects/{project_id}/screening/references/{reference_id}/history", None),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/screening/references/{reference_id}/resolution",
+        {"decision": "include", "reason": "ok ok"},
+    ),
+    (
+        "DELETE",
+        "/api/v1/projects/{project_id}/screening/references/{reference_id}/resolution",
+        None,
+    ),
+    (
+        "PUT",
+        "/api/v1/projects/{project_id}/screening/references/{reference_id}/useful",
+        {"useful": True},
+    ),
+    ("GET", "/api/v1/projects/{project_id}/screening/assignments", None),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/screening/assignments",
+        {"user_id": "{study_id}", "count": 1},
+    ),
+    ("DELETE", "/api/v1/projects/{project_id}/screening/assignments/{user_id}", None),
+    ("GET", "/api/v1/projects/{project_id}/screening/agreement", None),
     (
         "POST",
         "/api/v1/projects/{project_id}/reports/{report_id}/pdfs",
@@ -385,6 +419,8 @@ async def _setup(client: AsyncClient, make_user: MakeUser) -> tuple[LoggedUser, 
     ids["analysis_id"] = ids["study_id"]
     ids["search_id"] = ids["study_id"]
     ids["pair_id"] = ids["study_id"]
+    ids["reference_id"] = ids["study_id"]
+    ids["user_id"] = ids["study_id"]
     ids["tool_id"] = (
         await client.post(
             f"/api/v1/projects/{project['id']}/rob/tools",

@@ -154,6 +154,22 @@ Importação RIS/BibTeX/CSV/nbib, deduplicação multicritério com explicação
 - **Dependência nova:** `rapidfuzz` (MIT, mantida, listada na seção 3.2).
 - **Limitação conhecida:** ao desfazer um par cujo registro removido tinha outros apontando para ele, esses outros continuam no registro que fica.
 
+**Etapa 5, passo 3 — triagem de título e resumo (feito):**
+- **Aba "Triagem":** um cartão por vez, com título, autores, ano, revista, DOI e resumo. As palavras-chave de inclusão aparecem em verde e as de exclusão em vermelho. Os destaques são configurados pelo admin e não decidem nada.
+- **Decisões:** Incluir, Excluir ou Talvez, com observação opcional.
+  - As mesmas três opções e os mesmos atalhos valem em qualquer tela (L8): I, E e T (ou 1, 2 e 3), U para desfazer, setas para navegar.
+  - Decidem admins e revisores.
+- **Resultado:** com dois "Incluir" a referência passa e com dois "Excluir" ela sai. Qualquer outra combinação, inclusive qualquer "Talvez", vira conflito, e o admin resolve com um motivo. A resolução pode ser retirada (soft delete).
+- **Cegamento ligado por padrão:** o revisor vê só as próprias decisões, também pela API (fila, histórico e contagens). O admin vê tudo e revela desligando o cegamento.
+- **Histórico e desfazer (L6):** decisões nunca são editadas.
+  - Uma decisão nova substitui a anterior.
+  - "Desfazer" retira a última decisão do revisor e traz de volta a anterior.
+  - Tudo fica no histórico da referência e na auditoria.
+- **"Útil como referência" (L7):** marca, na referência, estudos excluídos que servem para a Introdução ou a Discussão.
+- **Lotes (L9):** o admin dá as próximas N referências a um revisor, com até dois revisores por referência. Uma referência de um lote só pode ser decidida pelos revisores do lote (e pelos admins). "Recolher" devolve o que ainda não foi decidido.
+- **Kappa de Cohen** para cada par de revisores, calculado no R (`/kappa`, irr). A tela traz uma explicação e as faixas de Landis e Koch, só como ajuda de leitura.
+- **Referências triadas:** só as importadas de buscas, sem as duplicatas confirmadas.
+
 **Etapa 6 — GRADE, colaboração e entrega (P1)**
 GRADE e Summary of Findings, comentários, notificações, backup/reimportação do projeto, bibliografia, retenção de projetos inativos.
 *Saída:* tabela SoF em DOCX com justificativas; restauração de backup testada; reimportação de um projeto exportado sem perda.
