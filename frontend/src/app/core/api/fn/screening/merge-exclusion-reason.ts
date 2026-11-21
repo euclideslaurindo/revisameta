@@ -7,13 +7,13 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { AppModulesScreeningReasonsMergeIn } from '../../models/app-modules-screening-reasons-merge-in';
+import { ReasonMergeIn } from '../../models/reason-merge-in';
 import { ReasonOut } from '../../models/reason-out';
 
 export interface MergeExclusionReason$Params {
   reason_id: string;
   project_id: string;
-      body: AppModulesScreeningReasonsMergeIn
+      body: ReasonMergeIn
 }
 
 export function mergeExclusionReason(http: HttpClient, rootUrl: string, params: MergeExclusionReason$Params, context?: HttpContext): Observable<StrictHttpResponse<ReasonOut>> {

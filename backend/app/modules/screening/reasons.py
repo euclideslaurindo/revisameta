@@ -47,7 +47,7 @@ class ReasonUpdate(BaseModel):
     version: int
 
 
-class MergeIn(BaseModel):
+class ReasonMergeIn(BaseModel):
     into_id: uuid.UUID
     version: int
 
@@ -175,7 +175,7 @@ async def remove(session: AsyncSession, ctx: ProjectContext, reason_id: uuid.UUI
 
 
 async def merge(
-    session: AsyncSession, ctx: ProjectContext, reason_id: uuid.UUID, data: MergeIn
+    session: AsyncSession, ctx: ProjectContext, reason_id: uuid.UUID, data: ReasonMergeIn
 ) -> ReasonOut:
     """Moves every decision of this reason to `into_id` and marks it as merged."""
     _admin(ctx)

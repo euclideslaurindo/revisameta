@@ -203,7 +203,7 @@ async def delete_exclusion_reason(
 @router.post("/exclusion-reasons/{reason_id}/merge")
 async def merge_exclusion_reason(
     reason_id: uuid.UUID,
-    body: reasons.MergeIn,
+    body: reasons.ReasonMergeIn,
     ctx: ProjectContext = Depends(member_access),
     session: AsyncSession = Depends(get_session),
 ) -> reasons.ReasonOut:

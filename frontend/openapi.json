@@ -2095,7 +2095,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/app__modules__studies__schemas__MergeIn"
+                "$ref": "#/components/schemas/MergeIn"
               }
             }
           }
@@ -4364,7 +4364,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/app__modules__screening__reasons__MergeIn"
+                "$ref": "#/components/schemas/ReasonMergeIn"
               }
             }
           }
@@ -14449,6 +14449,21 @@
         ],
         "title": "MemberUpdate"
       },
+      "MergeIn": {
+        "properties": {
+          "other_study_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Other Study Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "other_study_id"
+        ],
+        "title": "MergeIn",
+        "description": "Moves every report of `other_study_id` into this study (same patients)."
+      },
       "MissingStudy": {
         "properties": {
           "study_id": {
@@ -16914,6 +16929,25 @@
           "label"
         ],
         "title": "ReasonIn"
+      },
+      "ReasonMergeIn": {
+        "properties": {
+          "into_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Into Id"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "into_id",
+          "version"
+        ],
+        "title": "ReasonMergeIn"
       },
       "ReasonOut": {
         "properties": {
@@ -21492,40 +21526,6 @@
           "variants"
         ],
         "title": "VariantsIn"
-      },
-      "app__modules__screening__reasons__MergeIn": {
-        "properties": {
-          "into_id": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Into Id"
-          },
-          "version": {
-            "type": "integer",
-            "title": "Version"
-          }
-        },
-        "type": "object",
-        "required": [
-          "into_id",
-          "version"
-        ],
-        "title": "MergeIn"
-      },
-      "app__modules__studies__schemas__MergeIn": {
-        "properties": {
-          "other_study_id": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Other Study Id"
-          }
-        },
-        "type": "object",
-        "required": [
-          "other_study_id"
-        ],
-        "title": "MergeIn",
-        "description": "Moves every report of `other_study_id` into this study (same patients)."
       }
     },
     "securitySchemes": {
