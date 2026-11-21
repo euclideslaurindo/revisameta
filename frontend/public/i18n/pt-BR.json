@@ -1112,7 +1112,10 @@
       "influence_needs_three_studies": "Com menos de 3 estudos não dá para avaliar a influência de cada um."
     },
     "forest": {
-      "title": "Forest plot"
+      "title": "Forest plot",
+      "rob": "Semáforo de risco de viés ao lado",
+      "robNone": "Sem semáforo",
+      "robHelp": "Mostra, ao lado de cada estudo, os domínios e o julgamento geral de risco de viés do instrumento escolhido (a avaliação final: consenso ou importada). Estudos sem avaliação final aparecem com a célula vazia."
     },
     "howToRead": {
       "title": "Como ler este gráfico",

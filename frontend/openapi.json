@@ -10747,6 +10747,18 @@
             ],
             "title": "Lang",
             "default": "pt-BR"
+          },
+          "rob_tool_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rob Tool Id"
           }
         },
         "type": "object",

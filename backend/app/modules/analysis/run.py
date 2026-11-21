@@ -7,6 +7,7 @@ arrives in step 7. Settings that differ from the analysis plan are reported as
 """
 
 import base64
+import uuid
 from datetime import UTC, datetime
 from typing import Any, Literal
 
@@ -16,11 +17,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import AppError
 from app.integrations.stats_client import StatsClient
-from app.modules.analysis.assembly import AssemblyIn, AssemblyOut, assemble
+from app.modules.analysis.assembly import AssemblyIn, AssemblyOut, StudyRow, assemble
 from app.modules.exports.extraction import _slug
 from app.modules.projects.access import ProjectContext
 from app.modules.protocol.analysis_plan import current_plan
 from app.modules.protocol.models import ComparisonGroup, Outcome
+from app.modules.risk_of_bias.consolidated import PLOT_TEXTS, _localized, level_label
+from app.modules.risk_of_bias.consolidated import table as rob_table
 
 Method = Literal["REML", "DL", "PM", "FE"]
 Test = Literal["knha", "z"]
@@ -47,6 +50,8 @@ class RunOut(BaseModel):
 class ForestIn(RunIn):
     format: Literal["svg", "png"] = "svg"
     lang: Literal["pt-BR", "en"] = "pt-BR"
+    # The risk-of-bias traffic light beside each study (ADR-014), from this tool.
+    rob_tool_id: uuid.UUID | None = None
 
 
 TEXTS: dict[str, dict[str, str]] = {
@@ -66,6 +71,10 @@ TEXTS: dict[str, dict[str, str]] = {
         "note_estimated": "média e DP estimados a partir da mediana",
         "note_derived": "efeito derivado da estatística t ou do valor p",
         "file": "forest-plot",
+        "rob_title": "Risco de viés",
+        "rob_missing": (
+            "Célula vazia: estudo sem avaliação final de risco de viés com este instrumento."
+        ),
     },
     "en": {
         "study": "Study",
@@ -83,6 +92,8 @@ TEXTS: dict[str, dict[str, str]] = {
         "note_estimated": "mean and SD estimated from the median",
         "note_derived": "effect derived from the t statistic or the p value",
         "file": "forest-plot",
+        "rob_title": "Risk of bias",
+        "rob_missing": "Empty cells: study without a final risk-of-bias assessment with this tool.",
     },
 }
 
@@ -178,6 +189,34 @@ def _marker(flags: list[str]) -> str:
     return ""
 
 
+async def _rob_columns(
+    session: AsyncSession, ctx: ProjectContext, data: ForestIn, included: list[StudyRow]
+) -> dict[str, Any]:
+    """Traffic light columns from the consolidated risk-of-bias table of one tool."""
+    tool_id = data.rob_tool_id or uuid.UUID(int=0)
+    table = await rob_table(session, ctx, tool_id, data.outcome_id, data.timepoint)
+    by_study = {r.study_id: r for r in table.rows}
+    used = {v for r in table.rows for v in [*r.values.values(), r.overall] if v}
+    studies = []
+    for s in included:
+        row = by_study.get(s.study_id)
+        studies.append(
+            {
+                "values": [row.values.get(c.key) if row else None for c in table.columns],
+                "overall": row.overall if row else None,
+            }
+        )
+    return {
+        "columns": [
+            {"short": c.short, "name": _localized(c.name, data.lang)} for c in table.columns
+        ],
+        "levels": [
+            {"key": lv, "label": level_label(lv, data.lang)} for lv in table.levels if lv in used
+        ],
+        "studies": studies,
+    }
+
+
 async def forest_plot(
     session: AsyncSession, ctx: ProjectContext, stats: StatsClient, data: ForestIn
 ) -> tuple[bytes, str, str]:
@@ -208,6 +247,15 @@ async def forest_plot(
             "note_derived": t["note_derived"],
         },
     }
+    if data.rob_tool_id is not None:
+        spec["rob"] = await _rob_columns(session, ctx, data, included)
+        spec["texts"].update(
+            {
+                "rob_title": t["rob_title"],
+                "rob_missing": t["rob_missing"],
+                "rob_overall": PLOT_TEXTS[data.lang]["overall"],
+            }
+        )
     response = await stats.forest_plot(spec)
     if not response.ok:
         raise AppError("error.stats_failed", status_code=502)

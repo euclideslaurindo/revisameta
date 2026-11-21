@@ -1112,7 +1112,10 @@
       "influence_needs_three_studies": "With fewer than 3 studies the influence of each one cannot be assessed."
     },
     "forest": {
-      "title": "Forest plot"
+      "title": "Forest plot",
+      "rob": "Risk-of-bias traffic light beside",
+      "robNone": "No traffic light",
+      "robHelp": "Shows, beside each study, the domains and the overall risk-of-bias judgement of the chosen tool (the final assessment: consensus or imported). Studies without a final assessment show empty cells."
     },
     "howToRead": {
       "title": "How to read this plot",

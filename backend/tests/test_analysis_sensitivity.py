@@ -99,10 +99,13 @@ async def test_leave_one_out_and_model_scenarios_match_metafor(
     assert math.isclose(by_label["DL"]["ci_ub"], dl["ci_ub"], abs_tol=TOL)
 
 
-async def test_without_high_risk_of_bias_follows_the_worst_level_rule(
-    client: AsyncClient, make_user: MakeUser, session: AsyncSession
-) -> None:
-    ana, p, _, ids = await _normand(client, make_user, session)
+async def _seed_rob2(
+    client: AsyncClient,
+    session: AsyncSession,
+    ana: Any,
+    p: dict[str, Any],
+    ids: dict[str, uuid.UUID],
+) -> uuid.UUID:
     rob2 = (
         await client.post(
             f"{p['base']}/rob/tools", json={"template_key": "rob2"}, headers=ana.headers
@@ -141,6 +144,14 @@ async def test_without_high_risk_of_bias_follows_the_worst_level_rule(
             )
         )
     await session.commit()
+    return tool
+
+
+async def test_without_high_risk_of_bias_follows_the_worst_level_rule(
+    client: AsyncClient, make_user: MakeUser, session: AsyncSession
+) -> None:
+    ana, p, _, ids = await _normand(client, make_user, session)
+    await _seed_rob2(client, session, ana, p, ids)
 
     out = await _sens(client, ana, p, "exclude_high_risk_of_bias")
     scenario = out["scenarios"][0]
@@ -189,3 +200,21 @@ async def test_scenarios_with_fewer_than_two_studies_say_so(
     scenario = out["scenarios"][0]
     assert scenario["k"] == 1 and scenario["problem"] == "not_enough_studies"
     assert scenario["estimate"] is None
+
+
+async def test_forest_plot_with_the_risk_of_bias_traffic_light(
+    client: AsyncClient, make_user: MakeUser, session: AsyncSession
+) -> None:
+    ana, p, _, ids = await _normand(client, make_user, session)
+    tool = await _seed_rob2(client, session, ana, p, ids)
+    body = {"outcome_id": p["outcome"], "timepoint": "5 anos", "measure": "MD", "format": "svg"}
+    url = f"{p['base']}/analyses/forest-plot"
+    plain = await client.post(url, headers=ana.headers, json=body)
+    r = await client.post(url, headers=ana.headers, json={**body, "rob_tool_id": str(tool)})
+    assert r.status_code == 200, r.text
+    assert b"<svg" in r.content and len(r.content) > len(plain.content)
+    # A tool from another project is not found (isolation).
+    other = await client.post(
+        url, headers=ana.headers, json={**body, "rob_tool_id": str(uuid.uuid4())}
+    )
+    assert other.status_code == 404

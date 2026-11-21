@@ -20,6 +20,9 @@ import { eggerTest } from '../../core/api/fn/analysis/egger-test';
 import { narrativeTable } from '../../core/api/fn/analysis/narrative-table';
 import { recordNarrative } from '../../core/api/fn/analysis/record-narrative';
 import { listGroups } from '../../core/api/fn/protocol/list-groups';
+import { listRobTools } from '../../core/api/fn/risk-of-bias/list-rob-tools';
+import { ToolOut } from '../../core/api/models/tool-out';
+import { localized } from '../risk-of-bias/rob-tool-editor';
 import { NarrativeOut } from '../../core/api/models/narrative-out';
 import { NarrativeRow } from '../../core/api/models/narrative-row';
 import { EggerOut } from '../../core/api/models/egger-out';
@@ -433,6 +436,20 @@ type Method = 'REML' | 'DL' | 'PM' | 'FE';
                 <mat-option value="en">English</mat-option>
               </mat-select>
             </mat-form-field>
+            @if (robTools().length) {
+              <mat-form-field subscriptSizing="dynamic" class="wide">
+                <mat-label>{{ 'meta.forest.rob' | transloco }}</mat-label>
+                <mat-select [(ngModel)]="robToolId" (ngModelChange)="drawForest()">
+                  <mat-option [value]="null">{{ 'meta.forest.robNone' | transloco }}</mat-option>
+                  @for (tool of robTools(); track tool.id) {
+                    <mat-option [value]="tool.id">{{ robToolName(tool) }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              <span class="term" tabindex="0" [matTooltip]="'meta.forest.robHelp' | transloco"
+                >?</span
+              >
+            }
             <button mat-stroked-button type="button" [disabled]="busy()" (click)="download('svg')">
               {{ 'rob.plots.downloadSvg' | transloco }}
             </button>
@@ -791,6 +808,8 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
   protected readonly funnelUrl = signal<string | null>(null);
   protected readonly egger = signal<EggerOut | null>(null);
   protected readonly narrative = signal<NarrativeOut | null>(null);
+  protected readonly robTools = signal<ToolOut[]>([]);
+  protected robToolId: string | null = null;
   protected readonly groupLabels = signal<Record<string, string>>({});
   protected readonly directions = [
     'favours_group1',
@@ -868,6 +887,7 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
       );
       this.plan.set(plan);
       const groups = await this.api.invoke(listGroups, { project_id });
+      this.robTools.set(await this.api.invoke(listRobTools, { project_id }));
       this.groupLabels.set(Object.fromEntries(groups.map((g) => [g.id, g.label])));
       this.method = plan.model?.method ?? 'REML';
       this.knha = (plan.model?.test ?? 'knha') === 'knha';
@@ -1062,6 +1082,7 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
       test: (this.method === 'FE' || !this.knha ? 'z' : 'knha') as 'z' | 'knha',
       format,
       lang: this.outputLang,
+      rob_tool_id: this.robToolId,
     };
   }
 
@@ -1094,6 +1115,10 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
         fileNameFrom(response.headers.get('content-disposition'), `forest.${format}`),
       );
     });
+  }
+
+  protected robToolName(tool: ToolOut): string {
+    return localized(tool.structure['name'] as Record<string, string>, this.lang());
   }
 
   private async loadNarrative(): Promise<void> {

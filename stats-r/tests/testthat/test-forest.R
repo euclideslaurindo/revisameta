@@ -42,3 +42,38 @@ test_that("forest plots need yi and vi for at least two studies", {
   spec$format <- "pdf"
   expect_false(forest_plot(spec)$ok)
 })
+
+rob_spec <- function(format = "png") {
+  spec <- bcg_spec(format)
+  k <- length(spec$data$label)
+  levels <- c("low", "some_concerns", "high")
+  spec$texts <- c(spec$texts, list(rob_overall = "Geral", rob_title = "Risco de viés",
+                                   rob_missing = "Sem avaliação final de risco de viés: célula vazia."))
+  spec$rob <- list(
+    columns = list(list(short = "D1", name = "Randomização"), list(short = "D2", name = "Desvios")),
+    levels = lapply(levels, function(l) list(key = l, label = l)),
+    studies = lapply(seq_len(k), function(i) {
+      if (i == 3) return(list(values = list(NULL, NULL), overall = NULL))
+      list(values = list(levels[(i %% 3) + 1], "low"), overall = levels[((i + 1) %% 3) + 1])
+    })
+  )
+  spec
+}
+
+test_that("the forest plot carries the risk-of-bias traffic light beside the studies", {
+  plain <- forest_plot(bcg_spec("png"))
+  out <- forest_plot(rob_spec("png"))
+  expect_true(out$ok)
+  expect_gt(out$result$width_in, plain$result$width_in)
+  svg <- forest_plot(rob_spec("svg"))
+  expect_match(rawToChar(jsonlite::base64_dec(svg$result$file_base64)), "<svg", fixed = TRUE)
+})
+
+test_that("unknown levels and a wrong number of studies are refused", {
+  spec <- rob_spec()
+  spec$rob$studies[[1]]$overall <- "terrible"
+  expect_false(forest_plot(spec)$ok)
+  spec <- rob_spec()
+  spec$rob$studies <- spec$rob$studies[1:2]
+  expect_false(forest_plot(spec)$ok)
+})

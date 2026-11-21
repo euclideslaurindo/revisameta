@@ -84,6 +84,18 @@ Serviço R completo (8.3), conversões, combinação de braços, blocos B e E de
 Leave-one-out, exclusão por risco de viés e por dados estimados, subgrupos, funnel/Egger com avisos, síntese narrativa, forest plot combinado com o semáforo de risco de viés.
 *Saída:* resultados batem com o metafor nas fixtures.
 
+**Etapa 4 — concluída em 2026-11-21.** Critério de saída cumprido: cada análise nova tem fixture gerada pelo metafor e testes que comparam com ela, no R e pela API.
+
+| Item | Onde |
+|---|---|
+| Sensibilidade (leave-one-out, sem alto risco de viés, sem dados estimados, fixo × aleatório, outro estimador) | `stats-r/fixtures/leave-one-out.json`; `tests/test_analysis_sensitivity.py` |
+| Subgrupos (τ² separado, teste Q entre subgrupos) | `stats-r/fixtures/subgroup.json`; `tests/test_analysis_subgroups.py` |
+| Funnel plot e Egger (aviso forte com k < 10) | `stats-r/fixtures/egger.json`; `tests/test_analysis_publication_bias.py` |
+| Síntese narrativa (direção registrada pelo revisor) | `tests/test_analysis_narrative.py` |
+| Forest plot com semáforo de risco de viés (ADR-014) | `stats-r/tests/testthat/test-forest.R`; `tests/test_analysis_sensitivity.py` |
+
+Ainda falta, como na Etapa 3, o teste de interface automatizado (Playwright).
+
 **Etapa 5 — Triagem, importação e PRISMA (P1)**
 Importação RIS/BibTeX/CSV/nbib, deduplicação multicritério com explicação, triagem dupla com kappa, desfazer, lotes por revisor, marcador "útil como referência", motivos de exclusão editáveis, fluxograma e checklist PRISMA.
 *Saída:* importar uma busca real, triar e obter o fluxograma com contagens corretas.

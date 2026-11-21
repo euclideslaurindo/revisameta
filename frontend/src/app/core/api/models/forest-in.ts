@@ -8,6 +8,7 @@ export interface ForestIn {
   measure?: ('MD' | 'SMD' | 'OR' | 'RR' | 'RD' | null);
   method?: ('REML' | 'DL' | 'PM' | 'FE' | null);
   outcome_id: string;
+  rob_tool_id?: (string | null);
   test?: ('knha' | 'z' | null);
   timepoint: string;
 }

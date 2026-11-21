@@ -227,3 +227,10 @@
 - Fica guardada no modelo `narrative_entries`, com uma linha por estudo e resultado. Toda mudança vai para a auditoria e usa trava otimista: editar exige a versão lida.
 - Se um estudo com direção registrada passar a entrar na meta-análise, ele continua na tabela, marcado como "agora entra na meta-análise". Nada some em silêncio.
 - A seção fica no passo 1 do assistente e funciona mesmo quando a meta-análise não pode rodar (ex.: k < 2).
+
+### Forest plot com o semáforo de risco de viés (Etapa 4, passo 5; ADR-014)
+- O `POST /analyses/forest-plot` recebe opcionalmente o `rob_tool_id` (o instrumento).
+- O backend lê a tabela consolidada desse instrumento para o mesmo resultado e manda ao R uma linha por estudo incluído: os domínios (ou as perguntas, no JBI, NOS e genérico) e o julgamento geral.
+- O R desenha com `metafor::forest` e põe as colunas ao lado dos estudos, com as mesmas cores e símbolos do `/rob-plots`. A legenda traz o nome de cada nível em texto, e uma nota diz o nome de cada domínio.
+- Um nível que o R não conhece é recusado, nunca adivinhado.
+- Um estudo sem avaliação final aparece com a célula vazia e uma nota. Ele nunca é escondido.
