@@ -12,6 +12,7 @@ import { ScreeningResolveIn } from '../../models/screening-resolve-in';
 export interface ResolveConflict$Params {
   reference_id: string;
   project_id: string;
+  stage?: 'title_abstract' | 'full_text';
       body: ScreeningResolveIn
 }
 
@@ -22,6 +23,7 @@ export function resolveConflict(http: HttpClient, rootUrl: string, params: Resol
   if (params) {
     rb.path('reference_id', params.reference_id, {});
     rb.path('project_id', params.project_id, {});
+    rb.query('stage', params.stage, {});
     rb.body(params.body, 'application/json');
   }
 

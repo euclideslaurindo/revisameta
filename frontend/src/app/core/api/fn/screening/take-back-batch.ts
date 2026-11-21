@@ -11,6 +11,7 @@ import { RequestBuilder } from '../../request-builder';
 export interface TakeBackBatch$Params {
   user_id: string;
   project_id: string;
+  stage?: 'title_abstract' | 'full_text';
 }
 
 export function takeBackBatch(http: HttpClient, rootUrl: string, params: TakeBackBatch$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
@@ -18,6 +19,7 @@ export function takeBackBatch(http: HttpClient, rootUrl: string, params: TakeBac
   if (params) {
     rb.path('user_id', params.user_id, {});
     rb.path('project_id', params.project_id, {});
+    rb.query('stage', params.stage, {});
   }
 
   return http.request(

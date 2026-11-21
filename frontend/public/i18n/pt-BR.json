@@ -1397,6 +1397,49 @@
       "reason": "Motivo da decisão final",
       "resolveInclude": "Incluir",
       "resolveExclude": "Excluir"
+    },
+    "stage": {
+      "label": "Etapa da triagem",
+      "title_abstract": "Título e resumo",
+      "full_text": "Texto completo"
+    },
+    "fullTextIntro": "Aqui entram só os artigos incluídos na triagem de título e resumo. Leia o texto completo (anexe o PDF no estudo, se precisar) e decida: Incluir ou Excluir, sempre com o motivo.",
+    "reasonToExclude": "Motivo da exclusão",
+    "reasonHint": "Obrigatório para excluir. Os motivos aparecem no fluxograma PRISMA.",
+    "reasons": {
+      "title": "Motivos de exclusão",
+      "help": "A lista é do projeto. Motivos sem uso podem ser removidos; motivos já usados podem ser renomeados ou juntados a outro (as decisões passam para o outro motivo). Tudo fica no histórico.",
+      "new": "Novo motivo",
+      "add": "Adicionar",
+      "rename": "Renomear",
+      "save": "Salvar",
+      "remove": "Remover",
+      "mergeInto": "Juntar a",
+      "merge": "Juntar",
+      "uses": "{{count}} uso(s)",
+      "merged": "juntado a: {{name}}",
+      "mergeAsk": "Juntar \"{{from}}\" a \"{{to}}\"? As decisões passam para \"{{to}}\". A mudança fica no histórico.",
+      "standard": {
+        "wrong_population": "População errada",
+        "wrong_design": "Desenho de estudo errado",
+        "no_comparison_group": "Sem grupo de comparação",
+        "no_outcome_data": "Sem dados do desfecho",
+        "incompatible_cutoff": "Ponto de corte incompatível",
+        "duplicate_cohort": "Mesma coorte de outro estudo",
+        "full_text_unavailable": "Texto completo indisponível"
+      }
+    },
+    "included": {
+      "title": "Incluídos que ainda não viraram estudo",
+      "help": "Cada artigo incluído vira um estudo novo ou entra como mais um relato de um estudo que já existe (a mesma coorte publicada em outro artigo). Assim os mesmos pacientes não são contados duas vezes.",
+      "empty": "Nenhum artigo esperando.",
+      "newStudy": "Estudo novo",
+      "label": "Nome do estudo (ex.: Silva 2020)",
+      "design": "Desenho",
+      "create": "Criar estudo",
+      "attachTo": "Ou juntar ao estudo",
+      "primary": "Este passa a ser o relato principal",
+      "attach": "Juntar como relato"
     }
   }
 }

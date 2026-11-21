@@ -11,12 +11,14 @@ import { ScreeningCounts } from '../../models/screening-counts';
 
 export interface ScreeningCounts$Params {
   project_id: string;
+  stage?: 'title_abstract' | 'full_text';
 }
 
 export function screeningCounts(http: HttpClient, rootUrl: string, params: ScreeningCounts$Params, context?: HttpContext): Observable<StrictHttpResponse<ScreeningCounts>> {
   const rb = new RequestBuilder(rootUrl, screeningCounts.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
+    rb.query('stage', params.stage, {});
   }
 
   return http.request(

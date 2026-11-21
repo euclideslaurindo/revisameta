@@ -11,12 +11,14 @@ import { ScreeningAssignmentSummary } from '../../models/screening-assignment-su
 
 export interface ListAssignments$Params {
   project_id: string;
+  stage?: 'title_abstract' | 'full_text';
 }
 
 export function listAssignments(http: HttpClient, rootUrl: string, params: ListAssignments$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<ScreeningAssignmentSummary>>> {
   const rb = new RequestBuilder(rootUrl, listAssignments.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
+    rb.query('stage', params.stage, {});
   }
 
   return http.request(

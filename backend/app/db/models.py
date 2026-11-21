@@ -28,6 +28,7 @@ from app.modules.risk_of_bias.models import (
     RobTool,
 )
 from app.modules.screening.models import (
+    ExclusionReason,
     ScreeningAssignment,
     ScreeningDecision,
     ScreeningResolution,
@@ -43,6 +44,7 @@ __all__ = [
     "ComparisonGroup",
     "DuplicatePair",
     "EmailToken",
+    "ExclusionReason",
     "Extraction",
     "ExtractionDecision",
     "ExtractionForm",

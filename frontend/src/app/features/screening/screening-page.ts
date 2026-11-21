@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
@@ -25,7 +26,11 @@ import { withJsonBody } from '../../core/errors/problem';
 import { FormError } from '../../shared/form-error';
 import { LocalDatePipe } from '../../shared/local-date.pipe';
 import { ProjectContext } from '../project/project-context';
+import { listExclusionReasons } from '../../core/api/fn/screening/list-exclusion-reasons';
+import { ReasonOut } from '../../core/api/models/reason-out';
+import { ExclusionReasons, reasonText } from './exclusion-reasons';
 import { highlight, Segment } from './highlight';
+import { IncludedStudies } from './included-studies';
 import { ScreeningAdmin, ScreeningAdminResolve } from './screening-admin';
 
 type View = 'todo' | 'done' | 'conflicts' | 'all';
@@ -46,9 +51,12 @@ type Decision = 'include' | 'exclude' | 'maybe';
     MatCheckboxModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatTooltipModule,
     FormError,
     LocalDatePipe,
+    ExclusionReasons,
+    IncludedStudies,
     ScreeningAdmin,
     ScreeningAdminResolve,
   ],
@@ -58,6 +66,22 @@ type Decision = 'include' | 'exclude' | 'maybe';
       <span class="term" tabindex="0" [matTooltip]="'screening.help' | transloco">?</span>
     </h2>
     <p class="muted">{{ 'screening.intro' | transloco }}</p>
+    <mat-button-toggle-group
+      [(ngModel)]="stage"
+      (ngModelChange)="reload()"
+      [hideSingleSelectionIndicator]="true"
+      [attr.aria-label]="'screening.stage.label' | transloco"
+    >
+      <mat-button-toggle value="title_abstract">{{
+        'screening.stage.title_abstract' | transloco
+      }}</mat-button-toggle>
+      <mat-button-toggle value="full_text">{{
+        'screening.stage.full_text' | transloco
+      }}</mat-button-toggle>
+    </mat-button-toggle-group>
+    @if (stage === 'full_text') {
+      <p class="muted">{{ 'screening.fullTextIntro' | transloco }}</p>
+    }
     <rm-form-error [error]="error()" />
 
     @if (counts(); as c) {
@@ -165,15 +189,17 @@ type Decision = 'include' | 'exclude' | 'maybe';
               >
                 {{ 'screening.decision.include' | transloco }} <kbd>I</kbd>
               </button>
-              <button
-                mat-flat-button
-                type="button"
-                class="d-maybe"
-                [disabled]="busy()"
-                (click)="decide('maybe')"
-              >
-                {{ 'screening.decision.maybe' | transloco }} <kbd>T</kbd>
-              </button>
+              @if (stage === 'title_abstract') {
+                <button
+                  mat-flat-button
+                  type="button"
+                  class="d-maybe"
+                  [disabled]="busy()"
+                  (click)="decide('maybe')"
+                >
+                  {{ 'screening.decision.maybe' | transloco }} <kbd>T</kbd>
+                </button>
+              }
               <button
                 mat-flat-button
                 type="button"
@@ -184,6 +210,17 @@ type Decision = 'include' | 'exclude' | 'maybe';
                 {{ 'screening.decision.exclude' | transloco }} <kbd>E</kbd>
               </button>
             </div>
+            @if (stage === 'full_text') {
+              <mat-form-field class="full" subscriptSizing="dynamic">
+                <mat-label>{{ 'screening.reasonToExclude' | transloco }}</mat-label>
+                <mat-select [(ngModel)]="reasonId">
+                  @for (r of activeReasons(); track r.id) {
+                    <mat-option [value]="r.id">{{ reasonLabel(r) }}</mat-option>
+                  }
+                </mat-select>
+                <mat-hint>{{ 'screening.reasonHint' | transloco }}</mat-hint>
+              </mat-form-field>
+            }
             <mat-form-field class="full" subscriptSizing="dynamic">
               <mat-label>{{ 'screening.note' | transloco }}</mat-label>
               <input matInput maxlength="1000" [(ngModel)]="note" />
@@ -244,14 +281,23 @@ type Decision = 'include' | 'exclude' | 'maybe';
         </mat-card-content>
       </mat-card>
       @if (view === 'conflicts' && context.isAdmin()) {
-        <rm-screening-admin-resolve [referenceId]="item.reference.id" (resolved)="reload()" />
+        <rm-screening-admin-resolve
+          [referenceId]="item.reference.id"
+          [stage]="stage"
+          [reasons]="activeReasons()"
+          (resolved)="reload()"
+        />
       }
     } @else if (loaded()) {
       <p class="muted">{{ 'screening.emptyView.' + view | transloco }}</p>
     }
 
     @if (context.isAdmin()) {
-      <rm-screening-admin (changed)="reload()" />
+      <rm-screening-admin [stage]="stage" (changed)="reload()" />
+      @if (stage === 'full_text') {
+        <rm-exclusion-reasons (changed)="loadReasons()" />
+        <rm-included-studies />
+      }
     }
   `,
   styles: `
@@ -314,6 +360,12 @@ export class ScreeningPage implements OnInit {
   private readonly transloco = inject(TranslocoService);
   protected readonly context = inject(ProjectContext);
 
+  protected stage: 'title_abstract' | 'full_text' = 'title_abstract';
+  protected reasonId: string | null = null;
+  protected readonly reasons = signal<ReasonOut[]>([]);
+  protected readonly activeReasons = computed(() =>
+    this.reasons().filter((r) => !r.merged_into_id),
+  );
   protected view: View = 'todo';
   protected q = '';
   protected note = '';
@@ -347,6 +399,14 @@ export class ScreeningPage implements OnInit {
     });
   }
 
+  protected reasonLabel(r: ReasonOut): string {
+    return reasonText(r, (k) => this.transloco.translate(k));
+  }
+
+  async loadReasons(): Promise<void> {
+    this.reasons.set(await this.api.invoke(listExclusionReasons, { project_id: this.projectId() }));
+  }
+
   protected segments(text: string): Segment[] {
     const s = this.settings();
     return highlight(text, s?.include_keywords ?? [], s?.exclude_keywords ?? []);
@@ -354,6 +414,7 @@ export class ScreeningPage implements OnInit {
 
   async reload(): Promise<void> {
     await this.guard(async () => {
+      if (this.stage === 'full_text') await this.loadReasons();
       this.settings.set(
         await this.api.invoke(getScreeningSettings, { project_id: this.projectId() }),
       );
@@ -364,6 +425,7 @@ export class ScreeningPage implements OnInit {
   private async fetch(reset: boolean): Promise<void> {
     const page = await this.api.invoke(screeningQueue, {
       project_id: this.projectId(),
+      stage: this.stage,
       view: this.view,
       limit: 50,
       after: reset ? undefined : (this.nextCursor() ?? undefined),
@@ -373,7 +435,9 @@ export class ScreeningPage implements OnInit {
     if (reset) this.index.set(0);
     this.total.set(page.total);
     this.nextCursor.set(page.next_cursor ?? null);
-    this.counts.set(await this.api.invoke(screeningCounts, { project_id: this.projectId() }));
+    this.counts.set(
+      await this.api.invoke(screeningCounts, { project_id: this.projectId(), stage: this.stage }),
+    );
     this.history.set([]);
     this.loaded.set(true);
   }
@@ -381,13 +445,20 @@ export class ScreeningPage implements OnInit {
   async decide(decision: Decision): Promise<void> {
     const item = this.current();
     if (!item || !this.canScreen()) return;
+    if (this.stage === 'full_text' && decision === 'maybe') return;
     await this.guard(async () => {
       await this.api.invoke(decideReference, {
         project_id: this.projectId(),
+        stage: this.stage,
         reference_id: item.reference.id,
-        body: { decision, note: this.note.trim() || null },
+        body: {
+          decision,
+          note: this.note.trim() || null,
+          exclusion_reason_id: decision === 'exclude' ? this.reasonId : null,
+        },
       });
       this.note = '';
+      this.reasonId = null;
       if (this.view === 'todo') {
         // The decided reference leaves the "to do" list: stay on the same position.
         const rest = this.items().filter((i) => i.reference.id !== item.reference.id);
@@ -395,7 +466,12 @@ export class ScreeningPage implements OnInit {
         this.total.update((t) => Math.max(0, t - 1));
         if (this.index() >= rest.length) this.index.set(Math.max(0, rest.length - 1));
         if (rest.length < 5 && this.nextCursor()) await this.fetch(false);
-        this.counts.set(await this.api.invoke(screeningCounts, { project_id: this.projectId() }));
+        this.counts.set(
+          await this.api.invoke(screeningCounts, {
+            project_id: this.projectId(),
+            stage: this.stage,
+          }),
+        );
       } else {
         await this.fetch(true);
       }
@@ -405,7 +481,10 @@ export class ScreeningPage implements OnInit {
 
   async undo(): Promise<void> {
     await this.guard(async () => {
-      const back = await this.api.invoke(undoLastDecision, { project_id: this.projectId() });
+      const back = await this.api.invoke(undoLastDecision, {
+        project_id: this.projectId(),
+        stage: this.stage,
+      });
       await this.fetch(true);
       const position = this.items().findIndex((i) => i.reference.id === back?.reference_id);
       if (position >= 0) this.index.set(position);
@@ -445,6 +524,7 @@ export class ScreeningPage implements OnInit {
       this.history.set(
         await this.api.invoke(referenceHistory, {
           project_id: this.projectId(),
+          stage: this.stage,
           reference_id: item.reference.id,
         }),
       );

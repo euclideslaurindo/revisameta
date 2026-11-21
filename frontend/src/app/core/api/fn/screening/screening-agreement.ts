@@ -11,12 +11,14 @@ import { ScreeningAgreementOut } from '../../models/screening-agreement-out';
 
 export interface ScreeningAgreement$Params {
   project_id: string;
+  stage?: 'title_abstract' | 'full_text';
 }
 
 export function screeningAgreement(http: HttpClient, rootUrl: string, params: ScreeningAgreement$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<ScreeningAgreementOut>>> {
   const rb = new RequestBuilder(rootUrl, screeningAgreement.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
+    rb.query('stage', params.stage, {});
   }
 
   return http.request(

@@ -11,6 +11,7 @@ import { RequestBuilder } from '../../request-builder';
 export interface ReopenConflict$Params {
   reference_id: string;
   project_id: string;
+  stage?: 'title_abstract' | 'full_text';
 }
 
 export function reopenConflict(http: HttpClient, rootUrl: string, params: ReopenConflict$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
@@ -18,6 +19,7 @@ export function reopenConflict(http: HttpClient, rootUrl: string, params: Reopen
   if (params) {
     rb.path('reference_id', params.reference_id, {});
     rb.path('project_id', params.project_id, {});
+    rb.query('stage', params.stage, {});
   }
 
   return http.request(

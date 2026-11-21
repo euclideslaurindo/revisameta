@@ -12,6 +12,7 @@ import { ScreeningAssignmentSummary } from '../../models/screening-assignment-su
 
 export interface AssignBatch$Params {
   project_id: string;
+  stage?: 'title_abstract' | 'full_text';
       body: ScreeningAssignIn
 }
 
@@ -19,6 +20,7 @@ export function assignBatch(http: HttpClient, rootUrl: string, params: AssignBat
   const rb = new RequestBuilder(rootUrl, assignBatch.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
+    rb.query('stage', params.stage, {});
     rb.body(params.body, 'application/json');
   }
 

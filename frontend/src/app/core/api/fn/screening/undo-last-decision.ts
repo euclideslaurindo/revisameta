@@ -11,12 +11,14 @@ import { ScreeningDecisionOut } from '../../models/screening-decision-out';
 
 export interface UndoLastDecision$Params {
   project_id: string;
+  stage?: 'title_abstract' | 'full_text';
 }
 
 export function undoLastDecision(http: HttpClient, rootUrl: string, params: UndoLastDecision$Params, context?: HttpContext): Observable<StrictHttpResponse<(ScreeningDecisionOut | null)>> {
   const rb = new RequestBuilder(rootUrl, undoLastDecision.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
+    rb.query('stage', params.stage, {});
   }
 
   return http.request(

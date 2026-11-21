@@ -202,7 +202,8 @@ async def delete_study(session: AsyncSession, ctx: ProjectContext, study_id: uui
     for report in await _reports(session, study.id):
         report.deleted_at = now
         ref = await session.get(Reference, report.reference_id)
-        if ref is not None:
+        # A reference from a search stays: it keeps its screening history.
+        if ref is not None and ref.search_id is None:
             ref.deleted_at = now
     study.deleted_at = now
     await session.commit()

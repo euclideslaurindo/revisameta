@@ -1397,6 +1397,49 @@
       "reason": "Reason for the final decision",
       "resolveInclude": "Include",
       "resolveExclude": "Exclude"
+    },
+    "stage": {
+      "label": "Screening stage",
+      "title_abstract": "Title and abstract",
+      "full_text": "Full text"
+    },
+    "fullTextIntro": "Only articles included at title and abstract come here. Read the full text (attach the PDF to the study if needed) and decide: Include or Exclude, always with the reason.",
+    "reasonToExclude": "Reason for exclusion",
+    "reasonHint": "Required to exclude. Reasons appear in the PRISMA flow diagram.",
+    "reasons": {
+      "title": "Exclusion reasons",
+      "help": "The list belongs to the project. Unused reasons can be removed; used ones can be renamed or merged into another (their decisions move to the other reason). Everything stays in the history.",
+      "new": "New reason",
+      "add": "Add",
+      "rename": "Rename",
+      "save": "Save",
+      "remove": "Remove",
+      "mergeInto": "Merge into",
+      "merge": "Merge",
+      "uses": "{{count}} use(s)",
+      "merged": "merged into: {{name}}",
+      "mergeAsk": "Merge \"{{from}}\" into \"{{to}}\"? Its decisions move to \"{{to}}\". The change stays in the history.",
+      "standard": {
+        "wrong_population": "Wrong population",
+        "wrong_design": "Wrong study design",
+        "no_comparison_group": "No comparison group",
+        "no_outcome_data": "No outcome data",
+        "incompatible_cutoff": "Incompatible cut-off",
+        "duplicate_cohort": "Same cohort as another study",
+        "full_text_unavailable": "Full text unavailable"
+      }
+    },
+    "included": {
+      "title": "Included articles not yet a study",
+      "help": "Each included article becomes a new study or joins an existing study as one more report (the same cohort published in another article). This way the same patients are not counted twice.",
+      "empty": "No article waiting.",
+      "newStudy": "New study",
+      "label": "Study name (e.g. Silva 2020)",
+      "design": "Design",
+      "create": "Create study",
+      "attachTo": "Or join the study",
+      "primary": "This becomes the main report",
+      "attach": "Join as a report"
     }
   }
 }

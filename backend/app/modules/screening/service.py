@@ -28,13 +28,14 @@ from app.modules.projects.access import ProjectContext
 from app.modules.projects.models import ProjectMember, Role
 from app.modules.references.service import SearchReferenceOut
 from app.modules.screening.models import (
+    ExclusionReason,
     ScreeningAssignment,
     ScreeningDecision,
     ScreeningResolution,
 )
 from app.modules.studies.models import Reference
 
-STAGE = "title_abstract"
+Stage = Literal["title_abstract", "full_text"]
 SCREENERS = {Role.ADMIN, Role.REVIEWER}
 REQUIRED = 2  # double screening
 
@@ -57,6 +58,7 @@ class ScreeningDecisionOut(BaseModel):
     user_name: str | None = None
     decision: str
     note: str | None
+    exclusion_reason_id: uuid.UUID | None = None
     created_at: datetime
     current: bool
     undone: bool
@@ -66,6 +68,7 @@ class ScreeningQueueItem(BaseModel):
     reference: SearchReferenceOut
     useful_as_reference: bool
     my_decision: str | None
+    my_reason_id: uuid.UUID | None = None
     decisions: int  # how many reviewers decided (always visible)
     status: Status | None  # None while blind for this user
     others: list[ScreeningDecisionOut]  # other reviewers' current decisions; empty while blind
@@ -92,11 +95,13 @@ class ScreeningCounts(BaseModel):
 class ScreeningDecideIn(BaseModel):
     decision: Decision
     note: str | None = Field(default=None, max_length=1000)
+    exclusion_reason_id: uuid.UUID | None = None  # required to exclude at full text
 
 
 class ScreeningResolveIn(BaseModel):
     decision: Literal["include", "exclude"]
     reason: str = Field(min_length=3, max_length=1000)
+    exclusion_reason_id: uuid.UUID | None = None  # required to exclude at full text
 
 
 class ScreeningUsefulIn(BaseModel):
@@ -142,7 +147,11 @@ def _can_screen(ctx: ProjectContext) -> None:
         raise ForbiddenError()
 
 
-def status_of(decisions: list[str], resolution: str | None) -> Status:
+def status_of(
+    decisions: list[str],
+    resolution: str | None,
+    reasons: list[uuid.UUID | None] | None = None,
+) -> Status:
     if resolution == "include":
         return "resolved_include"
     if resolution == "exclude":
@@ -152,6 +161,10 @@ def status_of(decisions: list[str], resolution: str | None) -> Status:
     if all(d == "include" for d in decisions):
         return "include"
     if all(d == "exclude" for d in decisions):
+        # Full text: both excluded but for different reasons is a conflict too, because
+        # the PRISMA flow diagram needs one reason per article.
+        if reasons and len(set(reasons)) > 1:
+            return "conflict"
         return "exclude"
     return "conflict"
 
@@ -164,13 +177,39 @@ def _active(ctx: ProjectContext) -> list[Any]:
     ]
 
 
-async def _reference(session: AsyncSession, ctx: ProjectContext, ref_id: uuid.UUID) -> Reference:
+async def _reference(
+    session: AsyncSession, ctx: ProjectContext, ref_id: uuid.UUID, stage: Stage = "title_abstract"
+) -> Reference:
     ref = (
         await session.scalars(select(Reference).where(Reference.id == ref_id, *_active(ctx)))
     ).first()
-    if ref is None:
+    if ref is None or (stage == "full_text" and ref_id not in await _eligible(session, ctx)):
         raise NotFoundError()
     return ref
+
+
+async def _eligible(session: AsyncSession, ctx: ProjectContext) -> set[uuid.UUID]:
+    """References that passed title and abstract screening (they go to full text)."""
+    state = await _state(session, ctx, "title_abstract")
+    return {
+        ref_id
+        for ref_id in state.decisions.keys() | state.resolutions.keys()
+        if state.status(ref_id) in ("include", "resolved_include")
+    }
+
+
+async def _ids(
+    session: AsyncSession, ctx: ProjectContext, stage: Stage, *where: Any
+) -> list[uuid.UUID]:
+    ids = list(
+        await session.scalars(
+            select(Reference.id).where(*_active(ctx), *where).order_by(Reference.id)
+        )
+    )
+    if stage == "full_text":
+        eligible = await _eligible(session, ctx)
+        ids = [i for i in ids if i in eligible]
+    return ids
 
 
 class _State:
@@ -180,34 +219,45 @@ class _State:
     def __init__(self) -> None:
         self.decisions: dict[uuid.UUID, dict[uuid.UUID, ScreeningDecision]] = defaultdict(dict)
         self.resolutions: dict[uuid.UUID, str] = {}
+        self.resolution_reasons: dict[uuid.UUID, uuid.UUID | None] = {}
         self.assigned: dict[uuid.UUID, set[uuid.UUID]] = defaultdict(set)
 
     def status(self, ref_id: uuid.UUID) -> Status:
+        current = list(self.decisions.get(ref_id, {}).values())
         return status_of(
-            [d.decision for d in self.decisions.get(ref_id, {}).values()],
+            [d.decision for d in current],
             self.resolutions.get(ref_id),
+            [d.exclusion_reason_id for d in current],
         )
 
+    def reason(self, ref_id: uuid.UUID) -> uuid.UUID | None:
+        """The exclusion reason of an excluded reference (full text): agreed or resolved."""
+        if ref_id in self.resolutions:
+            return self.resolution_reasons.get(ref_id)
+        reasons = {d.exclusion_reason_id for d in self.decisions.get(ref_id, {}).values()}
+        return next(iter(reasons)) if len(reasons) == 1 else None
 
-async def _state(session: AsyncSession, ctx: ProjectContext) -> _State:
+
+async def _state(session: AsyncSession, ctx: ProjectContext, stage: Stage) -> _State:
     state = _State()
     for d in await session.scalars(
         select(ScreeningDecision).where(
             ScreeningDecision.project_id == ctx.project.id,
-            ScreeningDecision.stage == STAGE,
+            ScreeningDecision.stage == stage,
             ScreeningDecision.superseded_at.is_(None),
         )
     ):
         state.decisions[d.reference_id][d.user_id] = d
     for r in await session.scalars(
         select(ScreeningResolution).where(
-            ScreeningResolution.project_id == ctx.project.id, ScreeningResolution.stage == STAGE
+            ScreeningResolution.project_id == ctx.project.id, ScreeningResolution.stage == stage
         )
     ):
         state.resolutions[r.reference_id] = r.decision
+        state.resolution_reasons[r.reference_id] = r.exclusion_reason_id
     for a in await session.scalars(
         select(ScreeningAssignment).where(
-            ScreeningAssignment.project_id == ctx.project.id, ScreeningAssignment.stage == STAGE
+            ScreeningAssignment.project_id == ctx.project.id, ScreeningAssignment.stage == stage
         )
     ):
         state.assigned[a.reference_id].add(a.user_id)
@@ -224,6 +274,7 @@ def _decision_out(
         user_name=(names or {}).get(d.user_id),
         decision=d.decision,
         note=d.note,
+        exclusion_reason_id=d.exclusion_reason_id,
         created_at=d.created_at,
         current=d.superseded_at is None,
         undone=d.undone,
@@ -269,17 +320,18 @@ async def queue(
     after: uuid.UUID | None,
     limit: int,
     search: str | None = None,
+    stage: Stage = "title_abstract",
 ) -> ScreeningQueuePage:
-    state = await _state(session, ctx)
+    state = await _state(session, ctx, stage)
     me = ctx.user.id
     sees_all = _sees_all(ctx)
     if view == "conflicts" and not sees_all:
         raise ForbiddenError()
-    query = select(Reference.id).where(*_active(ctx))
+    where: list[Any] = []
     if search:
         pattern = f"%{search.strip()}%"
-        query = query.where(Reference.title.ilike(pattern) | Reference.abstract.ilike(pattern))
-    ids = list(await session.scalars(query.order_by(Reference.id)))
+        where.append(Reference.title.ilike(pattern) | Reference.abstract.ilike(pattern))
+    ids = await _ids(session, ctx, stage, *where)
 
     def keep(ref_id: uuid.UUID) -> bool:
         mine = me in state.decisions.get(ref_id, {})
@@ -314,6 +366,7 @@ async def queue(
                 reference=SearchReferenceOut.model_validate(ref, from_attributes=True),
                 useful_as_reference=ref.useful_as_reference,
                 my_decision=mine.decision if mine else None,
+                my_reason_id=mine.exclusion_reason_id if mine else None,
                 decisions=len(current),
                 status=state.status(ref_id) if sees_all else None,
                 others=[_decision_out(d, names) for uid, d in current.items() if uid != me]
@@ -327,9 +380,11 @@ async def queue(
     )
 
 
-async def counts(session: AsyncSession, ctx: ProjectContext) -> ScreeningCounts:
-    state = await _state(session, ctx)
-    ids = list(await session.scalars(select(Reference.id).where(*_active(ctx))))
+async def counts(
+    session: AsyncSession, ctx: ProjectContext, stage: Stage = "title_abstract"
+) -> ScreeningCounts:
+    state = await _state(session, ctx, stage)
+    ids = await _ids(session, ctx, stage)
     me = ctx.user.id
     decided = sum(1 for i in ids if me in state.decisions.get(i, {}))
     left = sum(
@@ -366,27 +421,62 @@ async def counts(session: AsyncSession, ctx: ProjectContext) -> ScreeningCounts:
 # ---- Decisions, undo, history --------------------------------------------------------
 
 
+async def _check_reason(
+    session: AsyncSession,
+    ctx: ProjectContext,
+    stage: Stage,
+    decision: str,
+    reason_id: uuid.UUID | None,
+) -> uuid.UUID | None:
+    """Full text has no "maybe", and excluding needs a reason of this project."""
+    if stage == "title_abstract":
+        return None
+    if decision == "maybe":
+        raise AppError("screening.no_maybe_at_full_text", status_code=422)
+    if decision != "exclude":
+        return None
+    if reason_id is None:
+        raise AppError("screening.reason_required", status_code=422)
+    reason = (
+        await session.scalars(
+            select(ExclusionReason).where(
+                ExclusionReason.id == reason_id,
+                ExclusionReason.project_id == ctx.project.id,
+                ExclusionReason.merged_into_id.is_(None),
+            )
+        )
+    ).first()
+    if reason is None:
+        raise AppError("screening.unknown_reason", status_code=422)
+    return reason.id
+
+
 async def decide(
-    session: AsyncSession, ctx: ProjectContext, ref_id: uuid.UUID, data: ScreeningDecideIn
+    session: AsyncSession,
+    ctx: ProjectContext,
+    ref_id: uuid.UUID,
+    data: ScreeningDecideIn,
+    stage: Stage = "title_abstract",
 ) -> ScreeningDecisionOut:
     _can_screen(ctx)
-    await _reference(session, ctx, ref_id)
+    await _reference(session, ctx, ref_id, stage)
     assigned = set(
         await session.scalars(
             select(ScreeningAssignment.user_id).where(
-                ScreeningAssignment.reference_id == ref_id, ScreeningAssignment.stage == STAGE
+                ScreeningAssignment.reference_id == ref_id, ScreeningAssignment.stage == stage
             )
         )
     )
     if assigned and ctx.user.id not in assigned and not ctx.is_admin:
         raise AppError("screening.not_assigned", status_code=403)
+    reason_id = await _check_reason(session, ctx, stage, data.decision, data.exclusion_reason_id)
     now = datetime.now(UTC)
     await session.execute(
         update(ScreeningDecision)
         .where(
             ScreeningDecision.reference_id == ref_id,
             ScreeningDecision.user_id == ctx.user.id,
-            ScreeningDecision.stage == STAGE,
+            ScreeningDecision.stage == stage,
             ScreeningDecision.superseded_at.is_(None),
         )
         .values(superseded_at=now)
@@ -396,9 +486,10 @@ async def decide(
         project_id=ctx.project.id,
         reference_id=ref_id,
         user_id=ctx.user.id,
-        stage=STAGE,
+        stage=stage,
         decision=data.decision,
         note=(data.note or "").strip() or None,
+        exclusion_reason_id=reason_id,
         created_by=ctx.user.id,
     )
     session.add(row)
@@ -407,7 +498,9 @@ async def decide(
     return _decision_out(row)
 
 
-async def undo(session: AsyncSession, ctx: ProjectContext) -> ScreeningDecisionOut | None:
+async def undo(
+    session: AsyncSession, ctx: ProjectContext, stage: Stage = "title_abstract"
+) -> ScreeningDecisionOut | None:
     """Withdraws my latest decision; my previous decision on that reference comes back.
     Returns the decision now current for that reference (None when there was none)."""
     _can_screen(ctx)
@@ -417,7 +510,7 @@ async def undo(session: AsyncSession, ctx: ProjectContext) -> ScreeningDecisionO
             .where(
                 ScreeningDecision.project_id == ctx.project.id,
                 ScreeningDecision.user_id == ctx.user.id,
-                ScreeningDecision.stage == STAGE,
+                ScreeningDecision.stage == stage,
                 ScreeningDecision.superseded_at.is_(None),
             )
             .order_by(ScreeningDecision.created_at.desc(), ScreeningDecision.id.desc())
@@ -435,7 +528,7 @@ async def undo(session: AsyncSession, ctx: ProjectContext) -> ScreeningDecisionO
             .where(
                 ScreeningDecision.reference_id == latest.reference_id,
                 ScreeningDecision.user_id == ctx.user.id,
-                ScreeningDecision.stage == STAGE,
+                ScreeningDecision.stage == stage,
                 ScreeningDecision.undone.is_(False),
                 ScreeningDecision.id != latest.id,
             )
@@ -463,11 +556,11 @@ async def undo(session: AsyncSession, ctx: ProjectContext) -> ScreeningDecisionO
 
 
 async def history(
-    session: AsyncSession, ctx: ProjectContext, ref_id: uuid.UUID
+    session: AsyncSession, ctx: ProjectContext, ref_id: uuid.UUID, stage: Stage = "title_abstract"
 ) -> list[ScreeningDecisionOut]:
-    await _reference(session, ctx, ref_id)
+    await _reference(session, ctx, ref_id, stage)
     query = select(ScreeningDecision).where(
-        ScreeningDecision.reference_id == ref_id, ScreeningDecision.stage == STAGE
+        ScreeningDecision.reference_id == ref_id, ScreeningDecision.stage == stage
     )
     if not _sees_all(ctx):
         query = query.where(ScreeningDecision.user_id == ctx.user.id)
@@ -480,21 +573,27 @@ async def history(
 
 
 async def resolve(
-    session: AsyncSession, ctx: ProjectContext, ref_id: uuid.UUID, data: ScreeningResolveIn
+    session: AsyncSession,
+    ctx: ProjectContext,
+    ref_id: uuid.UUID,
+    data: ScreeningResolveIn,
+    stage: Stage = "title_abstract",
 ) -> dict[str, str]:
     if not ctx.is_admin:
         raise ForbiddenError()
-    await _reference(session, ctx, ref_id)
-    state = await _state(session, ctx)
+    await _reference(session, ctx, ref_id, stage)
+    state = await _state(session, ctx, stage)
     if state.status(ref_id) != "conflict":
         raise AppError("screening.not_a_conflict", status_code=409)
+    reason_id = await _check_reason(session, ctx, stage, data.decision, data.exclusion_reason_id)
     session.add(
         ScreeningResolution(
             project_id=ctx.project.id,
             reference_id=ref_id,
-            stage=STAGE,
+            stage=stage,
             decision=data.decision,
             reason=data.reason.strip(),
+            exclusion_reason_id=reason_id,
             created_by=ctx.user.id,
         )
     )
@@ -502,7 +601,9 @@ async def resolve(
     return {"status": "resolved_" + data.decision}
 
 
-async def reopen(session: AsyncSession, ctx: ProjectContext, ref_id: uuid.UUID) -> None:
+async def reopen(
+    session: AsyncSession, ctx: ProjectContext, ref_id: uuid.UUID, stage: Stage = "title_abstract"
+) -> None:
     """Withdraws the resolution of a conflict (soft delete; it stays in the audit log)."""
     if not ctx.is_admin:
         raise ForbiddenError()
@@ -511,7 +612,7 @@ async def reopen(session: AsyncSession, ctx: ProjectContext, ref_id: uuid.UUID) 
             select(ScreeningResolution).where(
                 ScreeningResolution.project_id == ctx.project.id,
                 ScreeningResolution.reference_id == ref_id,
-                ScreeningResolution.stage == STAGE,
+                ScreeningResolution.stage == stage,
             )
         )
     ).first()
@@ -525,10 +626,14 @@ async def reopen(session: AsyncSession, ctx: ProjectContext, ref_id: uuid.UUID) 
 
 
 async def set_useful(
-    session: AsyncSession, ctx: ProjectContext, ref_id: uuid.UUID, data: ScreeningUsefulIn
+    session: AsyncSession,
+    ctx: ProjectContext,
+    ref_id: uuid.UUID,
+    data: ScreeningUsefulIn,
+    stage: Stage = "title_abstract",
 ) -> dict[str, bool]:
     _can_screen(ctx)
-    ref = await _reference(session, ctx, ref_id)
+    ref = await _reference(session, ctx, ref_id, stage)
     ref.useful_as_reference = data.useful
     await session.commit()
     return {"useful_as_reference": data.useful}
@@ -538,7 +643,10 @@ async def set_useful(
 
 
 async def assign(
-    session: AsyncSession, ctx: ProjectContext, data: ScreeningAssignIn
+    session: AsyncSession,
+    ctx: ProjectContext,
+    data: ScreeningAssignIn,
+    stage: Stage = "title_abstract",
 ) -> ScreeningAssignmentSummary:
     """Gives the next `count` references to a reviewer: the oldest ones not yet given to
     them and given to fewer than two reviewers (double screening)."""
@@ -553,10 +661,8 @@ async def assign(
     ).first()
     if member is None or not ({Role.REVIEWER.value, Role.ADMIN.value} & set(member.roles)):
         raise AppError("screening.not_a_reviewer", status_code=422)
-    state = await _state(session, ctx)
-    ids = list(
-        await session.scalars(select(Reference.id).where(*_active(ctx)).order_by(Reference.id))
-    )
+    state = await _state(session, ctx, stage)
+    ids = await _ids(session, ctx, stage)
     chosen = [
         i
         for i in ids
@@ -570,18 +676,18 @@ async def assign(
                 project_id=ctx.project.id,
                 reference_id=ref_id,
                 user_id=data.user_id,
-                stage=STAGE,
+                stage=stage,
                 created_by=ctx.user.id,
             )
         )
     await session.commit()
-    return next(s for s in await assignments(session, ctx) if s.user_id == data.user_id)
+    return next(s for s in await assignments(session, ctx, stage) if s.user_id == data.user_id)
 
 
 async def assignments(
-    session: AsyncSession, ctx: ProjectContext
+    session: AsyncSession, ctx: ProjectContext, stage: Stage = "title_abstract"
 ) -> list[ScreeningAssignmentSummary]:
-    state = await _state(session, ctx)
+    state = await _state(session, ctx, stage)
     names = await _names(session, ctx)
     per_user: dict[uuid.UUID, list[uuid.UUID]] = defaultdict(list)
     for ref_id, users in state.assigned.items():
@@ -598,17 +704,19 @@ async def assignments(
     ]
 
 
-async def unassign(session: AsyncSession, ctx: ProjectContext, user_id: uuid.UUID) -> None:
+async def unassign(
+    session: AsyncSession, ctx: ProjectContext, user_id: uuid.UUID, stage: Stage = "title_abstract"
+) -> None:
     """Takes back the references given to a reviewer that they did not decide yet."""
     if not ctx.is_admin:
         raise ForbiddenError()
-    state = await _state(session, ctx)
+    state = await _state(session, ctx, stage)
     now = datetime.now(UTC)
     rows = await session.scalars(
         select(ScreeningAssignment).where(
             ScreeningAssignment.project_id == ctx.project.id,
             ScreeningAssignment.user_id == user_id,
-            ScreeningAssignment.stage == STAGE,
+            ScreeningAssignment.stage == stage,
         )
     )
     for a in rows:
@@ -621,11 +729,11 @@ async def unassign(session: AsyncSession, ctx: ProjectContext, user_id: uuid.UUI
 
 
 async def agreement(
-    session: AsyncSession, ctx: ProjectContext, stats: StatsClient
+    session: AsyncSession, ctx: ProjectContext, stats: StatsClient, stage: Stage = "title_abstract"
 ) -> list[ScreeningAgreementOut]:
     """Cohen's kappa for every pair of reviewers over the references both decided."""
-    state = await _state(session, ctx)
-    active = set(await session.scalars(select(Reference.id).where(*_active(ctx))))
+    state = await _state(session, ctx, stage)
+    active = set(await _ids(session, ctx, stage))
     names = await _names(session, ctx)
     pairs: dict[tuple[uuid.UUID, uuid.UUID], tuple[list[str], list[str]]] = {}
     for ref_id, by_user in state.decisions.items():

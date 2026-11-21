@@ -13,6 +13,7 @@ import { ScreeningDecisionOut } from '../../models/screening-decision-out';
 export interface DecideReference$Params {
   reference_id: string;
   project_id: string;
+  stage?: 'title_abstract' | 'full_text';
       body: ScreeningDecideIn
 }
 
@@ -21,6 +22,7 @@ export function decideReference(http: HttpClient, rootUrl: string, params: Decid
   if (params) {
     rb.path('reference_id', params.reference_id, {});
     rb.path('project_id', params.project_id, {});
+    rb.query('stage', params.stage, {});
     rb.body(params.body, 'application/json');
   }
 

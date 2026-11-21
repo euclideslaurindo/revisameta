@@ -2095,7 +2095,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/MergeIn"
+                "$ref": "#/components/schemas/app__modules__studies__schemas__MergeIn"
               }
             }
           }
@@ -3272,6 +3272,20 @@
               ],
               "title": "Q"
             }
+          },
+          {
+            "name": "stage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "title_abstract",
+                "full_text"
+              ],
+              "type": "string",
+              "default": "title_abstract",
+              "title": "Stage"
+            }
           }
         ],
         "responses": {
@@ -3319,6 +3333,20 @@
               "type": "string",
               "format": "uuid",
               "title": "Project Id"
+            }
+          },
+          {
+            "name": "stage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "title_abstract",
+                "full_text"
+              ],
+              "type": "string",
+              "default": "title_abstract",
+              "title": "Stage"
             }
           }
         ],
@@ -3379,6 +3407,20 @@
               "format": "uuid",
               "title": "Project Id"
             }
+          },
+          {
+            "name": "stage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "title_abstract",
+                "full_text"
+              ],
+              "type": "string",
+              "default": "title_abstract",
+              "title": "Stage"
+            }
           }
         ],
         "requestBody": {
@@ -3437,6 +3479,20 @@
               "type": "string",
               "format": "uuid",
               "title": "Project Id"
+            }
+          },
+          {
+            "name": "stage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "title_abstract",
+                "full_text"
+              ],
+              "type": "string",
+              "default": "title_abstract",
+              "title": "Stage"
             }
           }
         ],
@@ -3504,6 +3560,20 @@
               "format": "uuid",
               "title": "Project Id"
             }
+          },
+          {
+            "name": "stage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "title_abstract",
+                "full_text"
+              ],
+              "type": "string",
+              "default": "title_abstract",
+              "title": "Stage"
+            }
           }
         ],
         "responses": {
@@ -3566,6 +3636,20 @@
               "type": "string",
               "format": "uuid",
               "title": "Project Id"
+            }
+          },
+          {
+            "name": "stage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "title_abstract",
+                "full_text"
+              ],
+              "type": "string",
+              "default": "title_abstract",
+              "title": "Stage"
             }
           }
         ],
@@ -3636,6 +3720,20 @@
               "type": "string",
               "format": "uuid",
               "title": "Project Id"
+            }
+          },
+          {
+            "name": "stage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "title_abstract",
+                "full_text"
+              ],
+              "type": "string",
+              "default": "title_abstract",
+              "title": "Stage"
             }
           }
         ],
@@ -3751,6 +3849,20 @@
               "format": "uuid",
               "title": "Project Id"
             }
+          },
+          {
+            "name": "stage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "title_abstract",
+                "full_text"
+              ],
+              "type": "string",
+              "default": "title_abstract",
+              "title": "Stage"
+            }
           }
         ],
         "responses": {
@@ -3801,6 +3913,20 @@
               "type": "string",
               "format": "uuid",
               "title": "Project Id"
+            }
+          },
+          {
+            "name": "stage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "title_abstract",
+                "full_text"
+              ],
+              "type": "string",
+              "default": "title_abstract",
+              "title": "Stage"
             }
           }
         ],
@@ -3871,6 +3997,20 @@
               "format": "uuid",
               "title": "Project Id"
             }
+          },
+          {
+            "name": "stage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "title_abstract",
+                "full_text"
+              ],
+              "type": "string",
+              "default": "title_abstract",
+              "title": "Stage"
+            }
           }
         ],
         "responses": {
@@ -3913,6 +4053,20 @@
               "format": "uuid",
               "title": "Project Id"
             }
+          },
+          {
+            "name": "stage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "title_abstract",
+                "full_text"
+              ],
+              "type": "string",
+              "default": "title_abstract",
+              "title": "Stage"
+            }
           }
         ],
         "responses": {
@@ -3926,6 +4080,424 @@
                     "$ref": "#/components/schemas/ScreeningAgreementOut"
                   },
                   "title": "Response Screening Agreement"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/screening/exclusion-reasons": {
+      "get": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "List Exclusion Reasons",
+        "description": "Reasons to exclude at full text, merged ones included (history).",
+        "operationId": "list_exclusion_reasons",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReasonOut"
+                  },
+                  "title": "Response List Exclusion Reasons"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Create Exclusion Reason",
+        "operationId": "create_exclusion_reason",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReasonIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReasonOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/screening/exclusion-reasons/{reason_id}": {
+      "patch": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Rename Exclusion Reason",
+        "operationId": "rename_exclusion_reason",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "reason_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Reason Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReasonUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReasonOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Delete Exclusion Reason",
+        "description": "Only a reason nobody used; used reasons are merged instead.",
+        "operationId": "delete_exclusion_reason",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "reason_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Reason Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/screening/exclusion-reasons/{reason_id}/merge": {
+      "post": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Merge Exclusion Reason",
+        "description": "Moves every decision to another reason; this one stays listed as merged.",
+        "operationId": "merge_exclusion_reason",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "reason_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Reason Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/app__modules__screening__reasons__MergeIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReasonOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/screening/included": {
+      "get": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Included Waiting For Study",
+        "description": "Included at full text and not yet a study or a report of one.",
+        "operationId": "included_waiting_for_study",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SearchReferenceOut"
+                  },
+                  "title": "Response Included Waiting For Study"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/screening/included/{reference_id}/study": {
+      "post": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Included To Study",
+        "description": "New study, or one more report of an existing study (same cohort). Admin.",
+        "operationId": "included_to_study",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "reference_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Reference Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ToStudyIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StudyOut"
                 }
               }
             }
@@ -13877,21 +14449,6 @@
         ],
         "title": "MemberUpdate"
       },
-      "MergeIn": {
-        "properties": {
-          "other_study_id": {
-            "type": "string",
-            "format": "uuid",
-            "title": "Other Study Id"
-          }
-        },
-        "type": "object",
-        "required": [
-          "other_study_id"
-        ],
-        "title": "MergeIn",
-        "description": "Moves every report of `other_study_id` into this study (same patients)."
-      },
       "MissingStudy": {
         "properties": {
           "study_id": {
@@ -16343,6 +16900,107 @@
         ],
         "title": "QuotaUpdate"
       },
+      "ReasonIn": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 2,
+            "title": "Label"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label"
+        ],
+        "title": "ReasonIn"
+      },
+      "ReasonOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Key"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "position": {
+            "type": "integer",
+            "title": "Position"
+          },
+          "merged_into_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Merged Into Id"
+          },
+          "uses": {
+            "type": "integer",
+            "title": "Uses"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "key",
+          "label",
+          "position",
+          "merged_into_id",
+          "uses",
+          "version"
+        ],
+        "title": "ReasonOut"
+      },
+      "ReasonUpdate": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 2,
+            "title": "Label"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "version"
+        ],
+        "title": "ReasonUpdate"
+      },
       "Rect": {
         "properties": {
           "x": {
@@ -18395,6 +19053,18 @@
               }
             ],
             "title": "Note"
+          },
+          "exclusion_reason_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Exclusion Reason Id"
           }
         },
         "type": "object",
@@ -18446,6 +19116,18 @@
             ],
             "title": "Note"
           },
+          "exclusion_reason_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Exclusion Reason Id"
+          },
           "created_at": {
             "type": "string",
             "format": "date-time",
@@ -18492,6 +19174,18 @@
               }
             ],
             "title": "My Decision"
+          },
+          "my_reason_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "My Reason Id"
           },
           "decisions": {
             "type": "integer",
@@ -18593,6 +19287,18 @@
             "maxLength": 1000,
             "minLength": 3,
             "title": "Reason"
+          },
+          "exclusion_reason_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Exclusion Reason Id"
           }
         },
         "type": "object",
@@ -20222,6 +20928,63 @@
         ],
         "title": "TextsIn"
       },
+      "ToStudyIn": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "new",
+              "attach"
+            ],
+            "title": "Mode"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 120,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "design": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StudyDesign"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "study_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Study Id"
+          },
+          "primary": {
+            "type": "boolean",
+            "title": "Primary",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "mode"
+        ],
+        "title": "ToStudyIn"
+      },
       "TokenIn": {
         "properties": {
           "token": {
@@ -20729,6 +21492,40 @@
           "variants"
         ],
         "title": "VariantsIn"
+      },
+      "app__modules__screening__reasons__MergeIn": {
+        "properties": {
+          "into_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Into Id"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "into_id",
+          "version"
+        ],
+        "title": "MergeIn"
+      },
+      "app__modules__studies__schemas__MergeIn": {
+        "properties": {
+          "other_study_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Other Study Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "other_study_id"
+        ],
+        "title": "MergeIn",
+        "description": "Moves every report of `other_study_id` into this study (same patients)."
       }
     },
     "securitySchemes": {

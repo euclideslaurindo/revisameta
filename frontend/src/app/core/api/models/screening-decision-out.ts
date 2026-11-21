@@ -5,6 +5,7 @@ export interface ScreeningDecisionOut {
   created_at: string;
   current: boolean;
   decision: string;
+  exclusion_reason_id?: (string | null);
   id: string;
   note: (string | null);
   reference_id: string;

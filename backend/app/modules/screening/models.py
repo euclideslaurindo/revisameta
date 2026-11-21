@@ -27,6 +27,10 @@ class ScreeningDecision(BusinessMixin, AuditedMixin, Base):
     stage: Mapped[str] = mapped_column(String(16), default="title_abstract")
     decision: Mapped[str] = mapped_column(String(8))  # include | exclude | maybe
     note: Mapped[str | None] = mapped_column(String(1000))
+    # Full text: excluding needs a reason (it goes to the PRISMA flow diagram).
+    exclusion_reason_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("exclusion_reasons.id")
+    )
     # Withdrawn by "undo" or replaced by a later decision of the same reviewer.
     superseded_at: Mapped[dt.datetime | None] = mapped_column()
     undone: Mapped[bool] = mapped_column(default=False)
@@ -50,6 +54,9 @@ class ScreeningResolution(BusinessMixin, AuditedMixin, Base):
     stage: Mapped[str] = mapped_column(String(16), default="title_abstract")
     decision: Mapped[str] = mapped_column(String(8))  # include | exclude
     reason: Mapped[str] = mapped_column(String(1000))
+    exclusion_reason_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("exclusion_reasons.id")
+    )
 
 
 class ScreeningAssignment(BusinessMixin, AuditedMixin, Base):
@@ -59,3 +66,20 @@ class ScreeningAssignment(BusinessMixin, AuditedMixin, Base):
     reference_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("references.id"), index=True)
     user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), index=True)
     stage: Mapped[str] = mapped_column(String(16), default="title_abstract")
+
+
+class ExclusionReason(BusinessMixin, AuditedMixin, Base):
+    """Reason to exclude an article at full text (docs/modulos.md 7.4; lesson L5).
+
+    The project starts with a standard list (key set, label empty: the screen shows the
+    translation). The admin renames (label), adds, removes reasons nobody used, and
+    merges one reason into another (merged_into_id); every change is in the audit log.
+    """
+
+    __tablename__ = "exclusion_reasons"
+
+    project_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("projects.id"), index=True)
+    key: Mapped[str | None] = mapped_column(String(40))  # standard reasons only
+    label: Mapped[str | None] = mapped_column(String(200))
+    position: Mapped[int] = mapped_column(default=0)
+    merged_into_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("exclusion_reasons.id"))

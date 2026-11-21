@@ -5,6 +5,6 @@
 /**
  * Moves every report of `other_study_id` into this study (same patients).
  */
-export interface MergeIn {
+export interface AppModulesStudiesSchemasMergeIn {
   other_study_id: string;
 }

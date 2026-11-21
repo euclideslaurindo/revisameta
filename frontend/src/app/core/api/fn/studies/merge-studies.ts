@@ -7,13 +7,13 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { MergeIn } from '../../models/merge-in';
+import { AppModulesStudiesSchemasMergeIn } from '../../models/app-modules-studies-schemas-merge-in';
 import { StudyOut } from '../../models/study-out';
 
 export interface MergeStudies$Params {
   study_id: string;
   project_id: string;
-      body: MergeIn
+      body: AppModulesStudiesSchemasMergeIn
 }
 
 export function mergeStudies(http: HttpClient, rootUrl: string, params: MergeStudies$Params, context?: HttpContext): Observable<StrictHttpResponse<StudyOut>> {

@@ -15,6 +15,7 @@ export interface ScreeningQueue$Params {
   after?: (string | null);
   limit?: number;
   q?: (string | null);
+  stage?: 'title_abstract' | 'full_text';
 }
 
 export function screeningQueue(http: HttpClient, rootUrl: string, params: ScreeningQueue$Params, context?: HttpContext): Observable<StrictHttpResponse<ScreeningQueuePage>> {
@@ -25,6 +26,7 @@ export function screeningQueue(http: HttpClient, rootUrl: string, params: Screen
     rb.query('after', params.after, {});
     rb.query('limit', params.limit, {});
     rb.query('q', params.q, {});
+    rb.query('stage', params.stage, {});
   }
 
   return http.request(

@@ -134,6 +134,29 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
     ),
     ("DELETE", "/api/v1/projects/{project_id}/screening/assignments/{user_id}", None),
     ("GET", "/api/v1/projects/{project_id}/screening/agreement", None),
+    ("GET", "/api/v1/projects/{project_id}/screening/exclusion-reasons", None),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/screening/exclusion-reasons",
+        {"label": "Outro motivo"},
+    ),
+    (
+        "PATCH",
+        "/api/v1/projects/{project_id}/screening/exclusion-reasons/{reason_id}",
+        {"label": "Novo", "version": 1},
+    ),
+    ("DELETE", "/api/v1/projects/{project_id}/screening/exclusion-reasons/{reason_id}", None),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/screening/exclusion-reasons/{reason_id}/merge",
+        {"into_id": "{study_id}", "version": 1},
+    ),
+    ("GET", "/api/v1/projects/{project_id}/screening/included", None),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/screening/included/{reference_id}/study",
+        {"mode": "attach", "study_id": "{study_id}"},
+    ),
     (
         "POST",
         "/api/v1/projects/{project_id}/reports/{report_id}/pdfs",
@@ -421,6 +444,7 @@ async def _setup(client: AsyncClient, make_user: MakeUser) -> tuple[LoggedUser, 
     ids["pair_id"] = ids["study_id"]
     ids["reference_id"] = ids["study_id"]
     ids["user_id"] = ids["study_id"]
+    ids["reason_id"] = ids["study_id"]
     ids["tool_id"] = (
         await client.post(
             f"/api/v1/projects/{project['id']}/rob/tools",

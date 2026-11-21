@@ -12,6 +12,7 @@ import { ScreeningDecisionOut } from '../../models/screening-decision-out';
 export interface ReferenceHistory$Params {
   reference_id: string;
   project_id: string;
+  stage?: 'title_abstract' | 'full_text';
 }
 
 export function referenceHistory(http: HttpClient, rootUrl: string, params: ReferenceHistory$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<ScreeningDecisionOut>>> {
@@ -19,6 +20,7 @@ export function referenceHistory(http: HttpClient, rootUrl: string, params: Refe
   if (params) {
     rb.path('reference_id', params.reference_id, {});
     rb.path('project_id', params.project_id, {});
+    rb.query('stage', params.stage, {});
   }
 
   return http.request(

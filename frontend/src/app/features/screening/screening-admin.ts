@@ -22,7 +22,9 @@ import { takeBackBatch } from '../../core/api/fn/screening/take-back-batch';
 import { MemberOut } from '../../core/api/models/member-out';
 import { ScreeningAgreementOut } from '../../core/api/models/screening-agreement-out';
 import { ScreeningAssignmentSummary } from '../../core/api/models/screening-assignment-summary';
+import { ReasonOut } from '../../core/api/models/reason-out';
 import { withJsonBody } from '../../core/errors/problem';
+import { reasonText } from './exclusion-reasons';
 import { FormError } from '../../shared/form-error';
 import { ProjectContext } from '../project/project-context';
 
@@ -146,6 +148,7 @@ export class ScreeningAdmin implements OnInit {
   private readonly api = inject(Api);
   private readonly transloco = inject(TranslocoService);
   private readonly context = inject(ProjectContext);
+  readonly stage = input<'title_abstract' | 'full_text'>('title_abstract');
   readonly changed = output<void>();
 
   protected includeKw = '';
@@ -202,7 +205,12 @@ export class ScreeningAdmin implements OnInit {
       this.reviewers.set(
         members.filter((m) => m.roles.includes('reviewer') || m.roles.includes('admin')),
       );
-      this.batches.set(await this.api.invoke(listAssignments, { project_id: this.projectId() }));
+      this.batches.set(
+        await this.api.invoke(listAssignments, {
+          project_id: this.projectId(),
+          stage: this.stage(),
+        }),
+      );
     });
   }
 
@@ -211,17 +219,32 @@ export class ScreeningAdmin implements OnInit {
     await this.guard(async () => {
       await this.api.invoke(assignBatch, {
         project_id: this.projectId(),
+        stage: this.stage(),
         body: { user_id: this.batchUser!, count: Number(this.batchCount) },
       });
-      this.batches.set(await this.api.invoke(listAssignments, { project_id: this.projectId() }));
+      this.batches.set(
+        await this.api.invoke(listAssignments, {
+          project_id: this.projectId(),
+          stage: this.stage(),
+        }),
+      );
       this.changed.emit();
     });
   }
 
   async takeBack(b: ScreeningAssignmentSummary): Promise<void> {
     await this.guard(async () => {
-      await this.api.invoke(takeBackBatch, { project_id: this.projectId(), user_id: b.user_id });
-      this.batches.set(await this.api.invoke(listAssignments, { project_id: this.projectId() }));
+      await this.api.invoke(takeBackBatch, {
+        project_id: this.projectId(),
+        stage: this.stage(),
+        user_id: b.user_id,
+      });
+      this.batches.set(
+        await this.api.invoke(listAssignments, {
+          project_id: this.projectId(),
+          stage: this.stage(),
+        }),
+      );
       this.changed.emit();
     });
   }
@@ -229,7 +252,10 @@ export class ScreeningAdmin implements OnInit {
   async loadAgreement(): Promise<void> {
     await this.guard(async () => {
       this.agreement.set(
-        await this.api.invoke(screeningAgreement, { project_id: this.projectId() }),
+        await this.api.invoke(screeningAgreement, {
+          project_id: this.projectId(),
+          stage: this.stage(),
+        }),
       );
     });
   }
@@ -283,12 +309,23 @@ export class ScreeningAdmin implements OnInit {
     MatFormFieldModule,
     MatInputModule,
     FormError,
+    MatSelectModule,
   ],
   template: `
     <mat-card class="block">
       <mat-card-content>
         <h4>{{ 'screening.admin.resolve' | transloco }}</h4>
         <rm-form-error [error]="error()" />
+        @if (stage() === 'full_text') {
+          <mat-form-field class="full">
+            <mat-label>{{ 'screening.reasonToExclude' | transloco }}</mat-label>
+            <mat-select [(ngModel)]="reasonId">
+              @for (r of reasons(); track r.id) {
+                <mat-option [value]="r.id">{{ label(r) }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
         <mat-form-field class="full">
           <mat-label>{{ 'screening.admin.reason' | transloco }}</mat-label>
           <input matInput maxlength="1000" [(ngModel)]="reason" />
@@ -324,10 +361,18 @@ export class ScreeningAdminResolve {
   private readonly api = inject(Api);
   private readonly context = inject(ProjectContext);
   readonly referenceId = input.required<string>();
+  readonly stage = input<'title_abstract' | 'full_text'>('title_abstract');
+  readonly reasons = input<ReasonOut[]>([]);
+  protected reasonId: string | null = null;
+  private readonly transloco = inject(TranslocoService);
   readonly resolved = output<void>();
   protected reason = '';
   protected readonly busy = signal(false);
   protected readonly error = signal<unknown>(null);
+
+  protected label(r: ReasonOut): string {
+    return reasonText(r, (k) => this.transloco.translate(k));
+  }
 
   async resolve(decision: 'include' | 'exclude'): Promise<void> {
     this.busy.set(true);
@@ -335,8 +380,13 @@ export class ScreeningAdminResolve {
     try {
       await this.api.invoke(resolveConflict, {
         project_id: this.context.project()!.id,
+        stage: this.stage(),
         reference_id: this.referenceId(),
-        body: { decision, reason: this.reason.trim() },
+        body: {
+          decision,
+          reason: this.reason.trim(),
+          exclusion_reason_id: decision === 'exclude' ? this.reasonId : null,
+        },
       });
       this.reason = '';
       this.resolved.emit();

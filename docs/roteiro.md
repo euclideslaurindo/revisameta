@@ -170,6 +170,23 @@ Importação RIS/BibTeX/CSV/nbib, deduplicação multicritério com explicação
 - **Kappa de Cohen** para cada par de revisores, calculado no R (`/kappa`, irr). A tela traz uma explicação e as faixas de Landis e Koch, só como ajuda de leitura.
 - **Referências triadas:** só as importadas de buscas, sem as duplicatas confirmadas.
 
+**Etapa 5, passo 4 — texto completo e motivos de exclusão (feito; decisões aprovadas em 2026-11-21):**
+- **Decisão no texto completo:** dupla e cega, como na triagem. A etapa aparece na mesma aba "Triagem" (seletor "Título e resumo" × "Texto completo"). Entram só os artigos incluídos em título e resumo.
+- **Opções:** só Incluir ou Excluir, e excluir exige um motivo da lista do projeto.
+- **Conflitos:** os revisores discordaram, ou os dois excluíram por motivos diferentes (o PRISMA precisa de um motivo por artigo). O admin resolve, escolhendo o motivo final.
+- **Motivos de exclusão (L5):**
+  - O projeto começa com uma lista padrão, guardada por chave e traduzida na tela.
+  - O admin adiciona motivos e renomeia (o rótulo do grupo passa a valer no lugar da tradução).
+  - Só remove motivos que nunca foram usados.
+  - Pode juntar um motivo a outro: as decisões passam para o motivo que fica, e o juntado continua listado como "juntado a…".
+  - Tudo é auditado.
+- **Artigo incluído vira estudo** (aprovado: "botão, com escolha"):
+  - A lista "Incluídos que ainda não viraram estudo" mostra os artigos que faltam.
+  - O admin cria um estudo novo (nome sugerido: sobrenome do primeiro autor + ano) ou junta o artigo como mais um relato de um estudo existente, da mesma coorte.
+  - A referência da busca vira o relato, sem cópia, e mantém o histórico da triagem.
+  - Excluir o estudo não apaga a referência da busca: ela volta para a lista.
+- **Rotas:** as da triagem recebem `stage=full_text`. As novas são `/screening/exclusion-reasons` e `/screening/included`.
+
 **Etapa 6 — GRADE, colaboração e entrega (P1)**
 GRADE e Summary of Findings, comentários, notificações, backup/reimportação do projeto, bibliografia, retenção de projetos inativos.
 *Saída:* tabela SoF em DOCX com justificativas; restauração de backup testada; reimportação de um projeto exportado sem perda.
