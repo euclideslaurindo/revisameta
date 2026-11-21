@@ -30,6 +30,8 @@ class Project(BusinessMixin, AuditedMixin, Base):
     deadline: Mapped[date | None]
     report_language: Mapped[str] = mapped_column(String(8), default="pt-BR")
     analysis_plan: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict)
+    # Deduplication thresholds (stage 5): empty means the approved defaults.
+    dedup_settings: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict)
     locked_stages: Mapped[list[str]] = mapped_column(ARRAY(String(32)), default=list)
     # Two independent extractors per study, then consensus (7.5.1 D11; on by default).
     double_extraction: Mapped[bool] = mapped_column(Boolean, default=True, server_default=true())

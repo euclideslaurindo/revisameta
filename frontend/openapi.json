@@ -2623,6 +2623,465 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/deduplication/settings": {
+      "get": {
+        "tags": [
+          "references"
+        ],
+        "summary": "Get Dedup Settings",
+        "operationId": "get_dedup_settings",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DedupSettings"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "references"
+        ],
+        "summary": "Put Dedup Settings",
+        "description": "Title similarity threshold (admin). Run the detection again afterwards.",
+        "operationId": "put_dedup_settings",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DedupSettings"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DedupSettings"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/deduplication/run": {
+      "post": {
+        "tags": [
+          "references"
+        ],
+        "summary": "Run Deduplication",
+        "description": "Finds certain, probable and related pairs. Nothing is removed: a person decides.",
+        "operationId": "run_deduplication",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DedupRunOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/deduplication/pairs": {
+      "get": {
+        "tags": [
+          "references"
+        ],
+        "summary": "List Duplicate Pairs",
+        "operationId": "list_duplicate_pairs",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^(certain|probable|related)$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Kind"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^(pending|confirmed|rejected)$"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DuplicatePairOut"
+                  },
+                  "title": "Response List Duplicate Pairs"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/deduplication/pairs/{pair_id}": {
+      "post": {
+        "tags": [
+          "references"
+        ],
+        "summary": "Decide Duplicate Pair",
+        "description": "Confirm (saying which record stays), reject, or undo a decision.",
+        "operationId": "decide_duplicate_pair",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "pair_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Pair Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DedupDecideIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DuplicatePairOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/deduplication/confirm-certain": {
+      "post": {
+        "tags": [
+          "references"
+        ],
+        "summary": "Confirm Certain Duplicates",
+        "description": "Confirms every pending pair with the same DOI or PMID (the first imported stays).",
+        "operationId": "confirm_certain_duplicates",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "integer"
+                  },
+                  "title": "Response Confirm Certain Duplicates"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/deduplication/report": {
+      "get": {
+        "tags": [
+          "references"
+        ],
+        "summary": "Deduplication Report",
+        "operationId": "deduplication_report",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DedupReportOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/deduplication/report.csv": {
+      "get": {
+        "tags": [
+          "references"
+        ],
+        "summary": "Deduplication Report Csv",
+        "description": "Every pair with its criteria and decision, for the Methods section.",
+        "operationId": "deduplication_report_csv",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/projects/{project_id}/reports/{report_id}/pdfs": {
       "post": {
         "tags": [
@@ -10278,6 +10737,121 @@
         ],
         "title": "DecisionOut"
       },
+      "DedupDecideIn": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "confirm",
+              "reject",
+              "undo"
+            ],
+            "title": "Action"
+          },
+          "keep": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "a",
+                  "b"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Keep"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "action",
+          "version"
+        ],
+        "title": "DedupDecideIn"
+      },
+      "DedupReportOut": {
+        "properties": {
+          "imported": {
+            "type": "integer",
+            "title": "Imported"
+          },
+          "duplicates_removed": {
+            "type": "integer",
+            "title": "Duplicates Removed"
+          },
+          "after_duplicates": {
+            "type": "integer",
+            "title": "After Duplicates"
+          },
+          "pending": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Pending"
+          },
+          "rejected": {
+            "type": "integer",
+            "title": "Rejected"
+          }
+        },
+        "type": "object",
+        "required": [
+          "imported",
+          "duplicates_removed",
+          "after_duplicates",
+          "pending",
+          "rejected"
+        ],
+        "title": "DedupReportOut"
+      },
+      "DedupRunOut": {
+        "properties": {
+          "certain": {
+            "type": "integer",
+            "title": "Certain"
+          },
+          "probable": {
+            "type": "integer",
+            "title": "Probable"
+          },
+          "related": {
+            "type": "integer",
+            "title": "Related"
+          },
+          "new_pairs": {
+            "type": "integer",
+            "title": "New Pairs"
+          }
+        },
+        "type": "object",
+        "required": [
+          "certain",
+          "probable",
+          "related",
+          "new_pairs"
+        ],
+        "title": "DedupRunOut"
+      },
+      "DedupSettings": {
+        "properties": {
+          "title_threshold": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.8,
+            "title": "Title Threshold",
+            "default": 0.95
+          }
+        },
+        "type": "object",
+        "title": "DedupSettings"
+      },
       "DirectionOut": {
         "properties": {
           "outcome_id": {
@@ -10474,6 +11048,93 @@
           "expires_in"
         ],
         "title": "DownloadUrl"
+      },
+      "DuplicatePairOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "kind": {
+            "type": "string",
+            "title": "Kind"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "criteria": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Criteria"
+          },
+          "kept_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Kept Id"
+          },
+          "decided_by": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decided By"
+          },
+          "decided_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Decided At"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "a": {
+            "$ref": "#/components/schemas/SearchReferenceOut"
+          },
+          "b": {
+            "$ref": "#/components/schemas/SearchReferenceOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "status",
+          "score",
+          "criteria",
+          "kept_id",
+          "decided_by",
+          "decided_at",
+          "version",
+          "a",
+          "b"
+        ],
+        "title": "DuplicatePairOut"
       },
       "EffectReported-Input": {
         "properties": {
@@ -17054,6 +17715,18 @@
               }
             ],
             "title": "Url"
+          },
+          "duplicate_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duplicate Of"
           }
         },
         "type": "object",

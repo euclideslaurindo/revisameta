@@ -18,7 +18,7 @@ from app.modules.pdfs.models import PdfAnnotation, PdfFile
 from app.modules.projects.models import Invitation, Project, ProjectMember, StageEvent
 from app.modules.protocol.models import ComparisonGroup, Outcome
 from app.modules.quotas.models import UsageQuota
-from app.modules.references.models import Search
+from app.modules.references.models import DuplicatePair, Search
 from app.modules.risk_of_bias.models import (
     RobAnswer,
     RobAssessment,
@@ -36,6 +36,7 @@ __all__ = [
     "BackgroundJob",
     "CheckAlert",
     "ComparisonGroup",
+    "DuplicatePair",
     "EmailToken",
     "Extraction",
     "ExtractionDecision",

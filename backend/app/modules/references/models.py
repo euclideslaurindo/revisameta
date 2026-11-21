@@ -9,7 +9,7 @@ import datetime as dt
 import uuid
 from typing import Any
 
-from sqlalchemy import Date, ForeignKey, Integer, String, Text
+from sqlalchemy import Date, Float, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -34,3 +34,28 @@ class Search(BusinessMixin, AuditedMixin, Base):
     warning_count: Mapped[int] = mapped_column(Integer, default=0)  # a field left empty
     errors: Mapped[list[dict[str, Any]]] = mapped_column(JSONB, default=list)  # first 200
     error_code: Mapped[str | None] = mapped_column(String(64))
+
+
+class DuplicatePair(BusinessMixin, AuditedMixin, Base):
+    """Two imported references that may be the same record (docs/modulos.md 7.2, L4).
+
+    kind: certain (same DOI or PMID) | probable (every criterion together) | related
+    (looks alike but differs in numbers, "Part 1/2", erratum, comment, reply...; never a
+    duplicate, shown because an erratum may matter).
+    status: pending | confirmed | rejected. Only a person confirms; confirming points
+    the removed reference to the kept one (Reference.duplicate_of) and is reversible.
+    criteria: what matched, with the title score, shown beside the two records.
+    """
+
+    __tablename__ = "duplicate_pairs"
+
+    project_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("projects.id"), index=True)
+    reference_a_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("references.id"), index=True)
+    reference_b_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("references.id"), index=True)
+    kind: Mapped[str] = mapped_column(String(10))
+    criteria: Mapped[dict[str, Any]] = mapped_column(JSONB)
+    score: Mapped[float] = mapped_column(Float)  # title similarity, 0..1
+    status: Mapped[str] = mapped_column(String(10), default="pending")
+    kept_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("references.id"))
+    decided_by: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id"))
+    decided_at: Mapped[dt.datetime | None] = mapped_column()

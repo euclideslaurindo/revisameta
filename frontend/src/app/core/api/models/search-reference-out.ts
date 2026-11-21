@@ -5,6 +5,7 @@ export interface SearchReferenceOut {
   abstract: (string | null);
   authors: (string | null);
   doi: (string | null);
+  duplicate_of?: (string | null);
   id: string;
   issue: (string | null);
   journal: (string | null);

@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterLink } from '@angular/router';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 
 import { Api } from '../../core/api/api';
@@ -32,6 +33,7 @@ import { ProjectContext } from '../project/project-context';
   selector: 'rm-searches-page',
   imports: [
     FormsModule,
+    RouterLink,
     TranslocoPipe,
     MatButtonModule,
     MatCardModule,
@@ -46,6 +48,11 @@ import { ProjectContext } from '../project/project-context';
   template: `
     <h2>{{ 'searches.title' | transloco }}</h2>
     <p class="muted">{{ 'searches.intro' | transloco }}</p>
+    @if (searches().length) {
+      <p>
+        <a routerLink="duplicatas">{{ 'searches.toDuplicates' | transloco }} →</a>
+      </p>
+    }
     <rm-form-error [error]="error()" />
 
     @if (canImport()) {

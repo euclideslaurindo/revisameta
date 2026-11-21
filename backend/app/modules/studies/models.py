@@ -49,6 +49,8 @@ class Reference(BusinessMixin, AuditedMixin, Base):
     pages: Mapped[str | None] = mapped_column(String(60))
     url: Mapped[str | None] = mapped_column(String(1000))
     record_number: Mapped[int | None] = mapped_column(Integer)  # position in the file
+    # Set when a person confirms this record is a duplicate of another (reversible).
+    duplicate_of: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("references.id"), index=True)
 
     __table_args__ = (
         Index(

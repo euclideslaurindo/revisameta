@@ -26,6 +26,7 @@ dependencies = [
     "openpyxl>=3.1.5",         # read XLSX imports (read-only, streamed)
     "pypdfium2>=5.15",         # PDF text per page (BSD/Apache; PyMuPDF is AGPL, ADR-012)
     "python-docx>=1.2.0",      # DOCX exports (MIT, maintained; listed in spec 3.2)
+    "rapidfuzz>=3.14",         # title similarity for deduplication (MIT, maintained; spec 3.2)
 ]
 
 [dependency-groups]

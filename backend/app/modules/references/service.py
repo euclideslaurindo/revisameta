@@ -78,6 +78,7 @@ class SearchReferenceOut(BaseModel):
     abstract: str | None
     keywords: str | None
     url: str | None
+    duplicate_of: uuid.UUID | None = None
 
 
 class ReferencePage(BaseModel):

@@ -1263,6 +1263,55 @@
       "running": "Lendo",
       "done": "Concluída",
       "failed": "Falhou"
+    },
+    "toDuplicates": "Ver e decidir as duplicatas"
+  },
+  "dedup": {
+    "title": "Duplicatas",
+    "help": "A mesma referência costuma aparecer em mais de uma base. Remover as duplicatas evita triar duas vezes o mesmo artigo, e o número removido entra no fluxograma PRISMA.",
+    "intro": "O sistema só aponta os pares e explica por quê. Você decide qual registro fica; o outro sai da triagem, mas nada é apagado e toda decisão pode ser desfeita.",
+    "summary": "{{imported}} referência(s) importada(s); {{removed}} duplicata(s) removida(s); {{left}} seguem para a triagem.",
+    "run": "Procurar duplicatas",
+    "confirmCertain": "Confirmar as {{count}} certas (mesmo DOI ou PMID)",
+    "confirmCertainAsk": "Confirmar todos os pares com o mesmo DOI ou PMID? Em cada par fica o registro importado primeiro. Dá para desfazer um por um.",
+    "csv": "Baixar relatório (CSV)",
+    "threshold": "Similaridade mínima do título",
+    "thresholdHelp": "De 0,80 a 1. O padrão aprovado é 0,95: só títulos quase idênticos viram duplicata provável. Mais baixo encontra mais pares, com mais falsos positivos para conferir.",
+    "saveThreshold": "Salvar e procurar de novo",
+    "empty": "Nenhum par nesta lista.",
+    "score": "Título {{value}}% parecido.",
+    "volume": "vol.",
+    "pages": "p.",
+    "kept": "Fica",
+    "keepThis": "Manter este",
+    "notDuplicate": "Não é duplicata",
+    "undo": "Desfazer",
+    "kind": {
+      "certain": "Certas",
+      "probable": "Prováveis",
+      "related": "Relacionadas"
+    },
+    "status": {
+      "pending": "A decidir",
+      "confirmed": "Confirmadas",
+      "rejected": "Não são duplicatas"
+    },
+    "kindHelp": {
+      "certain": "Mesmo DOI ou mesmo PMID: é o mesmo artigo.",
+      "probable": "Título quase idêntico, mesmo ano, mesmo primeiro autor e mesma revista, volume e páginas quando os dois têm. Confira lado a lado.",
+      "related": "Parecidas, mas diferentes em números ou em palavras como Parte, Errata, Comentário ou Retratação. Nunca são duplicatas: aparecem aqui porque uma errata pode importar."
+    },
+    "criterion": {
+      "same_doi": "mesmo DOI",
+      "same_pmid": "mesmo PMID",
+      "first_author": "mesmo primeiro autor",
+      "journal": "mesma revista",
+      "volume": "mesmo volume",
+      "pages": "mesmas páginas",
+      "year": "mesmo ano",
+      "yearMissing": "um dos dois sem ano",
+      "numbers": "números diferentes no título",
+      "words": "difere em: {{words}}"
     }
   }
 }

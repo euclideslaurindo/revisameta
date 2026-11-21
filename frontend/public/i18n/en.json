@@ -1263,6 +1263,55 @@
       "running": "Reading",
       "done": "Done",
       "failed": "Failed"
+    },
+    "toDuplicates": "See and decide duplicates"
+  },
+  "dedup": {
+    "title": "Duplicates",
+    "help": "The same reference often appears in more than one database. Removing duplicates avoids screening the same article twice, and the number removed goes into the PRISMA flow diagram.",
+    "intro": "The system only points out the pairs and explains why. You decide which record stays; the other leaves the screening, but nothing is erased and every decision can be undone.",
+    "summary": "{{imported}} reference(s) imported; {{removed}} duplicate(s) removed; {{left}} go to screening.",
+    "run": "Find duplicates",
+    "confirmCertain": "Confirm the {{count}} certain ones (same DOI or PMID)",
+    "confirmCertainAsk": "Confirm every pair with the same DOI or PMID? In each pair the record imported first stays. They can be undone one by one.",
+    "csv": "Download report (CSV)",
+    "threshold": "Minimum title similarity",
+    "thresholdHelp": "From 0.80 to 1. The approved default is 0.95: only nearly identical titles become probable duplicates. Lower finds more pairs, with more false positives to check.",
+    "saveThreshold": "Save and search again",
+    "empty": "No pair in this list.",
+    "score": "Title {{value}}% alike.",
+    "volume": "vol.",
+    "pages": "p.",
+    "kept": "Stays",
+    "keepThis": "Keep this one",
+    "notDuplicate": "Not a duplicate",
+    "undo": "Undo",
+    "kind": {
+      "certain": "Certain",
+      "probable": "Probable",
+      "related": "Related"
+    },
+    "status": {
+      "pending": "To decide",
+      "confirmed": "Confirmed",
+      "rejected": "Not duplicates"
+    },
+    "kindHelp": {
+      "certain": "Same DOI or same PMID: it is the same article.",
+      "probable": "Nearly identical title, same year, same first author and same journal, volume and pages when both have them. Check side by side.",
+      "related": "Alike, but different in numbers or in words such as Part, Erratum, Comment or Retraction. Never duplicates: shown because an erratum may matter."
+    },
+    "criterion": {
+      "same_doi": "same DOI",
+      "same_pmid": "same PMID",
+      "first_author": "same first author",
+      "journal": "same journal",
+      "volume": "same volume",
+      "pages": "same pages",
+      "year": "same year",
+      "yearMissing": "one of them has no year",
+      "numbers": "different numbers in the title",
+      "words": "differs in: {{words}}"
     }
   }
 }

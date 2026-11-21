@@ -136,6 +136,24 @@ Importação RIS/BibTeX/CSV/nbib, deduplicação multicritério com explicação
 - **Quem pode importar e remover:** admin ou revisor. Todos os membros leem.
 - **Remover uma busca** é soft delete: a busca e as referências dela saem da lista, mas nada é apagado.
 
+**Etapa 5, passo 2 — deduplicação (feito):**
+- **Onde fica:** "Buscas → Duplicatas". As regras são funções puras em `backend/app/modules/references/dedup_rules.py`.
+- **Comparação:** os registros são comparados só dentro de blocos (mesmo DOI, mesmo PMID ou mesmo sobrenome do primeiro autor), nunca todos contra todos.
+- **Tipos de par:**
+  - certos: mesmo DOI ou PMID;
+  - prováveis: todos os critérios aprovados juntos;
+  - relacionados: o título é igual quando se deixam de lado números e palavras como Parte, Errata, Comentário, Resposta e Retratação. Nunca são confirmados como duplicata.
+- **Cada par mostra** a similaridade do título e os critérios que bateram, com os dois registros lado a lado.
+- **Decisão:**
+  - A pessoa escolhe qual registro fica. O outro ganha `duplicate_of` e sai da triagem.
+  - Rejeitar significa "não é duplicata". Desfazer volta o par para "a decidir".
+  - Tudo é auditado e usa trava otimista. Em cadeias (A → B → C), o registro removido aponta para o que fica no fim.
+- **Confirmar todas as certas** de uma vez: em cada par, fica o registro importado primeiro.
+- **Limiar de similaridade** configurável pelo admin (0,80 a 1; padrão 0,95). Rodar de novo mantém os pares já decididos e descarta os pendentes que não aparecem mais.
+- **Relatório:** contagens para o PRISMA (importadas, duplicatas removidas, seguem para a triagem) e CSV com cada par, os critérios e a decisão, para o Métodos.
+- **Dependência nova:** `rapidfuzz` (MIT, mantida, listada na seção 3.2).
+- **Limitação conhecida:** ao desfazer um par cujo registro removido tinha outros apontando para ele, esses outros continuam no registro que fica.
+
 **Etapa 6 — GRADE, colaboração e entrega (P1)**
 GRADE e Summary of Findings, comentários, notificações, backup/reimportação do projeto, bibliografia, retenção de projetos inativos.
 *Saída:* tabela SoF em DOCX com justificativas; restauração de backup testada; reimportação de um projeto exportado sem perda.
