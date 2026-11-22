@@ -1440,6 +1440,16 @@
       "attachTo": "Ou juntar ao estudo",
       "primary": "Este passa a ser o relato principal",
       "attach": "Juntar como relato"
+    },
+    "priority": {
+      "order": "Ordem da lista",
+      "byImport": "Ordem de importação",
+      "byPriority": "Mais prováveis primeiro",
+      "help": "Um modelo simples de aprendizado de máquina (sem IA generativa, roda no próprio servidor) aprende com as decisões já tomadas e coloca primeiro as referências mais parecidas com as incluídas. Ele só muda a ordem: nunca exclui nem decide nada.",
+      "train": "Atualizar prioridade",
+      "info": "Modelo treinado com {{includes}} incluída(s)/talvez e {{excludes}} excluída(s); {{scored}} referência(s) ordenadas.",
+      "warning": "A ordem por prioridade ajuda a achar os estudos relevantes mais cedo, mas todas as referências continuam precisando ser lidas, a menos que o protocolo defina um critério de parada.",
+      "needs": "Ainda não dá para ordenar: decida pelo menos {{min}} incluídas (ou talvez) e {{min}} excluídas. Agora: {{includes}} e {{excludes}}."
     }
   }
 }

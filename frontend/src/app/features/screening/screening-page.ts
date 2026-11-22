@@ -27,6 +27,10 @@ import { FormError } from '../../shared/form-error';
 import { LocalDatePipe } from '../../shared/local-date.pipe';
 import { ProjectContext } from '../project/project-context';
 import { listExclusionReasons } from '../../core/api/fn/screening/list-exclusion-reasons';
+import { priorityInfo } from '../../core/api/fn/screening/priority-info';
+import { trainPriority } from '../../core/api/fn/screening/train-priority';
+import { PriorityInfo } from '../../core/api/models/priority-info';
+import { JobProgressService } from '../../core/jobs/job-progress';
 import { ReasonOut } from '../../core/api/models/reason-out';
 import { ExclusionReasons, reasonText } from './exclusion-reasons';
 import { highlight, Segment } from './highlight';
@@ -83,6 +87,49 @@ type Decision = 'include' | 'exclude' | 'maybe';
       <p class="muted">{{ 'screening.fullTextIntro' | transloco }}</p>
     }
     <rm-form-error [error]="error()" />
+    @if (stage === 'title_abstract') {
+      <div class="row">
+        <mat-button-toggle-group
+          [(ngModel)]="order"
+          (ngModelChange)="reload()"
+          [hideSingleSelectionIndicator]="true"
+          [attr.aria-label]="'screening.priority.order' | transloco"
+        >
+          <mat-button-toggle value="import">{{
+            'screening.priority.byImport' | transloco
+          }}</mat-button-toggle>
+          <mat-button-toggle value="priority" [disabled]="!priority()?.trained_at">{{
+            'screening.priority.byPriority' | transloco
+          }}</mat-button-toggle>
+        </mat-button-toggle-group>
+        <span class="term" tabindex="0" [matTooltip]="'screening.priority.help' | transloco"
+          >?</span
+        >
+        @if (canScreen()) {
+          <button mat-stroked-button type="button" [disabled]="busy()" (click)="train()">
+            {{ 'screening.priority.train' | transloco }}
+          </button>
+        }
+      </div>
+      @if (priority(); as pr) {
+        @if (pr.trained_at) {
+          <p class="muted">
+            {{
+              'screening.priority.info'
+                | transloco: { includes: pr.includes, excludes: pr.excludes, scored: pr.scored }
+            }}
+          </p>
+        }
+      }
+      @if (priorityNote(); as note) {
+        <p class="notice notice-warn" role="status">{{ note }}</p>
+      }
+      @if (order === 'priority') {
+        <p class="notice notice-warn" role="status">
+          {{ 'screening.priority.warning' | transloco }}
+        </p>
+      }
+    }
 
     @if (counts(); as c) {
       <p>
@@ -358,6 +405,7 @@ type Decision = 'include' | 'exclude' | 'maybe';
 export class ScreeningPage implements OnInit {
   private readonly api = inject(Api);
   private readonly transloco = inject(TranslocoService);
+  private readonly jobs = inject(JobProgressService);
   protected readonly context = inject(ProjectContext);
 
   protected stage: 'title_abstract' | 'full_text' = 'title_abstract';
@@ -366,6 +414,9 @@ export class ScreeningPage implements OnInit {
   protected readonly activeReasons = computed(() =>
     this.reasons().filter((r) => !r.merged_into_id),
   );
+  protected order: 'import' | 'priority' = 'import';
+  protected readonly priority = signal<PriorityInfo | null>(null);
+  protected readonly priorityNote = signal<string | null>(null);
   protected view: View = 'todo';
   protected q = '';
   protected note = '';
@@ -403,6 +454,29 @@ export class ScreeningPage implements OnInit {
     return reasonText(r, (k) => this.transloco.translate(k));
   }
 
+  async train(): Promise<void> {
+    await this.guard(async () => {
+      this.priorityNote.set(null);
+      const started = await this.api.invoke(trainPriority, { project_id: this.projectId() });
+      if (started.job_id) {
+        const job = await this.jobs.follow(this.projectId(), started.job_id, () => undefined);
+        if (job.status === 'failed') {
+          this.priorityNote.set(
+            this.transloco.translate('screening.priority.needs', {
+              min: started.min_each,
+              includes: (job.result as Record<string, number> | null)?.['includes'] ?? 0,
+              excludes: (job.result as Record<string, number> | null)?.['excludes'] ?? 0,
+            }),
+          );
+          return;
+        }
+      }
+      this.priority.set(await this.api.invoke(priorityInfo, { project_id: this.projectId() }));
+      this.order = 'priority';
+      await this.fetch(true);
+    });
+  }
+
   async loadReasons(): Promise<void> {
     this.reasons.set(await this.api.invoke(listExclusionReasons, { project_id: this.projectId() }));
   }
@@ -415,6 +489,7 @@ export class ScreeningPage implements OnInit {
   async reload(): Promise<void> {
     await this.guard(async () => {
       if (this.stage === 'full_text') await this.loadReasons();
+      this.priority.set(await this.api.invoke(priorityInfo, { project_id: this.projectId() }));
       this.settings.set(
         await this.api.invoke(getScreeningSettings, { project_id: this.projectId() }),
       );
@@ -428,13 +503,23 @@ export class ScreeningPage implements OnInit {
       stage: this.stage,
       view: this.view,
       limit: 50,
-      after: reset ? undefined : (this.nextCursor() ?? undefined),
+      after: reset || this.order === 'priority' ? undefined : (this.nextCursor() ?? undefined),
       q: this.q.trim() || undefined,
+      order: this.stage === 'title_abstract' ? this.order : 'import',
+      // Priority order pages by position; decided references leave the list, so the
+      // position of the next page is how many are still loaded.
+      offset: reset ? 0 : this.items().length,
     });
     this.items.set(reset ? page.items : [...this.items(), ...page.items]);
     if (reset) this.index.set(0);
     this.total.set(page.total);
-    this.nextCursor.set(page.next_cursor ?? null);
+    this.nextCursor.set(
+      this.order === 'priority' && this.stage === 'title_abstract'
+        ? page.next_offset !== null && page.next_offset !== undefined
+          ? 'more'
+          : null
+        : (page.next_cursor ?? null),
+    );
     this.counts.set(
       await this.api.invoke(screeningCounts, { project_id: this.projectId(), stage: this.stage }),
     );

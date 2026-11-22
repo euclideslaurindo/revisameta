@@ -116,6 +116,7 @@ export type { PlanIn } from './models/plan-in';
 export type { PlanOut } from './models/plan-out';
 export type { PlotIn } from './models/plot-in';
 export type { Preview } from './models/preview';
+export type { PriorityInfo } from './models/priority-info';
 export type { ProjectCreate } from './models/project-create';
 export type { ProjectOut } from './models/project-out';
 export type { ProjectUpdate } from './models/project-update';

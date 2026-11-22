@@ -152,6 +152,8 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
         {"into_id": "{study_id}", "version": 1},
     ),
     ("GET", "/api/v1/projects/{project_id}/screening/included", None),
+    ("GET", "/api/v1/projects/{project_id}/screening/priority", None),
+    ("POST", "/api/v1/projects/{project_id}/screening/priority", None),
     (
         "POST",
         "/api/v1/projects/{project_id}/screening/included/{reference_id}/study",

@@ -1440,6 +1440,16 @@
       "attachTo": "Or join the study",
       "primary": "This becomes the main report",
       "attach": "Join as a report"
+    },
+    "priority": {
+      "order": "List order",
+      "byImport": "Import order",
+      "byPriority": "Most likely first",
+      "help": "A simple machine learning model (no generative AI, it runs on the server) learns from the decisions already made and puts first the references most similar to the included ones. It only changes the order: it never excludes or decides anything.",
+      "train": "Update priority",
+      "info": "Model trained on {{includes}} included/maybe and {{excludes}} excluded; {{scored}} reference(s) ordered.",
+      "warning": "Priority order helps find relevant studies sooner, but every reference still needs to be read, unless the protocol defines a stopping rule.",
+      "needs": "Ordering is not possible yet: decide at least {{min}} included (or maybe) and {{min}} excluded. Now: {{includes}} and {{excludes}}."
     }
   }
 }

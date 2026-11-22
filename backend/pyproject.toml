@@ -27,6 +27,7 @@ dependencies = [
     "pypdfium2>=5.15",         # PDF text per page (BSD/Apache; PyMuPDF is AGPL, ADR-012)
     "python-docx>=1.2.0",      # DOCX exports (MIT, maintained; listed in spec 3.2)
     "rapidfuzz>=3.14",         # title similarity for deduplication (MIT, maintained; spec 3.2)
+    "scikit-learn>=1.7",       # screening prioritization, TF-IDF + linear model (BSD; spec 3.2)
 ]
 
 [dependency-groups]

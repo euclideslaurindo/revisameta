@@ -3193,7 +3193,7 @@
           "screening"
         ],
         "summary": "Screening Queue",
-        "description": "References to screen. While blinding is on, other reviewers' decisions are hidden.",
+        "description": "References to screen. While blinding is on, other reviewers' decisions are hidden.\n\norder=priority puts first the references the prioritization model finds most likely\nto be included (pages by offset). It never removes any reference from the list.",
         "operationId": "screening_queue",
         "security": [
           {
@@ -3285,6 +3285,31 @@
               "type": "string",
               "default": "title_abstract",
               "title": "Stage"
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "import",
+                "priority"
+              ],
+              "type": "string",
+              "default": "import",
+              "title": "Order"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
             }
           }
         ],
@@ -4498,6 +4523,102 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/StudyOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/screening/priority": {
+      "get": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Priority Info",
+        "description": "When the model was last trained, on how many decisions, and how many it scored.",
+        "operationId": "priority_info",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriorityInfo"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "screening"
+        ],
+        "summary": "Train Priority",
+        "description": "Trains the model on the current title and abstract decisions (in the background).",
+        "operationId": "train_priority",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PriorityInfo"
                 }
               }
             }
@@ -16584,6 +16705,59 @@
         ],
         "title": "Preview"
       },
+      "PriorityInfo": {
+        "properties": {
+          "trained_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Trained At"
+          },
+          "includes": {
+            "type": "integer",
+            "title": "Includes"
+          },
+          "excludes": {
+            "type": "integer",
+            "title": "Excludes"
+          },
+          "scored": {
+            "type": "integer",
+            "title": "Scored"
+          },
+          "min_each": {
+            "type": "integer",
+            "title": "Min Each",
+            "default": 5
+          },
+          "job_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "trained_at",
+          "includes",
+          "excludes",
+          "scored"
+        ],
+        "title": "PriorityInfo"
+      },
       "ProjectCreate": {
         "properties": {
           "title": {
@@ -19221,6 +19395,17 @@
             ],
             "title": "My Reason Id"
           },
+          "priority_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Priority Score"
+          },
           "decisions": {
             "type": "integer",
             "title": "Decisions"
@@ -19296,6 +19481,17 @@
               }
             ],
             "title": "Next Cursor"
+          },
+          "next_offset": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Offset"
           }
         },
         "type": "object",

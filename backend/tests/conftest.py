@@ -148,6 +148,13 @@ class InlineQueue:
         import uuid
 
         self.enqueued.append((function, kwargs))
+        if function == "screening_priority_task":
+            from app.modules.screening.priority import train
+
+            await train(
+                get_sessionmaker(), uuid.UUID(kwargs["project_id"]), uuid.UUID(kwargs["job_id"])
+            )
+            return
         if function == "import_search_task":
             from app.modules.references.service import process_search
 

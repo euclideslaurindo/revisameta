@@ -7,7 +7,7 @@ Several reports can belong to the same study, so the same patients are never cou
 import enum
 import uuid
 
-from sqlalchemy import Boolean, ForeignKey, Index, Integer, String, Text
+from sqlalchemy import Boolean, Float, ForeignKey, Index, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import AuditedMixin, Base, BusinessMixin
@@ -53,6 +53,8 @@ class Reference(BusinessMixin, AuditedMixin, Base):
     useful_as_reference: Mapped[bool] = mapped_column(
         Boolean, default=False, server_default="false"
     )
+    # Screening order from the prioritization model (stage 5); never a decision.
+    priority_score: Mapped[float | None] = mapped_column(Float)
     # Set when a person confirms this record is a duplicate of another (reversible).
     duplicate_of: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("references.id"), index=True)
 

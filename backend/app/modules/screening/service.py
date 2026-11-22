@@ -69,6 +69,7 @@ class ScreeningQueueItem(BaseModel):
     useful_as_reference: bool
     my_decision: str | None
     my_reason_id: uuid.UUID | None = None
+    priority_score: float | None = None
     decisions: int  # how many reviewers decided (always visible)
     status: Status | None  # None while blind for this user
     others: list[ScreeningDecisionOut]  # other reviewers' current decisions; empty while blind
@@ -78,7 +79,8 @@ class ScreeningQueueItem(BaseModel):
 class ScreeningQueuePage(BaseModel):
     items: list[ScreeningQueueItem]
     total: int
-    next_cursor: uuid.UUID | None
+    next_cursor: uuid.UUID | None  # import order
+    next_offset: int | None = None  # priority order
 
 
 class ScreeningCounts(BaseModel):
@@ -303,7 +305,11 @@ async def update_settings(
         exclude_keywords=sorted({k.strip() for k in data.exclude_keywords if k.strip()}),
         blind=data.blind,
     )
-    ctx.project.screening_settings = clean.model_dump()
+    # Keep what is not a setting (e.g. the prioritization model info).
+    ctx.project.screening_settings = {
+        **(ctx.project.screening_settings or {}),
+        **clean.model_dump(),
+    }
     await session.commit()
     return clean
 
@@ -321,6 +327,8 @@ async def queue(
     limit: int,
     search: str | None = None,
     stage: Stage = "title_abstract",
+    order: Literal["import", "priority"] = "import",
+    offset: int = 0,
 ) -> ScreeningQueuePage:
     state = await _state(session, ctx, stage)
     me = ctx.user.id
@@ -347,11 +355,27 @@ async def queue(
 
     selected = [i for i in ids if keep(i)]
     total = len(selected)
-    if after is not None:
-        selected = [i for i in selected if i > after]
-    page_ids = selected[: limit + 1]
-    more = len(page_ids) > limit
-    page_ids = page_ids[:limit]
+    next_offset: int | None = None
+    if order == "priority":
+        # Highest predicted chance of inclusion first; references without a score
+        # (imported after the last training) keep import order at the end.
+        scores = dict(
+            (
+                await session.execute(
+                    select(Reference.id, Reference.priority_score).where(*_active(ctx))
+                )
+            ).all()
+        )
+        selected.sort(key=lambda i: (scores.get(i) is None, -(scores.get(i) or 0.0), i))
+        page_ids = selected[offset : offset + limit]
+        more = False
+        next_offset = offset + limit if offset + limit < total else None
+    else:
+        if after is not None:
+            selected = [i for i in selected if i > after]
+        page_ids = selected[: limit + 1]
+        more = len(page_ids) > limit
+        page_ids = page_ids[:limit]
     refs = {
         r.id: r for r in await session.scalars(select(Reference).where(Reference.id.in_(page_ids)))
     }
@@ -365,6 +389,7 @@ async def queue(
             ScreeningQueueItem(
                 reference=SearchReferenceOut.model_validate(ref, from_attributes=True),
                 useful_as_reference=ref.useful_as_reference,
+                priority_score=ref.priority_score,
                 my_decision=mine.decision if mine else None,
                 my_reason_id=mine.exclusion_reason_id if mine else None,
                 decisions=len(current),
@@ -376,7 +401,10 @@ async def queue(
             )
         )
     return ScreeningQueuePage(
-        items=items, total=total, next_cursor=page_ids[-1] if more and page_ids else None
+        items=items,
+        total=total,
+        next_cursor=page_ids[-1] if more and page_ids else None,
+        next_offset=next_offset,
     )
 
 

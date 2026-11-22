@@ -1,13 +1,15 @@
 import uuid
+from typing import Literal
 
 from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_session
+from app.integrations.queue import JobQueue, get_job_queue
 from app.integrations.stats_client import StatsClient, get_stats_client
 from app.modules.projects.access import ProjectContext, member_access
 from app.modules.references.service import SearchReferenceOut
-from app.modules.screening import inclusion, reasons, service
+from app.modules.screening import inclusion, priority, reasons, service
 from app.modules.studies.schemas import StudyOut
 
 router = APIRouter(prefix="/projects/{project_id}/screening", tags=["screening"])
@@ -39,9 +41,17 @@ async def screening_queue(
     ctx: ProjectContext = Depends(member_access),
     session: AsyncSession = Depends(get_session),
     stage: service.Stage = "title_abstract",
+    order: Literal["import", "priority"] = "import",
+    offset: int = Query(default=0, ge=0),
 ) -> service.ScreeningQueuePage:
-    """References to screen. While blinding is on, other reviewers' decisions are hidden."""
-    return await service.queue(session, ctx, view, after, limit, q, stage=stage)
+    """References to screen. While blinding is on, other reviewers' decisions are hidden.
+
+    order=priority puts first the references the prioritization model finds most likely
+    to be included (pages by offset). It never removes any reference from the list.
+    """
+    return await service.queue(
+        session, ctx, view, after, limit, q, stage=stage, order=order, offset=offset
+    )
 
 
 @router.get("/counts")
@@ -231,3 +241,22 @@ async def included_to_study(
 ) -> StudyOut:
     """New study, or one more report of an existing study (same cohort). Admin."""
     return await inclusion.to_study(session, ctx, reference_id, body)
+
+
+# ---- Prioritization (classic machine learning, never a decision) -------------------
+
+
+@router.get("/priority")
+async def priority_info(ctx: ProjectContext = Depends(member_access)) -> priority.PriorityInfo:
+    """When the model was last trained, on how many decisions, and how many it scored."""
+    return priority.info_of(ctx.project)
+
+
+@router.post("/priority", status_code=status.HTTP_202_ACCEPTED)
+async def train_priority(
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+    queue: JobQueue = Depends(get_job_queue),
+) -> priority.PriorityInfo:
+    """Trains the model on the current title and abstract decisions (in the background)."""
+    return await priority.start(session, ctx, queue)

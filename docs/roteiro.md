@@ -187,6 +187,18 @@ Importação RIS/BibTeX/CSV/nbib, deduplicação multicritério com explicação
   - Excluir o estudo não apaga a referência da busca: ela volta para a lista.
 - **Rotas:** as da triagem recebem `stage=full_text`. As novas são `/screening/exclusion-reasons` e `/screening/included`.
 
+**Etapa 5, passo 5 — priorização por aprendizado de máquina (feito):**
+- **Modelo:** TF-IDF (unigramas e bigramas) + regressão logística com classes balanceadas, do `scikit-learn`. Roda no worker do próprio servidor, sem LLM e sem custo, no estilo do ASReview.
+- **Treino:** usa as decisões atuais de título e resumo.
+  - "Incluir" ou "Talvez" de algum revisor conta como incluída.
+  - Só "Excluir" conta como excluída.
+  - O treino exige pelo menos 5 de cada; com menos, a tarefa falha com uma mensagem clara.
+  - O botão "Atualizar prioridade" treina de novo. Cada referência guarda a probabilidade em `priority_score`.
+- **Uso:** "Mais prováveis primeiro" (`order=priority`) só muda a ordem da fila. Referências sem nota (importadas depois do último treino) ficam no fim, na ordem de importação.
+- **O modelo nunca exclui, decide ou esconde nada.** A tela avisa que todas as referências precisam ser lidas, a menos que o protocolo defina um critério de parada.
+- **Dependências novas:** `scikit-learn` (BSD, mantida, listada na seção 3.2), que traz `scipy` e `threadpoolctl` (BSD).
+- **Por que no Python e não no R:** a ordenação não é estatística da meta-análise; a especificação põe essa função no Python (seção 3.2).
+
 **Etapa 6 — GRADE, colaboração e entrega (P1)**
 GRADE e Summary of Findings, comentários, notificações, backup/reimportação do projeto, bibliografia, retenção de projetos inativos.
 *Saída:* tabela SoF em DOCX com justificativas; restauração de backup testada; reimportação de um projeto exportado sem perda.

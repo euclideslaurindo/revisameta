@@ -161,6 +161,10 @@ export type { IncludedWaitingForStudy$Params as IncludedWaitingForStudy$Params }
 export { includedWaitingForStudy as includedWaitingForStudy } from './fn/screening/included-waiting-for-study';
 export type { IncludedToStudy$Params as IncludedToStudy$Params } from './fn/screening/included-to-study';
 export { includedToStudy as includedToStudy } from './fn/screening/included-to-study';
+export type { PriorityInfo$Params as PriorityInfo$Params } from './fn/screening/priority-info';
+export { priorityInfo as priorityInfo } from './fn/screening/priority-info';
+export type { TrainPriority$Params as TrainPriority$Params } from './fn/screening/train-priority';
+export { trainPriority as trainPriority } from './fn/screening/train-priority';
 export type { ListPdfs$Params as ListPdfs$Params } from './fn/pdfs/list-pdfs';
 export { listPdfs as listPdfs } from './fn/pdfs/list-pdfs';
 export type { AttachPdf$Params as AttachPdf$Params } from './fn/pdfs/attach-pdf';

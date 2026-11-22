@@ -16,6 +16,8 @@ export interface ScreeningQueue$Params {
   limit?: number;
   q?: (string | null);
   stage?: 'title_abstract' | 'full_text';
+  order?: 'import' | 'priority';
+  offset?: number;
 }
 
 export function screeningQueue(http: HttpClient, rootUrl: string, params: ScreeningQueue$Params, context?: HttpContext): Observable<StrictHttpResponse<ScreeningQueuePage>> {
@@ -27,6 +29,8 @@ export function screeningQueue(http: HttpClient, rootUrl: string, params: Screen
     rb.query('limit', params.limit, {});
     rb.query('q', params.q, {});
     rb.query('stage', params.stage, {});
+    rb.query('order', params.order, {});
+    rb.query('offset', params.offset, {});
   }
 
   return http.request(
