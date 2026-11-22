@@ -261,6 +261,23 @@ function(req, res) {
   out
 }
 
+#* PRISMA 2020 flow diagram (grid). The texts of the boxes come ready from the backend.
+#* Body: { format, phases, title, boxes: {identified, removed, screened, ...} }
+#* @post /prisma-flow
+#* @serializer unboxedJSON list(digits = NA, na = "null")
+function(req, res) {
+  spec <- tryCatch(jsonlite::fromJSON(req$postBody, simplifyVector = FALSE), error = function(e) NULL)
+  if (is.null(spec)) {
+    res$status <- 422
+    return(envelope(errors = "body must be JSON"))
+  }
+  out <- prisma_flow(spec)
+  if (!isTRUE(out$ok)) {
+    res$status <- 422
+  }
+  out
+}
+
 #* Influence diagnostics and improbable effects (7.5.1 block E).
 #* Body: { measure, method, test, data: {label, yi, vi}, params }
 #* @post /influence

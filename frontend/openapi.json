@@ -4636,6 +4636,259 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/prisma/counts": {
+      "get": {
+        "tags": [
+          "prisma"
+        ],
+        "summary": "Prisma Counts",
+        "description": "Counts of the flow diagram, what was adjusted by hand and what does not add up.",
+        "operationId": "prisma_counts",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrismaCounts"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/prisma/adjustments/{key}": {
+      "put": {
+        "tags": [
+          "prisma"
+        ],
+        "summary": "Adjust Prisma Count",
+        "description": "Types a count by hand, with a justification (admin). value=null removes it.",
+        "operationId": "adjust_prisma_count",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "enum": [
+                "identified_total",
+                "duplicates_removed",
+                "records_screened",
+                "records_excluded",
+                "reports_sought",
+                "reports_not_retrieved",
+                "reports_assessed",
+                "reports_excluded_total",
+                "studies_included",
+                "reports_included",
+                "studies_meta_analysis"
+              ],
+              "type": "string",
+              "title": "Key"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdjustIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PrismaCounts"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/prisma/flow": {
+      "post": {
+        "tags": [
+          "prisma"
+        ],
+        "summary": "Prisma Flow Diagram",
+        "description": "PRISMA 2020 flow diagram (SVG, or PNG at 300 dpi) in the chosen language.",
+        "operationId": "prisma_flow_diagram",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FlowIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The file.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/prisma/flow.docx": {
+      "get": {
+        "tags": [
+          "prisma"
+        ],
+        "summary": "Prisma Flow Docx",
+        "operationId": "prisma_flow_docx",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "pt-BR",
+                "en"
+              ],
+              "type": "string",
+              "default": "pt-BR",
+              "title": "Lang"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The file.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/projects/{project_id}/reports/{report_id}/pdfs": {
       "post": {
         "tags": [
@@ -10240,6 +10493,59 @@
   },
   "components": {
     "schemas": {
+      "AdjustIn": {
+        "properties": {
+          "value": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "justification": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Justification"
+          }
+        },
+        "type": "object",
+        "title": "AdjustIn"
+      },
+      "Adjustment": {
+        "properties": {
+          "value": {
+            "type": "integer",
+            "title": "Value"
+          },
+          "justification": {
+            "type": "string",
+            "title": "Justification"
+          },
+          "computed": {
+            "type": "integer",
+            "title": "Computed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "value",
+          "justification",
+          "computed"
+        ],
+        "title": "Adjustment"
+      },
       "AgreementOut": {
         "properties": {
           "items": {
@@ -12208,6 +12514,24 @@
         ],
         "title": "DataSource"
       },
+      "DatabaseCount": {
+        "properties": {
+          "database": {
+            "type": "string",
+            "title": "Database"
+          },
+          "n": {
+            "type": "integer",
+            "title": "N"
+          }
+        },
+        "type": "object",
+        "required": [
+          "database",
+          "n"
+        ],
+        "title": "DatabaseCount"
+      },
       "DecideIn": {
         "properties": {
           "key": {
@@ -13218,6 +13542,30 @@
           "history"
         ],
         "title": "FinalReviewOut"
+      },
+      "FlowIn": {
+        "properties": {
+          "format": {
+            "type": "string",
+            "enum": [
+              "svg",
+              "png"
+            ],
+            "title": "Format",
+            "default": "svg"
+          },
+          "lang": {
+            "type": "string",
+            "enum": [
+              "pt-BR",
+              "en"
+            ],
+            "title": "Lang",
+            "default": "pt-BR"
+          }
+        },
+        "type": "object",
+        "title": "FlowIn"
       },
       "ForestIn": {
         "properties": {
@@ -16758,6 +17106,70 @@
         ],
         "title": "PriorityInfo"
       },
+      "PrismaCounts": {
+        "properties": {
+          "identified": {
+            "items": {
+              "$ref": "#/components/schemas/DatabaseCount"
+            },
+            "type": "array",
+            "title": "Identified"
+          },
+          "reports_excluded": {
+            "items": {
+              "$ref": "#/components/schemas/ReasonCount"
+            },
+            "type": "array",
+            "title": "Reports Excluded"
+          },
+          "values": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Values"
+          },
+          "computed": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Computed"
+          },
+          "adjusted": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Adjustment"
+            },
+            "type": "object",
+            "title": "Adjusted"
+          },
+          "pending": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Pending"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "type": "object",
+        "required": [
+          "identified",
+          "reports_excluded",
+          "values",
+          "computed",
+          "adjusted",
+          "pending",
+          "warnings"
+        ],
+        "title": "PrismaCounts"
+      },
       "ProjectCreate": {
         "properties": {
           "title": {
@@ -17088,6 +17500,56 @@
           "kind"
         ],
         "title": "QuotaUpdate"
+      },
+      "ReasonCount": {
+        "properties": {
+          "reason_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason Id"
+          },
+          "key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Key"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "n": {
+            "type": "integer",
+            "title": "N"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reason_id",
+          "key",
+          "label",
+          "n"
+        ],
+        "title": "ReasonCount"
       },
       "ReasonIn": {
         "properties": {

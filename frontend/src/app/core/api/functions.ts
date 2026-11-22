@@ -165,6 +165,14 @@ export type { PriorityInfo$Params as PriorityInfo$Params } from './fn/screening/
 export { priorityInfo as priorityInfo } from './fn/screening/priority-info';
 export type { TrainPriority$Params as TrainPriority$Params } from './fn/screening/train-priority';
 export { trainPriority as trainPriority } from './fn/screening/train-priority';
+export type { PrismaCounts$Params as PrismaCounts$Params } from './fn/prisma/prisma-counts';
+export { prismaCounts as prismaCounts } from './fn/prisma/prisma-counts';
+export type { AdjustPrismaCount$Params as AdjustPrismaCount$Params } from './fn/prisma/adjust-prisma-count';
+export { adjustPrismaCount as adjustPrismaCount } from './fn/prisma/adjust-prisma-count';
+export type { PrismaFlowDiagram$Params as PrismaFlowDiagram$Params } from './fn/prisma/prisma-flow-diagram';
+export { prismaFlowDiagram as prismaFlowDiagram } from './fn/prisma/prisma-flow-diagram';
+export type { PrismaFlowDocx$Params as PrismaFlowDocx$Params } from './fn/prisma/prisma-flow-docx';
+export { prismaFlowDocx as prismaFlowDocx } from './fn/prisma/prisma-flow-docx';
 export type { ListPdfs$Params as ListPdfs$Params } from './fn/pdfs/list-pdfs';
 export { listPdfs as listPdfs } from './fn/pdfs/list-pdfs';
 export type { AttachPdf$Params as AttachPdf$Params } from './fn/pdfs/attach-pdf';

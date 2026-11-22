@@ -153,6 +153,14 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
     ),
     ("GET", "/api/v1/projects/{project_id}/screening/included", None),
     ("GET", "/api/v1/projects/{project_id}/screening/priority", None),
+    ("GET", "/api/v1/projects/{project_id}/prisma/counts", None),
+    (
+        "PUT",
+        "/api/v1/projects/{project_id}/prisma/adjustments/{key}",
+        {"value": 1, "justification": "lista final"},
+    ),
+    ("POST", "/api/v1/projects/{project_id}/prisma/flow", {"format": "svg"}),
+    ("GET", "/api/v1/projects/{project_id}/prisma/flow.docx", None),
     ("POST", "/api/v1/projects/{project_id}/screening/priority", None),
     (
         "POST",
@@ -447,6 +455,7 @@ async def _setup(client: AsyncClient, make_user: MakeUser) -> tuple[LoggedUser, 
     ids["reference_id"] = ids["study_id"]
     ids["user_id"] = ids["study_id"]
     ids["reason_id"] = ids["study_id"]
+    ids["key"] = "duplicates_removed"
     ids["tool_id"] = (
         await client.post(
             f"/api/v1/projects/{project['id']}/rob/tools",

@@ -4,7 +4,7 @@ test_that("plumber.R parses: every route and serializer annotation is valid", {
   expected <- c(
     "/health", "/kappa", "/rob-plots", "/effect-sizes", "/meta-analysis", "/convert", "/combine-groups",
     "/forest-plot", "/plausibility-checks", "/influence", "/r-script",
-    "/leave-one-out", "/subgroup", "/egger", "/funnel-plot"
+    "/leave-one-out", "/subgroup", "/egger", "/funnel-plot", "/prisma-flow"
   )
   expect_true(all(expected %in% paths))
 })

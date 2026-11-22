@@ -106,7 +106,8 @@
       "rob": "Risco de viés",
       "meta": "Meta-análise",
       "searches": "Buscas",
-      "screening": "Triagem"
+      "screening": "Triagem",
+      "prisma": "PRISMA"
     }
   },
   "protocol": {
@@ -1450,6 +1451,43 @@
       "info": "Modelo treinado com {{includes}} incluída(s)/talvez e {{excludes}} excluída(s); {{scored}} referência(s) ordenadas.",
       "warning": "A ordem por prioridade ajuda a achar os estudos relevantes mais cedo, mas todas as referências continuam precisando ser lidas, a menos que o protocolo defina um critério de parada.",
       "needs": "Ainda não dá para ordenar: decida pelo menos {{min}} incluídas (ou talvez) e {{min}} excluídas. Agora: {{includes}} e {{excludes}}."
+    }
+  },
+  "prisma": {
+    "title": "Fluxograma PRISMA 2020",
+    "help": "O PRISMA é a diretriz de como relatar uma revisão sistemática. O fluxograma mostra quantos registros entraram, quantos saíram em cada etapa e por quê.",
+    "intro": "Os números vêm do próprio sistema: buscas, duplicatas, triagem, texto completo, estudos e análises salvas. Se o grupo importou só a lista final, ajuste as contagens à mão, sempre com justificativa.",
+    "docx": "Baixar DOCX",
+    "counts": "Contagens",
+    "count": "Contagem",
+    "system": "Do sistema",
+    "used": "No fluxograma",
+    "adjust": "Ajustar",
+    "adjusted": "ajustada",
+    "why": "Motivo do ajuste: {{text}}",
+    "value": "Valor",
+    "justification": "Justificativa",
+    "save": "Salvar",
+    "useSystem": "Usar a do sistema",
+    "key": {
+      "identified_total": "Registros identificados (total)",
+      "duplicates_removed": "Duplicatas removidas",
+      "records_screened": "Registros triados",
+      "records_excluded": "Registros excluídos na triagem",
+      "reports_sought": "Relatos buscados para leitura",
+      "reports_not_retrieved": "Relatos não obtidos",
+      "reports_assessed": "Relatos avaliados (texto completo)",
+      "reports_excluded_total": "Relatos excluídos no texto completo",
+      "studies_included": "Estudos incluídos",
+      "reports_included": "Relatos dos estudos incluídos",
+      "studies_meta_analysis": "Estudos em meta-análise"
+    },
+    "warning": {
+      "title_abstract_pending": "Ainda há referências esperando decisão ou com conflito na triagem de título e resumo.",
+      "full_text_pending": "Ainda há artigos esperando decisão ou com conflito no texto completo.",
+      "screened_does_not_add_up": "Identificados menos duplicatas não bate com o número de triados. Confira as contagens ajustadas.",
+      "sought_does_not_add_up": "Triados menos excluídos não bate com o número de relatos buscados.",
+      "assessed_does_not_add_up": "Buscados menos não obtidos não bate com o número de avaliados."
     }
   }
 }

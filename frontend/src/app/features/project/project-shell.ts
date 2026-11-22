@@ -46,6 +46,15 @@ import { ProjectContext } from './project-context';
         </a>
         <a
           mat-tab-link
+          routerLink="prisma"
+          routerLinkActive
+          #prisma="routerLinkActive"
+          [active]="prisma.isActive"
+        >
+          {{ 'project.nav.prisma' | transloco }}
+        </a>
+        <a
+          mat-tab-link
           routerLink="estudos"
           routerLinkActive
           #studies="routerLinkActive"

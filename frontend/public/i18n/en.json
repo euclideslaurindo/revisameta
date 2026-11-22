@@ -106,7 +106,8 @@
       "rob": "Risk of bias",
       "meta": "Meta-analysis",
       "searches": "Searches",
-      "screening": "Screening"
+      "screening": "Screening",
+      "prisma": "PRISMA"
     }
   },
   "protocol": {
@@ -1450,6 +1451,43 @@
       "info": "Model trained on {{includes}} included/maybe and {{excludes}} excluded; {{scored}} reference(s) ordered.",
       "warning": "Priority order helps find relevant studies sooner, but every reference still needs to be read, unless the protocol defines a stopping rule.",
       "needs": "Ordering is not possible yet: decide at least {{min}} included (or maybe) and {{min}} excluded. Now: {{includes}} and {{excludes}}."
+    }
+  },
+  "prisma": {
+    "title": "PRISMA 2020 flow diagram",
+    "help": "PRISMA is the guideline for reporting a systematic review. The flow diagram shows how many records came in, how many left at each step and why.",
+    "intro": "The numbers come from the system itself: searches, duplicates, screening, full text, studies and saved analyses. If the group imported only the final list, adjust the counts by hand, always with a justification.",
+    "docx": "Download DOCX",
+    "counts": "Counts",
+    "count": "Count",
+    "system": "From the system",
+    "used": "In the diagram",
+    "adjust": "Adjust",
+    "adjusted": "adjusted",
+    "why": "Reason for the adjustment: {{text}}",
+    "value": "Value",
+    "justification": "Justification",
+    "save": "Save",
+    "useSystem": "Use the system's",
+    "key": {
+      "identified_total": "Records identified (total)",
+      "duplicates_removed": "Duplicates removed",
+      "records_screened": "Records screened",
+      "records_excluded": "Records excluded at screening",
+      "reports_sought": "Reports sought for retrieval",
+      "reports_not_retrieved": "Reports not retrieved",
+      "reports_assessed": "Reports assessed (full text)",
+      "reports_excluded_total": "Reports excluded at full text",
+      "studies_included": "Studies included",
+      "reports_included": "Reports of included studies",
+      "studies_meta_analysis": "Studies in a meta-analysis"
+    },
+    "warning": {
+      "title_abstract_pending": "Some references are still waiting for a decision or in conflict at title and abstract screening.",
+      "full_text_pending": "Some articles are still waiting for a decision or in conflict at full text.",
+      "screened_does_not_add_up": "Identified minus duplicates does not match the number screened. Check the adjusted counts.",
+      "sought_does_not_add_up": "Screened minus excluded does not match the number of reports sought.",
+      "assessed_does_not_add_up": "Sought minus not retrieved does not match the number assessed."
     }
   }
 }

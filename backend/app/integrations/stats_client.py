@@ -143,6 +143,10 @@ class StatsClient:
         """Funnel plot (metafor::funnel) as SVG or PNG."""
         return await self._request("POST", "/funnel-plot", json=spec)
 
+    async def prisma_flow(self, spec: dict[str, Any]) -> StatsResponse:
+        """PRISMA 2020 flow diagram (grid) as SVG or PNG."""
+        return await self._request("POST", "/prisma-flow", json=spec)
+
     async def rob_plot(self, spec: dict[str, Any]) -> StatsResponse:
         """Risk-of-bias traffic light or summary (robvis, or ggplot2 with the same look)."""
         return await self._request("POST", "/rob-plots", json=spec)

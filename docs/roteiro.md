@@ -199,6 +199,21 @@ Importação RIS/BibTeX/CSV/nbib, deduplicação multicritério com explicação
 - **Dependências novas:** `scikit-learn` (BSD, mantida, listada na seção 3.2), que traz `scipy` e `threadpoolctl` (BSD).
 - **Por que no Python e não no R:** a ordenação não é estatística da meta-análise; a especificação põe essa função no Python (seção 3.2).
 
+**Etapa 5, passo 6 — fluxograma PRISMA 2020 (feito):**
+- **Aba "PRISMA":** contagens calculadas pelo sistema. A origem de cada caixa está explicada em `backend/app/modules/prisma/service.py`.
+  - Identificados por base: o que veio de cada busca, antes de remover duplicatas.
+  - Duplicatas removidas: as confirmadas por uma pessoa.
+  - Triados, excluídos e buscados: decisões finais de título e resumo.
+  - Não obtidos: excluídos no texto completo com o motivo "texto completo indisponível".
+  - Avaliados e excluídos por motivo: decisões finais do texto completo.
+  - Estudos e relatos incluídos: estudos e relatos do projeto.
+  - Estudos em meta-análise: os que aparecem em pelo menos uma análise salva.
+- **Ajuste manual** (para quem importou só a lista final): o admin digita a contagem com uma justificativa obrigatória. Isso é auditado, e o fluxograma marca a contagem com "*" e uma nota. "Usar a do sistema" desfaz o ajuste (soft delete).
+- **Avisos:** a tela avisa quando há referências pendentes ou em conflito e quando as contas não fecham (identificados − duplicatas ≠ triados, por exemplo).
+- **Desenho:** no serviço R (`/prisma-flow`), com `grid` do R base, sem pacote novo, no layout PRISMA 2020 para revisões novas.
+  - Os textos de cada caixa chegam prontos do backend, no idioma escolhido (pt ou en, separado do idioma da interface).
+  - Saídas em SVG, PNG a 300 dpi e DOCX (figura e lista dos ajustes com justificativa).
+
 **Etapa 6 — GRADE, colaboração e entrega (P1)**
 GRADE e Summary of Findings, comentários, notificações, backup/reimportação do projeto, bibliografia, retenção de projetos inativos.
 *Saída:* tabela SoF em DOCX com justificativas; restauração de backup testada; reimportação de um projeto exportado sem perda.

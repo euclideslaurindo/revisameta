@@ -19,6 +19,7 @@ from app.modules.exports.router import router as exports_router
 from app.modules.extraction.router import router as extraction_router
 from app.modules.jobs.router import router as jobs_router
 from app.modules.pdfs.router import router as pdfs_router
+from app.modules.prisma.router import router as prisma_router
 from app.modules.projects.router import router as projects_router
 from app.modules.protocol.router import router as protocol_router
 from app.modules.quotas.router import router as quotas_router
@@ -84,6 +85,7 @@ def create_app() -> FastAPI:
         studies_router,
         references_router,
         screening_router,
+        prisma_router,
         pdfs_router,
         extraction_router,
         exports_router,
