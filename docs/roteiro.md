@@ -268,6 +268,11 @@ Importação RIS/BibTeX/CSV/nbib, deduplicação multicritério com explicação
 - Cada pessoa vê só os próprios avisos, e só de projetos de que ainda é membro. Os avisos não guardam e-mails.
 - "Pendências por membro" já aparecem no painel do projeto; o resumo semanal por e-mail fica para quando houver e-mail transacional (10.6).
 
+**Etapa 6, passo 5 — bibliografia (feito):**
+- Todos os artigos (relatos) dos estudos do projeto, o principal primeiro, em RIS (Zotero/Mendeley), BibTeX ou texto em Vancouver (até 6 autores e "et al").
+- Os campos saem como estão guardados; nada é inventado. A tela lista os estudos com artigo sem autores, ano ou revista, para completar antes de citar.
+- Sem nenhum artigo, a exportação avisa em vez de gerar arquivo vazio.
+
 **Etapa 6 — GRADE, colaboração e entrega (P1)**
 GRADE e Summary of Findings, comentários, notificações, backup/reimportação do projeto, bibliografia, retenção de projetos inativos.
 *Saída:* tabela SoF em DOCX com justificativas; restauração de backup testada; reimportação de um projeto exportado sem perda.

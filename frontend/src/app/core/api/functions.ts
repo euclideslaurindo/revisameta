@@ -253,6 +253,10 @@ export type { ExtractionExportStatus$Params as ExtractionExportStatus$Params } f
 export { extractionExportStatus as extractionExportStatus } from './fn/exports/extraction-export-status';
 export type { ExportExtraction$Params as ExportExtraction$Params } from './fn/exports/export-extraction';
 export { exportExtraction as exportExtraction } from './fn/exports/export-extraction';
+export type { BibliographyStatus$Params as BibliographyStatus$Params } from './fn/exports/bibliography-status';
+export { bibliographyStatus as bibliographyStatus } from './fn/exports/bibliography-status';
+export type { ExportBibliography$Params as ExportBibliography$Params } from './fn/exports/export-bibliography';
+export { exportBibliography as exportBibliography } from './fn/exports/export-bibliography';
 export type { ExportRiskOfBias$Params as ExportRiskOfBias$Params } from './fn/exports/export-risk-of-bias';
 export { exportRiskOfBias as exportRiskOfBias } from './fn/exports/export-risk-of-bias';
 export type { RobCatalog$Params as RobCatalog$Params } from './fn/risk-of-bias/rob-catalog';

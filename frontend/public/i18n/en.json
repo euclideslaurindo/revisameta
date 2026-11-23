@@ -560,7 +560,17 @@
     },
     "language": "File language",
     "acknowledge": "I am aware that {{count}} study(ies) will be left out of the file.",
-    "download": "Download"
+    "download": "Download",
+    "bibliography": {
+      "title": "Bibliography of the included studies",
+      "records": "{{n}} article(s) of the project's studies.",
+      "incomplete": "Authors, year or journal missing in: {{studies}}. Complete them before citing.",
+      "format": {
+        "ris": "Download RIS (Zotero, Mendeley)",
+        "bibtex": "Download BibTeX",
+        "vancouver": "Download Vancouver text"
+      }
+    }
   },
   "formEditor": {
     "title": "Study characteristics form",

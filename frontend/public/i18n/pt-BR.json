@@ -560,7 +560,17 @@
     },
     "language": "Idioma do arquivo",
     "acknowledge": "Estou ciente de que {{count}} estudo(s) ficarão fora do arquivo.",
-    "download": "Baixar"
+    "download": "Baixar",
+    "bibliography": {
+      "title": "Bibliografia dos estudos incluídos",
+      "records": "{{n}} artigo(s) dos estudos do projeto.",
+      "incomplete": "Faltam autores, ano ou revista em: {{studies}}. Complete antes de citar.",
+      "format": {
+        "ris": "Baixar RIS (Zotero, Mendeley)",
+        "bibtex": "Baixar BibTeX",
+        "vancouver": "Baixar texto em Vancouver"
+      }
+    }
   },
   "formEditor": {
     "title": "Formulário de características do estudo",

@@ -21,6 +21,8 @@ export type { AssemblyOut } from './models/assembly-out';
 export type { AssessmentOut } from './models/assessment-out';
 export type { AssessmentSummary } from './models/assessment-summary';
 export type { AttachPdfIn } from './models/attach-pdf-in';
+export type { BibFormat } from './models/bib-format';
+export type { BibStatus } from './models/bib-status';
 export type { BodyImportSearch } from './models/body-import-search';
 export type { BodyPreviewImport } from './models/body-preview-import';
 export type { BodyPreviewRobImport } from './models/body-preview-rob-import';

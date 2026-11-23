@@ -6,7 +6,7 @@ from fastapi import APIRouter, Depends, Query, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_session
-from app.modules.exports import extraction, risk_of_bias
+from app.modules.exports import bibliography, extraction, risk_of_bias
 from app.modules.projects.access import ProjectContext, member_access
 
 router = APIRouter(prefix="/projects/{project_id}/exports", tags=["exports"])
@@ -48,6 +48,28 @@ async def export_extraction(
         lang=lang,
         acknowledge_missing=acknowledge_missing,
     )
+    disposition = f"attachment; filename=\"{name}\"; filename*=UTF-8''{quote(name)}"
+    return Response(content=content, media_type=media, headers={"Content-Disposition": disposition})
+
+
+@router.get("/bibliography/status")
+async def bibliography_status(
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> bibliography.BibStatus:
+    """How many records the bibliography has and which studies lack authors, year or
+    journal."""
+    return await bibliography.status(session, ctx)
+
+
+@router.get("/bibliography", response_class=Response, responses=FILE_RESPONSE)  # type: ignore[arg-type]
+async def export_bibliography(
+    file_format: Annotated[bibliography.BibFormat, Query()] = bibliography.BibFormat.RIS,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> Response:
+    """Articles of the included studies as RIS, BibTeX or Vancouver text."""
+    content, name, media = await bibliography.export(session, ctx, file_format)
     disposition = f"attachment; filename=\"{name}\"; filename*=UTF-8''{quote(name)}"
     return Response(content=content, media_type=media, headers={"Content-Disposition": disposition})
 

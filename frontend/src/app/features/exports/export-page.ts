@@ -17,6 +17,7 @@ import { withJsonBody } from '../../core/errors/problem';
 import { fileNameFrom, saveFile } from '../../shared/download';
 import { FormError } from '../../shared/form-error';
 import { ProjectContext } from '../project/project-context';
+import { BibliographyCard } from './bibliography-card';
 
 /**
  * Export of the extracted data. Never blank in silence (lesson L2): studies left
@@ -33,6 +34,7 @@ import { ProjectContext } from '../project/project-context';
     MatCheckboxModule,
     MatRadioModule,
     FormError,
+    BibliographyCard,
   ],
   template: `
     <p class="muted">{{ 'export.intro' | transloco }}</p>
@@ -107,6 +109,7 @@ import { ProjectContext } from '../project/project-context';
         </mat-card-content>
       </mat-card>
     }
+    <rm-bibliography-card />
   `,
 })
 export class ExportPage implements OnInit {

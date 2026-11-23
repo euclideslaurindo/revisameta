@@ -7359,6 +7359,114 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/exports/bibliography/status": {
+      "get": {
+        "tags": [
+          "exports"
+        ],
+        "summary": "Bibliography Status",
+        "description": "How many records the bibliography has and which studies lack authors, year or\njournal.",
+        "operationId": "bibliography_status",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BibStatus"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/exports/bibliography": {
+      "get": {
+        "tags": [
+          "exports"
+        ],
+        "summary": "Export Bibliography",
+        "description": "Articles of the included studies as RIS, BibTeX or Vancouver text.",
+        "operationId": "export_bibliography",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "file_format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/BibFormat",
+              "default": "ris"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The exported file.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/projects/{project_id}/exports/risk-of-bias": {
       "get": {
         "tags": [
@@ -12931,6 +13039,36 @@
           "upload_id"
         ],
         "title": "AttachPdfIn"
+      },
+      "BibFormat": {
+        "type": "string",
+        "enum": [
+          "ris",
+          "bibtex",
+          "vancouver"
+        ],
+        "title": "BibFormat"
+      },
+      "BibStatus": {
+        "properties": {
+          "records": {
+            "type": "integer",
+            "title": "Records"
+          },
+          "incomplete": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Incomplete"
+          }
+        },
+        "type": "object",
+        "required": [
+          "records",
+          "incomplete"
+        ],
+        "title": "BibStatus"
       },
       "Body_import_search": {
         "properties": {

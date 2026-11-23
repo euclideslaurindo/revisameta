@@ -173,6 +173,8 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
     ),
     ("PUT", "/api/v1/projects/{project_id}/comments/{comment_id}", {"text": "x", "version": 1}),
     ("DELETE", "/api/v1/projects/{project_id}/comments/{comment_id}", None),
+    ("GET", "/api/v1/projects/{project_id}/exports/bibliography/status", None),
+    ("GET", "/api/v1/projects/{project_id}/exports/bibliography", None),
     ("GET", "/api/v1/projects/{project_id}/grade/settings", None),
     ("PUT", "/api/v1/projects/{project_id}/grade/settings", {}),
     (
