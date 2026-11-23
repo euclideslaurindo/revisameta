@@ -13,6 +13,7 @@ from app.modules.extraction.models import (
     OutcomeMeasure,
     StudyArm,
 )
+from app.modules.grade.models import GradeAssessment
 from app.modules.jobs.models import BackgroundJob
 from app.modules.pdfs.models import PdfAnnotation, PdfFile
 from app.modules.prisma.models import PrismaAdjustment, PrismaChecklistItem
@@ -49,6 +50,7 @@ __all__ = [
     "Extraction",
     "ExtractionDecision",
     "ExtractionForm",
+    "GradeAssessment",
     "Invitation",
     "NarrativeEntry",
     "Outcome",

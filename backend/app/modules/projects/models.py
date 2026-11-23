@@ -36,6 +36,8 @@ class Project(BusinessMixin, AuditedMixin, Base):
     screening_settings: Mapped[dict[str, Any]] = mapped_column(
         JSONB, default=dict, server_default="{}"
     )
+    # GRADE suggestion thresholds (stage 6). Empty means the approved defaults.
+    grade_settings: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict, server_default="{}")
     locked_stages: Mapped[list[str]] = mapped_column(ARRAY(String(32)), default=list)
     # Two independent extractors per study, then consensus (7.5.1 D11; on by default).
     double_extraction: Mapped[bool] = mapped_column(Boolean, default=True, server_default=true())

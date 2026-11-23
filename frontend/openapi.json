@@ -10074,6 +10074,330 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/grade/settings": {
+      "get": {
+        "tags": [
+          "grade"
+        ],
+        "summary": "Grade Settings",
+        "description": "Thresholds of the GRADE suggestions (approved defaults unless changed).",
+        "operationId": "grade_settings",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GradeSettings"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "grade"
+        ],
+        "summary": "Update Grade Settings",
+        "operationId": "update_grade_settings",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GradeSettings"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GradeSettings"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/grade/suggest": {
+      "post": {
+        "tags": [
+          "grade"
+        ],
+        "summary": "Suggest Grade",
+        "description": "Runs the analysis of a result and suggests a change for each GRADE domain.",
+        "operationId": "suggest_grade",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GradeBasis"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuggestOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/grade": {
+      "get": {
+        "tags": [
+          "grade"
+        ],
+        "summary": "Grade Assessments",
+        "operationId": "grade_assessments",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GradeOut"
+                  },
+                  "title": "Response Grade Assessments"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "grade"
+        ],
+        "summary": "Save Grade",
+        "description": "Saves the group's judgement of one result, with a justification for every change.",
+        "operationId": "save_grade",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GradeIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GradeOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/grade/{assessment_id}": {
+      "delete": {
+        "tags": [
+          "grade"
+        ],
+        "summary": "Delete Grade",
+        "operationId": "delete_grade",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "assessment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Assessment Id"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/me/usage": {
       "get": {
         "tags": [
@@ -13158,6 +13482,31 @@
         ],
         "title": "DispersionType"
       },
+      "DomainIn": {
+        "properties": {
+          "change": {
+            "type": "integer",
+            "title": "Change"
+          },
+          "justification": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Justification"
+          }
+        },
+        "type": "object",
+        "required": [
+          "change"
+        ],
+        "title": "DomainIn"
+      },
       "DomainState": {
         "properties": {
           "domain_key": {
@@ -13238,6 +13587,29 @@
           "direction"
         ],
         "title": "DomainState"
+      },
+      "DomainSuggestion": {
+        "properties": {
+          "suggested": {
+            "type": "integer",
+            "title": "Suggested"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "values": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Values"
+          }
+        },
+        "type": "object",
+        "required": [
+          "suggested",
+          "reason"
+        ],
+        "title": "DomainSuggestion"
       },
       "DownloadUrl": {
         "properties": {
@@ -14291,6 +14663,377 @@
           "domains"
         ],
         "title": "GenericStructureIn"
+      },
+      "GradeBasis": {
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Outcome Id"
+          },
+          "timepoint": {
+            "type": "string",
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Timepoint"
+          },
+          "measure": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "MD",
+                  "SMD",
+                  "OR",
+                  "RR",
+                  "RD"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Measure"
+          },
+          "data_set": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "unadjusted",
+                  "adjusted"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Set"
+          },
+          "method": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "REML",
+                  "DL",
+                  "PM",
+                  "FE"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Method"
+          },
+          "test": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "knha",
+                  "z"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Test"
+          },
+          "rob_tool_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rob Tool Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome_id",
+          "timepoint"
+        ],
+        "title": "GradeBasis"
+      },
+      "GradeIn": {
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Outcome Id"
+          },
+          "timepoint": {
+            "type": "string",
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Timepoint"
+          },
+          "measure": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "MD",
+                  "SMD",
+                  "OR",
+                  "RR",
+                  "RD"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Measure"
+          },
+          "data_set": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "unadjusted",
+                  "adjusted"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Set"
+          },
+          "method": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "REML",
+                  "DL",
+                  "PM",
+                  "FE"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Method"
+          },
+          "test": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "knha",
+                  "z"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Test"
+          },
+          "rob_tool_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rob Tool Id"
+          },
+          "approach": {
+            "type": "string",
+            "enum": [
+              "classic",
+              "robins_i"
+            ],
+            "title": "Approach"
+          },
+          "start_certainty": {
+            "type": "string",
+            "enum": [
+              "low",
+              "high"
+            ],
+            "title": "Start Certainty"
+          },
+          "domains": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DomainIn"
+            },
+            "type": "object",
+            "title": "Domains"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome_id",
+          "timepoint",
+          "approach",
+          "start_certainty",
+          "domains"
+        ],
+        "title": "GradeIn"
+      },
+      "GradeOut": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Outcome Id"
+          },
+          "outcome_name": {
+            "type": "string",
+            "title": "Outcome Name"
+          },
+          "timepoint": {
+            "type": "string",
+            "title": "Timepoint"
+          },
+          "approach": {
+            "type": "string",
+            "title": "Approach"
+          },
+          "start_certainty": {
+            "type": "string",
+            "title": "Start Certainty"
+          },
+          "final_certainty": {
+            "type": "string",
+            "title": "Final Certainty"
+          },
+          "analysis": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Analysis"
+          },
+          "domains": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Domains"
+          },
+          "suggestions": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Suggestions"
+          },
+          "summary": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Summary"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "outcome_id",
+          "outcome_name",
+          "timepoint",
+          "approach",
+          "start_certainty",
+          "final_certainty",
+          "analysis",
+          "domains",
+          "suggestions",
+          "summary",
+          "note",
+          "version"
+        ],
+        "title": "GradeOut"
+      },
+      "GradeSettings": {
+        "properties": {
+          "i2_threshold": {
+            "type": "number",
+            "maximum": 100.0,
+            "minimum": 0.0,
+            "title": "I2 Threshold",
+            "default": 50
+          },
+          "high_risk_share": {
+            "type": "number",
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "High Risk Share",
+            "default": 0.5
+          },
+          "egger_p": {
+            "type": "number",
+            "exclusiveMaximum": 1.0,
+            "exclusiveMinimum": 0.0,
+            "title": "Egger P",
+            "default": 0.1
+          },
+          "egger_min_k": {
+            "type": "integer",
+            "minimum": 3.0,
+            "title": "Egger Min K",
+            "default": 10
+          },
+          "large_ratio": {
+            "type": "number",
+            "exclusiveMinimum": 1.0,
+            "title": "Large Ratio",
+            "default": 2
+          }
+        },
+        "type": "object",
+        "title": "GradeSettings",
+        "description": "Approved defaults (docs/roteiro.md, stage 6)."
       },
       "GroupCreate": {
         "properties": {
@@ -21712,6 +22455,134 @@
           "warnings"
         ],
         "title": "SubgroupOut"
+      },
+      "SuggestOut": {
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Outcome Id"
+          },
+          "timepoint": {
+            "type": "string",
+            "title": "Timepoint"
+          },
+          "measure": {
+            "type": "string",
+            "title": "Measure"
+          },
+          "method": {
+            "type": "string",
+            "title": "Method"
+          },
+          "test": {
+            "type": "string",
+            "title": "Test"
+          },
+          "k": {
+            "type": "integer",
+            "title": "K"
+          },
+          "participants": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Participants"
+          },
+          "estimate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Estimate"
+          },
+          "ci_lb": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ci Lb"
+          },
+          "ci_ub": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ci Ub"
+          },
+          "ratio": {
+            "type": "boolean",
+            "title": "Ratio"
+          },
+          "i2": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "I2"
+          },
+          "observational": {
+            "type": "boolean",
+            "title": "Observational"
+          },
+          "start_suggested": {
+            "type": "string",
+            "enum": [
+              "very_low",
+              "low",
+              "moderate",
+              "high"
+            ],
+            "title": "Start Suggested"
+          },
+          "domains": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/DomainSuggestion"
+            },
+            "type": "object",
+            "title": "Domains"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome_id",
+          "timepoint",
+          "measure",
+          "method",
+          "test",
+          "k",
+          "participants",
+          "estimate",
+          "ci_lb",
+          "ci_ub",
+          "ratio",
+          "i2",
+          "observational",
+          "start_suggested",
+          "domains"
+        ],
+        "title": "SuggestOut"
       },
       "TableOut": {
         "properties": {

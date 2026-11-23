@@ -107,7 +107,8 @@
       "meta": "Meta-análise",
       "searches": "Buscas",
       "screening": "Triagem",
-      "prisma": "PRISMA"
+      "prisma": "PRISMA",
+      "grade": "GRADE"
     }
   },
   "protocol": {
@@ -1515,6 +1516,83 @@
         "discussion": "Discussão",
         "other": "Outras informações"
       }
+    }
+  },
+  "grade": {
+    "title": "Certeza da evidência (GRADE)",
+    "help": "O GRADE classifica quanto podemos confiar no resultado de cada desfecho: alta, moderada, baixa ou muito baixa.",
+    "intro": "Escolha o desfecho e o momento. O sistema roda a mesma análise da meta-análise e sugere, para cada domínio, se a certeza deve cair ou subir. A decisão é do grupo, sempre com justificativa.",
+    "outcome": "Desfecho",
+    "timepoint": "Momento",
+    "robTool": "Instrumento de risco de viés",
+    "robNone": "Nenhum (sem sugestão de risco de viés)",
+    "suggest": "Sugerir",
+    "basis": "Base: {{k}} estudos, medida {{measure}}, {{n}} participantes.",
+    "approach": "Abordagem",
+    "approachName": {
+      "classic": "GRADE clássico (observacionais começam em baixa)",
+      "robins_i": "Com ROBINS-I (começam em alta)"
+    },
+    "start": "Certeza inicial",
+    "startObservational": "Há estudos observacionais: no GRADE clássico a certeza começa em baixa.",
+    "startRandomized": "Só ensaios randomizados: a certeza começa em alta.",
+    "domain": "Domínio",
+    "suggested": "Sugestão do sistema",
+    "decision": "Decisão do grupo",
+    "change": "Mudança",
+    "justification": "Justificativa",
+    "final": "Certeza final",
+    "note": "Observação",
+    "save": "Salvar julgamento",
+    "saved": "Julgamentos salvos",
+    "open": "Abrir",
+    "remove": "Remover",
+    "empty": "Nenhum julgamento salvo ainda.",
+    "level": {
+      "very_low": "Muito baixa",
+      "low": "Baixa",
+      "moderate": "Moderada",
+      "high": "Alta"
+    },
+    "domainName": {
+      "risk_of_bias": "Risco de viés",
+      "inconsistency": "Inconsistência",
+      "indirectness": "Evidência indireta",
+      "imprecision": "Imprecisão",
+      "publication_bias": "Viés de publicação",
+      "large_effect": "Efeito grande",
+      "dose_response": "Dose-resposta",
+      "plausible_confounding": "Confundimento plausível"
+    },
+    "domainHelp": {
+      "risk_of_bias": "Rebaixa quando muitos estudos têm risco de viés alto.",
+      "inconsistency": "Rebaixa quando os resultados dos estudos diferem muito entre si (I² alto).",
+      "indirectness": "Rebaixa quando os estudos não respondem exatamente à pergunta (ex.: outro ponto de corte de idade).",
+      "imprecision": "Rebaixa quando o intervalo de confiança é largo e inclui a ausência de efeito.",
+      "publication_bias": "Rebaixa quando há sinal de que estudos com resultados negativos não foram publicados.",
+      "large_effect": "Em observacionais, eleva quando o efeito é muito grande.",
+      "dose_response": "Eleva quando mais exposição leva a mais efeito. Só o grupo avalia.",
+      "plausible_confounding": "Eleva quando o confundimento provável reduziria o efeito observado. Só o grupo avalia."
+    },
+    "reason": {
+      "rob_no_tool": "Escolha um instrumento para ver a sugestão.",
+      "rob_many_high": "{{high}} de {{k}} estudos com risco alto.",
+      "rob_missing": "{{missing}} estudo(s) sem avaliação consolidada.",
+      "rob_ok": "Poucos estudos com risco alto ({{high}} de {{k}}).",
+      "inconsistency_no_data": "Sem estimativa de heterogeneidade.",
+      "inconsistency_high_i2": "I² = {{i2}}%.",
+      "inconsistency_ok": "I² = {{i2}}%.",
+      "indirectness_cutoff": "Ponto de corte diferente do protocolo: {{studies}}.",
+      "indirectness_ok": "Todos usam o corte do protocolo.",
+      "imprecision_crosses_null": "O IC 95% inclui a ausência de efeito.",
+      "imprecision_ok": "O IC 95% não inclui a ausência de efeito.",
+      "publication_bias_few": "Só {{k}} estudos; o Egger exige pelo menos {{min}}.",
+      "publication_bias_egger": "Egger p = {{p}}.",
+      "publication_bias_ok": "Egger p = {{p}}.",
+      "large_effect": "RR/OR grande e nenhum rebaixamento sugerido.",
+      "large_effect_ratio_only": "Só avaliado automaticamente para RR/OR.",
+      "large_effect_no": "O efeito não é grande ou houve rebaixamento.",
+      "human_only": "Sem sugestão automática."
     }
   }
 }

@@ -339,6 +339,18 @@ export type { DeleteAnalysis$Params as DeleteAnalysis$Params } from './fn/analys
 export { deleteAnalysis as deleteAnalysis } from './fn/analysis/delete-analysis';
 export type { AnalysisRScript$Params as AnalysisRScript$Params } from './fn/analysis/analysis-r-script';
 export { analysisRScript as analysisRScript } from './fn/analysis/analysis-r-script';
+export type { GradeSettings$Params as GradeSettings$Params } from './fn/grade/grade-settings';
+export { gradeSettings as gradeSettings } from './fn/grade/grade-settings';
+export type { UpdateGradeSettings$Params as UpdateGradeSettings$Params } from './fn/grade/update-grade-settings';
+export { updateGradeSettings as updateGradeSettings } from './fn/grade/update-grade-settings';
+export type { SuggestGrade$Params as SuggestGrade$Params } from './fn/grade/suggest-grade';
+export { suggestGrade as suggestGrade } from './fn/grade/suggest-grade';
+export type { GradeAssessments$Params as GradeAssessments$Params } from './fn/grade/grade-assessments';
+export { gradeAssessments as gradeAssessments } from './fn/grade/grade-assessments';
+export type { SaveGrade$Params as SaveGrade$Params } from './fn/grade/save-grade';
+export { saveGrade as saveGrade } from './fn/grade/save-grade';
+export type { DeleteGrade$Params as DeleteGrade$Params } from './fn/grade/delete-grade';
+export { deleteGrade as deleteGrade } from './fn/grade/delete-grade';
 export type { MyUsage$Params as MyUsage$Params } from './fn/quotas/my-usage';
 export { myUsage as myUsage } from './fn/quotas/my-usage';
 export type { UserUsage$Params as UserUsage$Params } from './fn/quotas/user-usage';

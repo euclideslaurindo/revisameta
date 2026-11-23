@@ -17,6 +17,7 @@ from app.modules.analysis.router import router as analysis_router
 from app.modules.auth.router import router as auth_router
 from app.modules.exports.router import router as exports_router
 from app.modules.extraction.router import router as extraction_router
+from app.modules.grade.router import router as grade_router
 from app.modules.jobs.router import router as jobs_router
 from app.modules.pdfs.router import router as pdfs_router
 from app.modules.prisma.router import router as prisma_router
@@ -91,6 +92,7 @@ def create_app() -> FastAPI:
         exports_router,
         rob_router,
         analysis_router,
+        grade_router,
         quotas_router,
         uploads_router,
         jobs_router,

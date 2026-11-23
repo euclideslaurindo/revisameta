@@ -107,7 +107,8 @@
       "meta": "Meta-analysis",
       "searches": "Searches",
       "screening": "Screening",
-      "prisma": "PRISMA"
+      "prisma": "PRISMA",
+      "grade": "GRADE"
     }
   },
   "protocol": {
@@ -1515,6 +1516,83 @@
         "discussion": "Discussion",
         "other": "Other information"
       }
+    }
+  },
+  "grade": {
+    "title": "Certainty of evidence (GRADE)",
+    "help": "GRADE rates how much we can trust the result of each outcome: high, moderate, low or very low.",
+    "intro": "Choose the outcome and timepoint. The system runs the same analysis as the meta-analysis screen and suggests, for each domain, whether certainty should go down or up. The group decides, always with a justification.",
+    "outcome": "Outcome",
+    "timepoint": "Timepoint",
+    "robTool": "Risk of bias tool",
+    "robNone": "None (no risk of bias suggestion)",
+    "suggest": "Suggest",
+    "basis": "Basis: {{k}} studies, measure {{measure}}, {{n}} participants.",
+    "approach": "Approach",
+    "approachName": {
+      "classic": "Classic GRADE (observational studies start at low)",
+      "robins_i": "With ROBINS-I (start at high)"
+    },
+    "start": "Starting certainty",
+    "startObservational": "There are observational studies: in classic GRADE certainty starts at low.",
+    "startRandomized": "Only randomized trials: certainty starts at high.",
+    "domain": "Domain",
+    "suggested": "System suggestion",
+    "decision": "Group decision",
+    "change": "Change",
+    "justification": "Justification",
+    "final": "Final certainty",
+    "note": "Note",
+    "save": "Save judgement",
+    "saved": "Saved judgements",
+    "open": "Open",
+    "remove": "Remove",
+    "empty": "No judgement saved yet.",
+    "level": {
+      "very_low": "Very low",
+      "low": "Low",
+      "moderate": "Moderate",
+      "high": "High"
+    },
+    "domainName": {
+      "risk_of_bias": "Risk of bias",
+      "inconsistency": "Inconsistency",
+      "indirectness": "Indirectness",
+      "imprecision": "Imprecision",
+      "publication_bias": "Publication bias",
+      "large_effect": "Large effect",
+      "dose_response": "Dose-response",
+      "plausible_confounding": "Plausible confounding"
+    },
+    "domainHelp": {
+      "risk_of_bias": "Rate down when many studies are at high risk of bias.",
+      "inconsistency": "Rate down when study results differ a lot (high I²).",
+      "indirectness": "Rate down when studies do not answer exactly the question (e.g. another age cutoff).",
+      "imprecision": "Rate down when the confidence interval is wide and includes no effect.",
+      "publication_bias": "Rate down when there are signs that negative studies were not published.",
+      "large_effect": "For observational studies, rate up when the effect is very large.",
+      "dose_response": "Rate up when more exposure leads to more effect. Only the group judges it.",
+      "plausible_confounding": "Rate up when likely confounding would reduce the observed effect. Only the group judges it."
+    },
+    "reason": {
+      "rob_no_tool": "Choose a tool to see the suggestion.",
+      "rob_many_high": "{{high}} of {{k}} studies at high risk.",
+      "rob_missing": "{{missing}} study(ies) without a consolidated assessment.",
+      "rob_ok": "Few studies at high risk ({{high}} of {{k}}).",
+      "inconsistency_no_data": "No heterogeneity estimate.",
+      "inconsistency_high_i2": "I² = {{i2}}%.",
+      "inconsistency_ok": "I² = {{i2}}%.",
+      "indirectness_cutoff": "Cutoff different from the protocol: {{studies}}.",
+      "indirectness_ok": "All use the protocol cutoff.",
+      "imprecision_crosses_null": "The 95% CI includes no effect.",
+      "imprecision_ok": "The 95% CI does not include no effect.",
+      "publication_bias_few": "Only {{k}} studies; Egger needs at least {{min}}.",
+      "publication_bias_egger": "Egger p = {{p}}.",
+      "publication_bias_ok": "Egger p = {{p}}.",
+      "large_effect": "Large RR/OR and no downgrade suggested.",
+      "large_effect_ratio_only": "Only assessed automatically for RR/OR.",
+      "large_effect_no": "Effect is not large or a downgrade was suggested.",
+      "human_only": "No automatic suggestion."
     }
   }
 }

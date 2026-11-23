@@ -57,6 +57,10 @@ export const routes: Routes = [
           import('./features/screening/screening-page').then((m) => m.ScreeningPage),
       },
       {
+        path: 'grade',
+        loadComponent: () => import('./features/grade/grade-page').then((m) => m.GradePage),
+      },
+      {
         path: 'prisma',
         loadComponent: () => import('./features/prisma/prisma-page').then((m) => m.PrismaPage),
       },

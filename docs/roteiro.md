@@ -231,6 +231,24 @@ Importação RIS/BibTeX/CSV/nbib, deduplicação multicritério com explicação
   - teste de interface automatizado (Playwright), como nas Etapas 3 e 4;
   - revisar com o grupo os resumos dos itens do checklist e o limiar de 0,95 da deduplicação.
 
+**Etapa 6 — decisões aprovadas (2026-11-23):**
+- **Plano em 6 passos:** (1) GRADE por desfecho; (2) Summary of Findings em DOCX/XLSX; (3) comentários com menção; (4) notificações internas; (5) bibliografia RIS/BibTeX/Vancouver; (6) backup em ZIP, reimportação e retenção.
+- **Certeza inicial:** escolhida por desfecho e registrada. No GRADE clássico, observacionais começam em baixa; com ROBINS-I, em alta.
+- **Retenção:** após 12 meses sem acesso, o admin recebe um aviso e o projeto é marcado como arquivado (reversível). Nada é apagado.
+- **Limiares das sugestões do GRADE** (padrão; o admin pode mudar por projeto):
+  - Inconsistência: I² ≥ 50%.
+  - Imprecisão: o IC 95% do efeito combinado cruza o nulo.
+  - Risco de viés: mais da metade dos estudos com julgamento geral alto, grave, crítico, muito alto ou ruim.
+  - Viés de publicação: Egger p < 0,10, só com k ≥ 10.
+  - Evidência indireta: algum estudo incluído com ponto de corte tolerado, diferente do protocolo.
+  - Efeito grande (elevar): RR/OR ≥ 2 ou ≤ 0,5, sem nenhum rebaixamento sugerido.
+
+**Etapa 6, passo 1 — GRADE (feito):**
+- O sistema roda a mesma análise da tela de meta-análise e sugere uma mudança por domínio, com o motivo. Dose-resposta e confundimento plausível ficam só com o grupo.
+- O grupo decide cada domínio. Toda mudança diferente de zero e toda escolha diferente da sugestão exigem justificativa.
+- Certeza final = inicial − rebaixamentos + elevações, dentro da escala. Edição com trava otimista e auditoria; remoção é soft delete.
+- Os limiares são comparados com o que o R devolve; nada é calculado no Python.
+
 **Etapa 6 — GRADE, colaboração e entrega (P1)**
 GRADE e Summary of Findings, comentários, notificações, backup/reimportação do projeto, bibliografia, retenção de projetos inativos.
 *Saída:* tabela SoF em DOCX com justificativas; restauração de backup testada; reimportação de um projeto exportado sem perda.
