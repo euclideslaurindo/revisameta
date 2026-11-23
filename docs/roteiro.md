@@ -254,6 +254,12 @@ Importação RIS/BibTeX/CSV/nbib, deduplicação multicritério com explicação
 - As justificativas do grupo saem como notas numeradas. DOCX e XLSX, em português ou inglês, independente do idioma da interface; vírgula decimal em português.
 - Sem nenhum julgamento salvo, a exportação avisa em vez de gerar arquivo vazio.
 
+**Etapa 6, passo 3 — comentários (feito):**
+- Comentários em estudo, referência ou análise, com campo opcional (ex.: "group1.sd"). Na tela, por enquanto, no estudo.
+- Todo membro comenta, inclusive o leitor (o orientador lê e comenta; comentário não é dado da revisão).
+- Menção escolhendo membros do projeto numa lista (só nomes, nunca e-mails); quem não é membro não pode ser mencionado. O aviso à pessoa mencionada chega no passo 4.
+- Só o autor edita (trava otimista, auditoria); o autor ou o admin remove (soft delete).
+
 **Etapa 6 — GRADE, colaboração e entrega (P1)**
 GRADE e Summary of Findings, comentários, notificações, backup/reimportação do projeto, bibliografia, retenção de projetos inativos.
 *Saída:* tabela SoF em DOCX com justificativas; restauração de backup testada; reimportação de um projeto exportado sem perda.

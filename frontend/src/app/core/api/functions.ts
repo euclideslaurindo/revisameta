@@ -353,6 +353,16 @@ export type { DeleteGrade$Params as DeleteGrade$Params } from './fn/grade/delete
 export { deleteGrade as deleteGrade } from './fn/grade/delete-grade';
 export type { SummaryOfFindings$Params as SummaryOfFindings$Params } from './fn/grade/summary-of-findings';
 export { summaryOfFindings as summaryOfFindings } from './fn/grade/summary-of-findings';
+export type { ListComments$Params as ListComments$Params } from './fn/comments/list-comments';
+export { listComments as listComments } from './fn/comments/list-comments';
+export type { CreateComment$Params as CreateComment$Params } from './fn/comments/create-comment';
+export { createComment as createComment } from './fn/comments/create-comment';
+export type { MentionableMembers$Params as MentionableMembers$Params } from './fn/comments/mentionable-members';
+export { mentionableMembers as mentionableMembers } from './fn/comments/mentionable-members';
+export type { EditComment$Params as EditComment$Params } from './fn/comments/edit-comment';
+export { editComment as editComment } from './fn/comments/edit-comment';
+export type { DeleteComment$Params as DeleteComment$Params } from './fn/comments/delete-comment';
+export { deleteComment as deleteComment } from './fn/comments/delete-comment';
 export type { MyUsage$Params as MyUsage$Params } from './fn/quotas/my-usage';
 export { myUsage as myUsage } from './fn/quotas/my-usage';
 export type { UserUsage$Params as UserUsage$Params } from './fn/quotas/user-usage';

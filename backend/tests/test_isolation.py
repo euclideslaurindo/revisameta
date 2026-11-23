@@ -164,6 +164,15 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
     ("GET", "/api/v1/projects/{project_id}/prisma/checklist", None),
     ("PUT", "/api/v1/projects/{project_id}/prisma/checklist/{code}", {"status": "reported"}),
     ("GET", "/api/v1/projects/{project_id}/prisma/checklist.docx", None),
+    ("GET", "/api/v1/projects/{project_id}/comments?entity=study&entity_id={study_id}", None),
+    ("GET", "/api/v1/projects/{project_id}/comments/members", None),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/comments",
+        {"entity": "study", "entity_id": "{study_id}", "text": "x"},
+    ),
+    ("PUT", "/api/v1/projects/{project_id}/comments/{comment_id}", {"text": "x", "version": 1}),
+    ("DELETE", "/api/v1/projects/{project_id}/comments/{comment_id}", None),
     ("GET", "/api/v1/projects/{project_id}/grade/settings", None),
     ("PUT", "/api/v1/projects/{project_id}/grade/settings", {}),
     (
@@ -475,6 +484,7 @@ async def _setup(client: AsyncClient, make_user: MakeUser) -> tuple[LoggedUser, 
     # Any id of this project's kind: the outsider must get 404 before it is even read.
     ids["analysis_id"] = ids["study_id"]
     ids["assessment_id"] = ids["study_id"]
+    ids["comment_id"] = ids["study_id"]
     ids["search_id"] = ids["study_id"]
     ids["pair_id"] = ids["study_id"]
     ids["reference_id"] = ids["study_id"]

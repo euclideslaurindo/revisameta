@@ -15,6 +15,7 @@ from app.db.session import dispose_engine
 from app.integrations.storage import Storage
 from app.modules.analysis.router import router as analysis_router
 from app.modules.auth.router import router as auth_router
+from app.modules.comments.router import router as comments_router
 from app.modules.exports.router import router as exports_router
 from app.modules.extraction.router import router as extraction_router
 from app.modules.grade.router import router as grade_router
@@ -93,6 +94,7 @@ def create_app() -> FastAPI:
         rob_router,
         analysis_router,
         grade_router,
+        comments_router,
         quotas_router,
         uploads_router,
         jobs_router,

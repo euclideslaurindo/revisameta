@@ -30,6 +30,7 @@ import { StudyOut } from '../../core/api/models/study-out';
 import { ConfirmData, ConfirmDialog } from '../../shared/confirm-dialog';
 import { FormError } from '../../shared/form-error';
 import { StudyExtractions } from '../extraction/study-extractions';
+import { CommentsPanel } from '../../shared/comments-panel';
 import { ReportPdfs } from '../pdfs/report-pdfs';
 import { StudyRobTool } from '../risk-of-bias/study-rob-tool';
 import { ProjectContext } from '../project/project-context';
@@ -52,6 +53,7 @@ import { STUDY_DESIGNS } from './designs';
     FormError,
     ReportPdfs,
     StudyExtractions,
+    CommentsPanel,
   ],
   template: `
     <a routerLink=".." class="back">← {{ 'project.nav.studies' | transloco }}</a>
@@ -103,6 +105,17 @@ import { STUDY_DESIGNS } from './designs';
         </mat-card-header>
         <mat-card-content>
           <rm-study-extractions [studyId]="s.id" />
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="block">
+        <mat-card-header>
+          <mat-card-title
+            ><h3>{{ 'comments.title' | transloco }}</h3></mat-card-title
+          >
+        </mat-card-header>
+        <mat-card-content>
+          <rm-comments-panel entity="study" [entityId]="s.id" />
         </mat-card-content>
       </mat-card>
 

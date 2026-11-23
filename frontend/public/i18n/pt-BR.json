@@ -1599,5 +1599,19 @@
       "docx": "Baixar Summary of Findings (DOCX)",
       "xlsx": "Baixar Summary of Findings (XLSX)"
     }
+  },
+  "comments": {
+    "title": "Comentários",
+    "empty": "Nenhum comentário ainda.",
+    "new": "Novo comentário",
+    "mention": "Mencionar (avisa a pessoa)",
+    "field": "Campo (opcional)",
+    "send": "Comentar",
+    "edited": "editado",
+    "mentions": "Mencionou",
+    "edit": "Editar",
+    "remove": "Remover",
+    "save": "Salvar",
+    "cancel": "Cancelar"
   }
 }

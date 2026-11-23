@@ -4,6 +4,7 @@ from app.modules.analysis.models import Analysis, NarrativeEntry
 from app.modules.audit import recorder as _audit_recorder  # noqa: F401 - registers listener
 from app.modules.audit.models import AuditLog
 from app.modules.auth.models import EmailToken, RefreshToken, User
+from app.modules.comments.models import Comment
 from app.modules.extraction.models import (
     CheckAlert,
     Extraction,
@@ -43,6 +44,7 @@ __all__ = [
     "AuditLog",
     "BackgroundJob",
     "CheckAlert",
+    "Comment",
     "ComparisonGroup",
     "DuplicatePair",
     "EmailToken",
