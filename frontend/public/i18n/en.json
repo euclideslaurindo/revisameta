@@ -56,7 +56,12 @@
     "deadline": "Deadline (e.g. abstract submission)",
     "create": "Create project",
     "roles": "Your roles",
-    "usage": "You use {{used}} of {{limit}} projects."
+    "usage": "You use {{used}} of {{limit}} projects.",
+    "restore": {
+      "label": "Restore a project from a backup (.zip)",
+      "absent": "Project restored. These people have no account here, and their work was attributed to you: {{names}}."
+    },
+    "archived": "Archived for inactivity"
   },
   "roles": {
     "admin": "Administrator",
@@ -109,6 +114,10 @@
       "screening": "Screening",
       "prisma": "PRISMA",
       "grade": "GRADE"
+    },
+    "archived": {
+      "text": "This project was marked as archived on {{date}} after 12 months without changes. Nothing was deleted and it still works.",
+      "unarchive": "Reactivate"
     }
   },
   "protocol": {
@@ -570,6 +579,11 @@
         "bibtex": "Download BibTeX",
         "vancouver": "Download Vancouver text"
       }
+    },
+    "backup": {
+      "title": "Project backup",
+      "intro": "Creates a ZIP file with all the project data (history and removed items included) and the PDFs. Keep it off this computer; it can be restored as a new project.",
+      "start": "Create and download backup"
     }
   },
   "formEditor": {
@@ -1632,7 +1646,8 @@
     "kind": {
       "mention": "{{author_name}} mentioned you in a comment.",
       "screening_conflict": "Screening conflict: {{title}}",
-      "deadline": "The project deadline ends in {{days}} day(s) ({{deadline}})."
+      "deadline": "The project deadline ends in {{days}} day(s) ({{deadline}}).",
+      "archived": "Project archived for inactivity (last change on {{last_activity}}). Nothing was deleted."
     }
   }
 }

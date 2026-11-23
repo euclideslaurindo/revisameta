@@ -10,6 +10,8 @@ from app.db import models as _models  # noqa: F401 - register mappers
 from app.db.session import dispose_engine, get_sessionmaker
 from app.integrations.queue import redis_settings
 from app.integrations.storage import Storage
+from app.modules.backup.service import make_backup, run_import
+from app.modules.projects.retention import archive_inactive
 from app.modules.references.service import process_search
 from app.modules.screening.priority import train as train_priority
 from app.modules.uploads.processing import process_upload
@@ -26,6 +28,28 @@ async def import_search_task(_ctx: dict[str, Any], search_id: str, job_id: str) 
 
 async def screening_priority_task(_ctx: dict[str, Any], project_id: str, job_id: str) -> None:
     await train_priority(get_sessionmaker(), uuid.UUID(project_id), uuid.UUID(job_id))
+
+
+async def project_backup_task(_ctx: dict[str, Any], project_id: str, job_id: str) -> None:
+    await make_backup(get_sessionmaker(), Storage(), uuid.UUID(project_id), uuid.UUID(job_id))
+
+
+async def project_import_task(
+    _ctx: dict[str, Any], project_id: str, job_id: str, key: str, user_id: str
+) -> None:
+    await run_import(
+        get_sessionmaker(),
+        Storage(),
+        uuid.UUID(project_id),
+        uuid.UUID(job_id),
+        key,
+        uuid.UUID(user_id),
+    )
+
+
+async def archive_inactive_task(_ctx: dict[str, Any]) -> int:
+    async with get_sessionmaker()() as session:
+        return await archive_inactive(session)
 
 
 async def expire_uploads_task(_ctx: dict[str, Any]) -> int:
@@ -46,9 +70,12 @@ class WorkerSettings:
         process_upload_task,
         import_search_task,
         screening_priority_task,
+        project_backup_task,
+        project_import_task,
     ]
     cron_jobs: ClassVar[list[Any]] = [
-        cron(expire_uploads_task, minute={0, 30})  # type: ignore[arg-type]
+        cron(expire_uploads_task, minute={0, 30}),  # type: ignore[arg-type]
+        cron(archive_inactive_task, hour={3}, minute={15}),  # type: ignore[arg-type]
     ]
     redis_settings = redis_settings()
     on_startup = startup

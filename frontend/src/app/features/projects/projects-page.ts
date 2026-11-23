@@ -17,6 +17,7 @@ import { myUsage } from '../../core/api/fn/quotas/my-usage';
 import { ProjectOut } from '../../core/api/models/project-out';
 import { UsageItem } from '../../core/api/models/usage-item';
 import { FormError } from '../../shared/form-error';
+import { RestoreBackup } from './restore-backup';
 
 @Component({
   selector: 'rm-projects-page',
@@ -32,6 +33,7 @@ import { FormError } from '../../shared/form-error';
     MatInputModule,
     MatProgressBarModule,
     FormError,
+    RestoreBackup,
   ],
   template: `
     <header class="page-header">
@@ -42,6 +44,7 @@ import { FormError } from '../../shared/form-error';
         </button>
       }
     </header>
+    <rm-restore-backup (restored)="reload()" />
     @if (usage(); as u) {
       <p class="muted">{{ 'projects.usage' | transloco: u }}</p>
     }
@@ -97,6 +100,9 @@ import { FormError } from '../../shared/form-error';
               >
             </mat-card-header>
             <mat-card-content>
+              @if (project.archived_at) {
+                <p class="muted">{{ 'projects.archived' | transloco }}</p>
+              }
               @if (project.question) {
                 <p>{{ project.question }}</p>
               }
@@ -136,7 +142,7 @@ export class ProjectsPage implements OnInit {
     await this.reload();
   }
 
-  private async reload(): Promise<void> {
+  protected async reload(): Promise<void> {
     this.loading.set(true);
     try {
       const [projects, usage] = await Promise.all([

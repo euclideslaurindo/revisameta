@@ -273,6 +273,19 @@ Importação RIS/BibTeX/CSV/nbib, deduplicação multicritério com explicação
 - Os campos saem como estão guardados; nada é inventado. A tela lista os estudos com artigo sem autores, ano ou revista, para completar antes de citar.
 - Sem nenhum artigo, a exportação avisa em vez de gerar arquivo vazio.
 
+**Etapa 6, passo 6 — backup do projeto, reimportação e retenção (feito):**
+- **Backup (admin):** ZIP gerado pelo worker, sem carregar tudo na memória. Contém todas as tabelas do projeto, inclusive registros removidos (soft delete) e a auditoria, os nomes das pessoas (nunca e-mails) e os PDFs. Ficam de fora só avisos, convites e tarefas de fila. Download por link assinado de 10 minutos.
+- **Reimportação:** cria um projeto NOVO (o original pode continuar existindo), com ids novos também dentro dos campos JSON. Quem tem conta no sistema mantém seus registros; o que foi feito por quem não tem conta fica atribuído a quem restaura, e a tela lista esses nomes. O PDF já guardado (mesmo SHA-256) não é duplicado. Só aceita backup da mesma versão do banco.
+- **Retenção:** todo dia às 3h15 o worker marca como arquivado o projeto sem nenhuma alteração há 12 meses e avisa os admins. É só uma marca: nada é apagado, o projeto continua funcionando e o admin reativa com um clique.
+- **Limite conhecido:** pelo túnel da Cloudflare, cada envio vai até 100 MB; um backup maior que isso precisa ser restaurado direto no servidor (sem túnel) até haver envio em partes para backups.
+
+**Etapa 6 — implementação concluída em 2026-11-23.**
+- **Critério de saída:**
+  - tabela SoF em DOCX com justificativas: coberta por `tests/test_grade.py`;
+  - restauração de backup testada: `scripts/test-backup.sh` (banco inteiro, Etapa 0) e `tests/test_backup.py` (projeto);
+  - reimportação de um projeto exportado sem perda: `tests/test_backup.py` compara a contagem de todas as tabelas, inclusive registros removidos.
+- **Pendências:** teste de interface automatizado (Playwright), como nas etapas anteriores; conferir com o grupo os limiares do GRADE com dados reais; resumo semanal por e-mail quando houver e-mail transacional.
+
 **Etapa 6 — GRADE, colaboração e entrega (P1)**
 GRADE e Summary of Findings, comentários, notificações, backup/reimportação do projeto, bibliografia, retenção de projetos inativos.
 *Saída:* tabela SoF em DOCX com justificativas; restauração de backup testada; reimportação de um projeto exportado sem perda.

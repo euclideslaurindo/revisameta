@@ -15,6 +15,7 @@ from app.db.session import dispose_engine
 from app.integrations.storage import Storage
 from app.modules.analysis.router import router as analysis_router
 from app.modules.auth.router import router as auth_router
+from app.modules.backup.router import router as backup_router
 from app.modules.comments.router import router as comments_router
 from app.modules.exports.router import router as exports_router
 from app.modules.extraction.router import router as extraction_router
@@ -83,6 +84,7 @@ def create_app() -> FastAPI:
     for router in (
         system_router,
         auth_router,
+        backup_router,
         projects_router,
         protocol_router,
         studies_router,

@@ -167,7 +167,14 @@ class Storage:
         async with self._client() as s3:
             await s3.delete_object(Bucket=self.bucket, Key=key)
 
-    async def presign_get(self, key: str, expires: int, filename: str) -> str:
+    async def presign_get(
+        self,
+        key: str,
+        expires: int,
+        filename: str,
+        content_type: str = "application/pdf",
+        disposition: str = "inline",
+    ) -> str:
         safe_name = filename.replace('"', "").replace("\\", "")
         async with self._client(public=True) as s3:
             url: str = await s3.generate_presigned_url(
@@ -175,8 +182,8 @@ class Storage:
                 Params={
                     "Bucket": self.bucket,
                     "Key": key,
-                    "ResponseContentType": "application/pdf",
-                    "ResponseContentDisposition": f'inline; filename="{safe_name}"',
+                    "ResponseContentType": content_type,
+                    "ResponseContentDisposition": f'{disposition}; filename="{safe_name}"',
                 },
                 ExpiresIn=expires,
             )

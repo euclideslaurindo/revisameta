@@ -165,6 +165,28 @@ class InlineQueue:
                 uuid.UUID(kwargs["job_id"]),
             )
             return
+        if function == "project_backup_task":
+            from app.modules.backup.service import make_backup
+
+            await make_backup(
+                get_sessionmaker(),
+                Storage(),
+                uuid.UUID(kwargs["project_id"]),
+                uuid.UUID(kwargs["job_id"]),
+            )
+            return
+        if function == "project_import_task":
+            from app.modules.backup.service import run_import
+
+            await run_import(
+                get_sessionmaker(),
+                Storage(),
+                uuid.UUID(kwargs["project_id"]),
+                uuid.UUID(kwargs["job_id"]),
+                kwargs["key"],
+                uuid.UUID(kwargs["user_id"]),
+            )
+            return
         assert function == "process_upload_task"
         await process_upload(
             get_sessionmaker(),

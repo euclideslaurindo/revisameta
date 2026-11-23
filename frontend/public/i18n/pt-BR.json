@@ -56,7 +56,12 @@
     "deadline": "Prazo (ex.: submissão do resumo)",
     "create": "Criar projeto",
     "roles": "Seus papéis",
-    "usage": "Você usa {{used}} de {{limit}} projetos."
+    "usage": "Você usa {{used}} de {{limit}} projetos.",
+    "restore": {
+      "label": "Restaurar projeto de um backup (.zip)",
+      "absent": "Projeto restaurado. Estas pessoas não têm conta aqui, e o que fizeram ficou atribuído a você: {{names}}."
+    },
+    "archived": "Arquivado por inatividade"
   },
   "roles": {
     "admin": "Administrador",
@@ -109,6 +114,10 @@
       "screening": "Triagem",
       "prisma": "PRISMA",
       "grade": "GRADE"
+    },
+    "archived": {
+      "text": "Este projeto foi marcado como arquivado em {{date}} por ficar 12 meses sem alterações. Nada foi apagado e ele continua funcionando.",
+      "unarchive": "Reativar"
     }
   },
   "protocol": {
@@ -570,6 +579,11 @@
         "bibtex": "Baixar BibTeX",
         "vancouver": "Baixar texto em Vancouver"
       }
+    },
+    "backup": {
+      "title": "Backup do projeto",
+      "intro": "Gera um arquivo ZIP com todos os dados do projeto (inclusive o histórico e o que foi removido) e os PDFs. Guarde-o fora do computador; ele pode ser restaurado como um projeto novo.",
+      "start": "Gerar e baixar backup"
     }
   },
   "formEditor": {
@@ -1632,7 +1646,8 @@
     "kind": {
       "mention": "{{author_name}} mencionou você num comentário.",
       "screening_conflict": "Conflito de triagem: {{title}}",
-      "deadline": "O prazo do projeto termina em {{days}} dia(s) ({{deadline}})."
+      "deadline": "O prazo do projeto termina em {{days}} dia(s) ({{deadline}}).",
+      "archived": "Projeto arquivado por inatividade (última alteração em {{last_activity}}). Nada foi apagado."
     }
   }
 }

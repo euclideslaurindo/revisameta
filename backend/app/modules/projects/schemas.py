@@ -47,6 +47,7 @@ class ProjectOut(BaseModel):
     report_language: str
     double_extraction: bool
     locked_stages: list[str]
+    archived_at: datetime | None = None
     owner_id: uuid.UUID
     version: int
     created_at: datetime

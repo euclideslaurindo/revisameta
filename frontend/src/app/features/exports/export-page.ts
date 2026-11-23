@@ -17,6 +17,7 @@ import { withJsonBody } from '../../core/errors/problem';
 import { fileNameFrom, saveFile } from '../../shared/download';
 import { FormError } from '../../shared/form-error';
 import { ProjectContext } from '../project/project-context';
+import { BackupCard } from './backup-card';
 import { BibliographyCard } from './bibliography-card';
 
 /**
@@ -35,6 +36,7 @@ import { BibliographyCard } from './bibliography-card';
     MatRadioModule,
     FormError,
     BibliographyCard,
+    BackupCard,
   ],
   template: `
     <p class="muted">{{ 'export.intro' | transloco }}</p>
@@ -110,6 +112,7 @@ import { BibliographyCard } from './bibliography-card';
       </mat-card>
     }
     <rm-bibliography-card />
+    <rm-backup-card />
   `,
 })
 export class ExportPage implements OnInit {

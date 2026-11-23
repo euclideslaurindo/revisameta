@@ -3,6 +3,7 @@
 
 import { Role } from '../models/role';
 export interface ProjectOut {
+  archived_at?: (string | null);
   created_at: string;
   deadline: (string | null);
   double_extraction: boolean;

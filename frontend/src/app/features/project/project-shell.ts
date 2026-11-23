@@ -4,11 +4,20 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 import { FormError } from '../../shared/form-error';
+import { ArchivedBanner } from './archived-banner';
 import { ProjectContext } from './project-context';
 
 @Component({
   selector: 'rm-project-shell',
-  imports: [RouterLink, RouterLinkActive, RouterOutlet, TranslocoPipe, MatTabsModule, FormError],
+  imports: [
+    RouterLink,
+    RouterLinkActive,
+    RouterOutlet,
+    TranslocoPipe,
+    MatTabsModule,
+    FormError,
+    ArchivedBanner,
+  ],
   providers: [ProjectContext],
   template: `
     <a routerLink="/projetos" class="back">← {{ 'projects.title' | transloco }}</a>
@@ -16,6 +25,7 @@ import { ProjectContext } from './project-context';
       <rm-form-error [error]="context.error()" />
     } @else if (context.project(); as project) {
       <h1>{{ project.title }}</h1>
+      <rm-archived-banner />
       <nav mat-tab-nav-bar [tabPanel]="panel">
         <a
           mat-tab-link
