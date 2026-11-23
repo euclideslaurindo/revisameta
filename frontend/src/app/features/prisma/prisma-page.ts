@@ -18,6 +18,7 @@ import { withJsonBody } from '../../core/errors/problem';
 import { fileNameFrom, saveFile } from '../../shared/download';
 import { FormError } from '../../shared/form-error';
 import { ProjectContext } from '../project/project-context';
+import { PrismaChecklist } from './prisma-checklist';
 
 const KEYS = [
   'identified_total',
@@ -47,6 +48,7 @@ type Key = (typeof KEYS)[number];
     MatSelectModule,
     MatTooltipModule,
     FormError,
+    PrismaChecklist,
   ],
   template: `
     <h2>
@@ -152,6 +154,8 @@ type Key = (typeof KEYS)[number];
         </mat-card-content>
       </mat-card>
     }
+
+    <rm-prisma-checklist />
   `,
   styles: `
     .num {

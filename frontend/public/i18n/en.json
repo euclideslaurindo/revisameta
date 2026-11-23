@@ -1488,6 +1488,33 @@
       "screened_does_not_add_up": "Identified minus duplicates does not match the number screened. Check the adjusted counts.",
       "sought_does_not_add_up": "Screened minus excluded does not match the number of reports sought.",
       "assessed_does_not_add_up": "Sought minus not retrieved does not match the number assessed."
+    },
+    "checklist": {
+      "title": "PRISMA 2020 checklist",
+      "help": "The 27 items PRISMA asks to report in the article. For each one, mark whether the manuscript reports it and where (section and page). The system says when it already has data for the item, but the group marks it.",
+      "summary": "{{reported}} reported, {{na}} not applicable, {{pending}} pending.",
+      "source": "The item summaries were written by RevisaMeta. Read the official wording at",
+      "docx": "Download checklist (DOCX)",
+      "item": "Item",
+      "what": "What to report (summary)",
+      "where": "Location in the manuscript",
+      "hasData": "the system has data for this item",
+      "status": "Status",
+      "location": "Where (e.g. Methods, p. 4)",
+      "statusName": {
+        "pending": "Pending",
+        "reported": "Reported",
+        "not_applicable": "Not applicable"
+      },
+      "section": {
+        "title": "Title",
+        "abstract": "Abstract",
+        "introduction": "Introduction",
+        "methods": "Methods",
+        "results": "Results",
+        "discussion": "Discussion",
+        "other": "Other information"
+      }
     }
   }
 }

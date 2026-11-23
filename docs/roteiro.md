@@ -214,6 +214,23 @@ Importação RIS/BibTeX/CSV/nbib, deduplicação multicritério com explicação
   - Os textos de cada caixa chegam prontos do backend, no idioma escolhido (pt ou en, separado do idioma da interface).
   - Saídas em SVG, PNG a 300 dpi e DOCX (figura e lista dos ajustes com justificativa).
 
+**Etapa 5, passo 7 — checklist PRISMA 2020 (feito):**
+- **Os 27 itens:** em 42 linhas, contando os subitens 10a–b, 13a–f, 16a–b, 20a–d, 23a–d e 24a–c. Para cada um, o grupo marca a situação (pendente, relatado, não se aplica) e onde o manuscrito relata. Edição auditada, com trava otimista; o leitor só vê.
+- **Dica do sistema:** "o sistema tem dados para este item" quando há buscas, estratégia, triagem, extração, risco de viés, estudos ou análises. Essa dica nunca marca o item como relatado.
+- **Mudança em relação ao que foi aprovado:**
+  - O texto oficial dos itens **não** foi copiado, nem em inglês nem na tradução em português.
+  - Ficaram o número, a seção e o tópico oficiais e um resumo curto de cada item, escrito para o sistema (pt e en).
+  - A tela e o DOCX levam para o checklist oficial (prisma-statement.org) e citam Page et al., BMJ 2021;372:n71.
+  - Motivo: evitar reproduzir por extenso um texto de terceiros dentro do sistema, mesmo com licença CC BY.
+- **Exportação:** DOCX do checklist, agrupado por seção.
+
+**Etapa 5 — implementação concluída em 2026-11-23.**
+- **Critério de saída** ("importar uma busca real, triar e obter o fluxograma com contagens corretas"): ainda depende de uma sessão com o grupo e uma busca real.
+  - Cada contagem do fluxograma é conferida pelos testes com dados fictícios em `tests/test_prisma.py`.
+- **Pendências:**
+  - teste de interface automatizado (Playwright), como nas Etapas 3 e 4;
+  - revisar com o grupo os resumos dos itens do checklist e o limiar de 0,95 da deduplicação.
+
 **Etapa 6 — GRADE, colaboração e entrega (P1)**
 GRADE e Summary of Findings, comentários, notificações, backup/reimportação do projeto, bibliografia, retenção de projetos inativos.
 *Saída:* tabela SoF em DOCX com justificativas; restauração de backup testada; reimportação de um projeto exportado sem perda.

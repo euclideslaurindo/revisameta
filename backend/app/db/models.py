@@ -15,7 +15,7 @@ from app.modules.extraction.models import (
 )
 from app.modules.jobs.models import BackgroundJob
 from app.modules.pdfs.models import PdfAnnotation, PdfFile
-from app.modules.prisma.models import PrismaAdjustment
+from app.modules.prisma.models import PrismaAdjustment, PrismaChecklistItem
 from app.modules.projects.models import Invitation, Project, ProjectMember, StageEvent
 from app.modules.protocol.models import ComparisonGroup, Outcome
 from app.modules.quotas.models import UsageQuota
@@ -58,6 +58,7 @@ __all__ = [
     "PdfFile",
     "PdfPageText",
     "PrismaAdjustment",
+    "PrismaChecklistItem",
     "Project",
     "ProjectMember",
     "Reference",

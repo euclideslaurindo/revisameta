@@ -1488,6 +1488,33 @@
       "screened_does_not_add_up": "Identificados menos duplicatas não bate com o número de triados. Confira as contagens ajustadas.",
       "sought_does_not_add_up": "Triados menos excluídos não bate com o número de relatos buscados.",
       "assessed_does_not_add_up": "Buscados menos não obtidos não bate com o número de avaliados."
+    },
+    "checklist": {
+      "title": "Checklist PRISMA 2020",
+      "help": "Os 27 itens que o PRISMA pede para relatar no artigo. Para cada um, marque se o manuscrito relata e onde (seção e página). O sistema avisa quando já tem dados para o item, mas quem marca é o grupo.",
+      "summary": "{{reported}} relatado(s), {{na}} não se aplica, {{pending}} pendente(s).",
+      "source": "Os resumos dos itens foram escritos pelo RevisaMeta. Leia o texto oficial em",
+      "docx": "Baixar checklist (DOCX)",
+      "item": "Item",
+      "what": "O que relatar (resumo)",
+      "where": "Onde no manuscrito",
+      "hasData": "o sistema tem dados para este item",
+      "status": "Situação",
+      "location": "Onde (ex.: Métodos, p. 4)",
+      "statusName": {
+        "pending": "Pendente",
+        "reported": "Relatado",
+        "not_applicable": "Não se aplica"
+      },
+      "section": {
+        "title": "Título",
+        "abstract": "Resumo",
+        "introduction": "Introdução",
+        "methods": "Métodos",
+        "results": "Resultados",
+        "discussion": "Discussão",
+        "other": "Outras informações"
+      }
     }
   }
 }

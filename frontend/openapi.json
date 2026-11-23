@@ -4889,6 +4889,186 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/prisma/checklist": {
+      "get": {
+        "tags": [
+          "prisma"
+        ],
+        "summary": "Prisma Checklist",
+        "description": "The 27 PRISMA 2020 items (42 rows), where each is reported, and which the system\nalready has data for.",
+        "operationId": "prisma_checklist",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChecklistOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/prisma/checklist/{code}": {
+      "put": {
+        "tags": [
+          "prisma"
+        ],
+        "summary": "Record Checklist Item",
+        "description": "Status and location of one item in the manuscript.",
+        "operationId": "record_checklist_item",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Code"
+            }
+          },
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChecklistIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChecklistRow"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/prisma/checklist.docx": {
+      "get": {
+        "tags": [
+          "prisma"
+        ],
+        "summary": "Prisma Checklist Docx",
+        "operationId": "prisma_checklist_docx",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "pt-BR",
+                "en"
+              ],
+              "type": "string",
+              "default": "pt-BR",
+              "title": "Lang"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The file.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/projects/{project_id}/reports/{report_id}/pdfs": {
       "post": {
         "tags": [
@@ -12195,6 +12375,156 @@
           "characteristics"
         ],
         "title": "CharacteristicsUpdate"
+      },
+      "ChecklistIn": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "reported",
+              "not_applicable"
+            ],
+            "title": "Status"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "ChecklistIn"
+      },
+      "ChecklistOut": {
+        "properties": {
+          "rows": {
+            "items": {
+              "$ref": "#/components/schemas/ChecklistRow"
+            },
+            "type": "array",
+            "title": "Rows"
+          },
+          "reported": {
+            "type": "integer",
+            "title": "Reported"
+          },
+          "not_applicable": {
+            "type": "integer",
+            "title": "Not Applicable"
+          },
+          "pending": {
+            "type": "integer",
+            "title": "Pending"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "citation": {
+            "type": "string",
+            "title": "Citation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "rows",
+          "reported",
+          "not_applicable",
+          "pending",
+          "source",
+          "citation"
+        ],
+        "title": "ChecklistOut"
+      },
+      "ChecklistRow": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "section": {
+            "type": "string",
+            "title": "Section"
+          },
+          "topic": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Topic"
+          },
+          "summary": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Summary"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location"
+          },
+          "has_data": {
+            "type": "boolean",
+            "title": "Has Data"
+          },
+          "version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "section",
+          "topic",
+          "summary",
+          "status",
+          "location",
+          "has_data",
+          "version"
+        ],
+        "title": "ChecklistRow"
       },
       "ChecksPlan": {
         "properties": {

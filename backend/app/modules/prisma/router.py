@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db.session import get_session
 from app.integrations.stats_client import StatsClient, get_stats_client
-from app.modules.prisma import service
+from app.modules.prisma import checklist, service
 from app.modules.projects.access import ProjectContext, member_access
 
 router = APIRouter(prefix="/projects/{project_id}/prisma", tags=["prisma"])
@@ -61,5 +61,39 @@ async def prisma_flow_docx(
     stats: StatsClient = Depends(get_stats_client),
 ) -> Response:
     content, name = await service.flow_docx(session, ctx, stats, lang)
+    media = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    return _download(content, media, name)
+
+
+# ---- Checklist ---------------------------------------------------------------------------
+
+
+@router.get("/checklist")
+async def prisma_checklist(
+    ctx: ProjectContext = Depends(member_access), session: AsyncSession = Depends(get_session)
+) -> checklist.ChecklistOut:
+    """The 27 PRISMA 2020 items (42 rows), where each is reported, and which the system
+    already has data for."""
+    return await checklist.checklist(session, ctx)
+
+
+@router.put("/checklist/{code}")
+async def record_checklist_item(
+    code: str,
+    body: checklist.ChecklistIn,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> checklist.ChecklistRow:
+    """Status and location of one item in the manuscript."""
+    return await checklist.record(session, ctx, code, body)
+
+
+@router.get("/checklist.docx", response_class=Response, responses=FILE)  # type: ignore[arg-type]
+async def prisma_checklist_docx(
+    lang: checklist.Lang = "pt-BR",
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> Response:
+    content, name = await checklist.docx(session, ctx, lang)
     media = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     return _download(content, media, name)
