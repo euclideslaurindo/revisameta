@@ -4,9 +4,12 @@ Data: the public dat.bcg set (13 studies, RR). Numbers are compared with what th
 R service returns for the same analysis, never typed by hand.
 """
 
+import io
 import math
 
+from docx import Document
 from httpx import AsyncClient
+from openpyxl import load_workbook
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from tests.test_analysis_subgroups import _bcg
@@ -115,3 +118,39 @@ async def test_settings_default_and_change(
         f"{p['base']}/grade/settings", headers=ana.headers, json={"i2_threshold": 40}
     )
     assert r.status_code == 200 and r.json()["i2_threshold"] == 40
+
+
+async def test_summary_of_findings_has_effect_certainty_and_justifications(
+    client: AsyncClient, make_user: MakeUser, session: AsyncSession
+) -> None:
+    ana, p, outcome = await _bcg(client, make_user, session)
+    url = f"{p['base']}/grade/summary-of-findings"
+    r = await client.get(url, headers=ana.headers)
+    assert r.status_code == 409 and r.json()["code"] == "grade.sof_empty"
+    body = {**BODY, "outcome_id": outcome}
+    sug = (await client.post(f"{p['base']}/grade/suggest", headers=ana.headers, json=body)).json()
+    domains = {
+        k: {"change": v["suggested"], "justification": f"motivo {k}"}
+        for k, v in sug["domains"].items()
+    }
+    domains["inconsistency"] = {"change": -1, "justification": "I² alto entre os estudos"}
+    r = await client.put(
+        f"{p['base']}/grade",
+        headers=ana.headers,
+        json={**body, "approach": "classic", "start_certainty": "high", "domains": domains},
+    )
+    assert r.status_code == 200, r.text
+    natural = sug["natural"]
+    r = await client.get(url, headers=ana.headers, params={"format": "docx", "lang": "pt-BR"})
+    assert r.status_code == 200 and "summary-of-findings" in r.headers["content-disposition"]
+    text = " | ".join(
+        c.text for t in Document(io.BytesIO(r.content)).tables for row in t.rows for c in row.cells
+    )
+    full = text + " | ".join(p_.text for p_ in Document(io.BytesIO(r.content)).paragraphs)
+    assert f"{natural['estimate']:.2f}".replace(".", ",") in text
+    assert "I² alto entre os estudos" in full and "inconsistência" in text
+    r = await client.get(url, headers=ana.headers, params={"format": "xlsx", "lang": "en"})
+    ws = load_workbook(io.BytesIO(r.content)).active
+    values = [str(c.value) for row in ws.iter_rows() for c in row if c.value is not None]
+    assert "Outcome" in values and any(f"{natural['estimate']:.2f}" in v for v in values)
+    assert any("inconsistency" in v for v in values)

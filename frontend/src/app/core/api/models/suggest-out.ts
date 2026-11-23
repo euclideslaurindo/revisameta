@@ -13,6 +13,9 @@ export interface SuggestOut {
   k: number;
   measure: string;
   method: string;
+  natural?: ({
+[key: string]: number;
+} | null);
   observational: boolean;
   outcome_id: string;
   participants: (number | null);

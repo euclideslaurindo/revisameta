@@ -10398,6 +10398,84 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/grade/summary-of-findings": {
+      "get": {
+        "tags": [
+          "grade"
+        ],
+        "summary": "Summary Of Findings",
+        "description": "Summary of Findings table of the saved GRADE judgements, with justifications.",
+        "operationId": "summary_of_findings",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "docx",
+                "xlsx"
+              ],
+              "type": "string",
+              "default": "docx",
+              "title": "Format"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "pt-BR",
+                "en"
+              ],
+              "type": "string",
+              "default": "pt-BR",
+              "title": "Lang"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The file.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/me/usage": {
       "get": {
         "tags": [
@@ -22530,6 +22608,20 @@
           "ratio": {
             "type": "boolean",
             "title": "Ratio"
+          },
+          "natural": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "number"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Natural"
           },
           "i2": {
             "anyOf": [

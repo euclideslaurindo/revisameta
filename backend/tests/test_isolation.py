@@ -172,6 +172,7 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
         {"outcome_id": "{outcome_id}", "timepoint": "x"},
     ),
     ("GET", "/api/v1/projects/{project_id}/grade", None),
+    ("GET", "/api/v1/projects/{project_id}/grade/summary-of-findings", None),
     (
         "PUT",
         "/api/v1/projects/{project_id}/grade",

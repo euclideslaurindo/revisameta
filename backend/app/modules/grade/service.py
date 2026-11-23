@@ -77,6 +77,7 @@ class SuggestOut(BaseModel):
     ci_lb: float | None
     ci_ub: float | None
     ratio: bool  # estimate and CI on the log scale
+    natural: dict[str, float] | None = None  # RR/OR on their own scale, from R
     i2: float | None
     observational: bool
     start_suggested: Certainty
@@ -260,6 +261,7 @@ async def suggest(
         ci_lb=lb,
         ci_ub=ub,
         ratio=ratio,
+        natural=pooled.get("exp"),
         i2=i2,
         observational=observational,
         start_suggested="low" if observational else "high",

@@ -580,6 +580,8 @@ export type { SaveGrade$Params as SaveGrade$Params } from './fn/grade/save-grade
 export { saveGrade as saveGrade } from './fn/grade/save-grade';
 export type { DeleteGrade$Params as DeleteGrade$Params } from './fn/grade/delete-grade';
 export { deleteGrade as deleteGrade } from './fn/grade/delete-grade';
+export type { SummaryOfFindings$Params as SummaryOfFindings$Params } from './fn/grade/summary-of-findings';
+export { summaryOfFindings as summaryOfFindings } from './fn/grade/summary-of-findings';
 export type { MyUsage$Params as MyUsage$Params } from './fn/quotas/my-usage';
 export { myUsage as myUsage } from './fn/quotas/my-usage';
 export type { UserUsage$Params as UserUsage$Params } from './fn/quotas/user-usage';

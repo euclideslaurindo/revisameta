@@ -1593,6 +1593,11 @@
       "large_effect_ratio_only": "Só avaliado automaticamente para RR/OR.",
       "large_effect_no": "O efeito não é grande ou houve rebaixamento.",
       "human_only": "Sem sugestão automática."
+    },
+    "sof": {
+      "lang": "Idioma da tabela",
+      "docx": "Baixar Summary of Findings (DOCX)",
+      "xlsx": "Baixar Summary of Findings (XLSX)"
     }
   }
 }

@@ -19,7 +19,9 @@ import { GradeOut } from '../../core/api/models/grade-out';
 import { OutcomeOut } from '../../core/api/models/outcome-out';
 import { SuggestOut } from '../../core/api/models/suggest-out';
 import { ToolOut } from '../../core/api/models/tool-out';
+import { summaryOfFindings } from '../../core/api/fn/grade/summary-of-findings';
 import { withJsonBody } from '../../core/errors/problem';
+import { fileNameFrom, saveFile } from '../../shared/download';
 import { FormError } from '../../shared/form-error';
 import { ProjectContext } from '../project/project-context';
 import { localized } from '../risk-of-bias/rob-tool-editor';
@@ -191,6 +193,23 @@ interface Choice {
     <mat-card class="block">
       <mat-card-content>
         <h3>{{ 'grade.saved' | transloco }}</h3>
+        @if (saved().length) {
+          <div class="row">
+            <mat-form-field subscriptSizing="dynamic">
+              <mat-label>{{ 'grade.sof.lang' | transloco }}</mat-label>
+              <mat-select [(ngModel)]="outputLang">
+                <mat-option value="pt-BR">Português</mat-option>
+                <mat-option value="en">English</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <button mat-stroked-button type="button" [disabled]="busy()" (click)="sof('docx')">
+              {{ 'grade.sof.docx' | transloco }}
+            </button>
+            <button mat-stroked-button type="button" [disabled]="busy()" (click)="sof('xlsx')">
+              {{ 'grade.sof.xlsx' | transloco }}
+            </button>
+          </div>
+        }
         @if (saved().length) {
           <table class="result-table">
             <thead>
@@ -390,6 +409,22 @@ export class GradePage implements OnInit {
       });
       this.version = out.version;
       await this.loadSaved();
+    });
+  }
+
+  protected outputLang: 'pt-BR' | 'en' = 'pt-BR';
+
+  async sof(format: 'docx' | 'xlsx'): Promise<void> {
+    await this.guard(async () => {
+      const response = await this.api.invoke$Response(summaryOfFindings, {
+        project_id: this.projectId(),
+        format,
+        lang: this.outputLang,
+      });
+      saveFile(
+        response.body,
+        fileNameFrom(response.headers.get('content-disposition'), `summary-of-findings.${format}`),
+      );
     });
   }
 

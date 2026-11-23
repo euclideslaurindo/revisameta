@@ -1593,6 +1593,11 @@
       "large_effect_ratio_only": "Only assessed automatically for RR/OR.",
       "large_effect_no": "Effect is not large or a downgrade was suggested.",
       "human_only": "No automatic suggestion."
+    },
+    "sof": {
+      "lang": "Table language",
+      "docx": "Download Summary of Findings (DOCX)",
+      "xlsx": "Download Summary of Findings (XLSX)"
     }
   }
 }

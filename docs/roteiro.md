@@ -249,6 +249,11 @@ Importação RIS/BibTeX/CSV/nbib, deduplicação multicritério com explicação
 - Certeza final = inicial − rebaixamentos + elevações, dentro da escala. Edição com trava otimista e auditoria; remoção é soft delete.
 - Os limiares são comparados com o que o R devolve; nada é calculado no Python.
 
+**Etapa 6, passo 2 — Summary of Findings (feito):**
+- Uma linha por julgamento GRADE salvo: desfecho, momento, estudos, participantes, efeito com IC 95% (RR/OR na escala natural, como o R devolveu ao salvar), certeza (com a inicial e a abordagem) e motivos.
+- As justificativas do grupo saem como notas numeradas. DOCX e XLSX, em português ou inglês, independente do idioma da interface; vírgula decimal em português.
+- Sem nenhum julgamento salvo, a exportação avisa em vez de gerar arquivo vazio.
+
 **Etapa 6 — GRADE, colaboração e entrega (P1)**
 GRADE e Summary of Findings, comentários, notificações, backup/reimportação do projeto, bibliografia, retenção de projetos inativos.
 *Saída:* tabela SoF em DOCX com justificativas; restauração de backup testada; reimportação de um projeto exportado sem perda.
