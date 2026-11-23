@@ -24,6 +24,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.errors import AppError, ForbiddenError, NotFoundError, ServiceUnavailableError
 from app.integrations.stats_client import StatsClient
 from app.modules.auth.models import User
+from app.modules.notifications.service import admins_of, notify
 from app.modules.projects.access import ProjectContext
 from app.modules.projects.models import ProjectMember, Role
 from app.modules.references.service import SearchReferenceOut
@@ -479,6 +480,24 @@ async def _check_reason(
     return reason.id
 
 
+async def _notify_conflict(
+    session: AsyncSession, ctx: ProjectContext, ref_id: uuid.UUID, stage: Stage
+) -> None:
+    """Tells the admins once that the screeners of this reference disagree."""
+    state = await _state(session, ctx, stage)
+    if state.status(ref_id) != "conflict":
+        return
+    title = await session.scalar(select(Reference.title).where(Reference.id == ref_id))
+    await notify(
+        session,
+        await admins_of(session, ctx.project.id),
+        ctx.project.id,
+        "screening_conflict",
+        f"screening_conflict:{stage}:{ref_id}",
+        {"reference_id": str(ref_id), "stage": stage, "title": (title or "")[:200]},
+    )
+
+
 async def decide(
     session: AsyncSession,
     ctx: ProjectContext,
@@ -521,6 +540,8 @@ async def decide(
         created_by=ctx.user.id,
     )
     session.add(row)
+    await session.flush()
+    await _notify_conflict(session, ctx, ref_id, stage)
     await session.commit()
     await session.refresh(row)
     return _decision_out(row)

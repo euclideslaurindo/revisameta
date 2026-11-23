@@ -17,6 +17,7 @@ from app.core.errors import AppError, ConflictError, ForbiddenError, NotFoundErr
 from app.modules.analysis.models import Analysis
 from app.modules.auth.models import User
 from app.modules.comments.models import Comment
+from app.modules.notifications.service import notify
 from app.modules.projects.access import ProjectContext
 from app.modules.projects.models import ProjectMember
 from app.modules.studies.models import Reference, Study
@@ -110,6 +111,26 @@ def _out(c: Comment, names: dict[uuid.UUID, str]) -> CommentOut:
     )
 
 
+async def _notify_mentions(
+    session: AsyncSession, ctx: ProjectContext, c: Comment, before: set[str]
+) -> None:
+    new = {uuid.UUID(m) for m in c.mentions or [] if m not in before} - {ctx.user.id}
+    await notify(
+        session,
+        new,
+        ctx.project.id,
+        "mention",
+        f"mention:{c.id}",
+        {
+            "comment_id": str(c.id),
+            "entity": c.entity,
+            "entity_id": str(c.entity_id),
+            "field": c.field,
+            "author_name": ctx.user.name,
+        },
+    )
+
+
 async def list_comments(
     session: AsyncSession, ctx: ProjectContext, entity: Entity, entity_id: uuid.UUID
 ) -> list[CommentOut]:
@@ -143,6 +164,8 @@ async def create(session: AsyncSession, ctx: ProjectContext, data: CommentIn) ->
         created_by=ctx.user.id,
     )
     session.add(c)
+    await session.flush()
+    await _notify_mentions(session, ctx, c, set())
     await session.commit()
     await session.refresh(c)
     return _out(c, names)
@@ -171,7 +194,9 @@ async def edit(
     if not text:
         raise AppError("comments.empty", status_code=422)
     names = await _members(session, ctx)
+    before = set(c.mentions or [])
     c.text, c.mentions = text, _mentions(data.mentions, names)
+    await _notify_mentions(session, ctx, c, before)
     await session.commit()
     await session.refresh(c)
     return _out(c, names)

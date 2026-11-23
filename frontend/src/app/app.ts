@@ -7,6 +7,7 @@ import { TranslocoPipe } from '@jsverse/transloco';
 
 import { AuthService } from './core/auth/auth';
 import { LANGUAGES, Language, LanguageService } from './core/i18n/language';
+import { NotificationsMenu } from './shared/notifications-menu';
 
 @Component({
   selector: 'rm-root',
@@ -17,6 +18,7 @@ import { LANGUAGES, Language, LanguageService } from './core/i18n/language';
     MatButtonModule,
     MatFormFieldModule,
     MatSelectModule,
+    NotificationsMenu,
   ],
   template: `
     <a class="skip-link" href="#main">{{ 'app.skipToContent' | transloco }}</a>
@@ -33,8 +35,11 @@ import { LANGUAGES, Language, LanguageService } from './core/i18n/language';
         </mat-select>
       </mat-form-field>
       @if (auth.user(); as user) {
+        <rm-notifications-menu />
         <span class="user">{{ user.name }}</span>
-        <button mat-button type="button" (click)="auth.logout()">{{ 'app.logout' | transloco }}</button>
+        <button mat-button type="button" (click)="auth.logout()">
+          {{ 'app.logout' | transloco }}
+        </button>
       }
     </header>
     <main id="main" tabindex="-1">

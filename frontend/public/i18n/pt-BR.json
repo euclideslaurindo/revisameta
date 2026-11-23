@@ -1613,5 +1613,16 @@
     "remove": "Remover",
     "save": "Salvar",
     "cancel": "Cancelar"
+  },
+  "notifications": {
+    "title": "Avisos",
+    "open": "Avisos ({{n}} não lidos)",
+    "readAll": "Marcar todos como lidos",
+    "empty": "Nenhum aviso.",
+    "kind": {
+      "mention": "{{author_name}} mencionou você num comentário.",
+      "screening_conflict": "Conflito de triagem: {{title}}",
+      "deadline": "O prazo do projeto termina em {{days}} dia(s) ({{deadline}})."
+    }
   }
 }

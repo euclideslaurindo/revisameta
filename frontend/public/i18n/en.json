@@ -1613,5 +1613,16 @@
     "remove": "Remove",
     "save": "Save",
     "cancel": "Cancel"
+  },
+  "notifications": {
+    "title": "Notices",
+    "open": "Notices ({{n}} unread)",
+    "readAll": "Mark all as read",
+    "empty": "No notices.",
+    "kind": {
+      "mention": "{{author_name}} mentioned you in a comment.",
+      "screening_conflict": "Screening conflict: {{title}}",
+      "deadline": "The project deadline ends in {{days}} day(s) ({{deadline}})."
+    }
   }
 }

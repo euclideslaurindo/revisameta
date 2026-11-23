@@ -16,6 +16,7 @@ from app.modules.extraction.models import (
 )
 from app.modules.grade.models import GradeAssessment
 from app.modules.jobs.models import BackgroundJob
+from app.modules.notifications.models import Notification
 from app.modules.pdfs.models import PdfAnnotation, PdfFile
 from app.modules.prisma.models import PrismaAdjustment, PrismaChecklistItem
 from app.modules.projects.models import Invitation, Project, ProjectMember, StageEvent
@@ -55,6 +56,7 @@ __all__ = [
     "GradeAssessment",
     "Invitation",
     "NarrativeEntry",
+    "Notification",
     "Outcome",
     "OutcomeData",
     "OutcomeMeasure",

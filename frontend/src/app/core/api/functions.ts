@@ -363,6 +363,12 @@ export type { EditComment$Params as EditComment$Params } from './fn/comments/edi
 export { editComment as editComment } from './fn/comments/edit-comment';
 export type { DeleteComment$Params as DeleteComment$Params } from './fn/comments/delete-comment';
 export { deleteComment as deleteComment } from './fn/comments/delete-comment';
+export type { MyNotifications$Params as MyNotifications$Params } from './fn/notifications/my-notifications';
+export { myNotifications as myNotifications } from './fn/notifications/my-notifications';
+export type { ReadNotification$Params as ReadNotification$Params } from './fn/notifications/read-notification';
+export { readNotification as readNotification } from './fn/notifications/read-notification';
+export type { ReadAllNotifications$Params as ReadAllNotifications$Params } from './fn/notifications/read-all-notifications';
+export { readAllNotifications as readAllNotifications } from './fn/notifications/read-all-notifications';
 export type { MyUsage$Params as MyUsage$Params } from './fn/quotas/my-usage';
 export { myUsage as myUsage } from './fn/quotas/my-usage';
 export type { UserUsage$Params as UserUsage$Params } from './fn/quotas/user-usage';

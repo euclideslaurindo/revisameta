@@ -111,6 +111,8 @@ export type { ModelPlan } from './models/model-plan';
 export type { NarrativeIn } from './models/narrative-in';
 export type { NarrativeOut } from './models/narrative-out';
 export type { NarrativeRow } from './models/narrative-row';
+export type { NotificationOut } from './models/notification-out';
+export type { NotificationsOut } from './models/notifications-out';
 export type { NumberCheck } from './models/number-check';
 export type { OutcomeCreate } from './models/outcome-create';
 export type { OutcomeDataFields } from './models/outcome-data-fields';

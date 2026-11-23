@@ -260,6 +260,14 @@ Importação RIS/BibTeX/CSV/nbib, deduplicação multicritério com explicação
 - Menção escolhendo membros do projeto numa lista (só nomes, nunca e-mails); quem não é membro não pode ser mencionado. O aviso à pessoa mencionada chega no passo 4.
 - Só o autor edita (trava otimista, auditoria); o autor ou o admin remove (soft delete).
 
+**Etapa 6, passo 4 — notificações internas (feito):**
+- Avisos na barra do topo, atualizados a cada minuto (polling; funciona no túnel rápido, sem SSE).
+- **Menção:** quem foi mencionado num comentário, na criação ou quando é acrescentado numa edição; nunca o próprio autor.
+- **Conflito de triagem:** os admins do projeto, uma vez por referência e etapa.
+- **Prazo:** quando faltam 7 dias ou menos, gerado ao abrir os avisos (sem agendador), uma vez por data.
+- Cada pessoa vê só os próprios avisos, e só de projetos de que ainda é membro. Os avisos não guardam e-mails.
+- "Pendências por membro" já aparecem no painel do projeto; o resumo semanal por e-mail fica para quando houver e-mail transacional (10.6).
+
 **Etapa 6 — GRADE, colaboração e entrega (P1)**
 GRADE e Summary of Findings, comentários, notificações, backup/reimportação do projeto, bibliografia, retenção de projetos inativos.
 *Saída:* tabela SoF em DOCX com justificativas; restauração de backup testada; reimportação de um projeto exportado sem perda.
