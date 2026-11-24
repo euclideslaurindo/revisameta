@@ -20,6 +20,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.integrations.ai import AIProvider
 from app.integrations.stats_client import StatsClient
 from app.modules.ai.gateway import call
+from app.modules.ai.models import AISuggestion
 from app.modules.analysis.run import RunIn, run
 from app.modules.projects.access import ProjectContext
 
@@ -142,6 +143,21 @@ async def ask(
         schema=TutorAnswer,
     )
     text, unverified, used = fill(result.answer.text, facts)
+    session.add(
+        AISuggestion(
+            project_id=ctx.project.id,
+            task="tutor",
+            target_entity="project",
+            target_id=ctx.project.id,
+            payload={"unverified": len(unverified), "cached": result.cached},
+            status="suggested",
+            prompt_version=PROMPT_VERSION,
+            provider=result.provider,
+            model=result.model,
+            created_by=ctx.user.id,
+        )
+    )
+    await session.commit()
     return TutorOut(
         text=text,
         unverified=unverified,

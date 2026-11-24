@@ -13,6 +13,7 @@ import { updateAiSettings } from '../../core/api/fn/ai/update-ai-settings';
 import { AiSettingsOut } from '../../core/api/models/ai-settings-out';
 import { withJsonBody } from '../../core/errors/problem';
 import { FormError } from '../../shared/form-error';
+import { AiMetrics } from './ai-metrics';
 import { ProjectContext } from './project-context';
 
 interface Notice {
@@ -33,6 +34,7 @@ interface Notice {
     MatCheckboxModule,
     MatTooltipModule,
     FormError,
+    AiMetrics,
   ],
   template: `
     <mat-card class="block">
@@ -111,6 +113,7 @@ interface Notice {
             <p class="muted">{{ 'settings.ai.adminOnly' | transloco }}</p>
           }
         }
+        <rm-ai-metrics />
       </mat-card-content>
     </mat-card>
   `,

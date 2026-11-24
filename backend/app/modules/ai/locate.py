@@ -25,6 +25,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import AppError, ForbiddenError, NotFoundError
 from app.integrations.ai import AIProvider
+from app.modules.ai import metrics
 from app.modules.ai.gateway import call
 from app.modules.ai.models import AISuggestion
 from app.modules.pdfs.models import PdfFile
@@ -227,6 +228,8 @@ async def decide(
     row.status = data.status
     row.decided_by = ctx.user.id
     row.decided_at = datetime.now(UTC)
+    await session.flush()
+    await metrics.check(session, ctx, row.task)
     await session.commit()
     await session.refresh(row)
     return out(row)

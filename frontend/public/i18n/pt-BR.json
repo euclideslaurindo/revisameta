@@ -1648,7 +1648,8 @@
       "mention": "{{author_name}} mencionou você num comentário.",
       "screening_conflict": "Conflito de triagem: {{title}}",
       "deadline": "O prazo do projeto termina em {{days}} dia(s) ({{deadline}}).",
-      "archived": "Projeto arquivado por inatividade (última alteração em {{last_activity}}). Nada foi apagado."
+      "archived": "Projeto arquivado por inatividade (última alteração em {{last_activity}}). Nada foi apagado.",
+      "ai_disabled": "Uma função de IA foi desligada: acerto de {{accuracy}}%, abaixo do limite de {{threshold}}%."
     }
   },
   "settings": {
@@ -1670,6 +1671,18 @@
       "turnOff": "Desligar a IA",
       "saveFunctions": "Salvar funções",
       "adminOnly": "Só um administrador do projeto pode ligar ou desligar a IA."
+    },
+    "metrics": {
+      "title": "Precisão da IA neste projeto",
+      "intro": "Quantas sugestões da IA as pessoas consideraram corretas, entre as últimas avaliadas. Abaixo do limite, a função é desligada automaticamente.",
+      "task": "Função",
+      "decided": "Avaliadas por pessoas",
+      "accuracy": "Taxa de acerto",
+      "discarded": "Descartadas (citação inexistente)",
+      "notYet": "ainda não (mínimo {{n}})",
+      "off": "desligada",
+      "lang": "Idioma da declaração",
+      "statement": "Baixar declaração de uso de IA (DOCX)"
     }
   },
   "tutor": {

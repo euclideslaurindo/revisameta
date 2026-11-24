@@ -393,6 +393,10 @@ export type { AiSuggestions$Params as AiSuggestions$Params } from './fn/ai/ai-su
 export { aiSuggestions as aiSuggestions } from './fn/ai/ai-suggestions';
 export type { DecideAiSuggestion$Params as DecideAiSuggestion$Params } from './fn/ai/decide-ai-suggestion';
 export { decideAiSuggestion as decideAiSuggestion } from './fn/ai/decide-ai-suggestion';
+export type { AiMetrics$Params as AiMetrics$Params } from './fn/ai/ai-metrics';
+export { aiMetrics as aiMetrics } from './fn/ai/ai-metrics';
+export type { AiStatement$Params as AiStatement$Params } from './fn/ai/ai-statement';
+export { aiStatement as aiStatement } from './fn/ai/ai-statement';
 export type { MyUsage$Params as MyUsage$Params } from './fn/quotas/my-usage';
 export { myUsage as myUsage } from './fn/quotas/my-usage';
 export type { UserUsage$Params as UserUsage$Params } from './fn/quotas/user-usage';

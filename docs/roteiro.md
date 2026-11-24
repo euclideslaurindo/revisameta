@@ -347,3 +347,8 @@ Digitalizador de gráficos, OCR, meta-regressão, modelos multinível, apoio ao 
 - **Citação verificada:** cada trecho é procurado no texto extraído do PDF, sem diferença de maiúsculas, acentos, quebras de linha e hifenização. Trecho que não existe é descartado e fica registrado como falha; trecho achado em outra página fica com a página certa.
 - Toda sugestão fica em `ai_suggestions` (sugerida ou descartada), com versão do prompt, provedor e modelo. A pessoa marca "ajudou" ou "não ajudou", o que alimenta as métricas do passo 6. Nada vira dado.
 
+**Etapa 7, passo 6 — precisão medida e desligamento automático (feito):**
+- Para cada função, a taxa de acerto é aceitas ÷ avaliadas por pessoas, entre as últimas 30 avaliadas. Com pelo menos 10 avaliadas e acerto abaixo de 80%, a função é desligada no projeto, os admins recebem um aviso e um admin pode religá-la nas Configurações. As descartadas pelo sistema (citação inexistente) aparecem à parte.
+- Na aba "Configurações": tabela de precisão por função e download da **declaração de uso de IA** para o manuscrito (DOCX, pt/en), com funções usadas, provedor, modelo, versões de prompt, sugestões avaliadas e taxa de acerto, e a frase de que nada virou dado sem confirmação humana.
+- O uso do tutor fica registrado em `ai_suggestions` (sem o texto da resposta), só para a declaração saber que ele foi usado.
+

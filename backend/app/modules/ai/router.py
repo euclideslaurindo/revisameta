@@ -1,6 +1,8 @@
 import uuid
+from typing import Literal
+from urllib.parse import quote
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.errors import AppError
@@ -8,7 +10,7 @@ from app.db.session import get_session
 from app.integrations.ai import AIProvider, get_ai_provider
 from app.integrations.ai.base import AIUnavailableError
 from app.integrations.stats_client import StatsClient, get_stats_client
-from app.modules.ai import locate, settings, tutor
+from app.modules.ai import locate, metrics, settings, tutor
 from app.modules.projects.access import ProjectContext, member_access
 
 router = APIRouter(prefix="/projects/{project_id}/ai", tags=["ai"])
@@ -82,3 +84,32 @@ async def decide_ai_suggestion(
 ) -> locate.SuggestionOut:
     """A person marks the suggestion as useful (accepted) or not (rejected)."""
     return await locate.decide(session, ctx, suggestion_id, body)
+
+
+@router.get("/metrics")
+async def ai_metrics(
+    ctx: ProjectContext = Depends(member_access), session: AsyncSession = Depends(get_session)
+) -> metrics.MetricsOut:
+    """Hit rate of each AI feature against the decisions of people in this project."""
+    return await metrics.metrics(session, ctx)
+
+
+FILE = {
+    200: {
+        "description": "The file.",
+        "content": {"application/octet-stream": {"schema": {"type": "string", "format": "binary"}}},
+    }
+}
+
+
+@router.get("/statement.docx", response_class=Response, responses=FILE)  # type: ignore[arg-type]
+async def ai_statement(
+    lang: Literal["pt-BR", "en"] = "pt-BR",
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> Response:
+    """AI-use statement for the manuscript: features, provider, prompt versions, accuracy."""
+    content, name = await metrics.statement(session, ctx, lang)
+    disposition = f"attachment; filename=\"{name}\"; filename*=UTF-8''{quote(name)}"
+    media = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    return Response(content=content, media_type=media, headers={"Content-Disposition": disposition})

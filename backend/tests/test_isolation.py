@@ -187,6 +187,8 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
         {"pdf_id": "{pdf_id}", "question": "cegamento"},
     ),
     ("GET", "/api/v1/projects/{project_id}/ai/suggestions?target_id={pdf_id}", None),
+    ("GET", "/api/v1/projects/{project_id}/ai/metrics", None),
+    ("GET", "/api/v1/projects/{project_id}/ai/statement.docx", None),
     (
         "PUT",
         "/api/v1/projects/{project_id}/ai/suggestions/{suggestion_id}/decision",

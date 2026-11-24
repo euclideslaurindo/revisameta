@@ -1648,7 +1648,8 @@
       "mention": "{{author_name}} mentioned you in a comment.",
       "screening_conflict": "Screening conflict: {{title}}",
       "deadline": "The project deadline ends in {{days}} day(s) ({{deadline}}).",
-      "archived": "Project archived for inactivity (last change on {{last_activity}}). Nothing was deleted."
+      "archived": "Project archived for inactivity (last change on {{last_activity}}). Nothing was deleted.",
+      "ai_disabled": "An AI feature was switched off: {{accuracy}}% accuracy, below the {{threshold}}% threshold."
     }
   },
   "settings": {
@@ -1670,6 +1671,18 @@
       "turnOff": "Turn the AI off",
       "saveFunctions": "Save features",
       "adminOnly": "Only a project admin can turn the AI on or off."
+    },
+    "metrics": {
+      "title": "AI accuracy in this project",
+      "intro": "How many AI suggestions people found correct, among the latest reviewed. Below the threshold, the feature is switched off automatically.",
+      "task": "Feature",
+      "decided": "Reviewed by people",
+      "accuracy": "Accuracy",
+      "discarded": "Discarded (non-existent quote)",
+      "notYet": "not yet (minimum {{n}})",
+      "off": "off",
+      "lang": "Statement language",
+      "statement": "Download AI-use statement (DOCX)"
     }
   },
   "tutor": {

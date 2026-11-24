@@ -11526,6 +11526,119 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/ai/metrics": {
+      "get": {
+        "tags": [
+          "ai"
+        ],
+        "summary": "Ai Metrics",
+        "description": "Hit rate of each AI feature against the decisions of people in this project.",
+        "operationId": "ai_metrics",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetricsOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/ai/statement.docx": {
+      "get": {
+        "tags": [
+          "ai"
+        ],
+        "summary": "Ai Statement",
+        "description": "AI-use statement for the manuscript: features, provider, prompt versions, accuracy.",
+        "operationId": "ai_statement",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          },
+          {
+            "name": "lang",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "pt-BR",
+                "en"
+              ],
+              "type": "string",
+              "default": "pt-BR",
+              "title": "Lang"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The file.",
+            "content": {
+              "application/octet-stream": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/me/usage": {
       "get": {
         "tags": [
@@ -17635,6 +17748,22 @@
         ],
         "title": "MergeIn",
         "description": "Moves every report of `other_study_id` into this study (same patients)."
+      },
+      "MetricsOut": {
+        "properties": {
+          "tasks": {
+            "items": {
+              "$ref": "#/components/schemas/TaskMetrics"
+            },
+            "type": "array",
+            "title": "Tasks"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tasks"
+        ],
+        "title": "MetricsOut"
       },
       "MissingStudy": {
         "properties": {
@@ -24609,6 +24738,92 @@
           "final_kind"
         ],
         "title": "TargetState"
+      },
+      "TaskMetrics": {
+        "properties": {
+          "task": {
+            "type": "string",
+            "title": "Task"
+          },
+          "window": {
+            "type": "integer",
+            "title": "Window"
+          },
+          "decided": {
+            "type": "integer",
+            "title": "Decided"
+          },
+          "accepted": {
+            "type": "integer",
+            "title": "Accepted"
+          },
+          "corrected": {
+            "type": "integer",
+            "title": "Corrected"
+          },
+          "rejected": {
+            "type": "integer",
+            "title": "Rejected"
+          },
+          "discarded": {
+            "type": "integer",
+            "title": "Discarded"
+          },
+          "accuracy": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accuracy"
+          },
+          "threshold": {
+            "type": "number",
+            "title": "Threshold"
+          },
+          "min_decided": {
+            "type": "integer",
+            "title": "Min Decided"
+          },
+          "disabled": {
+            "type": "boolean",
+            "title": "Disabled"
+          },
+          "prompt_versions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Prompt Versions"
+          },
+          "models": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Models"
+          }
+        },
+        "type": "object",
+        "required": [
+          "task",
+          "window",
+          "decided",
+          "accepted",
+          "corrected",
+          "rejected",
+          "discarded",
+          "accuracy",
+          "threshold",
+          "min_decided",
+          "disabled",
+          "prompt_versions",
+          "models"
+        ],
+        "title": "TaskMetrics"
       },
       "TextsIn": {
         "properties": {
