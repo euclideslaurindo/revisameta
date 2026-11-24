@@ -125,6 +125,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/extraction/review-page').then((m) => m.ReviewPage),
       },
       {
+        path: 'configuracoes',
+        loadComponent: () => import('./features/project/settings-page').then((m) => m.SettingsPage),
+      },
+      {
         path: 'exportar',
         loadComponent: () => import('./features/exports/export-page').then((m) => m.ExportPage),
       },

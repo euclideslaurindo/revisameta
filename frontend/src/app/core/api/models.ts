@@ -4,6 +4,8 @@
 export type { AdjustIn } from './models/adjust-in';
 export type { Adjustment } from './models/adjustment';
 export type { AgreementOut } from './models/agreement-out';
+export type { AiSettingsIn } from './models/ai-settings-in';
+export type { AiSettingsOut } from './models/ai-settings-out';
 export type { AlertOut } from './models/alert-out';
 export type { AnalysisOut } from './models/analysis-out';
 export type { AnalysisSummary } from './models/analysis-summary';

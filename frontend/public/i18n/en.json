@@ -113,7 +113,8 @@
       "searches": "Searches",
       "screening": "Screening",
       "prisma": "PRISMA",
-      "grade": "GRADE"
+      "grade": "GRADE",
+      "settings": "Settings"
     },
     "archived": {
       "text": "This project was marked as archived on {{date}} after 12 months without changes. Nothing was deleted and it still works.",
@@ -1648,6 +1649,27 @@
       "screening_conflict": "Screening conflict: {{title}}",
       "deadline": "The project deadline ends in {{days}} day(s) ({{deadline}}).",
       "archived": "Project archived for inactivity (last change on {{last_activity}}). Nothing was deleted."
+    }
+  },
+  "settings": {
+    "ai": {
+      "title": "Artificial intelligence (optional)",
+      "help": "The AI only explains and points at PDF passages. It never computes statistics, never decides inclusion or risk of bias, and nothing it suggests becomes data without a person's confirmation.",
+      "on": "The AI is on in this project.",
+      "off": "The AI is off in this project.",
+      "acceptedBy": "notice accepted by {{name}} on {{date}}",
+      "notConfigured": "This server has no AI provider configured yet. Even if turned on, the AI stays unavailable until the server owner adds the key.",
+      "newNotice": "The data-use notice changed. The AI stays off until an admin reads and accepts the new version.",
+      "lowAccuracy": "The \"{{fn}}\" feature was switched off automatically because its accuracy fell below the threshold. An admin can turn it back on.",
+      "functions": "Allowed features",
+      "fn": {
+        "tutor": "Tutor: explains concepts and the project's results",
+        "locate": "PDF passage finder"
+      },
+      "turnOn": "Turn the AI on",
+      "turnOff": "Turn the AI off",
+      "saveFunctions": "Save features",
+      "adminOnly": "Only a project admin can turn the AI on or off."
     }
   }
 }

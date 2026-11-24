@@ -319,3 +319,9 @@ Digitalizador de gráficos, OCR, meta-regressão, modelos multinível, apoio ao 
 - Cota esgotada (429) vira estado normal (`AIQuotaExceededError`); sem chave, a IA fica indisponível (`AIUnavailableError`) e o resto funciona.
 - Configuração em `.env` (`AI_PROVIDER=none` por padrão). Nenhum teste chama um provedor real.
 
+**Etapa 7, passo 2 — IA por projeto e aviso de uso de dados (feito):**
+- Nova aba "Configurações" do projeto. A IA começa desligada; só um admin liga, e só marcando o aceite do aviso atual (pt/en, em `app/modules/ai/notice.py`, com versão). Quem aceitou, quando e qual versão ficam em `ai_settings` e na auditoria.
+- O aviso diz quem recebe os dados (Google, plano gratuito, pode usar para melhorar produtos), o que é enviado (só o trecho ou resultado pedido) e o que nunca é enviado (anotações, comentários, nomes e e-mails de membros, decisões, extrações e avaliações em andamento, PDFs inteiros).
+- Se o texto do aviso mudar, o aceite antigo deixa de valer e a IA fica desligada até novo aceite.
+- `require(ctx, função)`: toda função de IA chama antes de qualquer coisa; recusa se a IA estiver desligada, a função não estiver liberada, tiver sido desligada por baixa precisão ou não houver provedor no servidor. Nada chega ao provedor nesses casos.
+

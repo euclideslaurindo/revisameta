@@ -113,7 +113,8 @@
       "searches": "Buscas",
       "screening": "Triagem",
       "prisma": "PRISMA",
-      "grade": "GRADE"
+      "grade": "GRADE",
+      "settings": "Configurações"
     },
     "archived": {
       "text": "Este projeto foi marcado como arquivado em {{date}} por ficar 12 meses sem alterações. Nada foi apagado e ele continua funcionando.",
@@ -1648,6 +1649,27 @@
       "screening_conflict": "Conflito de triagem: {{title}}",
       "deadline": "O prazo do projeto termina em {{days}} dia(s) ({{deadline}}).",
       "archived": "Projeto arquivado por inatividade (última alteração em {{last_activity}}). Nada foi apagado."
+    }
+  },
+  "settings": {
+    "ai": {
+      "title": "Inteligência artificial (opcional)",
+      "help": "A IA só explica e aponta trechos do PDF. Ela nunca calcula estatística, nunca decide inclusão ou risco de viés, e nada que ela sugere vira dado sem uma pessoa confirmar.",
+      "on": "A IA está ligada neste projeto.",
+      "off": "A IA está desligada neste projeto.",
+      "acceptedBy": "aviso aceito por {{name}} em {{date}}",
+      "notConfigured": "Este servidor ainda não tem um provedor de IA configurado. Mesmo ligada, a IA ficará indisponível até o responsável pelo servidor colocar a chave.",
+      "newNotice": "O aviso de uso de dados mudou. A IA fica desligada até um administrador ler e aceitar a nova versão.",
+      "lowAccuracy": "A função \"{{fn}}\" foi desligada automaticamente porque a taxa de acerto ficou abaixo do limite. Um administrador pode religá-la.",
+      "functions": "Funções liberadas",
+      "fn": {
+        "tutor": "Tutor: explica conceitos e os resultados do projeto",
+        "locate": "Localizador de trechos no PDF"
+      },
+      "turnOn": "Ligar a IA",
+      "turnOff": "Desligar a IA",
+      "saveFunctions": "Salvar funções",
+      "adminOnly": "Só um administrador do projeto pode ligar ou desligar a IA."
     }
   }
 }

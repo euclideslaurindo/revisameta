@@ -126,6 +126,15 @@ import { ProjectContext } from './project-context';
         >
           {{ 'project.nav.export' | transloco }}
         </a>
+        <a
+          mat-tab-link
+          routerLink="configuracoes"
+          routerLinkActive
+          #settings="routerLinkActive"
+          [active]="settings.isActive"
+        >
+          {{ 'project.nav.settings' | transloco }}
+        </a>
       </nav>
       <mat-tab-nav-panel #panel>
         <router-outlet />

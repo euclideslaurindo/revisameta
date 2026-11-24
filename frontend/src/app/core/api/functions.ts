@@ -381,6 +381,10 @@ export type { ReadNotification$Params as ReadNotification$Params } from './fn/no
 export { readNotification as readNotification } from './fn/notifications/read-notification';
 export type { ReadAllNotifications$Params as ReadAllNotifications$Params } from './fn/notifications/read-all-notifications';
 export { readAllNotifications as readAllNotifications } from './fn/notifications/read-all-notifications';
+export type { AiSettings$Params as AiSettings$Params } from './fn/ai/ai-settings';
+export { aiSettings as aiSettings } from './fn/ai/ai-settings';
+export type { UpdateAiSettings$Params as UpdateAiSettings$Params } from './fn/ai/update-ai-settings';
+export { updateAiSettings as updateAiSettings } from './fn/ai/update-ai-settings';
 export type { MyUsage$Params as MyUsage$Params } from './fn/quotas/my-usage';
 export { myUsage as myUsage } from './fn/quotas/my-usage';
 export type { UserUsage$Params as UserUsage$Params } from './fn/quotas/user-usage';
