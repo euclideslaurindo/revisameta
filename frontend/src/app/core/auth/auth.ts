@@ -49,10 +49,15 @@ export class AuthService {
     return new HttpContext().set(SKIP_REFRESH, true);
   }
 
-  async login(email: string, password: string, captchaToken?: string | null): Promise<UserOut> {
+  async login(
+    email: string,
+    password: string,
+    captchaToken?: string | null,
+    otpCode?: string | null,
+  ): Promise<UserOut> {
     const result = await this.api.invoke(
       login,
-      { body: { email, password, captcha_token: captchaToken ?? null } },
+      { body: { email, password, captcha_token: captchaToken ?? null, otp_code: otpCode ?? null } },
       this.noRefresh(),
     );
     this.accept(result);

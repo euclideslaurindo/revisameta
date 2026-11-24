@@ -391,6 +391,120 @@
         ]
       }
     },
+    "/api/v1/auth/2fa/setup": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Two Factor Setup",
+        "description": "Creates the secret for the authenticator app; 2FA turns on only after a valid code.",
+        "operationId": "two_factor_setup",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetupOut"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/2fa/enable": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Two Factor Enable",
+        "description": "Confirms the first code; returns 10 one-use recovery codes (shown only now).",
+        "operationId": "two_factor_enable",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CodeIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecoveryOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
+    "/api/v1/auth/2fa/disable": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Two Factor Disable",
+        "description": "Turns 2FA off with the password and a current code (or a recovery code).",
+        "operationId": "two_factor_disable",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DisableIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ]
+      }
+    },
     "/api/v1/projects/{project_id}/backups": {
       "post": {
         "tags": [
@@ -15050,6 +15164,21 @@
         "title": "ChecksPlan",
         "description": "Thresholds of the plausibility checks (7.5.1 blocks B and E).\n\nDefaults approved on 2026-11-17 (docs/estatistica.md): they only produce warnings."
       },
+      "CodeIn": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 6,
+            "title": "Code"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code"
+        ],
+        "title": "CodeIn"
+      },
       "ColumnOut": {
         "properties": {
           "key": {
@@ -15833,6 +15962,28 @@
           "mean"
         ],
         "title": "DirectionSideOut"
+      },
+      "DisableIn": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "maxLength": 20,
+            "minLength": 6,
+            "title": "Code"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Password"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "password"
+        ],
+        "title": "DisableIn"
       },
       "DispersionType": {
         "type": "string",
@@ -18369,6 +18520,18 @@
               }
             ],
             "title": "Captcha Token"
+          },
+          "otp_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 20
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Otp Code"
           }
         },
         "type": "object",
@@ -21718,6 +21881,22 @@
         ],
         "title": "ReasonUpdate"
       },
+      "RecoveryOut": {
+        "properties": {
+          "recovery_codes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Recovery Codes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "recovery_codes"
+        ],
+        "title": "RecoveryOut"
+      },
       "Rect": {
         "properties": {
           "x": {
@@ -24809,6 +24988,24 @@
         ],
         "title": "SensitivityOut"
       },
+      "SetupOut": {
+        "properties": {
+          "secret": {
+            "type": "string",
+            "title": "Secret"
+          },
+          "otpauth_uri": {
+            "type": "string",
+            "title": "Otpauth Uri"
+          }
+        },
+        "type": "object",
+        "required": [
+          "secret",
+          "otpauth_uri"
+        ],
+        "title": "SetupOut"
+      },
       "StageEventOut": {
         "properties": {
           "action": {
@@ -26654,6 +26851,11 @@
               }
             ],
             "title": "Email Verified At"
+          },
+          "two_factor": {
+            "type": "boolean",
+            "title": "Two Factor",
+            "default": false
           }
         },
         "type": "object",

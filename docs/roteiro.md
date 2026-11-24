@@ -393,3 +393,9 @@ Digitalizador de gráficos, OCR, meta-regressão, modelos multinível, apoio ao 
 - Contadores de palavras e caracteres ao vivo, com os limites do congresso salvos junto com o texto (trava otimista, auditoria; leitor não edita).
 - **Rascunho de Métodos e Resultados** em DOCX (pt/en), com as mesmas frases e números. Diferente da IA6, nada aqui passa por um provedor de IA.
 
+**Etapa 8, passo 7 — verificação em duas etapas (feito):**
+- Opcional, em "Meu perfil" (clique no nome, na barra do topo). Usa aplicativo autenticador (TOTP, RFC 6238; biblioteca `pyotp`, MIT).
+- Configurar mostra a chave (e um link `otpauth://` para o celular); só liga depois de um código válido, para ninguém ficar trancado por uma chave digitada errado. Ao ligar, aparecem 10 códigos de recuperação de uso único, guardados só como hash SHA-256.
+- No login, a conta com 2FA pede o código na mesma tela (aceita 30 segundos de diferença de relógio) ou um código de recuperação, que é gasto. Código errado conta como tentativa falha (limite de login e captcha continuam valendo).
+- Desligar pede a senha e um código. A chave e os códigos nunca entram na auditoria.
+

@@ -4,5 +4,6 @@
 export interface LoginIn {
   captcha_token?: (string | null);
   email: string;
+  otp_code?: (string | null);
   password: string;
 }

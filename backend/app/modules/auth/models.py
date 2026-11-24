@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import ClassVar
 
 from sqlalchemy import Boolean, ForeignKey, Index, String, func
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import (
@@ -17,7 +18,9 @@ from app.db.base import (
 
 class User(IdMixin, TimestampMixin, SoftDeleteMixin, VersionedMixin, AuditedMixin, Base):
     __tablename__ = "users"
-    __audit_exclude__: ClassVar[frozenset[str]] = frozenset({"password_hash"})
+    __audit_exclude__: ClassVar[frozenset[str]] = frozenset(
+        {"password_hash", "totp_secret", "recovery_codes"}
+    )
 
     name: Mapped[str] = mapped_column(String(200))
     email: Mapped[str] = mapped_column(String(320))
@@ -28,6 +31,15 @@ class User(IdMixin, TimestampMixin, SoftDeleteMixin, VersionedMixin, AuditedMixi
     ui_language: Mapped[str] = mapped_column(String(8), default="pt-BR")
     terms_version: Mapped[str | None] = mapped_column(String(32))
     terms_accepted_at: Mapped[datetime | None]
+    # Optional 2FA (stage 8): TOTP secret (set when setup starts), enabled when the first
+    # code is confirmed; recovery codes are stored only as SHA-256 hashes, one use each.
+    totp_secret: Mapped[str | None] = mapped_column(String(64))
+    totp_enabled_at: Mapped[datetime | None]
+    recovery_codes: Mapped[list[str]] = mapped_column(JSONB, default=list, server_default="[]")
+
+    @property
+    def two_factor(self) -> bool:
+        return self.totp_enabled_at is not None
 
     __table_args__ = (
         Index(

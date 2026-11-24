@@ -28,7 +28,9 @@
     "noAccount": "Ainda não tem conta?",
     "createAccount": "Criar conta",
     "sessionExpired": "Sua sessão expirou. Entre novamente.",
-    "verified": "E-mail confirmado. Agora é só entrar."
+    "verified": "E-mail confirmado. Agora é só entrar.",
+    "otp": "Código do aplicativo autenticador",
+    "otpHint": "Ou um dos códigos de recuperação."
   },
   "register": {
     "title": "Criar conta",
@@ -1830,5 +1832,21 @@
     "over": "passou do limite",
     "save": "Salvar resumo",
     "saved": "Resumo salvo."
+  },
+  "profile": {
+    "title": "Meu perfil",
+    "twoFactor": "Verificação em duas etapas (opcional)",
+    "twoFactorHelp": "Além da senha, o login pede um código de 6 dígitos de um aplicativo autenticador (por exemplo, Google Authenticator, Microsoft Authenticator ou Aegis).",
+    "on": "Ligada.",
+    "off": "Desligada.",
+    "start": "Configurar",
+    "secret": "Chave para digitar no aplicativo:",
+    "openApp": "Abrir no aplicativo (celular)",
+    "code": "Código de 6 dígitos",
+    "confirm": "Confirmar e ligar",
+    "codes": "Guarde estes códigos de recuperação num lugar seguro. Cada um funciona uma vez, caso você perca o celular. Eles não serão mostrados de novo.",
+    "password": "Senha",
+    "disable": "Desligar",
+    "disableHelp": "Para desligar, digite a senha e um código do aplicativo (ou de recuperação)."
   }
 }

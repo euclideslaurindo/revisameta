@@ -1,5 +1,10 @@
 import { Component, inject, input, signal } from '@angular/core';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormsModule,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,6 +22,7 @@ import { Turnstile } from '../../shared/turnstile';
 @Component({
   selector: 'rm-login-page',
   imports: [
+    FormsModule,
     ReactiveFormsModule,
     RouterLink,
     TranslocoPipe,
@@ -57,6 +63,22 @@ import { Turnstile } from '../../shared/turnstile';
               autocomplete="current-password"
             />
           </mat-form-field>
+          @if (needsCode()) {
+            <mat-form-field>
+              <mat-label>{{ 'login.otp' | transloco }}</mat-label>
+              <input
+                matInput
+                name="otp"
+                autocomplete="one-time-code"
+                inputmode="numeric"
+                maxlength="20"
+                [ngModel]="otpCode"
+                [ngModelOptions]="{ standalone: true }"
+                (ngModelChange)="otpCode = $event"
+              />
+              <mat-hint>{{ 'login.otpHint' | transloco }}</mat-hint>
+            </mat-form-field>
+          }
 
           @if (needsCaptcha() && config.captchaSiteKey(); as key) {
             <rm-turnstile
@@ -97,6 +119,8 @@ export class LoginPage {
   protected readonly busy = signal(false);
   protected readonly error = signal<unknown>(null);
   protected readonly needsCaptcha = signal(false);
+  protected readonly needsCode = signal(false);
+  protected otpCode = '';
   protected readonly captcha = signal<string | null>(null);
 
   async submit(): Promise<void> {
@@ -108,12 +132,19 @@ export class LoginPage {
     this.error.set(null);
     const { email, password } = this.form.getRawValue();
     try {
-      await this.auth.login(email, password, this.captcha());
+      await this.auth.login(
+        email,
+        password,
+        this.captcha(),
+        this.needsCode() ? this.otpCode.trim() : null,
+      );
       const target = this.voltar();
       await this.router.navigateByUrl(target?.startsWith('/') ? target : '/projetos');
     } catch (error) {
       this.error.set(error);
-      if (asProblem(error)?.code === 'auth.captcha_failed') this.needsCaptcha.set(true);
+      const code = asProblem(error)?.code;
+      if (code === 'auth.captcha_failed') this.needsCaptcha.set(true);
+      if (code === 'auth.otp_required' || code === 'auth.otp_invalid') this.needsCode.set(true);
     } finally {
       this.busy.set(false);
     }

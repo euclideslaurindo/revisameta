@@ -28,7 +28,9 @@
     "noAccount": "No account yet?",
     "createAccount": "Create account",
     "sessionExpired": "Your session has expired. Please sign in again.",
-    "verified": "E-mail confirmed. You can sign in now."
+    "verified": "E-mail confirmed. You can sign in now.",
+    "otp": "Authenticator app code",
+    "otpHint": "Or one of the recovery codes."
   },
   "register": {
     "title": "Create account",
@@ -1830,5 +1832,21 @@
     "over": "over the limit",
     "save": "Save abstract",
     "saved": "Abstract saved."
+  },
+  "profile": {
+    "title": "My profile",
+    "twoFactor": "Two-step verification (optional)",
+    "twoFactorHelp": "Besides the password, login asks for a 6-digit code from an authenticator app (e.g. Google Authenticator, Microsoft Authenticator or Aegis).",
+    "on": "On.",
+    "off": "Off.",
+    "start": "Set up",
+    "secret": "Key to type in the app:",
+    "openApp": "Open in the app (phone)",
+    "code": "6-digit code",
+    "confirm": "Confirm and turn on",
+    "codes": "Keep these recovery codes somewhere safe. Each works once, in case you lose your phone. They will not be shown again.",
+    "password": "Password",
+    "disable": "Turn off",
+    "disableHelp": "To turn it off, type your password and a code from the app (or a recovery code)."
   }
 }

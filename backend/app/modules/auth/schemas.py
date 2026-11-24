@@ -18,6 +18,8 @@ class LoginIn(BaseModel):
     email: EmailStr
     password: str = Field(min_length=1, max_length=256)
     captcha_token: str | None = None
+    # Code from the authenticator app (or a recovery code) when the account has 2FA.
+    otp_code: str | None = Field(default=None, max_length=20)
 
 
 class TokenIn(BaseModel):
@@ -37,6 +39,7 @@ class UserOut(BaseModel):
     ui_language: str
     is_system_admin: bool
     email_verified_at: datetime | None
+    two_factor: bool = False
 
 
 class TokenOut(BaseModel):

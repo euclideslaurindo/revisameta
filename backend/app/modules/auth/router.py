@@ -15,7 +15,7 @@ from app.core.security import create_access_token
 from app.db.session import get_session
 from app.integrations.captcha import CaptchaVerifier, get_captcha_verifier
 from app.integrations.email import EmailSender, get_email_sender
-from app.modules.auth import service
+from app.modules.auth import service, two_factor
 from app.modules.auth.dependencies import get_current_user
 from app.modules.auth.models import User
 from app.modules.auth.schemas import (
@@ -116,8 +116,9 @@ async def login(
         raise AppError("auth.captcha_failed", status_code=400)
     try:
         user = await service.authenticate(session, body.email, body.password)
+        two_factor.require_at_login(user, body.otp_code)
     except AppError as exc:
-        if exc.code == "auth.invalid_credentials":
+        if exc.code in ("auth.invalid_credentials", "auth.otp_invalid"):
             await register_failed_login(body.email)
         raise
     await clear_failed_logins(body.email)
@@ -166,3 +167,31 @@ async def update_me(
         user.ui_language = body.ui_language
     await session.commit()
     return UserOut.model_validate(user)
+
+
+@router.post("/2fa/setup")
+async def two_factor_setup(
+    user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)
+) -> two_factor.SetupOut:
+    """Creates the secret for the authenticator app; 2FA turns on only after a valid code."""
+    return await two_factor.setup(session, user)
+
+
+@router.post("/2fa/enable")
+async def two_factor_enable(
+    body: two_factor.CodeIn,
+    user: User = Depends(get_current_user),
+    session: AsyncSession = Depends(get_session),
+) -> two_factor.RecoveryOut:
+    """Confirms the first code; returns 10 one-use recovery codes (shown only now)."""
+    return await two_factor.enable(session, user, body)
+
+
+@router.post("/2fa/disable", status_code=status.HTTP_204_NO_CONTENT)
+async def two_factor_disable(
+    body: two_factor.DisableIn,
+    user: User = Depends(get_current_user),
+    session: AsyncSession = Depends(get_session),
+) -> None:
+    """Turns 2FA off with the password and a current code (or a recovery code)."""
+    await two_factor.disable(session, user, body)

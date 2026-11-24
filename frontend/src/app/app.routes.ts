@@ -26,6 +26,11 @@ export const routes: Routes = [
       import('./features/invitation/invitation-page').then((m) => m.InvitationPage),
   },
   {
+    path: 'perfil',
+    canActivate: [authGuard],
+    loadComponent: () => import('./features/auth/profile-page').then((m) => m.ProfilePage),
+  },
+  {
     path: 'projetos',
     canActivate: [authGuard],
     loadComponent: () => import('./features/projects/projects-page').then((m) => m.ProjectsPage),
