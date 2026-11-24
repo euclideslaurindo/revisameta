@@ -399,3 +399,8 @@ Digitalizador de gráficos, OCR, meta-regressão, modelos multinível, apoio ao 
 - No login, a conta com 2FA pede o código na mesma tela (aceita 30 segundos de diferença de relógio) ou um código de recuperação, que é gasto. Código errado conta como tentativa falha (limite de login e captcha continuam valendo).
 - Desligar pede a senha e um código. A chave e os códigos nunca entram na auditoria.
 
+**Etapa 8 — implementação concluída em 2026-11-24.**
+- **Critério de saída** ("cada extra com testes e documentação nos dois idiomas"): meta-regressão e multinível com fixtures do metafor e testes no R e pela API; OCR, digitalizador, resumo/rascunho e 2FA com testes no backend e no frontend; todos os textos de interface em pt-BR e en.
+- Bateria completa no fim da etapa: 870 testes do backend (cobertura 93,7%), lint e tipos; testes e lint do serviço R; 41 testes do frontend; 10 testes de interface (Playwright).
+- **Todas as etapas do roteiro (0 a 8) estão implementadas.** Pendências que dependem do grupo: busca real e fluxograma (Etapa 5), 4 estudos reais e importação da planilha de RoB (Etapas 1 e 2), chave do Gemini e teste da IA com artigos reais (Etapa 7), conferência dos limiares com dados reais, e a mudança de hospedagem F0 → F1 quando houver uso contínuo.
+

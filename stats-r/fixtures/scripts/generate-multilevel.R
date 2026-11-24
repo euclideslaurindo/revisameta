@@ -12,7 +12,7 @@ study <- as.character(d$district)
 
 case <- function(method, test) {
   data <- data.frame(yi = d$yi, vi = d$vi, study = study, effect = seq_len(nrow(d)))
-  fit <- metafor::rma.mv(yi, vi, random = ~ 1 | study / effect, data = data,
+  fit <- metafor::rma.mv(yi = data$yi, V = data$vi, random = ~ 1 | study / effect, data = data,
                          method = method, test = test, level = 95)
   pred <- stats::predict(fit, level = 95)
   list(

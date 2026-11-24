@@ -31,7 +31,7 @@ multilevel_analysis <- function(spec) {
   }
   data <- data.frame(yi = yi[keep], vi = vi[keep], study = study[keep], effect = seq_len(sum(keep)))
   run <- with_metafor_warnings(metafor::rma.mv(
-    yi, vi, random = ~ 1 | study / effect, data = data, method = method, test = test, level = 95
+    yi = data$yi, V = data$vi, random = ~ 1 | study / effect, data = data, method = method, test = test, level = 95
   ))
   fit <- run$value
   warnings <- run$warnings
