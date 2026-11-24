@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -218,7 +218,7 @@ import { ProjectContext } from '../project/project-context';
       </mat-card-content>
     </mat-card>
 
-    <rm-analysis-plan-editor />
+    <rm-analysis-plan-editor [revision]="planRevision()" />
 
     <rm-form-editor />
   `,
@@ -254,6 +254,8 @@ export class ProtocolPage implements OnInit {
     await this.reload();
   }
 
+  protected readonly planRevision = signal(0);
+
   private async reload(): Promise<void> {
     const project_id = this.projectId();
     const [outcomes, groups] = await Promise.all([
@@ -262,6 +264,8 @@ export class ProtocolPage implements OnInit {
     ]);
     this.outcomes.set(outcomes);
     this.groups.set(groups);
+    // The plan lists the groups and outcomes: let it pick up the change.
+    this.planRevision.update((n) => n + 1);
   }
 
   private async run(action: () => Promise<unknown>): Promise<boolean> {

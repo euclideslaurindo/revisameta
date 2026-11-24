@@ -447,7 +447,9 @@
       "ifWrong": "If the sentence does not match the article, fix the numbers or the scale.",
       "confirm": "It is correct",
       "none": "The sentence appears once both protocol groups are linked to one arm each and have a mean entered."
-    }
+    },
+    "singleNext": "Extraction submitted. Since double extraction is off, the next step is to check and submit this study's consensus; only then it enters the analyses.",
+    "openStudy": "Go to the study"
   },
   "pending": {
     "intro": "Open check alerts in the extractions you can see. Open the extraction to fix or justify them.",
@@ -458,7 +460,7 @@
     "title": "Divergences and consensus · {{study}}",
     "intro": "Here you see, field by field, what the two extractors typed. Only numbers and categories count as divergences; formatting-only differences (comma or dot, trailing zeros) do not. Each divergence needs a decision before the consensus is submitted.",
     "waiting": "Waiting for the individual extractions: {{submitted}} of {{needed}} submitted. The comparison appears once both are submitted.",
-    "single": "Double extraction is off in this project: the submitted extraction becomes the consensus draft, without comparison.",
+    "single": "Double extraction is off in this project: the submitted extraction already counts as the consensus and enters the analyses. To correct it later, reopen the consensus.",
     "agreement": {
       "title": "Agreement between extractors",
       "percent": "{{percent}}% of the compared values are equal ({{agreeing}} of {{items}}).",
@@ -820,7 +822,7 @@
       "pending": "{{count}} study(ies) are not yet in the table or the plots:",
       "reason": {
         "no_assessment": "no assessment started",
-        "in_progress": "individual assessments in progress",
+        "in_progress": "individual assessments missing (two reviewers are needed before the consensus)",
         "consensus_pending": "consensus not submitted yet"
       }
     },
@@ -1025,7 +1027,8 @@
       "conversion_failed": "The reported numbers could not be converted.",
       "combination_failed": "The study's arms could not be combined.",
       "no_effect_double_zero": "Zero events in both groups: the study does not enter the OR/RR.",
-      "no_effect": "The effect of this study could not be computed."
+      "no_effect": "The effect of this study could not be computed.",
+      "consensus_draft": "This study's consensus is a draft: open the study, check the consensus and submit it."
     },
     "flag": {
       "converted": "converted",

@@ -447,7 +447,9 @@
       "ifWrong": "Se a frase não bate com o artigo, corrija os números ou a escala.",
       "confirm": "Está correto",
       "none": "A frase aparece quando os dois grupos do protocolo estão ligados a um braço cada e têm média digitada."
-    }
+    },
+    "singleNext": "Extração enviada. Como a dupla extração está desligada, o próximo passo é conferir e enviar o consenso deste estudo; só então ele entra nas análises.",
+    "openStudy": "Ir para o estudo"
   },
   "pending": {
     "intro": "Alertas de conferência em aberto nas extrações que você pode ver. Abra a extração para corrigir ou justificar.",
@@ -458,7 +460,7 @@
     "title": "Divergências e consenso · {{study}}",
     "intro": "Aqui você vê, campo a campo, o que os dois extratores digitaram. Só números e categorias contam como divergência; diferenças só de formatação (vírgula ou ponto, zeros à direita) não contam. Cada divergência precisa de uma decisão antes de enviar o consenso.",
     "waiting": "Aguardando as extrações individuais: {{submitted}} de {{needed}} enviada(s). A comparação aparece quando as duas forem enviadas.",
-    "single": "A dupla extração está desligada neste projeto: a extração enviada vira o rascunho do consenso, sem comparação.",
+    "single": "A dupla extração está desligada neste projeto: a extração enviada já vale como consenso e entra nas análises. Para corrigir depois, reabra o consenso.",
     "agreement": {
       "title": "Concordância entre os extratores",
       "percent": "{{percent}}% dos valores comparados são iguais ({{agreeing}} de {{items}}).",
@@ -820,7 +822,7 @@
       "pending": "{{count}} estudo(s) ainda não entram na tabela nem nos gráficos:",
       "reason": {
         "no_assessment": "nenhuma avaliação iniciada",
-        "in_progress": "avaliações individuais em andamento",
+        "in_progress": "faltam avaliações individuais (são precisos dois revisores antes do consenso)",
         "consensus_pending": "consenso ainda não enviado"
       }
     },
@@ -1025,7 +1027,8 @@
       "conversion_failed": "Não foi possível converter os números informados.",
       "combination_failed": "Não foi possível combinar os braços do estudo.",
       "no_effect_double_zero": "Zero eventos nos dois grupos: o estudo não entra no OR/RR.",
-      "no_effect": "Não foi possível calcular o efeito deste estudo."
+      "no_effect": "Não foi possível calcular o efeito deste estudo.",
+      "consensus_draft": "O consenso deste estudo está em rascunho: abra o estudo, confira o consenso e envie."
     },
     "flag": {
       "converted": "convertido",

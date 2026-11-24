@@ -322,7 +322,7 @@ async def test_reasons_flags_and_blocks(
     assert s["C corte em texto"]["reasons"] == ["cutoff_not_numeric"]
     assert s["D corte 6"]["reasons"] == ["cutoff_incompatible"]
     assert s["E sem grupo 2"]["reasons"] == ["missing_group"]
-    assert s["F rascunho"]["reasons"] == ["no_consensus"]
+    assert s["F rascunho"]["reasons"] == ["consensus_draft"]
     assert s["G mediana"]["included"] and "estimated" in s["G mediana"]["flags"]
     assert s["H sem DP"]["reasons"] == ["missing_dispersion"]
     assert s["I maior é pior"]["inverted"] is True

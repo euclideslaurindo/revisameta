@@ -19,7 +19,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 import { Api } from '../../core/api/api';
+import { HttpErrorResponse } from '@angular/common/http';
+
 import { addOutcomeData } from '../../core/api/fn/extraction/add-outcome-data';
+import { getExtraction } from '../../core/api/fn/extraction/get-extraction';
 import { updateOutcomeData } from '../../core/api/fn/extraction/update-outcome-data';
 import { AlertOut } from '../../core/api/models/alert-out';
 import { AnnotationOut } from '../../core/api/models/annotation-out';
@@ -492,28 +495,57 @@ export class OutcomeRow implements OnInit, OnDestroy {
     return null;
   }
 
+  /** The newest copy of this row on the server (another save may have bumped it). */
+  private async latest(): Promise<OutcomeDataOut | null> {
+    const detail = await this.api.invoke(getExtraction, {
+      project_id: this.projectId(),
+      extraction_id: this.extractionId(),
+    });
+    return (
+      detail.outcome_data.find(
+        (r) =>
+          r.outcome_id === this.outcomeId() &&
+          r.arm_id === this.armId() &&
+          r.timepoint === this.timepoint(),
+      ) ?? null
+    );
+  }
+
+  private send(values: OutcomeDataFields): Promise<OutcomeDataOut> {
+    return this.current
+      ? this.api.invoke(updateOutcomeData, {
+          project_id: this.projectId(),
+          row_id: this.current.id,
+          body: { version: this.current.version, value_type: this.valueType, values },
+        })
+      : this.api.invoke(addOutcomeData, {
+          project_id: this.projectId(),
+          extraction_id: this.extractionId(),
+          body: {
+            ...values,
+            arm_id: this.armId(),
+            outcome_id: this.outcomeId(),
+            timepoint: this.timepoint(),
+            value_type: this.valueType,
+          },
+        });
+  }
+
   private async save(): Promise<void> {
     const values = this.values();
     if (!values || !this.editable()) return;
-    const result = await this.autosave.track(() =>
-      this.current
-        ? this.api.invoke(updateOutcomeData, {
-            project_id: this.projectId(),
-            row_id: this.current.id,
-            body: { version: this.current.version, value_type: this.valueType, values },
-          })
-        : this.api.invoke(addOutcomeData, {
-            project_id: this.projectId(),
-            extraction_id: this.extractionId(),
-            body: {
-              ...values,
-              arm_id: this.armId(),
-              outcome_id: this.outcomeId(),
-              timepoint: this.timepoint(),
-              value_type: this.valueType,
-            },
-          }),
-    );
+    const result = await this.autosave.track(async () => {
+      try {
+        return await this.send(values);
+      } catch (error) {
+        // A save of the other group can bump this row on the server (e.g. the direction
+        // sentence depends on both groups), or the row was created meanwhile. What the
+        // person typed wins: take the newest version and save again, once.
+        if (!(error instanceof HttpErrorResponse) || error.status !== 409) throw error;
+        this.current = await this.latest();
+        return await this.send(values);
+      }
+    });
     if (result) {
       this.current = result;
       this.saved.emit(result);

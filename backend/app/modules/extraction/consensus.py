@@ -512,7 +512,8 @@ async def create_consensus(
 async def consensus_from_single(
     session: AsyncSession, ctx: ProjectContext, extraction: Extraction
 ) -> None:
-    """Without double extraction, the submitted extraction becomes the consensus draft."""
+    """Without double extraction, the submitted extraction becomes the consensus draft;
+    whoever submits that draft is recorded as the person who checked it (7.5.1 F)."""
     if ctx.project.double_extraction or extraction.kind != ExtractionKind.INDIVIDUAL:
         return
     _, existing = await _extractions(session, ctx, extraction.study_id)
@@ -520,6 +521,28 @@ async def consensus_from_single(
         return
     consensus = await _new_consensus(session, ctx, extraction)
     await _build(session, ctx, consensus, [await snapshot(session, extraction)])
+
+
+async def drafts_after_single_mode(session: AsyncSession, ctx: ProjectContext) -> int:
+    """Double extraction was just turned off: every study that already has exactly one
+    submitted extraction and no consensus gets its consensus draft now, as it would
+    have if the extraction had been submitted in single mode. The caller commits."""
+    study_ids = set(
+        await session.scalars(
+            select(Extraction.study_id).where(
+                Extraction.project_id == ctx.project.id,
+                Extraction.kind == ExtractionKind.INDIVIDUAL,
+                Extraction.status != ExtractionStatus.DRAFT,
+            )
+        )
+    )
+    created = 0
+    for study_id in study_ids:
+        individuals, consensus = await _extractions(session, ctx, study_id)
+        if consensus is None and len(individuals) == 1:
+            await consensus_from_single(session, ctx, individuals[0])
+            created += 1
+    return created
 
 
 # ---- Deciding divergences ------------------------------------------------------------

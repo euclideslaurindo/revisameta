@@ -430,7 +430,7 @@ import { MultilevelCard } from './multilevel-card';
             </tbody>
           </table>
 
-          @for (w of r.warnings; track w) {
+          @for (w of distinct(r.warnings); track w) {
             <div class="alert-item">{{ warningText(w) }}</div>
           }
 
@@ -1337,6 +1337,21 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
       times: this.fmt(v['sd_times_sqrt_n']),
       reported: this.fmtP(v['p_reported']),
       recomputed: this.fmtP(v['p_recomputed']),
+    });
+  }
+
+  /** The same warning can come from the assembly and from R: show it once. */
+  protected distinct(codes: string[]): string[] {
+    const seen = new Set<string>();
+    return codes.filter((c) => {
+      const text = this.warningText(c);
+      if (
+        seen.has(text) ||
+        (c === 'few_studies_heterogeneity_unstable' && codes.includes('few_studies'))
+      )
+        return false;
+      seen.add(text);
+      return true;
     });
   }
 

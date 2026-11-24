@@ -387,3 +387,27 @@ async def test_single_extraction_becomes_the_consensus(
     assert detail["characteristics"]["country"] == "Brasil"
     cmp = (await _comparison(client, ana, p)).json()
     assert cmp["needed"] == 1 and cmp["items"] == []
+
+
+async def test_turning_double_extraction_off_unblocks_studies_already_extracted(
+    client: AsyncClient, make_user: MakeUser, fake_r: FakeR
+) -> None:
+    ana, bia, _ = await _team(client, make_user)
+    p = await _project(client, ana)
+    await _join(client, ana, bia, p["pid"], ["extractor"])
+    await _extract(client, bia, p, sd="11.2")  # double extraction on: waits for a second one
+    url = f"{p['base']}/studies/{p['study']}/extractions"
+    assert all(
+        e["kind"] != "consensus" for e in (await client.get(url, headers=bia.headers)).json()
+    )
+    project = (await client.get(f"/api/v1/projects/{p['pid']}", headers=ana.headers)).json()
+    r = await client.patch(
+        f"/api/v1/projects/{p['pid']}",
+        json={"version": project["version"], "double_extraction": False},
+        headers=ana.headers,
+    )
+    assert r.status_code == 200, r.text
+    consensus = next(
+        e for e in (await client.get(url, headers=bia.headers)).json() if e["kind"] == "consensus"
+    )
+    assert consensus["status"] == "draft"  # ready to check and submit: no dead end

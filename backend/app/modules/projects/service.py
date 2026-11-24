@@ -66,8 +66,15 @@ async def update_project(
     session: AsyncSession, ctx: ProjectContext, data: ProjectUpdate
 ) -> ProjectOut:
     _check_version(ctx.project.version, data.version)
+    was_double = ctx.project.double_extraction
     for key, value in data.model_dump(exclude_unset=True, exclude={"version"}).items():
         setattr(ctx.project, key, value)
+    if was_double and not ctx.project.double_extraction:
+        # Studies already extracted once must not get stuck waiting for a second person.
+        from app.modules.extraction.consensus import drafts_after_single_mode
+
+        await session.flush()
+        await drafts_after_single_mode(session, ctx)
     await session.commit()
     return project_out(ctx.project, ctx.member.roles)
 

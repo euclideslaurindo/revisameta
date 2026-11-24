@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, input, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -323,6 +323,42 @@ export class AnalysisPlanEditor implements OnInit {
 
   private projectId(): string {
     return this.context.project()!.id;
+  }
+
+  /** Bumped by the protocol page when groups or outcomes change on the same screen. */
+  readonly revision = input(0);
+
+  constructor() {
+    effect(() => {
+      if (this.revision() > 0) void this.refreshLists();
+    });
+  }
+
+  /** New or removed groups and outcomes, keeping what the person already chose. */
+  private async refreshLists(): Promise<void> {
+    const project_id = this.projectId();
+    const [groups, outcomes] = await Promise.all([
+      this.api.invoke(listGroups, { project_id }),
+      this.api.invoke(listOutcomes, { project_id }),
+    ]);
+    this.groups.set(groups);
+    const ids = new Set(groups.map((g) => g.id));
+    if (!this.group1 || !ids.has(this.group1)) this.group1 = groups[0]?.id ?? null;
+    if (!this.group2 || !ids.has(this.group2) || this.group2 === this.group1) {
+      this.group2 = groups.find((g) => g.id !== this.group1)?.id ?? null;
+    }
+    const kept = new Map(this.rows().map((r) => [r.outcome.id, r]));
+    this.rows.set(
+      outcomes.map(
+        (outcome) =>
+          kept.get(outcome.id) ?? {
+            outcome,
+            included: true,
+            measure: 'auto',
+            timepoint: null,
+          },
+      ),
+    );
   }
 
   async ngOnInit(): Promise<void> {

@@ -100,6 +100,14 @@ import { PlotDigitizer } from './plot-digitizer';
         }
       </header>
       <rm-form-error [error]="autosave.error() ?? error()" />
+      @if (ex.kind === 'individual' && ex.status !== 'draft' && singleMode()) {
+        <p class="notice notice-ok" role="status">
+          {{ 'extraction.singleNext' | transloco }}
+          <a [routerLink]="['/projetos', projectId(), 'estudos', ex.study_id]">{{
+            'extraction.openStudy' | transloco
+          }}</a>
+        </p>
+      }
       @if (ex.outdated_form) {
         <div class="notice notice-warn" role="status">
           {{ 'extraction.outdatedForm' | transloco }}
@@ -408,6 +416,10 @@ export class ExtractionPage {
   private readonly auth = inject(AuthService);
   protected readonly context = inject(ProjectContext);
   protected readonly autosave = inject(AutosaveState);
+  /** One extractor per study: the submitted extraction still needs its consensus sent. */
+  protected readonly singleMode = computed(
+    () => this.context.project()?.double_extraction === false,
+  );
 
   readonly extractionId = input.required<string>();
   protected readonly extraction = signal<ExtractionDetail | null>(null);

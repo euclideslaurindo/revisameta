@@ -342,7 +342,8 @@ async def assemble(
         reasons, flags = row.reasons, row.flags
         e = item.extraction
         if e is None or e.status not in FINAL_STATUSES:
-            reasons.append("no_consensus")
+            # A draft says what to do next: open it, check and submit.
+            reasons.append("no_consensus" if e is None else "consensus_draft")
             continue
         if item.open_alerts:
             flags.append("open_alerts")
