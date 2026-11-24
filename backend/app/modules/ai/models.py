@@ -2,12 +2,13 @@
 
 import uuid
 from datetime import datetime
+from typing import Any
 
 from sqlalchemy import Boolean, ForeignKey, Index, String
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.db.base import AuditedMixin, Base, BusinessMixin
+from app.db.base import AuditedMixin, Base, BusinessMixin, IdMixin, TimestampMixin
 
 
 class AISettings(BusinessMixin, AuditedMixin, Base):
@@ -35,3 +36,23 @@ class AISettings(BusinessMixin, AuditedMixin, Base):
             postgresql_where="deleted_at IS NULL",
         ),
     )
+
+
+class AICacheEntry(IdMixin, TimestampMixin, Base):
+    """Validated answer for one exact question in one project (docs/ia.md 7.15.5).
+
+    key: SHA-256 of (project, function, prompt version, model, instructions, content).
+    Not business data and not audited: it only avoids spending the quota twice.
+    """
+
+    __tablename__ = "ai_cache"
+
+    project_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("projects.id"), index=True)
+    key: Mapped[str] = mapped_column(String(64))
+    function: Mapped[str] = mapped_column(String(20))
+    prompt_version: Mapped[str] = mapped_column(String(40))
+    model: Mapped[str] = mapped_column(String(80))
+    provider: Mapped[str] = mapped_column(String(20))
+    answer: Mapped[dict[str, Any]] = mapped_column(JSONB)
+
+    __table_args__ = (Index("uq_ai_cache_key", "project_id", "key", unique=True),)

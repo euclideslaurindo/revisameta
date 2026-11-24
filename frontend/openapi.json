@@ -19935,7 +19935,8 @@
         "type": "string",
         "enum": [
           "projects",
-          "storage_mb"
+          "storage_mb",
+          "ai_calls"
         ],
         "title": "QuotaKind"
       },
@@ -24635,12 +24636,16 @@
           },
           "storage_mb": {
             "$ref": "#/components/schemas/UsageItem"
+          },
+          "ai_calls": {
+            "$ref": "#/components/schemas/UsageItem"
           }
         },
         "type": "object",
         "required": [
           "projects",
-          "storage_mb"
+          "storage_mb",
+          "ai_calls"
         ],
         "title": "UsageOut"
       },

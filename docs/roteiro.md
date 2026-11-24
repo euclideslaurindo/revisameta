@@ -325,3 +325,11 @@ Digitalizador de gráficos, OCR, meta-regressão, modelos multinível, apoio ao 
 - Se o texto do aviso mudar, o aceite antigo deixa de valer e a IA fica desligada até novo aceite.
 - `require(ctx, função)`: toda função de IA chama antes de qualquer coisa; recusa se a IA estiver desligada, a função não estiver liberada, tiver sido desligada por baixa precisão ou não houver provedor no servidor. Nada chega ao provedor nesses casos.
 
+**Etapa 7, passo 3 — cache, cota e limites (feito):**
+- `app/modules/ai/gateway.py` é o único caminho até o provedor, nesta ordem: IA ligada e função liberada; cache; cota da pessoa no dia; limites globais; provedor.
+- **Cache** por projeto e por (função, versão do prompt, modelo, instruções, conteúdo): a mesma pergunta não gasta cota duas vezes, e um projeto nunca lê respostas de outro.
+- **Cota por pessoa:** 30 chamadas por dia (UTC), com exceção por usuário em `usage_quotas`; aparece em `/me/usage`. Resposta fora do esquema conta (o provedor foi usado); erro de rede não conta.
+- **Limites globais** no Redis, compartilhados por todos os processos: 10 por minuto e um teto diário (padrão 200) contado no fuso do Pacífico, que é quando a cota gratuita do Google zera. Chamada recusada devolve a vaga.
+- Cota esgotada, nossa ou do Google, vira `ai.quota_exceeded`: a função fica indisponível e o resto continua.
+- **Mudança em relação ao texto da especificação ("todas as chamadas passam pela fila"):** o controle de taxa global é feito pelo contador no Redis, que todos os processos compartilham. As chamadas longas das funções (passos 4 e 5) vão para o worker; as curtas podem responder na hora, sempre passando pelo mesmo controle.
+

@@ -2,6 +2,7 @@
 
 import enum
 import uuid
+from datetime import UTC, datetime
 
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -15,6 +16,7 @@ from app.modules.quotas.models import UsageQuota
 class QuotaKind(enum.StrEnum):
     PROJECTS = "projects"
     STORAGE_MB = "storage_mb"
+    AI_CALLS = "ai_calls"  # per day
 
 
 def default_limit(kind: QuotaKind) -> int:
@@ -22,6 +24,7 @@ def default_limit(kind: QuotaKind) -> int:
     return {
         QuotaKind.PROJECTS: settings.quota_projects_per_user,
         QuotaKind.STORAGE_MB: settings.quota_storage_mb_per_user,
+        QuotaKind.AI_CALLS: settings.ai_calls_per_user_day,
     }[kind]
 
 
@@ -86,6 +89,42 @@ async def ensure_storage_available(
         raise QuotaExceededError("quota.storage_exceeded", limit=limit_mb)
 
 
+def _today() -> str:
+    return datetime.now(UTC).strftime("%Y-%m-%d")
+
+
+async def _ai_row(session: AsyncSession, user_id: uuid.UUID) -> UsageQuota | None:
+    return (
+        await session.scalars(
+            select(UsageQuota).where(
+                UsageQuota.user_id == user_id,
+                UsageQuota.kind == QuotaKind.AI_CALLS.value,
+                UsageQuota.period == _today(),
+            )
+        )
+    ).first()
+
+
+async def ai_calls_used(session: AsyncSession, user_id: uuid.UUID) -> int:
+    row = await _ai_row(session, user_id)
+    return int(row.used) if row else 0
+
+
+async def ai_calls_left(session: AsyncSession, user_id: uuid.UUID) -> int:
+    limit = await get_limit(session, user_id, QuotaKind.AI_CALLS)
+    return limit - await ai_calls_used(session, user_id)
+
+
+async def count_ai_call(session: AsyncSession, user_id: uuid.UUID) -> None:
+    """One more AI call today (UTC). The caller commits."""
+    row = await _ai_row(session, user_id)
+    if row is None:
+        row = UsageQuota(user_id=user_id, kind=QuotaKind.AI_CALLS.value, period=_today(), used=0)
+        session.add(row)
+    row.used = int(row.used) + 1
+    await session.flush()
+
+
 async def usage(session: AsyncSession, user_id: uuid.UUID) -> dict[str, dict[str, float]]:
     return {
         QuotaKind.PROJECTS.value: {
@@ -95,5 +134,9 @@ async def usage(session: AsyncSession, user_id: uuid.UUID) -> dict[str, dict[str
         QuotaKind.STORAGE_MB.value: {
             "used": await storage_used_mb(session, user_id),
             "limit": await get_limit(session, user_id, QuotaKind.STORAGE_MB),
+        },
+        QuotaKind.AI_CALLS.value: {
+            "used": await ai_calls_used(session, user_id),
+            "limit": await get_limit(session, user_id, QuotaKind.AI_CALLS),
         },
     }

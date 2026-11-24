@@ -22,6 +22,7 @@ class UsageItem(BaseModel):
 class UsageOut(BaseModel):
     projects: UsageItem
     storage_mb: UsageItem
+    ai_calls: UsageItem  # today (UTC)
 
 
 class QuotaUpdate(BaseModel):

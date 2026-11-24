@@ -8,5 +8,6 @@ import { QuotaKind } from './quota-kind';
  */
 export const QUOTA_KIND: QuotaKind[] = [
   'projects',
-  'storage_mb'
+  'storage_mb',
+  'ai_calls'
 ];

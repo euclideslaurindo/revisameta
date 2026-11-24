@@ -3,6 +3,7 @@
 
 import { UsageItem } from '../models/usage-item';
 export interface UsageOut {
+  ai_calls: UsageItem;
   projects: UsageItem;
   storage_mb: UsageItem;
 }
