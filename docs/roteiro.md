@@ -333,3 +333,11 @@ Digitalizador de gráficos, OCR, meta-regressão, modelos multinível, apoio ao 
 - Cota esgotada, nossa ou do Google, vira `ai.quota_exceeded`: a função fica indisponível e o resto continua.
 - **Mudança em relação ao texto da especificação ("todas as chamadas passam pela fila"):** o controle de taxa global é feito pelo contador no Redis, que todos os processos compartilham. As chamadas longas das funções (passos 4 e 5) vão para o worker; as curtas podem responder na hora, sempre passando pelo mesmo controle.
 
+**Etapa 7, passo 4 — tutor IA1 (feito):**
+- Painel "Tutor" na tela de resultados da meta-análise, visível só quando o tutor está ligado no projeto. Responde no idioma da interface.
+- A IA recebe os resultados do R como fatos com nome (`{{pooled_effect}}`, `{{ci_lower}}`, `{{i2}}`, `{{p_value}}`, `{{k}}`...) e é instruída a nunca escrever dígitos; o sistema troca os marcadores pelos valores do R (RR/OR na escala natural, como o R devolve). Os valores não vão no texto enviado, só os nomes.
+- Todo número escrito pela própria IA, e todo marcador que não existe, aparece em destaque como "não verificado".
+- O que vai ao provedor: a pergunta, o nome do desfecho, o momento, a medida e o modelo. Nada de membros, comentários ou anotações. A pergunta vai delimitada e é tratada como pergunta, nunca como instrução.
+- Prompt versionado em `app/integrations/ai/prompts/tutor-v1.md`; a versão, o provedor e o modelo aparecem em cada resposta.
+- **Cadência de testes a partir daqui (aprovada em 2026-11-24):** a cada passo, os testes do que mudou, mais lint e tipos, e o teste de isolamento quando há rota nova; a bateria completa no fim de cada etapa.
+

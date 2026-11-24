@@ -11277,6 +11277,65 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/ai/tutor": {
+      "post": {
+        "tags": [
+          "ai"
+        ],
+        "summary": "Ask Tutor",
+        "description": "Explains a concept or an analysis of the project. Numbers come from R; any number\nthe AI writes by itself is returned in `unverified`.",
+        "operationId": "ask_tutor",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TutorIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TutorOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/me/usage": {
       "get": {
         "tags": [
@@ -24409,6 +24468,89 @@
           "member_id"
         ],
         "title": "TransferOwnershipIn"
+      },
+      "TutorIn": {
+        "properties": {
+          "question": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 3,
+            "title": "Question"
+          },
+          "lang": {
+            "type": "string",
+            "enum": [
+              "pt-BR",
+              "en"
+            ],
+            "title": "Lang",
+            "default": "pt-BR"
+          },
+          "analysis": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RunIn"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "question"
+        ],
+        "title": "TutorIn"
+      },
+      "TutorOut": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "unverified": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Unverified"
+          },
+          "facts_used": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Facts Used"
+          },
+          "cached": {
+            "type": "boolean",
+            "title": "Cached"
+          },
+          "provider": {
+            "type": "string",
+            "title": "Provider"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "prompt_version": {
+            "type": "string",
+            "title": "Prompt Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text",
+          "unverified",
+          "facts_used",
+          "cached",
+          "provider",
+          "model",
+          "prompt_version"
+        ],
+        "title": "TutorOut"
       },
       "UploadCreate": {
         "properties": {

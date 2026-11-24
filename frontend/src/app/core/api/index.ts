@@ -233,6 +233,8 @@ export type { TokenOut } from './models/token-out';
 export type { ToolOut } from './models/tool-out';
 export type { ToStudyIn } from './models/to-study-in';
 export type { TransferOwnershipIn } from './models/transfer-ownership-in';
+export type { TutorIn } from './models/tutor-in';
+export type { TutorOut } from './models/tutor-out';
 export type { UploadCreate } from './models/upload-create';
 export type { UploadOut } from './models/upload-out';
 export type { UploadState } from './models/upload-state';
@@ -628,6 +630,8 @@ export type { AiSettings$Params as AiSettings$Params } from './fn/ai/ai-settings
 export { aiSettings as aiSettings } from './fn/ai/ai-settings';
 export type { UpdateAiSettings$Params as UpdateAiSettings$Params } from './fn/ai/update-ai-settings';
 export { updateAiSettings as updateAiSettings } from './fn/ai/update-ai-settings';
+export type { AskTutor$Params as AskTutor$Params } from './fn/ai/ask-tutor';
+export { askTutor as askTutor } from './fn/ai/ask-tutor';
 export type { MyUsage$Params as MyUsage$Params } from './fn/quotas/my-usage';
 export { myUsage as myUsage } from './fn/quotas/my-usage';
 export type { UserUsage$Params as UserUsage$Params } from './fn/quotas/user-usage';

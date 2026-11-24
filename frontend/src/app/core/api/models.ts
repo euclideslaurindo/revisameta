@@ -227,6 +227,8 @@ export type { TokenOut } from './models/token-out';
 export type { ToolOut } from './models/tool-out';
 export type { ToStudyIn } from './models/to-study-in';
 export type { TransferOwnershipIn } from './models/transfer-ownership-in';
+export type { TutorIn } from './models/tutor-in';
+export type { TutorOut } from './models/tutor-out';
 export type { UploadCreate } from './models/upload-create';
 export type { UploadOut } from './models/upload-out';
 export type { UploadState } from './models/upload-state';

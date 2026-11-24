@@ -1671,5 +1671,14 @@
       "saveFunctions": "Salvar funções",
       "adminOnly": "Só um administrador do projeto pode ligar ou desligar a IA."
     }
+  },
+  "tutor": {
+    "badge": "IA",
+    "title": "Tutor",
+    "intro": "Pergunte o que significa um resultado ou um conceito. O tutor só explica: os números vêm do cálculo feito pelo R, e ele não decide nada por você.",
+    "question": "Sua pergunta",
+    "ask": "Perguntar ao tutor",
+    "unverified": "Atenção: estes números não vieram do cálculo e não foram verificados: {{items}}. Não use sem conferir.",
+    "source": "Resposta gerada por IA ({{provider}}, {{model}}, prompt {{version}}). Confira antes de usar."
   }
 }

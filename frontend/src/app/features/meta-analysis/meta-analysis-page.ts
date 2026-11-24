@@ -23,6 +23,7 @@ import { listGroups } from '../../core/api/fn/protocol/list-groups';
 import { listRobTools } from '../../core/api/fn/risk-of-bias/list-rob-tools';
 import { ToolOut } from '../../core/api/models/tool-out';
 import { localized } from '../risk-of-bias/rob-tool-editor';
+import { TutorPanel } from '../../shared/tutor-panel';
 import { NarrativeOut } from '../../core/api/models/narrative-out';
 import { NarrativeRow } from '../../core/api/models/narrative-row';
 import { EggerOut } from '../../core/api/models/egger-out';
@@ -77,6 +78,7 @@ type Method = 'REML' | 'DL' | 'PM' | 'FE';
     MatTooltipModule,
     FormError,
     LocalDatePipe,
+    TutorPanel,
   ],
   template: `
     <p class="muted">
@@ -706,6 +708,8 @@ type Method = 'REML' | 'DL' | 'PM' | 'FE';
             </mat-expansion-panel>
           </mat-accordion>
 
+          <rm-tutor-panel [analysis]="tutorAnalysis()" />
+
           <p class="muted small">
             {{
               'meta.res.versions'
@@ -924,6 +928,14 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
     this.timepoint = this.timepoints()[0] ?? null;
     this.measure = null;
     void this.preview();
+  }
+
+  protected tutorAnalysis() {
+    return {
+      ...this.body(),
+      method: this.method,
+      test: (this.method === 'FE' || !this.knha ? 'z' : 'knha') as 'z' | 'knha',
+    };
   }
 
   private body() {

@@ -180,6 +180,7 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
     ("POST", "/api/v1/projects/{project_id}/unarchive", None),
     ("GET", "/api/v1/projects/{project_id}/ai/settings", None),
     ("PUT", "/api/v1/projects/{project_id}/ai/settings", {"enabled": False}),
+    ("POST", "/api/v1/projects/{project_id}/ai/tutor", {"question": "O que é I²?"}),
     ("GET", "/api/v1/projects/{project_id}/grade/settings", None),
     ("PUT", "/api/v1/projects/{project_id}/grade/settings", {}),
     (

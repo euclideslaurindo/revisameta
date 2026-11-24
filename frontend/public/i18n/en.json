@@ -1671,5 +1671,14 @@
       "saveFunctions": "Save features",
       "adminOnly": "Only a project admin can turn the AI on or off."
     }
+  },
+  "tutor": {
+    "badge": "AI",
+    "title": "Tutor",
+    "intro": "Ask what a result or a concept means. The tutor only explains: numbers come from the computation done by R, and it decides nothing for you.",
+    "question": "Your question",
+    "ask": "Ask the tutor",
+    "unverified": "Warning: these numbers did not come from the computation and were not verified: {{items}}. Do not use them without checking.",
+    "source": "AI-generated answer ({{provider}}, {{model}}, prompt {{version}}). Check before using."
   }
 }
