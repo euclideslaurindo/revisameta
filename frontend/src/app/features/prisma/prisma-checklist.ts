@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, input, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -42,7 +42,10 @@ interface Draft {
     <mat-card class="block">
       <mat-card-content>
         <h3>
-          {{ 'prisma.checklist.title' | transloco }}
+          {{
+            (kind() === 'abstracts' ? 'prisma.checklist.titleAbstracts' : 'prisma.checklist.title')
+              | transloco
+          }}
           <span class="term" tabindex="0" [matTooltip]="'prisma.checklist.help' | transloco"
             >?</span
           >
@@ -139,6 +142,9 @@ export class PrismaChecklist implements OnInit {
   private readonly transloco = inject(TranslocoService);
   private readonly context = inject(ProjectContext);
 
+  /** prisma2020 (27 items) or abstracts (PRISMA for Abstracts, 12 items). */
+  readonly kind = input<'prisma2020' | 'abstracts'>('prisma2020');
+
   protected readonly statuses = ['pending', 'reported', 'not_applicable'];
   protected readonly data = signal<ChecklistOut | null>(null);
   protected readonly busy = signal(false);
@@ -162,7 +168,9 @@ export class PrismaChecklist implements OnInit {
 
   private async load(): Promise<void> {
     this.drafts.clear();
-    this.data.set(await this.api.invoke(prismaChecklist, { project_id: this.projectId() }));
+    this.data.set(
+      await this.api.invoke(prismaChecklist, { project_id: this.projectId(), kind: this.kind() }),
+    );
   }
 
   protected previous(r: ChecklistRow): string | null {
@@ -201,6 +209,7 @@ export class PrismaChecklist implements OnInit {
       const response = await this.api.invoke$Response(prismaChecklistDocx, {
         project_id: this.projectId(),
         lang: this.lang(),
+        kind: this.kind(),
       });
       saveFile(
         response.body,

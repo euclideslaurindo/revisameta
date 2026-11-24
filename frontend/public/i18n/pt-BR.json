@@ -114,7 +114,8 @@
       "screening": "Triagem",
       "prisma": "PRISMA",
       "grade": "GRADE",
-      "settings": "Configurações"
+      "settings": "Configurações",
+      "abstract": "Resumo"
     },
     "archived": {
       "text": "Este projeto foi marcado como arquivado em {{date}} por ficar 12 meses sem alterações. Nada foi apagado e ele continua funcionando.",
@@ -1571,7 +1572,8 @@
         "results": "Resultados",
         "discussion": "Discussão",
         "other": "Outras informações"
-      }
+      },
+      "titleAbstracts": "Checklist PRISMA para Resumos"
     }
   },
   "grade": {
@@ -1810,5 +1812,23 @@
       "axes": "Os dois pontos de cada eixo precisam ter valores diferentes (e positivos, se o eixo for logarítmico)."
     },
     "approximate": "Valores lidos de gráfico são aproximados. Prefira o número do texto ou de tabela quando existir, e considere uma análise de sensibilidade sem esses dados."
+  },
+  "writing": {
+    "title": "Resumo para o congresso",
+    "intro": "Gere um rascunho estruturado com os números do sistema (sem IA). A conclusão e o texto final são sempre do grupo. Os contadores mostram se o texto cabe nos limites do congresso.",
+    "outcome": "Resultado principal (desfecho e momento)",
+    "noOutcome": "Nenhum (só a busca e a seleção)",
+    "lang": "Idioma do rascunho",
+    "draft": "Gerar rascunho do resumo",
+    "docx": "Baixar rascunho de Métodos e Resultados (DOCX)",
+    "wordLimit": "Limite de palavras",
+    "charLimit": "Limite de caracteres",
+    "text": "Texto do resumo",
+    "count": "{{words}} palavras, {{chars}} caracteres",
+    "ofWords": "limite {{limit}} palavras",
+    "ofChars": "limite {{limit}} caracteres",
+    "over": "passou do limite",
+    "save": "Salvar resumo",
+    "saved": "Resumo salvo."
   }
 }

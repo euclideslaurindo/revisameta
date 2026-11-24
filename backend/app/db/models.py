@@ -40,11 +40,13 @@ from app.modules.screening.models import (
 )
 from app.modules.studies.models import Reference, Report, Study
 from app.modules.uploads.models import PdfPageText, StoredFile, UploadSession
+from app.modules.writing.models import AbstractDraft
 
 __all__ = [
     "AICacheEntry",
     "AISettings",
     "AISuggestion",
+    "AbstractDraft",
     "Analysis",
     "AuditLog",
     "BackgroundJob",

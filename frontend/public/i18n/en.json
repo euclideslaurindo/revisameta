@@ -114,7 +114,8 @@
       "screening": "Screening",
       "prisma": "PRISMA",
       "grade": "GRADE",
-      "settings": "Settings"
+      "settings": "Settings",
+      "abstract": "Abstract"
     },
     "archived": {
       "text": "This project was marked as archived on {{date}} after 12 months without changes. Nothing was deleted and it still works.",
@@ -1571,7 +1572,8 @@
         "results": "Results",
         "discussion": "Discussion",
         "other": "Other information"
-      }
+      },
+      "titleAbstracts": "PRISMA for Abstracts checklist"
     }
   },
   "grade": {
@@ -1810,5 +1812,23 @@
       "axes": "The two points of each axis need different values (and positive ones on a log axis)."
     },
     "approximate": "Values read from a graph are approximate. Prefer the number in the text or a table when there is one, and consider a sensitivity analysis without these data."
+  },
+  "writing": {
+    "title": "Congress abstract",
+    "intro": "Create a structured draft with the system's numbers (no AI). The conclusion and the final text are always the group's. The counters show whether the text fits the congress limits.",
+    "outcome": "Main result (outcome and time point)",
+    "noOutcome": "None (only search and selection)",
+    "lang": "Draft language",
+    "draft": "Create abstract draft",
+    "docx": "Download Methods and Results draft (DOCX)",
+    "wordLimit": "Word limit",
+    "charLimit": "Character limit",
+    "text": "Abstract text",
+    "count": "{{words}} words, {{chars}} characters",
+    "ofWords": "limit {{limit}} words",
+    "ofChars": "limit {{limit}} characters",
+    "over": "over the limit",
+    "save": "Save abstract",
+    "saved": "Abstract saved."
   }
 }

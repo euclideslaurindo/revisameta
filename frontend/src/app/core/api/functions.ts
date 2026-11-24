@@ -409,6 +409,14 @@ export type { SearchStrategyHelp$Params as SearchStrategyHelp$Params } from './f
 export { searchStrategyHelp as searchStrategyHelp } from './fn/ai/search-strategy-help';
 export type { DraftMethodsResults$Params as DraftMethodsResults$Params } from './fn/ai/draft-methods-results';
 export { draftMethodsResults as draftMethodsResults } from './fn/ai/draft-methods-results';
+export type { GetAbstract$Params as GetAbstract$Params } from './fn/writing/get-abstract';
+export { getAbstract as getAbstract } from './fn/writing/get-abstract';
+export type { SaveAbstract$Params as SaveAbstract$Params } from './fn/writing/save-abstract';
+export { saveAbstract as saveAbstract } from './fn/writing/save-abstract';
+export type { DraftAbstract$Params as DraftAbstract$Params } from './fn/writing/draft-abstract';
+export { draftAbstract as draftAbstract } from './fn/writing/draft-abstract';
+export type { MethodsResults$Params as MethodsResults$Params } from './fn/writing/methods-results';
+export { methodsResults as methodsResults } from './fn/writing/methods-results';
 export type { MyUsage$Params as MyUsage$Params } from './fn/quotas/my-usage';
 export { myUsage as myUsage } from './fn/quotas/my-usage';
 export type { UserUsage$Params as UserUsage$Params } from './fn/quotas/user-usage';

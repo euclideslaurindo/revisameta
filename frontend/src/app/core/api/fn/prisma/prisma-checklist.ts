@@ -11,12 +11,14 @@ import { ChecklistOut } from '../../models/checklist-out';
 
 export interface PrismaChecklist$Params {
   project_id: string;
+  kind?: 'prisma2020' | 'abstracts';
 }
 
 export function prismaChecklist(http: HttpClient, rootUrl: string, params: PrismaChecklist$Params, context?: HttpContext): Observable<StrictHttpResponse<ChecklistOut>> {
   const rb = new RequestBuilder(rootUrl, prismaChecklist.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
+    rb.query('kind', params.kind, {});
   }
 
   return http.request(

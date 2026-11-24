@@ -128,6 +128,15 @@ import { ProjectContext } from './project-context';
         </a>
         <a
           mat-tab-link
+          routerLink="resumo"
+          routerLinkActive
+          #abstract="routerLinkActive"
+          [active]="abstract.isActive"
+        >
+          {{ 'project.nav.abstract' | transloco }}
+        </a>
+        <a
+          mat-tab-link
           routerLink="configuracoes"
           routerLinkActive
           #settings="routerLinkActive"

@@ -206,6 +206,10 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
         "/api/v1/projects/{project_id}/ai/suggestions/{suggestion_id}/decision",
         {"status": "accepted"},
     ),
+    ("GET", "/api/v1/projects/{project_id}/writing/abstract", None),
+    ("PUT", "/api/v1/projects/{project_id}/writing/abstract", {"text": "x"}),
+    ("POST", "/api/v1/projects/{project_id}/writing/abstract/draft", {}),
+    ("POST", "/api/v1/projects/{project_id}/writing/methods-results.docx", {}),
     ("GET", "/api/v1/projects/{project_id}/grade/settings", None),
     ("PUT", "/api/v1/projects/{project_id}/grade/settings", {}),
     (

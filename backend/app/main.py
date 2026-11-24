@@ -34,6 +34,7 @@ from app.modules.screening.router import router as screening_router
 from app.modules.studies.router import router as studies_router
 from app.modules.system.router import router as system_router
 from app.modules.uploads.router import router as uploads_router
+from app.modules.writing.router import router as writing_router
 
 logger = logging.getLogger(__name__)
 
@@ -101,6 +102,7 @@ def create_app() -> FastAPI:
         comments_router,
         notifications_router,
         ai_router,
+        writing_router,
         quotas_router,
         uploads_router,
         jobs_router,

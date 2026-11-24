@@ -70,11 +70,13 @@ async def prisma_flow_docx(
 
 @router.get("/checklist")
 async def prisma_checklist(
-    ctx: ProjectContext = Depends(member_access), session: AsyncSession = Depends(get_session)
+    kind: checklist.Kind = "prisma2020",
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
 ) -> checklist.ChecklistOut:
     """The 27 PRISMA 2020 items (42 rows), where each is reported, and which the system
     already has data for."""
-    return await checklist.checklist(session, ctx)
+    return await checklist.checklist(session, ctx, kind)
 
 
 @router.put("/checklist/{code}")
@@ -91,9 +93,10 @@ async def record_checklist_item(
 @router.get("/checklist.docx", response_class=Response, responses=FILE)  # type: ignore[arg-type]
 async def prisma_checklist_docx(
     lang: checklist.Lang = "pt-BR",
+    kind: checklist.Kind = "prisma2020",
     ctx: ProjectContext = Depends(member_access),
     session: AsyncSession = Depends(get_session),
 ) -> Response:
-    content, name = await checklist.docx(session, ctx, lang)
+    content, name = await checklist.docx(session, ctx, lang, kind)
     media = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     return _download(content, media, name)

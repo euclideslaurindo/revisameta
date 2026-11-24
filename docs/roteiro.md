@@ -388,3 +388,8 @@ Digitalizador de gráficos, OCR, meta-regressão, modelos multinível, apoio ao 
 - Na tela de extração, "Ler valores de um gráfico": a pessoa escolhe a imagem da figura (fica só no navegador, nunca é enviada), clica em dois pontos conhecidos de cada eixo, digita seus valores (eixos lineares ou logarítmicos) e clica nos pontos de dados. A conversão é só geometria, testada em `digitizer-math.spec.ts`.
 - Cada linha de desfecho ganhou "Origem do número": artigo, contato com autores ou **lido de um gráfico (digitalizado)**. A tela avisa que valores de gráfico são aproximados e sugere análise de sensibilidade sem eles.
 
+**Etapa 8, passos 5 e 6 — apoio ao resumo e rascunho de Métodos/Resultados (feito):**
+- Nova aba "Resumo": checklist **PRISMA para Resumos** (12 itens, resumos próprios + link e citação, como no PRISMA 2020; mesma tabela e mesma auditoria); rascunho estruturado (Objetivo, Métodos, Resultados, Conclusão) com os números do sistema, sem IA: bases e data da última busca, contagens do PRISMA, modelo do plano de análise, efeito do resultado escolhido calculado pelo R e a certeza GRADE, se houver. O que o sistema não sabe fica entre colchetes; a conclusão é sempre do grupo.
+- Contadores de palavras e caracteres ao vivo, com os limites do congresso salvos junto com o texto (trava otimista, auditoria; leitor não edita).
+- **Rascunho de Métodos e Resultados** em DOCX (pt/en), com as mesmas frases e números. Diferente da IA6, nada aqui passa por um provedor de IA.
+

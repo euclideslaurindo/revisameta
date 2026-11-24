@@ -129,6 +129,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/project/settings-page').then((m) => m.SettingsPage),
       },
       {
+        path: 'resumo',
+        loadComponent: () => import('./features/writing/abstract-page').then((m) => m.AbstractPage),
+      },
+      {
         path: 'exportar',
         loadComponent: () => import('./features/exports/export-page').then((m) => m.ExportPage),
       },

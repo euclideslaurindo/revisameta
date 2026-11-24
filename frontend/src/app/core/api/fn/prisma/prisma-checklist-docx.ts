@@ -11,6 +11,7 @@ import { RequestBuilder } from '../../request-builder';
 export interface PrismaChecklistDocx$Params {
   project_id: string;
   lang?: 'pt-BR' | 'en';
+  kind?: 'prisma2020' | 'abstracts';
 }
 
 export function prismaChecklistDocx(http: HttpClient, rootUrl: string, params: PrismaChecklistDocx$Params, context?: HttpContext): Observable<StrictHttpResponse<Blob>> {
@@ -18,6 +19,7 @@ export function prismaChecklistDocx(http: HttpClient, rootUrl: string, params: P
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.query('lang', params.lang, {});
+    rb.query('kind', params.kind, {});
   }
 
   return http.request(
