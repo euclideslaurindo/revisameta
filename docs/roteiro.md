@@ -369,3 +369,13 @@ Digitalizador de gráficos, OCR, meta-regressão, modelos multinível, apoio ao 
 - **Plano em 7 passos:** (1) meta-regressão (rma com moderadores); (2) modelos multinível (rma.mv) para vários desfechos/momentos do mesmo estudo; (3) OCR de PDF escaneado (ocrmypdf + Tesseract no worker); (4) digitalizador de gráficos (calibrar eixos, clicar nos pontos, valores marcados como "digitalizados"); (5) apoio ao resumo: checklist PRISMA para Resumos (resumos próprios + link), rascunho estruturado com números do sistema e contador de palavras/caracteres com limite configurável; (6) rascunho de Métodos/Resultados sem IA, em DOCX; (7) 2FA opcional (TOTP, pyotp) com códigos de recuperação.
 - **Meta-regressão:** com menos de 10 estudos por moderador, roda com aviso forte de resultado instável (Cochrane Handbook); com menos de 3 estudos, não roda.
 
+**Etapa 8, passo 1 — meta-regressão (feito):**
+- Serviço R: `/meta-regression` (`metafor::rma` com moderadores). Moderador numérico entra como número; texto, como categoria (a primeira é a referência). Fixture gerada pelo metafor com `dat.bcg` (latitude absoluta e tipo de alocação), em `stats-r/fixtures/meta-regression.json`; testes no R e pela API, tolerância 1e-6.
+- Moderadores vêm do formulário de extração de consenso (ou do ponto de corte usado). Número com vírgula decimal é lido como número. Estudo sem o moderador fica de fora e é listado.
+- Regra aprovada: menos de 3 estudos não roda; menos de 10 estudos por coeficiente roda com aviso forte. Para RR/OR os coeficientes ficam na escala log, como o metafor devolve, e a tela diz isso.
+- Na tela de meta-análise, logo após os subgrupos.
+
+**Etapa 8, passo 2 — modelo multinível (feito):**
+- Serviço R: `/multilevel` (`metafor::rma.mv`, `random = ~ 1 | study/effect`, REML ou ML, teste z ou t). Fixture gerada pelo metafor com o dataset público `dat.konstantopoulos2011` (56 efeitos em 11 grupos); testes no R com tolerância 1e-6.
+- Na tela de meta-análise: escolher dois ou mais momentos do desfecho. A mesma montagem (regras, conversões, alertas) roda para cada momento; cada estudo vira um grupo, então o mesmo estudo nunca conta como independente. Mostra efeito combinado, IC, variância entre e dentro dos estudos. Menos de 5 estudos: aviso de variâncias instáveis (regra que já valia para a heterogeneidade).
+

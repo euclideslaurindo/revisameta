@@ -26,7 +26,8 @@
 | POST | `/funnel-plot` e `/egger` | Viés de publicação |
 | POST | `/leave-one-out` | Sensibilidade |
 | POST | `/subgroup` | Subgrupos e teste de diferença |
-| POST | `/meta-regression` | P2 |
+| POST | `/multilevel` | P2 — implementado na Etapa 8 (rma.mv, estudo/efeito) |
+| POST | `/meta-regression` | P2 — implementado na Etapa 8 (rma com moderadores; aviso abaixo de 10 estudos por moderador) |
 | POST | `/convert` | Conversões (8.5) |
 | POST | `/combine-groups` | Combina braços em um grupo |
 | POST | `/rob-plots` | Semáforo e resumo (`robvis`) |

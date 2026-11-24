@@ -61,6 +61,9 @@ type Method = 'REML' | 'DL' | 'PM' | 'FE';
  * 3 direction, 4 model, 5 result in plain language with the forest plot. Every number
  * comes from the R service; the screen only shows and explains it.
  */
+import { MetaRegressionCard } from './meta-regression-card';
+
+import { MultilevelCard } from './multilevel-card';
 @Component({
   selector: 'rm-meta-analysis-page',
   imports: [
@@ -79,6 +82,8 @@ type Method = 'REML' | 'DL' | 'PM' | 'FE';
     FormError,
     LocalDatePipe,
     TutorPanel,
+    MetaRegressionCard,
+    MultilevelCard,
   ],
   template: `
     <p class="muted">
@@ -636,6 +641,14 @@ type Method = 'REML' | 'DL' | 'PM' | 'FE';
             }
           }
 
+          <rm-multilevel-card
+            [outcomeId]="outcomeId"
+            [timepoints]="outcomeTimepoints()"
+            [measure]="result()?.assembly?.measure ?? null"
+          />
+
+          <rm-meta-regression-card [analysis]="tutorAnalysis()" [fields]="subgroupFields()" />
+
           <h3>
             {{ 'meta.pb.title' | transloco }}
             <span class="term" tabindex="0" [matTooltip]="'meta.pb.help' | transloco">?</span>
@@ -928,6 +941,10 @@ export class MetaAnalysisPage implements OnInit, OnDestroy {
     this.timepoint = this.timepoints()[0] ?? null;
     this.measure = null;
     void this.preview();
+  }
+
+  protected outcomeTimepoints(): string[] {
+    return this.outcomes().find((o) => o.id === this.outcomeId)?.timepoints ?? [];
   }
 
   protected tutorAnalysis() {

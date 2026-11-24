@@ -1,0 +1,92 @@
+{
+  "generated_by": "fixtures/scripts/generate-multilevel.R",
+  "r_version": "4.6.2",
+  "metafor_version": "5.2.1",
+  "tolerance": 1e-06,
+  "cases": [
+    {
+      "name": "dat.konstantopoulos2011_SMD_REML_z",
+      "request": {
+        "measure": "SMD",
+        "method": "REML",
+        "test": "z",
+        "data": {
+          "label": ["district 11 school 1", "district 11 school 2", "district 11 school 3", "district 11 school 4", "district 12 school 1", "district 12 school 2", "district 12 school 3", "district 12 school 4", "district 18 school 1", "district 18 school 2", "district 18 school 3", "district 27 school 1", "district 27 school 2", "district 27 school 3", "district 27 school 4", "district 56 school 1", "district 56 school 2", "district 56 school 3", "district 56 school 4", "district 58 school 1", "district 58 school 2", "district 58 school 3", "district 58 school 4", "district 58 school 5", "district 58 school 6", "district 58 school 7", "district 58 school 8", "district 58 school 9", "district 58 school 10", "district 58 school 11", "district 71 school 1", "district 71 school 2", "district 71 school 3", "district 86 school 1", "district 86 school 2", "district 86 school 3", "district 86 school 4", "district 86 school 5", "district 86 school 6", "district 86 school 7", "district 86 school 8", "district 91 school 1", "district 91 school 2", "district 91 school 3", "district 91 school 4", "district 91 school 5", "district 91 school 6", "district 108 school 1", "district 108 school 2", "district 108 school 3", "district 108 school 4", "district 108 school 5", "district 644 school 1", "district 644 school 2", "district 644 school 3", "district 644 school 4"],
+          "study": ["11", "11", "11", "11", "12", "12", "12", "12", "18", "18", "18", "27", "27", "27", "27", "56", "56", "56", "56", "58", "58", "58", "58", "58", "58", "58", "58", "58", "58", "58", "71", "71", "71", "86", "86", "86", "86", "86", "86", "86", "86", "91", "91", "91", "91", "91", "91", "108", "108", "108", "108", "108", "644", "644", "644", "644"],
+          "yi": [-0.18, -0.22, 0.23, -0.3, 0.13, -0.26, 0.19, 0.32, 0.45, 0.38, 0.29, 0.16, 0.65, 0.36, 0.6, 0.08, 0.04, 0.19, -0.06, -0.18, 0, 0, -0.28, -0.04, -0.3, 0.07, 0, 0.05, -0.08, -0.09, 0.3, 0.98, 1.19, -0.07, -0.05, -0.01, 0.02, -0.03, 0, 0.01, -0.1, 0.5, 0.66, 0.2, 0, 0.05, 0.07, -0.52, 0.7, -0.03, 0.27, -0.34, 0.12, 0.61, 0.04, -0.05],
+          "vi": [0.118, 0.118, 0.144, 0.144, 0.014, 0.014, 0.015, 0.024, 0.023, 0.043, 0.012, 0.02, 0.004, 0.004, 0.007, 0.019, 0.007, 0.005, 0.004, 0.02, 0.018, 0.019, 0.022, 0.02, 0.021, 0.006, 0.007, 0.007, 0.007, 0.007, 0.015, 0.011, 0.01, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.01, 0.011, 0.01, 0.009, 0.013, 0.013, 0.031, 0.031, 0.03, 0.03, 0.03, 0.087, 0.082, 0.067, 0.067]
+        }
+      },
+      "expected": {
+        "k": 56,
+        "studies": 11,
+        "estimate": 0.184713163677709,
+        "se": 0.0845559187749329,
+        "ci_lb": 0.0189866081991463,
+        "ci_ub": 0.350439719156272,
+        "p_value": 0.0289248683158568,
+        "pi_lb": -0.4502309702457,
+        "pi_ub": 0.819657297601118,
+        "sigma2": [0.0650619443388331, 0.0327365170136888],
+        "q": 578.864017958223,
+        "q_p": 1.79683030193468e-88
+      }
+    },
+    {
+      "name": "dat.konstantopoulos2011_SMD_REML_t",
+      "request": {
+        "measure": "SMD",
+        "method": "REML",
+        "test": "knha",
+        "data": {
+          "label": ["district 11 school 1", "district 11 school 2", "district 11 school 3", "district 11 school 4", "district 12 school 1", "district 12 school 2", "district 12 school 3", "district 12 school 4", "district 18 school 1", "district 18 school 2", "district 18 school 3", "district 27 school 1", "district 27 school 2", "district 27 school 3", "district 27 school 4", "district 56 school 1", "district 56 school 2", "district 56 school 3", "district 56 school 4", "district 58 school 1", "district 58 school 2", "district 58 school 3", "district 58 school 4", "district 58 school 5", "district 58 school 6", "district 58 school 7", "district 58 school 8", "district 58 school 9", "district 58 school 10", "district 58 school 11", "district 71 school 1", "district 71 school 2", "district 71 school 3", "district 86 school 1", "district 86 school 2", "district 86 school 3", "district 86 school 4", "district 86 school 5", "district 86 school 6", "district 86 school 7", "district 86 school 8", "district 91 school 1", "district 91 school 2", "district 91 school 3", "district 91 school 4", "district 91 school 5", "district 91 school 6", "district 108 school 1", "district 108 school 2", "district 108 school 3", "district 108 school 4", "district 108 school 5", "district 644 school 1", "district 644 school 2", "district 644 school 3", "district 644 school 4"],
+          "study": ["11", "11", "11", "11", "12", "12", "12", "12", "18", "18", "18", "27", "27", "27", "27", "56", "56", "56", "56", "58", "58", "58", "58", "58", "58", "58", "58", "58", "58", "58", "71", "71", "71", "86", "86", "86", "86", "86", "86", "86", "86", "91", "91", "91", "91", "91", "91", "108", "108", "108", "108", "108", "644", "644", "644", "644"],
+          "yi": [-0.18, -0.22, 0.23, -0.3, 0.13, -0.26, 0.19, 0.32, 0.45, 0.38, 0.29, 0.16, 0.65, 0.36, 0.6, 0.08, 0.04, 0.19, -0.06, -0.18, 0, 0, -0.28, -0.04, -0.3, 0.07, 0, 0.05, -0.08, -0.09, 0.3, 0.98, 1.19, -0.07, -0.05, -0.01, 0.02, -0.03, 0, 0.01, -0.1, 0.5, 0.66, 0.2, 0, 0.05, 0.07, -0.52, 0.7, -0.03, 0.27, -0.34, 0.12, 0.61, 0.04, -0.05],
+          "vi": [0.118, 0.118, 0.144, 0.144, 0.014, 0.014, 0.015, 0.024, 0.023, 0.043, 0.012, 0.02, 0.004, 0.004, 0.007, 0.019, 0.007, 0.005, 0.004, 0.02, 0.018, 0.019, 0.022, 0.02, 0.021, 0.006, 0.007, 0.007, 0.007, 0.007, 0.015, 0.011, 0.01, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.01, 0.011, 0.01, 0.009, 0.013, 0.013, 0.031, 0.031, 0.03, 0.03, 0.03, 0.087, 0.082, 0.067, 0.067]
+        }
+      },
+      "expected": {
+        "k": 56,
+        "studies": 11,
+        "estimate": 0.184713163677709,
+        "se": 0.0845559187749329,
+        "ci_lb": 0.0152593157605839,
+        "ci_ub": 0.354167011594834,
+        "p_value": 0.0332050188562091,
+        "pi_lb": -0.46451125539643,
+        "pi_ub": 0.833937582751848,
+        "sigma2": [0.0650619443388331, 0.0327365170136888],
+        "q": 578.864017958223,
+        "q_p": 1.79683030193468e-88
+      }
+    },
+    {
+      "name": "dat.konstantopoulos2011_SMD_ML_z",
+      "request": {
+        "measure": "SMD",
+        "method": "ML",
+        "test": "z",
+        "data": {
+          "label": ["district 11 school 1", "district 11 school 2", "district 11 school 3", "district 11 school 4", "district 12 school 1", "district 12 school 2", "district 12 school 3", "district 12 school 4", "district 18 school 1", "district 18 school 2", "district 18 school 3", "district 27 school 1", "district 27 school 2", "district 27 school 3", "district 27 school 4", "district 56 school 1", "district 56 school 2", "district 56 school 3", "district 56 school 4", "district 58 school 1", "district 58 school 2", "district 58 school 3", "district 58 school 4", "district 58 school 5", "district 58 school 6", "district 58 school 7", "district 58 school 8", "district 58 school 9", "district 58 school 10", "district 58 school 11", "district 71 school 1", "district 71 school 2", "district 71 school 3", "district 86 school 1", "district 86 school 2", "district 86 school 3", "district 86 school 4", "district 86 school 5", "district 86 school 6", "district 86 school 7", "district 86 school 8", "district 91 school 1", "district 91 school 2", "district 91 school 3", "district 91 school 4", "district 91 school 5", "district 91 school 6", "district 108 school 1", "district 108 school 2", "district 108 school 3", "district 108 school 4", "district 108 school 5", "district 644 school 1", "district 644 school 2", "district 644 school 3", "district 644 school 4"],
+          "study": ["11", "11", "11", "11", "12", "12", "12", "12", "18", "18", "18", "27", "27", "27", "27", "56", "56", "56", "56", "58", "58", "58", "58", "58", "58", "58", "58", "58", "58", "58", "71", "71", "71", "86", "86", "86", "86", "86", "86", "86", "86", "91", "91", "91", "91", "91", "91", "108", "108", "108", "108", "108", "644", "644", "644", "644"],
+          "yi": [-0.18, -0.22, 0.23, -0.3, 0.13, -0.26, 0.19, 0.32, 0.45, 0.38, 0.29, 0.16, 0.65, 0.36, 0.6, 0.08, 0.04, 0.19, -0.06, -0.18, 0, 0, -0.28, -0.04, -0.3, 0.07, 0, 0.05, -0.08, -0.09, 0.3, 0.98, 1.19, -0.07, -0.05, -0.01, 0.02, -0.03, 0, 0.01, -0.1, 0.5, 0.66, 0.2, 0, 0.05, 0.07, -0.52, 0.7, -0.03, 0.27, -0.34, 0.12, 0.61, 0.04, -0.05],
+          "vi": [0.118, 0.118, 0.144, 0.144, 0.014, 0.014, 0.015, 0.024, 0.023, 0.043, 0.012, 0.02, 0.004, 0.004, 0.007, 0.019, 0.007, 0.005, 0.004, 0.02, 0.018, 0.019, 0.022, 0.02, 0.021, 0.006, 0.007, 0.007, 0.007, 0.007, 0.015, 0.011, 0.01, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.001, 0.01, 0.011, 0.01, 0.009, 0.013, 0.013, 0.031, 0.031, 0.03, 0.03, 0.03, 0.087, 0.082, 0.067, 0.067]
+        }
+      },
+      "expected": {
+        "k": 56,
+        "studies": 11,
+        "estimate": 0.184455383966508,
+        "se": 0.0804816821836643,
+        "ci_lb": 0.0267141854713273,
+        "ci_ub": 0.342196582461689,
+        "p_value": 0.0219118326818899,
+        "pi_lb": -0.426225022091399,
+        "pi_ub": 0.795135790024415,
+        "sigma2": [0.0577383588897783, 0.0328647918625872],
+        "q": 578.864017958223,
+        "q_p": 1.79683030193468e-88
+      }
+    }
+  ]
+}

@@ -331,6 +331,10 @@ export type { AnalysisForestPlot$Params as AnalysisForestPlot$Params } from './f
 export { analysisForestPlot as analysisForestPlot } from './fn/analysis/analysis-forest-plot';
 export type { SensitivityAnalysis$Params as SensitivityAnalysis$Params } from './fn/analysis/sensitivity-analysis';
 export { sensitivityAnalysis as sensitivityAnalysis } from './fn/analysis/sensitivity-analysis';
+export type { RunMetaRegression$Params as RunMetaRegression$Params } from './fn/analysis/run-meta-regression';
+export { runMetaRegression as runMetaRegression } from './fn/analysis/run-meta-regression';
+export type { RunMultilevel$Params as RunMultilevel$Params } from './fn/analysis/run-multilevel';
+export { runMultilevel as runMultilevel } from './fn/analysis/run-multilevel';
 export type { SubgroupAnalysis$Params as SubgroupAnalysis$Params } from './fn/analysis/subgroup-analysis';
 export { subgroupAnalysis as subgroupAnalysis } from './fn/analysis/subgroup-analysis';
 export type { EggerTest$Params as EggerTest$Params } from './fn/analysis/egger-test';

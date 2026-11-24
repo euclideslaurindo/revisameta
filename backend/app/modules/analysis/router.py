@@ -9,6 +9,8 @@ from app.integrations.stats_client import StatsClient, get_stats_client
 from app.modules.analysis import (
     assembly,
     history,
+    meta_regression,
+    multilevel,
     narrative,
     publication_bias,
     run,
@@ -75,6 +77,29 @@ async def sensitivity_analysis(
 ) -> sensitivity.SensitivityOut:
     """Reruns the analysis changing one thing (leave one out, risk of bias, model...)."""
     return await sensitivity.sensitivity(session, ctx, stats, body)
+
+
+@router.post("/meta-regression")
+async def run_meta_regression(
+    body: meta_regression.MetaRegressionIn,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+    stats: StatsClient = Depends(get_stats_client),
+) -> meta_regression.MetaRegressionOut:
+    """Meta-regression with moderators from the extraction form; strong warning below 10
+    studies per moderator."""
+    return await meta_regression.meta_regression(session, ctx, stats, body)
+
+
+@router.post("/multilevel")
+async def run_multilevel(
+    body: multilevel.MultilevelIn,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+    stats: StatsClient = Depends(get_stats_client),
+) -> multilevel.MultilevelOut:
+    """Several time points of one outcome together, with the study as cluster (rma.mv)."""
+    return await multilevel.multilevel(session, ctx, stats, body)
 
 
 @router.post("/subgroups")

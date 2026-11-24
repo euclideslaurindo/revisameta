@@ -403,6 +403,16 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
     ),
     (
         "POST",
+        "/api/v1/projects/{project_id}/analyses/multilevel",
+        {"outcome_id": "{outcome_id}", "timepoints": ["x", "y"]},
+    ),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/analyses/meta-regression",
+        {"outcome_id": "{outcome_id}", "timepoint": "x", "moderators": ["age"]},
+    ),
+    (
+        "POST",
         "/api/v1/projects/{project_id}/analyses/subgroups",
         {"outcome_id": "{tool_id}", "timepoint": "x", "variable": "cutoff"},
     ),

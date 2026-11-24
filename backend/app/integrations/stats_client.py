@@ -135,6 +135,14 @@ class StatsClient:
         """One model per subgroup and the test for subgroup differences."""
         return await self._request("POST", "/subgroup", json=spec)
 
+    async def meta_regression(self, spec: dict[str, Any]) -> StatsResponse:
+        """rma with moderators (numeric or categorical)."""
+        return await self._request("POST", "/meta-regression", json=spec)
+
+    async def multilevel(self, spec: dict[str, Any]) -> StatsResponse:
+        """rma.mv with study/effect random effects (several effects per study)."""
+        return await self._request("POST", "/multilevel", json=spec)
+
     async def egger(self, spec: dict[str, Any]) -> StatsResponse:
         """Egger's regression test (metafor::regtest)."""
         return await self._request("POST", "/egger", json=spec)

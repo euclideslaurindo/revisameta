@@ -1259,6 +1259,30 @@
         "mixed": "Resultados mistos",
         "not_reported": "Não informado"
       }
+    },
+    "mr": {
+      "title": "Meta-regressão",
+      "help": "Testa se uma característica dos estudos (por exemplo, idade média na cirurgia) explica parte da diferença entre os resultados. Com poucos estudos, o resultado é instável: use como exploração, não como conclusão.",
+      "moderators": "Moderadores (características dos estudos)",
+      "run": "Rodar meta-regressão",
+      "fewTitle": "Atenção: só {{k}} estudos.",
+      "few": "São menos de 10 estudos por moderador, como recomenda o Cochrane Handbook. O resultado é instável e não deve ser lido como conclusão.",
+      "term": "Termo",
+      "coef": "Coeficiente",
+      "intercept": "Intercepto",
+      "test": "Teste dos moderadores: {{stat}} (p {{p}})",
+      "residual": "Heterogeneidade residual: τ² = {{tau2}}, I² = {{i2}}%",
+      "logScale": "Para RR e OR, os coeficientes estão na escala logarítmica (como o metafor devolve).",
+      "leftOut": "Ficaram de fora por não terem o moderador preenchido: {{studies}}."
+    },
+    "ml": {
+      "title": "Vários momentos juntos (modelo multinível)",
+      "help": "Quando o mesmo estudo traz o desfecho em vários momentos, os resultados não são independentes. O modelo multinível usa todos os momentos e trata o estudo como um grupo, sem contar o mesmo estudo duas vezes.",
+      "timepoints": "Momentos do desfecho",
+      "run": "Rodar modelo multinível",
+      "few": "Menos de 5 estudos: as variâncias entre e dentro dos estudos ficam instáveis.",
+      "counts": "{{k}} resultado(s) de {{studies}} estudo(s)",
+      "variance": "variância entre estudos {{between}}; dentro dos estudos {{within}}"
     }
   },
   "searches": {

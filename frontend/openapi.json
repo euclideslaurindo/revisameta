@@ -9795,6 +9795,124 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/analyses/meta-regression": {
+      "post": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Run Meta Regression",
+        "description": "Meta-regression with moderators from the extraction form; strong warning below 10\nstudies per moderator.",
+        "operationId": "run_meta_regression",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MetaRegressionIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetaRegressionOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/analyses/multilevel": {
+      "post": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Run Multilevel",
+        "description": "Several time points of one outcome together, with the study as cluster (rma.mv).",
+        "operationId": "run_multilevel",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MultilevelIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MultilevelOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/projects/{project_id}/analyses/subgroups": {
       "post": {
         "tags": [
@@ -18126,6 +18244,162 @@
         "title": "MergeIn",
         "description": "Moves every report of `other_study_id` into this study (same patients)."
       },
+      "MetaRegressionIn": {
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Outcome Id"
+          },
+          "timepoint": {
+            "type": "string",
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Timepoint"
+          },
+          "measure": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "MD",
+                  "SMD",
+                  "OR",
+                  "RR",
+                  "RD"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Measure"
+          },
+          "data_set": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "unadjusted",
+                  "adjusted"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Set"
+          },
+          "method": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "REML",
+                  "DL",
+                  "PM",
+                  "FE"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Method"
+          },
+          "test": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "knha",
+                  "z"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Test"
+          },
+          "moderators": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 5,
+            "minItems": 1,
+            "title": "Moderators"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome_id",
+          "timepoint",
+          "moderators"
+        ],
+        "title": "MetaRegressionIn"
+      },
+      "MetaRegressionOut": {
+        "properties": {
+          "measure": {
+            "type": "string",
+            "title": "Measure"
+          },
+          "moderators": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Moderators"
+          },
+          "kinds": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Kinds"
+          },
+          "values": {
+            "additionalProperties": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "object",
+            "title": "Values"
+          },
+          "left_out": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Left Out"
+          },
+          "result": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Result"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "type": "object",
+        "required": [
+          "measure",
+          "moderators",
+          "kinds",
+          "values",
+          "left_out",
+          "result",
+          "warnings"
+        ],
+        "title": "MetaRegressionOut"
+      },
       "MetricsOut": {
         "properties": {
           "tasks": {
@@ -18191,6 +18465,137 @@
         },
         "type": "object",
         "title": "ModelPlan"
+      },
+      "MultilevelIn": {
+        "properties": {
+          "outcome_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Outcome Id"
+          },
+          "timepoints": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 10,
+            "minItems": 2,
+            "title": "Timepoints"
+          },
+          "measure": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "MD",
+                  "SMD",
+                  "OR",
+                  "RR",
+                  "RD"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Measure"
+          },
+          "data_set": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "unadjusted",
+                  "adjusted"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Set"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "REML",
+              "ML"
+            ],
+            "title": "Method",
+            "default": "REML"
+          },
+          "test": {
+            "type": "string",
+            "enum": [
+              "z",
+              "knha"
+            ],
+            "title": "Test",
+            "default": "z"
+          }
+        },
+        "type": "object",
+        "required": [
+          "outcome_id",
+          "timepoints"
+        ],
+        "title": "MultilevelIn"
+      },
+      "MultilevelOut": {
+        "properties": {
+          "measure": {
+            "type": "string",
+            "title": "Measure"
+          },
+          "timepoints": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Timepoints"
+          },
+          "k": {
+            "type": "integer",
+            "title": "K"
+          },
+          "studies": {
+            "type": "integer",
+            "title": "Studies"
+          },
+          "left_out": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "object",
+            "title": "Left Out"
+          },
+          "result": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Result"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "type": "object",
+        "required": [
+          "measure",
+          "timepoints",
+          "k",
+          "studies",
+          "left_out",
+          "result",
+          "warnings"
+        ],
+        "title": "MultilevelOut"
       },
       "NarrativeIn": {
         "properties": {

@@ -1259,6 +1259,30 @@
         "mixed": "Mixed results",
         "not_reported": "Not reported"
       }
+    },
+    "mr": {
+      "title": "Meta-regression",
+      "help": "Tests whether a characteristic of the studies (e.g. mean age at surgery) explains part of the difference between results. With few studies the result is unstable: use it to explore, not to conclude.",
+      "moderators": "Moderators (study characteristics)",
+      "run": "Run meta-regression",
+      "fewTitle": "Warning: only {{k}} studies.",
+      "few": "There are fewer than 10 studies per moderator, as the Cochrane Handbook recommends. The result is unstable and must not be read as a conclusion.",
+      "term": "Term",
+      "coef": "Coefficient",
+      "intercept": "Intercept",
+      "test": "Test of moderators: {{stat}} (p {{p}})",
+      "residual": "Residual heterogeneity: τ² = {{tau2}}, I² = {{i2}}%",
+      "logScale": "For RR and OR, the coefficients are on the log scale (as metafor returns them).",
+      "leftOut": "Left out because the moderator is missing: {{studies}}."
+    },
+    "ml": {
+      "title": "Several time points together (multilevel model)",
+      "help": "When the same study reports the outcome at several time points, the results are not independent. The multilevel model uses every time point and treats the study as a cluster, without counting the same study twice.",
+      "timepoints": "Outcome time points",
+      "run": "Run multilevel model",
+      "few": "Fewer than 5 studies: the between- and within-study variances are unstable.",
+      "counts": "{{k}} result(s) from {{studies}} study(ies)",
+      "variance": "between-study variance {{between}}; within-study {{within}}"
     }
   },
   "searches": {
