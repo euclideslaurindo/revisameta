@@ -33,6 +33,7 @@ class ProjectUpdate(BaseModel):
     deadline: date | None = None
     report_language: Literal["pt-BR", "en"] | None = None
     double_extraction: bool | None = None
+    double_rob: bool | None = None
 
 
 class ProjectOut(BaseModel):
@@ -46,6 +47,7 @@ class ProjectOut(BaseModel):
     deadline: date | None
     report_language: str
     double_extraction: bool
+    double_rob: bool
     locked_stages: list[str]
     archived_at: datetime | None = None
     owner_id: uuid.UUID

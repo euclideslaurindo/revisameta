@@ -76,6 +76,16 @@ import { ProjectContext } from '../project/project-context';
               ) | transloco
             }}
           </mat-slide-toggle>
+          <h3>{{ 'protocol.doubleRob.title' | transloco }}</h3>
+          <mat-slide-toggle
+            [checked]="project.double_rob"
+            [disabled]="!context.isAdmin() || busy()"
+            (change)="setDoubleRob($event.checked)"
+          >
+            {{
+              (project.double_rob ? 'protocol.doubleRob.on' : 'protocol.doubleRob.off') | transloco
+            }}
+          </mat-slide-toggle>
         </mat-card-content>
       </mat-card>
     }
@@ -286,6 +296,18 @@ export class ProtocolPage implements OnInit {
   private async confirm(data: ConfirmData): Promise<boolean> {
     const ref = this.dialog.open(ConfirmDialog, { data });
     return (await firstValueFrom(ref.afterClosed())) === true;
+  }
+
+  async setDoubleRob(enabled: boolean): Promise<void> {
+    const project = this.context.project();
+    if (!project) return;
+    await this.run(async () => {
+      const updated = await this.api.invoke(updateProject, {
+        project_id: project.id,
+        body: { version: project.version, double_rob: enabled },
+      });
+      this.context.update(updated);
+    });
   }
 
   async setDoubleExtraction(enabled: boolean): Promise<void> {

@@ -95,6 +95,8 @@ class RobComparisonOut(BaseModel):
     timepoint: str | None
     reviewers: list[RobReviewerOut]
     submitted: int
+    # How many submitted assessments the project asks for before the consensus.
+    needed: int = 2
     consensus: RobConsensusRef | None
     items: list[RobItemOut]
     divergences: int
@@ -344,6 +346,7 @@ async def _comparison(
             for a in individuals
         ],
         submitted=len(pair),
+        needed=asm.reviewers_needed(ctx),
         consensus=RobConsensusRef(
             id=consensus.id, status=consensus.status, version=consensus.version
         )
@@ -473,7 +476,7 @@ async def create_consensus(
     if consensus is not None:
         raise AppError("rob.consensus_exists", status_code=409)
     pair = _submitted(individuals)
-    if len(pair) < 2:
+    if not pair or len(pair) < asm.reviewers_needed(ctx):
         raise AppError("rob.consensus_waiting", status_code=409)
     consensus = RobAssessment(
         project_id=ctx.project.id,
@@ -485,7 +488,7 @@ async def create_consensus(
         kind="consensus",
         reviewer_id=None,
         status="draft",
-        variants={**(pair[1].variants or {}), **(pair[0].variants or {})},
+        variants={k: v for a in reversed(pair) for k, v in (a.variants or {}).items()},
     )
     session.add(consensus)
     await session.flush()

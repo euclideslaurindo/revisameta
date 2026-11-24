@@ -29,6 +29,7 @@ from app.modules.projects.stages import (
     set_locked,
 )
 from app.modules.protocol.models import Outcome
+from app.modules.risk_of_bias import assessments as asm
 from app.modules.risk_of_bias.models import RobAssessment, RobStudyTool, RobTool
 from app.modules.studies.models import Study
 
@@ -117,7 +118,9 @@ async def review(session: AsyncSession, ctx: ProjectContext) -> RobReviewOut:
             individuals = [a for a in group if a.kind == "individual"]
             if final is not None:
                 state = "done"
-            elif draft_final or len([a for a in individuals if a.status != "draft"]) >= 2:
+            elif draft_final or len(
+                [a for a in individuals if a.status != "draft"]
+            ) >= asm.reviewers_needed(ctx):
                 state = "consensus_pending"
             else:
                 state = "in_progress"

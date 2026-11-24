@@ -157,6 +157,11 @@
       "labelHint": "E.g.: Surgery before age 5",
       "rule": "Group rule",
       "ruleHint": "E.g.: age at surgery below 5 years. Say what to do if a study uses another cut-off."
+    },
+    "doubleRob": {
+      "title": "Double risk-of-bias assessment",
+      "on": "On: two reviewers assess each study without seeing each other's work, and differences become conflicts.",
+      "off": "Off: one reviewer per study. The admin still checks and submits the consensus. Report this in the Methods."
     }
   },
   "designs": {
@@ -808,7 +813,8 @@
         "a": "Decided by {{name}}: reviewer A’s answer.",
         "b": "Decided by {{name}}: reviewer B’s answer.",
         "consensus": "Decided by {{name}}: value edited in the consensus."
-      }
+      },
+      "single": "Single reviewer (double assessment off): the consensus starts from their answers. Check and submit it."
     },
     "table": {
       "open": "Consolidated table and plots",

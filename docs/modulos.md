@@ -135,7 +135,7 @@ Regras gerais: as checagens **avisam e pedem confirmação**, não bloqueiam (ex
 
 #### Fluxo
 1. O sistema sugere o instrumento pelo desenho do estudo; o admin confirma.
-2. Dois revisores avaliam de forma independente (cegados), com PDF ao lado.
+2. Dois revisores avaliam de forma independente (cegados), com PDF ao lado. *Opção do projeto "Dupla avaliação de risco de viés" (ligada por padrão): desligada pelo admin, uma avaliação enviada basta para abrir o consenso, que o admin confere e envia (decisão do grupo em 2026-11-24; relatar nos Métodos).*
 3. Tela de **conflitos**: lado a lado, pergunta por pergunta, com justificativas.
 4. Consenso registrado (quem decidiu, motivo); terceiro revisor opcional.
 5. **Tabela consolidada** (estudo × domínio) gerada automaticamente.

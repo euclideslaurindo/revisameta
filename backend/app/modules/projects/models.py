@@ -43,6 +43,9 @@ class Project(BusinessMixin, AuditedMixin, Base):
     locked_stages: Mapped[list[str]] = mapped_column(ARRAY(String(32)), default=list)
     # Two independent extractors per study, then consensus (7.5.1 D11; on by default).
     double_extraction: Mapped[bool] = mapped_column(Boolean, default=True, server_default=true())
+    # Two independent risk-of-bias reviewers per study (on by default); off, one
+    # submitted assessment is enough to start the consensus. The group decides.
+    double_rob: Mapped[bool] = mapped_column(Boolean, default=True, server_default=true())
     # Owner: the creator until administration is transferred. Cannot be removed.
     owner_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), index=True)
 

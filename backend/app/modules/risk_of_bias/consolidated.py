@@ -310,7 +310,7 @@ async def table(
                 "no_assessment"
                 if not individuals
                 else "in_progress"
-                if len(submitted) < asm.MAX_REVIEWERS
+                if len(submitted) < asm.reviewers_needed(ctx)
                 else "consensus_pending"
             )
             pending.append(PendingOut(study_id=study.id, label=study.label, reason=reason))

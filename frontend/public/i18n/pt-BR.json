@@ -157,6 +157,11 @@
       "labelHint": "Ex.: Cirurgia antes dos 5 anos",
       "rule": "Regra do grupo",
       "ruleHint": "Ex.: idade na cirurgia menor que 5 anos. Diga o que fazer se o estudo usar outro corte."
+    },
+    "doubleRob": {
+      "title": "Dupla avaliação de risco de viés",
+      "on": "Ligada: dois revisores avaliam cada estudo, sem ver o trabalho um do outro, e as diferenças viram conflitos.",
+      "off": "Desligada: um revisor por estudo. O administrador ainda confere e envia o consenso. Relate isso nos Métodos."
     }
   },
   "designs": {
@@ -808,7 +813,8 @@
         "a": "Decidido por {{name}}: resposta do revisor A.",
         "b": "Decidido por {{name}}: resposta do revisor B.",
         "consensus": "Decidido por {{name}}: valor editado no consenso."
-      }
+      },
+      "single": "Um revisor só (dupla avaliação desligada): o consenso começa com as respostas dele. Confira e envie."
     },
     "table": {
       "open": "Tabela consolidada e gráficos",

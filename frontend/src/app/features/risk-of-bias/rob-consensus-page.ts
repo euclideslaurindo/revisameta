@@ -79,11 +79,14 @@ interface DomainView {
               >
             }
           </p>
-          @if (c.submitted < 2) {
+          @if (c.submitted < (c.needed ?? 2)) {
             <p class="notice">
               {{ 'rob.consensus.waiting' | transloco: { submitted: c.submitted } }}
             </p>
           } @else {
+            @if (c.submitted < 2) {
+              <p class="notice">{{ 'rob.consensus.single' | transloco }}</p>
+            }
             @if (c.agreement; as a) {
               <p>
                 {{

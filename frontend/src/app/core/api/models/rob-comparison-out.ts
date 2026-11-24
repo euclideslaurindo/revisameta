@@ -11,6 +11,7 @@ export interface RobComparisonOut {
   consensus: (RobConsensusRef | null);
   divergences: number;
   items: Array<RobItemOut>;
+  needed?: number;
   outcome_id: (string | null);
   reviewers: Array<RobReviewerOut>;
   study_id: string;

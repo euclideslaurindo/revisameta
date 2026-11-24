@@ -205,3 +205,37 @@ async def test_comparison_works_when_r_is_down_and_project_agreement(
     assert agreement["pairs"] == 1
     # Only judgements count for the project agreement (here: the overall one).
     assert fake_r.calls[-1] == {"rater_a": ["low"], "rater_b": ["moderate"]}
+
+
+async def test_single_reviewer_mode_starts_consensus_after_one_assessment(
+    client: AsyncClient, make_user: MakeUser, fake_r: FakeR
+) -> None:
+    ana, bia, _caio, p = await _team(client, make_user)
+    await _assess(client, bia, p, STARS_A, "low")
+    r = await client.post(f"{_url(p)}/consensus", json={}, headers=ana.headers)
+    assert r.json()["code"] == "rob.consensus_waiting"
+    # Only the admin may change the rule.
+    project = (await client.get(f"/api/v1/projects/{p['pid']}", headers=ana.headers)).json()
+    r = await client.patch(
+        f"/api/v1/projects/{p['pid']}",
+        json={"version": project["version"], "double_rob": False},
+        headers=bia.headers,
+    )
+    assert r.status_code == 403
+    r = await client.patch(
+        f"/api/v1/projects/{p['pid']}",
+        json={"version": project["version"], "double_rob": False},
+        headers=ana.headers,
+    )
+    assert r.status_code == 200 and r.json()["double_rob"] is False
+
+    cmp = (await client.get(f"{_url(p)}/comparisons", headers=ana.headers)).json()[0]
+    assert cmp["submitted"] == 1 and cmp["needed"] == 1
+    review = (await client.get(f"{p['rob']}/review", headers=ana.headers)).json()
+    assert review["studies"][0]["targets"][0]["state"] == "consensus_pending"
+    created = (await client.post(f"{_url(p)}/consensus", json={}, headers=ana.headers)).json()
+    cid = created["consensus"]["id"]
+    # A person still checks and submits the consensus: nothing becomes final on its own.
+    assert created["consensus"]["status"] == "draft"
+    r = await client.post(f"{p['rob']}/assessments/{cid}/submit", headers=ana.headers)
+    assert r.status_code == 200, r.text

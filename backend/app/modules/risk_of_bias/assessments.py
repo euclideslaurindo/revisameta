@@ -139,6 +139,11 @@ class AssessmentOut(AssessmentSummary):
 # ---- Loading and visibility ------------------------------------------------------------
 
 
+def reviewers_needed(ctx: ProjectContext) -> int:
+    """Submitted individual assessments needed before the consensus (1 or 2)."""
+    return MAX_REVIEWERS if ctx.project.double_rob else 1
+
+
 def _template(tool: RobTool) -> Template:
     return Template.model_validate(tool.structure)
 
