@@ -6,6 +6,9 @@ export interface SuggestionOut {
   id: string;
   model: string;
   page: (number | null);
+  payload: {
+[key: string]: any;
+};
   prompt_version: string;
   provider: string;
   question: (string | null);

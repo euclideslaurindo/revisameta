@@ -11639,6 +11639,232 @@
         }
       }
     },
+    "/api/v1/projects/{project_id}/ai/extract": {
+      "post": {
+        "tags": [
+          "ai"
+        ],
+        "summary": "Suggest Extraction",
+        "description": "IA3: values printed in the PDF, each with its verified quote. Never fills a form.",
+        "operationId": "suggest_extraction",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExtractIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/ai/rob-hint": {
+      "post": {
+        "tags": [
+          "ai"
+        ],
+        "summary": "Rob Second Opinion",
+        "description": "IA4: suggested answer to a signalling question with the passage that supports it.",
+        "operationId": "rob_second_opinion",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RobHintIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RobHintOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/ai/search-help": {
+      "post": {
+        "tags": [
+          "ai"
+        ],
+        "summary": "Search Strategy Help",
+        "description": "IA5: MeSH/DeCS terms and a PubMed query from the protocol, to review before use.",
+        "operationId": "search_strategy_help",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchHelpOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/ai/draft": {
+      "post": {
+        "tags": [
+          "ai"
+        ],
+        "summary": "Draft Methods Results",
+        "description": "IA6: draft of Methods and Results; numbers inserted by the system.",
+        "operationId": "draft_methods_results",
+        "security": [
+          {
+            "HTTPBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DraftIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DraftOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/me/usage": {
       "get": {
         "tags": [
@@ -12249,7 +12475,11 @@
               "type": "string",
               "enum": [
                 "tutor",
-                "locate"
+                "locate",
+                "extract",
+                "rob",
+                "search",
+                "draft"
               ]
             },
             "type": "array",
@@ -14655,6 +14885,44 @@
         ],
         "title": "ComparisonPlan"
       },
+      "Concept": {
+        "properties": {
+          "concept": {
+            "type": "string",
+            "maxLength": 200,
+            "title": "Concept"
+          },
+          "mesh": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Mesh"
+          },
+          "decs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Decs"
+          },
+          "free_text": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 30,
+            "title": "Free Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "concept"
+        ],
+        "title": "Concept"
+      },
       "ConfirmDirectionIn": {
         "properties": {
           "outcome_id": {
@@ -15278,6 +15546,61 @@
         ],
         "title": "DownloadUrl"
       },
+      "DraftIn": {
+        "properties": {
+          "lang": {
+            "type": "string",
+            "enum": [
+              "pt-BR",
+              "en"
+            ],
+            "title": "Lang",
+            "default": "pt-BR"
+          },
+          "analysis": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RunIn"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "title": "DraftIn"
+      },
+      "DraftOut": {
+        "properties": {
+          "methods": {
+            "type": "string",
+            "title": "Methods"
+          },
+          "results": {
+            "type": "string",
+            "title": "Results"
+          },
+          "unverified": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Unverified"
+          },
+          "suggestion": {
+            "$ref": "#/components/schemas/SuggestionOut"
+          }
+        },
+        "type": "object",
+        "required": [
+          "methods",
+          "results",
+          "unverified",
+          "suggestion"
+        ],
+        "title": "DraftOut"
+      },
       "DuplicatePairOut": {
         "properties": {
           "id": {
@@ -15610,6 +15933,60 @@
           "individual_allowed"
         ],
         "title": "ExportStatus"
+      },
+      "ExtractIn": {
+        "properties": {
+          "pdf_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Pdf Id"
+          },
+          "request": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 3,
+            "title": "Request"
+          }
+        },
+        "type": "object",
+        "required": [
+          "pdf_id",
+          "request"
+        ],
+        "title": "ExtractIn"
+      },
+      "ExtractOut": {
+        "properties": {
+          "suggestions": {
+            "items": {
+              "$ref": "#/components/schemas/SuggestionOut"
+            },
+            "type": "array",
+            "title": "Suggestions"
+          },
+          "discarded": {
+            "type": "integer",
+            "title": "Discarded"
+          },
+          "dispersion_warning": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dispersion Warning"
+          }
+        },
+        "type": "object",
+        "required": [
+          "suggestions",
+          "discarded",
+          "dispersion_warning"
+        ],
+        "title": "ExtractOut"
       },
       "ExtractionDetail": {
         "properties": {
@@ -21556,6 +21933,73 @@
         ],
         "title": "RobFormat"
       },
+      "RobHintIn": {
+        "properties": {
+          "pdf_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Pdf Id"
+          },
+          "question": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 5,
+            "title": "Question"
+          },
+          "options": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 10,
+            "minItems": 2,
+            "title": "Options"
+          }
+        },
+        "type": "object",
+        "required": [
+          "pdf_id",
+          "question",
+          "options"
+        ],
+        "title": "RobHintIn"
+      },
+      "RobHintOut": {
+        "properties": {
+          "suggestion": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SuggestionOut"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "discarded": {
+            "type": "boolean",
+            "title": "Discarded"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "suggestion",
+          "discarded",
+          "reason"
+        ],
+        "title": "RobHintOut"
+      },
       "RobItemOut": {
         "properties": {
           "key": {
@@ -23073,6 +23517,31 @@
         ],
         "title": "SearchDetail"
       },
+      "SearchHelpOut": {
+        "properties": {
+          "suggestion": {
+            "$ref": "#/components/schemas/SuggestionOut"
+          },
+          "concepts": {
+            "items": {
+              "$ref": "#/components/schemas/Concept"
+            },
+            "type": "array",
+            "title": "Concepts"
+          },
+          "pubmed": {
+            "type": "string",
+            "title": "Pubmed"
+          }
+        },
+        "type": "object",
+        "required": [
+          "suggestion",
+          "concepts",
+          "pubmed"
+        ],
+        "title": "SearchHelpOut"
+      },
       "SearchHit": {
         "properties": {
           "page": {
@@ -24465,6 +24934,11 @@
             ],
             "title": "Question"
           },
+          "payload": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payload"
+          },
           "quote": {
             "anyOf": [
               {
@@ -24519,6 +24993,7 @@
           "task",
           "target_id",
           "question",
+          "payload",
           "quote",
           "page",
           "quote_verified",

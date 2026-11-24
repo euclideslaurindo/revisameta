@@ -17,7 +17,7 @@ import re
 import uuid
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 from sqlalchemy import select
@@ -61,6 +61,7 @@ class SuggestionOut(BaseModel):
     task: str
     target_id: uuid.UUID
     question: str | None
+    payload: dict[str, Any]  # what was suggested (e.g. field and value), never data
     quote: str | None
     page: int | None
     quote_verified: bool
@@ -112,6 +113,7 @@ def out(s: AISuggestion) -> SuggestionOut:
         task=s.task,
         target_id=s.target_id,
         question=(s.payload or {}).get("question"),
+        payload=dict(s.payload or {}),
         quote=s.quote,
         page=s.page,
         quote_verified=s.quote_verified,

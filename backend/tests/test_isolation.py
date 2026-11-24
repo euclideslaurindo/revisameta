@@ -188,6 +188,18 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
     ),
     ("GET", "/api/v1/projects/{project_id}/ai/suggestions?target_id={pdf_id}", None),
     ("GET", "/api/v1/projects/{project_id}/ai/metrics", None),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/ai/extract",
+        {"pdf_id": "{pdf_id}", "request": "média"},
+    ),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/ai/rob-hint",
+        {"pdf_id": "{pdf_id}", "question": "Houve cegamento?", "options": ["Y", "N"]},
+    ),
+    ("POST", "/api/v1/projects/{project_id}/ai/search-help", None),
+    ("POST", "/api/v1/projects/{project_id}/ai/draft", {}),
     ("GET", "/api/v1/projects/{project_id}/ai/statement.docx", None),
     (
         "PUT",

@@ -14,11 +14,15 @@ import { FormError } from '../../shared/form-error';
   template: `
     <mat-card class="auth-card">
       <mat-card-header>
-        <mat-card-title><h1>{{ 'verify.title' | transloco }}</h1></mat-card-title>
+        <mat-card-title
+          ><h1>{{ 'verify.title' | transloco }}</h1></mat-card-title
+        >
       </mat-card-header>
       <mat-card-content>
         @if (!token()) {
-          <div class="notice notice-error" role="alert">{{ 'verify.missingToken' | transloco }}</div>
+          <div class="notice notice-error" role="alert">
+            {{ 'verify.missingToken' | transloco }}
+          </div>
         } @else if (error()) {
           <rm-form-error [error]="error()" />
         } @else {

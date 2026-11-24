@@ -10,7 +10,7 @@ from app.db.session import get_session
 from app.integrations.ai import AIProvider, get_ai_provider
 from app.integrations.ai.base import AIUnavailableError
 from app.integrations.stats_client import StatsClient, get_stats_client
-from app.modules.ai import locate, metrics, settings, tutor
+from app.modules.ai import assist, locate, metrics, settings, tutor
 from app.modules.projects.access import ProjectContext, member_access
 
 router = APIRouter(prefix="/projects/{project_id}/ai", tags=["ai"])
@@ -113,3 +113,46 @@ async def ai_statement(
     disposition = f"attachment; filename=\"{name}\"; filename*=UTF-8''{quote(name)}"
     media = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
     return Response(content=content, media_type=media, headers={"Content-Disposition": disposition})
+
+
+@router.post("/extract")
+async def suggest_extraction(
+    body: assist.ExtractIn,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> assist.ExtractOut:
+    """IA3: values printed in the PDF, each with its verified quote. Never fills a form."""
+    await settings.require(session, ctx, "extract")
+    return await assist.extract(session, ctx, _provider(), body)
+
+
+@router.post("/rob-hint")
+async def rob_second_opinion(
+    body: assist.RobHintIn,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+) -> assist.RobHintOut:
+    """IA4: suggested answer to a signalling question with the passage that supports it."""
+    await settings.require(session, ctx, "rob")
+    return await assist.rob_hint(session, ctx, _provider(), body)
+
+
+@router.post("/search-help")
+async def search_strategy_help(
+    ctx: ProjectContext = Depends(member_access), session: AsyncSession = Depends(get_session)
+) -> assist.SearchHelpOut:
+    """IA5: MeSH/DeCS terms and a PubMed query from the protocol, to review before use."""
+    await settings.require(session, ctx, "search")
+    return await assist.search_help(session, ctx, _provider())
+
+
+@router.post("/draft")
+async def draft_methods_results(
+    body: assist.DraftIn,
+    ctx: ProjectContext = Depends(member_access),
+    session: AsyncSession = Depends(get_session),
+    stats: StatsClient = Depends(get_stats_client),
+) -> assist.DraftOut:
+    """IA6: draft of Methods and Results; numbers inserted by the system."""
+    await settings.require(session, ctx, "draft")
+    return await assist.draft(session, ctx, stats, _provider(), body)

@@ -16,7 +16,17 @@ import { Preview } from '../../core/api/models/preview';
 import { FormError } from '../../shared/form-error';
 import { ProjectContext } from '../project/project-context';
 
-const FIELDS = ['label', 'title', 'authors', 'year', 'doi', 'pmid', 'journal', 'design', 'notes'] as const;
+const FIELDS = [
+  'label',
+  'title',
+  'authors',
+  'year',
+  'doi',
+  'pmid',
+  'journal',
+  'design',
+  'notes',
+] as const;
 type Field = (typeof FIELDS)[number];
 
 @Component({
@@ -39,7 +49,11 @@ type Field = (typeof FIELDS)[number];
     <rm-form-error [error]="error()" />
 
     <mat-card class="block">
-      <mat-card-header><mat-card-title><h3>1. {{ 'import.step.file' | transloco }}</h3></mat-card-title></mat-card-header>
+      <mat-card-header
+        ><mat-card-title
+          ><h3>1. {{ 'import.step.file' | transloco }}</h3></mat-card-title
+        ></mat-card-header
+      >
       <mat-card-content>
         <label class="file-input">
           <span class="sr-only">{{ 'import.step.file' | transloco }}</span>
@@ -53,7 +67,11 @@ type Field = (typeof FIELDS)[number];
 
     @if (preview(); as p) {
       <mat-card class="block">
-        <mat-card-header><mat-card-title><h3>2. {{ 'import.step.mapping' | transloco }}</h3></mat-card-title></mat-card-header>
+        <mat-card-header
+          ><mat-card-title
+            ><h3>2. {{ 'import.step.mapping' | transloco }}</h3></mat-card-title
+          ></mat-card-header
+        >
         <mat-card-content>
           <p class="muted">{{ 'import.mappingHint' | transloco }}</p>
           <div class="mapping-grid">
@@ -74,16 +92,31 @@ type Field = (typeof FIELDS)[number];
           <h4>{{ 'import.sample' | transloco }}</h4>
           <div class="table-scroll">
             <table class="sample">
-              <thead><tr>@for (column of p.columns; track column) { <th>{{ column }}</th> }</tr></thead>
+              <thead>
+                <tr>
+                  @for (column of p.columns; track column) {
+                    <th>{{ column }}</th>
+                  }
+                </tr>
+              </thead>
               <tbody>
                 @for (row of p.sample; track $index) {
-                  <tr>@for (cell of row; track $index) { <td>{{ cell }}</td> }</tr>
+                  <tr>
+                    @for (cell of row; track $index) {
+                      <td>{{ cell }}</td>
+                    }
+                  </tr>
                 }
               </tbody>
             </table>
           </div>
           <div class="actions">
-            <button mat-flat-button type="button" [disabled]="!mapping.title || busy()" (click)="check()">
+            <button
+              mat-flat-button
+              type="button"
+              [disabled]="!mapping.title || busy()"
+              (click)="check()"
+            >
               {{ 'import.check' | transloco }}
             </button>
           </div>
@@ -93,15 +126,23 @@ type Field = (typeof FIELDS)[number];
 
     @if (report(); as r) {
       <mat-card class="block">
-        <mat-card-header><mat-card-title><h3>3. {{ 'import.step.review' | transloco }}</h3></mat-card-title></mat-card-header>
+        <mat-card-header
+          ><mat-card-title
+            ><h3>3. {{ 'import.step.review' | transloco }}</h3></mat-card-title
+          ></mat-card-header
+        >
         <mat-card-content>
           @if (!r.dry_run) {
-            <div class="notice notice-ok" role="status">{{ 'import.done' | transloco: { created: r.created } }}</div>
+            <div class="notice notice-ok" role="status">
+              {{ 'import.done' | transloco: { created: r.created } }}
+            </div>
           } @else {
             <p>{{ 'import.summary' | transloco: { valid: r.valid_rows, total: r.total_rows } }}</p>
           }
           @if (r.errors.length) {
-            <div class="notice notice-warn" role="status">{{ 'import.errorsIntro' | transloco: { count: r.errors.length } }}</div>
+            <div class="notice notice-warn" role="status">
+              {{ 'import.errorsIntro' | transloco: { count: r.errors.length } }}
+            </div>
             <table mat-table [dataSource]="r.errors" class="full-table">
               <ng-container matColumnDef="row">
                 <th mat-header-cell *matHeaderCellDef>{{ 'import.row' | transloco }}</th>
@@ -109,7 +150,9 @@ type Field = (typeof FIELDS)[number];
               </ng-container>
               <ng-container matColumnDef="field">
                 <th mat-header-cell *matHeaderCellDef>{{ 'import.field' | transloco }}</th>
-                <td mat-cell *matCellDef="let e">{{ e.field ? ('import.fields.' + e.field | transloco) : '' }}</td>
+                <td mat-cell *matCellDef="let e">
+                  {{ e.field ? ('import.fields.' + e.field | transloco) : '' }}
+                </td>
               </ng-container>
               <ng-container matColumnDef="problem">
                 <th mat-header-cell *matHeaderCellDef>{{ 'import.problem' | transloco }}</th>

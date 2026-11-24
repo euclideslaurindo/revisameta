@@ -352,3 +352,20 @@ Digitalizador de gráficos, OCR, meta-regressão, modelos multinível, apoio ao 
 - Na aba "Configurações": tabela de precisão por função e download da **declaração de uso de IA** para o manuscrito (DOCX, pt/en), com funções usadas, provedor, modelo, versões de prompt, sugestões avaliadas e taxa de acerto, e a frase de que nada virou dado sem confirmação humana.
 - O uso do tutor fica registrado em `ai_suggestions` (sem o texto da resposta), só para a declaração saber que ele foi usado.
 
+**Etapa 7, segunda parte — IA3 a IA6 (feito):**
+- **IA3, extração assistida** (tela do PDF): a IA aponta valores impressos, cada um com trecho e página. O trecho precisa existir no PDF **e** o número precisa estar dentro do próprio trecho; senão, a sugestão é descartada. Avisa quando a legenda indica EP em vez de DP. A IA nunca preenche o formulário: a pessoa confere a página e digita o valor, e marca "conferi e usei" ou "estava errado".
+- **IA4, segunda opinião em risco de viés** (tela do PDF): para a pergunta sinalizadora colada pela pessoa, sugere uma das respostas permitidas com o trecho que a justifica, conferido no PDF. Resposta fora das opções ou trecho inexistente é descartado. Sem julgamento geral.
+- **IA5, estratégia de busca** (aba Buscas): a partir da pergunta e do PICO, sugere MeSH, DeCS, sinônimos e uma busca para o PubMed, com aviso para conferir cada descritor; o sistema não roda a busca.
+- **IA6, rascunho de Métodos e Resultados** (aba Exportar): escrito com marcadores; as contagens do PRISMA (e, pela API, os números de uma análise do R) entram pelo sistema; número escrito pela IA aparece como não verificado; lacunas ficam entre colchetes para o grupo.
+- **Novo aviso de uso de dados (versão 2026-11-24):** passa a dizer que a ajuda com a busca envia a pergunta e o PICO, e que o rascunho envia as contagens do PRISMA. Projetos que aceitaram a versão anterior precisam aceitar de novo.
+- Todas as sugestões ficam em `ai_suggestions` e entram nas métricas de precisão e na declaração de uso de IA.
+
+**Etapa 7 — implementação concluída em 2026-11-24.**
+- **Critério de saída:** nenhuma sugestão de IA vira dado final sem confirmação humana (a IA não escreve em formulários; tudo é sugestão marcada); citações inexistentes são descartadas (`test_ai_locate.py`, `test_ai_assist.py`); a precisão aparece contra a decisão das pessoas (`test_ai_metrics.py`).
+- **Pendência:** testar com uma chave real do Gemini (criada pelo responsável) e com artigos reais do grupo. Comparar a precisão da extração com o consenso da dupla extração, quando houver dados reais.
+- Bateria completa no fim da etapa: 848 testes do backend (cobertura 93,7%), lint e tipos; 10 testes de interface (Playwright).
+
+**Etapa 8 — decisões aprovadas (2026-11-24):**
+- **Plano em 7 passos:** (1) meta-regressão (rma com moderadores); (2) modelos multinível (rma.mv) para vários desfechos/momentos do mesmo estudo; (3) OCR de PDF escaneado (ocrmypdf + Tesseract no worker); (4) digitalizador de gráficos (calibrar eixos, clicar nos pontos, valores marcados como "digitalizados"); (5) apoio ao resumo: checklist PRISMA para Resumos (resumos próprios + link), rascunho estruturado com números do sistema e contador de palavras/caracteres com limite configurável; (6) rascunho de Métodos/Resultados sem IA, em DOCX; (7) 2FA opcional (TOTP, pyotp) com códigos de recuperação.
+- **Meta-regressão:** com menos de 10 estudos por moderador, roda com aviso forte de resultado instável (Cochrane Handbook); com menos de 3 estudos, não roda.
+

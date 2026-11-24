@@ -4,6 +4,6 @@
 export interface AiSettingsIn {
   accept_notice_version?: (string | null);
   enabled: boolean;
-  functions?: Array<'tutor' | 'locate'>;
+  functions?: Array<'tutor' | 'locate' | 'extract' | 'rob' | 'search' | 'draft'>;
   version?: (number | null);
 }

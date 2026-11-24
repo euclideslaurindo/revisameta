@@ -23,8 +23,8 @@ from app.modules.ai.notice import NOTICE, VERSION
 from app.modules.auth.models import User
 from app.modules.projects.access import ProjectContext
 
-Function = Literal["tutor", "locate"]
-FUNCTIONS: list[str] = ["tutor", "locate"]
+Function = Literal["tutor", "locate", "extract", "rob", "search", "draft"]
+FUNCTIONS: list[str] = ["tutor", "locate", "extract", "rob", "search", "draft"]
 
 
 class AISettingsOut(BaseModel):
@@ -42,7 +42,7 @@ class AISettingsOut(BaseModel):
 
 
 def _all_functions() -> list[Function]:
-    return ["tutor", "locate"]
+    return ["tutor", "locate", "extract", "rob", "search", "draft"]
 
 
 class AISettingsIn(BaseModel):

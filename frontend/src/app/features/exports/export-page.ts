@@ -25,6 +25,8 @@ import { BibliographyCard } from './bibliography-card';
  * out are listed and must be acknowledged; the individual (pre-consensus)
  * extractions are the alternative for admins.
  */
+import { AiDraftCard } from './ai-draft-card';
+
 @Component({
   selector: 'rm-export-page',
   imports: [
@@ -37,6 +39,7 @@ import { BibliographyCard } from './bibliography-card';
     FormError,
     BibliographyCard,
     BackupCard,
+    AiDraftCard,
   ],
   template: `
     <p class="muted">{{ 'export.intro' | transloco }}</p>
@@ -113,6 +116,7 @@ import { BibliographyCard } from './bibliography-card';
     }
     <rm-bibliography-card />
     <rm-backup-card />
+    <rm-ai-draft-card />
   `,
 })
 export class ExportPage implements OnInit {

@@ -44,7 +44,9 @@ import { STUDY_DESIGNS } from './designs';
         <div class="actions">
           <a mat-stroked-button routerLink="importar">{{ 'studies.import' | transloco }}</a>
           @if (!creating()) {
-            <button mat-flat-button type="button" (click)="creating.set(true)">{{ 'studies.new' | transloco }}</button>
+            <button mat-flat-button type="button" (click)="creating.set(true)">
+              {{ 'studies.new' | transloco }}
+            </button>
           }
         </div>
       }
@@ -53,7 +55,9 @@ import { STUDY_DESIGNS } from './designs';
     @if (creating()) {
       <mat-card class="block">
         <mat-card-header>
-          <mat-card-title><h2>{{ 'studies.new' | transloco }}</h2></mat-card-title>
+          <mat-card-title
+            ><h2>{{ 'studies.new' | transloco }}</h2></mat-card-title
+          >
         </mat-card-header>
         <mat-card-content>
           <form [formGroup]="form" (ngSubmit)="create()" class="stack">
@@ -92,8 +96,12 @@ import { STUDY_DESIGNS } from './designs';
             </div>
             <rm-form-error [error]="error()" />
             <div class="actions">
-              <button mat-button type="button" (click)="creating.set(false)">{{ 'common.cancel' | transloco }}</button>
-              <button mat-flat-button type="submit" [disabled]="busy()">{{ 'studies.create' | transloco }}</button>
+              <button mat-button type="button" (click)="creating.set(false)">
+                {{ 'common.cancel' | transloco }}
+              </button>
+              <button mat-flat-button type="submit" [disabled]="busy()">
+                {{ 'studies.create' | transloco }}
+              </button>
             </div>
           </form>
         </mat-card-content>
@@ -106,7 +114,9 @@ import { STUDY_DESIGNS } from './designs';
       <table mat-table [dataSource]="studies()" class="full-table">
         <ng-container matColumnDef="label">
           <th mat-header-cell *matHeaderCellDef>{{ 'studies.label' | transloco }}</th>
-          <td mat-cell *matCellDef="let study"><a [routerLink]="study.id">{{ study.label }}</a></td>
+          <td mat-cell *matCellDef="let study">
+            <a [routerLink]="study.id">{{ study.label }}</a>
+          </td>
         </ng-container>
         <ng-container matColumnDef="design">
           <th mat-header-cell *matHeaderCellDef>{{ 'studies.design' | transloco }}</th>
@@ -155,7 +165,9 @@ export class StudiesPage implements OnInit {
   }
 
   private async reload(): Promise<void> {
-    this.studies.set(await this.api.invoke(listStudies, { project_id: this.context.project()!.id }));
+    this.studies.set(
+      await this.api.invoke(listStudies, { project_id: this.context.project()!.id }),
+    );
   }
 
   protected primaryTitle(study: StudyOut): string {

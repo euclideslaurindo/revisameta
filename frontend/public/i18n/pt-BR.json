@@ -1665,7 +1665,11 @@
       "functions": "Funções liberadas",
       "fn": {
         "tutor": "Tutor: explica conceitos e os resultados do projeto",
-        "locate": "Localizador de trechos no PDF"
+        "locate": "Localizador de trechos no PDF",
+        "extract": "Extração assistida: aponta valores impressos no PDF",
+        "rob": "Segunda opinião em risco de viés",
+        "search": "Ajuda na estratégia de busca (MeSH/DeCS)",
+        "draft": "Rascunho de Métodos e Resultados"
       },
       "turnOn": "Ligar a IA",
       "turnOff": "Desligar a IA",
@@ -1707,6 +1711,44 @@
       "accepted": "Marcado como útil",
       "rejected": "Marcado como não útil",
       "corrected": "Corrigido"
+    }
+  },
+  "assist": {
+    "discarded": "{{n}} sugestão(ões) descartada(s): o trecho não existe no PDF ou o número não aparece no trecho.",
+    "extract": {
+      "title": "Sugerir valores para extrair",
+      "intro": "A IA aponta números impressos no artigo, cada um com o trecho e a página, conferidos pelo sistema. Ela nunca preenche o formulário: confira a página e digite o valor você mesmo.",
+      "request": "O que extrair (ex.: média e DP do QI no grupo < 5 anos)",
+      "ask": "Sugerir valores",
+      "dispersion": "Atenção à dispersão (DP ou EP?):",
+      "used": "Conferi e usei",
+      "wrong": "Estava errado"
+    },
+    "rob": {
+      "title": "Segunda opinião em risco de viés",
+      "intro": "Cole a pergunta sinalizadora. A IA sugere uma resposta com o trecho que a justifica, conferido no PDF. O julgamento é seu.",
+      "question": "Pergunta sinalizadora",
+      "ask": "Pedir segunda opinião",
+      "discarded": "A sugestão foi descartada: o trecho citado não existe no PDF ou a resposta não é uma das opções."
+    },
+    "search": {
+      "title": "Ajuda na estratégia de busca",
+      "intro": "A partir da pergunta e do PICO do protocolo, a IA sugere descritores MeSH e DeCS, sinônimos e uma busca para o PubMed. Revise com cuidado (de preferência com um bibliotecário) antes de rodar.",
+      "ask": "Sugerir estratégia",
+      "concept": "Conceito",
+      "free": "Texto livre",
+      "review": "Confira se cada descritor existe no MeSH/DeCS e ajuste antes de usar. A busca não é rodada pelo sistema.",
+      "useful": "Foi útil",
+      "notUseful": "Não foi útil"
+    },
+    "draft": {
+      "title": "Rascunho de Métodos e Resultados",
+      "intro": "A IA redige um rascunho; os números entram pelo sistema (contagens do PRISMA). Trechos entre colchetes são lembretes para o grupo completar.",
+      "lang": "Idioma",
+      "ask": "Gerar rascunho",
+      "methods": "Métodos",
+      "results": "Resultados",
+      "edit": "Copie para o manuscrito e edite. O texto é um ponto de partida, não uma versão final."
     }
   }
 }

@@ -34,7 +34,9 @@ import { Turnstile } from '../../shared/turnstile';
     @if (sentTo(); as email) {
       <mat-card class="auth-card">
         <mat-card-header>
-          <mat-card-title><h1>{{ 'register.doneTitle' | transloco }}</h1></mat-card-title>
+          <mat-card-title
+            ><h1>{{ 'register.doneTitle' | transloco }}</h1></mat-card-title
+          >
         </mat-card-header>
         <mat-card-content>
           <p>{{ 'register.doneText' | transloco: { email } }}</p>
@@ -49,7 +51,9 @@ import { Turnstile } from '../../shared/turnstile';
     } @else {
       <mat-card class="auth-card">
         <mat-card-header>
-          <mat-card-title><h1>{{ 'register.title' | transloco }}</h1></mat-card-title>
+          <mat-card-title
+            ><h1>{{ 'register.title' | transloco }}</h1></mat-card-title
+          >
         </mat-card-header>
         <mat-card-content>
           <form [formGroup]="form" (ngSubmit)="submit()" class="stack">
@@ -63,14 +67,25 @@ import { Turnstile } from '../../shared/turnstile';
             </mat-form-field>
             <mat-form-field>
               <mat-label>{{ 'common.password' | transloco }}</mat-label>
-              <input matInput type="password" formControlName="password" autocomplete="new-password" />
+              <input
+                matInput
+                type="password"
+                formControlName="password"
+                autocomplete="new-password"
+              />
               <mat-hint>{{ 'register.passwordHint' | transloco }}</mat-hint>
             </mat-form-field>
 
-            <mat-checkbox formControlName="acceptTerms">{{ 'register.acceptTerms' | transloco }}</mat-checkbox>
+            <mat-checkbox formControlName="acceptTerms">{{
+              'register.acceptTerms' | transloco
+            }}</mat-checkbox>
 
             @if (config.captchaSiteKey(); as key) {
-              <rm-turnstile [siteKey]="key" [language]="language.current()" (token)="captcha.set($event)" />
+              <rm-turnstile
+                [siteKey]="key"
+                [language]="language.current()"
+                (token)="captcha.set($event)"
+              />
             }
 
             <rm-form-error [error]="error()" />

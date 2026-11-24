@@ -30,11 +30,15 @@ import { Turnstile } from '../../shared/turnstile';
   template: `
     <mat-card class="auth-card">
       <mat-card-header>
-        <mat-card-title><h1>{{ 'login.title' | transloco }}</h1></mat-card-title>
+        <mat-card-title
+          ><h1>{{ 'login.title' | transloco }}</h1></mat-card-title
+        >
       </mat-card-header>
       <mat-card-content>
         @if (sessao() === 'expirada') {
-          <div class="notice notice-warn" role="status">{{ 'login.sessionExpired' | transloco }}</div>
+          <div class="notice notice-warn" role="status">
+            {{ 'login.sessionExpired' | transloco }}
+          </div>
         }
         @if (verificado()) {
           <div class="notice notice-ok" role="status">{{ 'login.verified' | transloco }}</div>
@@ -46,11 +50,20 @@ import { Turnstile } from '../../shared/turnstile';
           </mat-form-field>
           <mat-form-field>
             <mat-label>{{ 'common.password' | transloco }}</mat-label>
-            <input matInput type="password" formControlName="password" autocomplete="current-password" />
+            <input
+              matInput
+              type="password"
+              formControlName="password"
+              autocomplete="current-password"
+            />
           </mat-form-field>
 
           @if (needsCaptcha() && config.captchaSiteKey(); as key) {
-            <rm-turnstile [siteKey]="key" [language]="language.current()" (token)="captcha.set($event)" />
+            <rm-turnstile
+              [siteKey]="key"
+              [language]="language.current()"
+              (token)="captcha.set($event)"
+            />
           }
 
           <rm-form-error [error]="error()" />

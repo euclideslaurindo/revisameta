@@ -131,7 +131,14 @@ export class SettingsPage implements OnInit {
   private readonly transloco = inject(TranslocoService);
   private readonly context = inject(ProjectContext);
 
-  protected readonly allFunctions = ['tutor', 'locate'] as const;
+  protected readonly allFunctions = [
+    'tutor',
+    'locate',
+    'extract',
+    'rob',
+    'search',
+    'draft',
+  ] as const;
   protected readonly data = signal<AiSettingsOut | null>(null);
   protected readonly chosen = signal(new Set<string>());
   protected readonly busy = signal(false);
@@ -181,7 +188,9 @@ export class SettingsPage implements OnInit {
         project_id: this.projectId(),
         body: {
           enabled,
-          functions: [...this.chosen()] as ('tutor' | 'locate')[],
+          functions: [...this.chosen()] as (
+            'tutor' | 'locate' | 'extract' | 'rob' | 'search' | 'draft'
+          )[],
           accept_notice_version: enabled && !d.enabled ? d.notice_version : null,
           version: d.version ?? null,
         },

@@ -16,13 +16,17 @@ import { FormError } from '../../shared/form-error';
   template: `
     <mat-card class="auth-card">
       <mat-card-header>
-        <mat-card-title><h1>{{ 'invitation.title' | transloco }}</h1></mat-card-title>
+        <mat-card-title
+          ><h1>{{ 'invitation.title' | transloco }}</h1></mat-card-title
+        >
       </mat-card-header>
       <mat-card-content>
         @if (error()) {
           <rm-form-error [error]="error()" />
         } @else if (preview(); as p) {
-          <p>{{ 'invitation.text' | transloco: { project: p.project_title, roles: roleNames(p) } }}</p>
+          <p>
+            {{ 'invitation.text' | transloco: { project: p.project_title, roles: roleNames(p) } }}
+          </p>
           <button mat-flat-button type="button" [disabled]="busy()" (click)="accept()">
             {{ 'invitation.accept' | transloco }}
           </button>

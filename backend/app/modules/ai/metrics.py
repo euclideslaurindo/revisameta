@@ -1,4 +1,3 @@
-
 """Measured accuracy of the AI against people (docs/ia.md 7.15.4; stage 7 step 6).
 
 For every task, the latest suggestions that a person decided (accepted, corrected or
@@ -146,6 +145,10 @@ TEXTS: dict[str, dict[str, Any]] = {
         "task": {
             "tutor": "Tutor (explicação de conceitos e resultados)",
             "locate": "Localizador de trechos nos PDFs",
+            "extract": "Extração assistida (valores com citação conferida)",
+            "rob": "Segunda opinião em risco de viés",
+            "search": "Ajuda na estratégia de busca",
+            "draft": "Rascunho de Métodos e Resultados",
         },
         "unused": "Nenhuma função de IA foi usada neste projeto.",
         "line": (
@@ -169,6 +172,10 @@ TEXTS: dict[str, dict[str, Any]] = {
         "task": {
             "tutor": "Tutor (explaining concepts and results)",
             "locate": "Passage finder in the PDFs",
+            "extract": "Assisted extraction (values with checked quotes)",
+            "rob": "Risk of bias second opinion",
+            "search": "Search strategy help",
+            "draft": "Draft of Methods and Results",
         },
         "unused": "No AI feature was used in this project.",
         "line": (

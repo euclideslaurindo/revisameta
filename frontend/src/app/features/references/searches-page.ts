@@ -29,6 +29,8 @@ import { ProjectContext } from '../project/project-context';
  * Searches (docs/modulos.md 7.2, stage 5 step 1): import a database export with the
  * date and the strategy, follow the progress, see which records could not be read.
  */
+import { AiSearchHelp } from './ai-search-help';
+
 @Component({
   selector: 'rm-searches-page',
   imports: [
@@ -44,8 +46,10 @@ import { ProjectContext } from '../project/project-context';
     MatTooltipModule,
     FormError,
     LocalDatePipe,
+    AiSearchHelp,
   ],
   template: `
+    <rm-ai-search-help />
     <h2>{{ 'searches.title' | transloco }}</h2>
     <p class="muted">{{ 'searches.intro' | transloco }}</p>
     @if (searches().length) {

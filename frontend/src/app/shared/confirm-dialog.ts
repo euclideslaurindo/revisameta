@@ -17,7 +17,9 @@ export interface ConfirmData {
   template: `
     <mat-dialog-content>{{ data.message | transloco: data.params ?? {} }}</mat-dialog-content>
     <mat-dialog-actions align="end">
-      <button mat-button type="button" [mat-dialog-close]="false">{{ 'common.cancel' | transloco }}</button>
+      <button mat-button type="button" [mat-dialog-close]="false">
+        {{ 'common.cancel' | transloco }}
+      </button>
       <button mat-flat-button type="button" [mat-dialog-close]="true">
         {{ data.confirmLabel ?? 'common.confirm' | transloco }}
       </button>

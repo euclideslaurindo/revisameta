@@ -1665,7 +1665,11 @@
       "functions": "Allowed features",
       "fn": {
         "tutor": "Tutor: explains concepts and the project's results",
-        "locate": "PDF passage finder"
+        "locate": "PDF passage finder",
+        "extract": "Assisted extraction: points at values printed in the PDF",
+        "rob": "Risk of bias second opinion",
+        "search": "Search strategy help (MeSH/DeCS)",
+        "draft": "Draft of Methods and Results"
       },
       "turnOn": "Turn the AI on",
       "turnOff": "Turn the AI off",
@@ -1707,6 +1711,44 @@
       "accepted": "Marked as useful",
       "rejected": "Marked as not useful",
       "corrected": "Corrected"
+    }
+  },
+  "assist": {
+    "discarded": "{{n}} suggestion(s) discarded: the passage is not in the PDF or the number is not in the passage.",
+    "extract": {
+      "title": "Suggest values to extract",
+      "intro": "The AI points at numbers printed in the article, each with its passage and page, checked by the system. It never fills the form: check the page and type the value yourself.",
+      "request": "What to extract (e.g. mean and SD of IQ in the < 5 years group)",
+      "ask": "Suggest values",
+      "dispersion": "Watch the dispersion (SD or SE?):",
+      "used": "Checked and used",
+      "wrong": "It was wrong"
+    },
+    "rob": {
+      "title": "Risk of bias second opinion",
+      "intro": "Paste the signalling question. The AI suggests an answer with the passage that supports it, checked in the PDF. The judgement is yours.",
+      "question": "Signalling question",
+      "ask": "Ask for a second opinion",
+      "discarded": "The suggestion was discarded: the quoted passage is not in the PDF or the answer is not one of the options."
+    },
+    "search": {
+      "title": "Search strategy help",
+      "intro": "From the protocol question and PICO, the AI suggests MeSH and DeCS descriptors, synonyms and a PubMed query. Review carefully (ideally with a librarian) before running it.",
+      "ask": "Suggest strategy",
+      "concept": "Concept",
+      "free": "Free text",
+      "review": "Check that each descriptor exists in MeSH/DeCS and adjust before use. The system does not run the search.",
+      "useful": "Useful",
+      "notUseful": "Not useful"
+    },
+    "draft": {
+      "title": "Draft of Methods and Results",
+      "intro": "The AI writes a draft; numbers are inserted by the system (PRISMA counts). Bracketed notes are reminders for the group to complete.",
+      "lang": "Language",
+      "ask": "Create draft",
+      "methods": "Methods",
+      "results": "Results",
+      "edit": "Copy into the manuscript and edit. The text is a starting point, not a final version."
     }
   }
 }
