@@ -379,3 +379,12 @@ Digitalizador de gráficos, OCR, meta-regressão, modelos multinível, apoio ao 
 - Serviço R: `/multilevel` (`metafor::rma.mv`, `random = ~ 1 | study/effect`, REML ou ML, teste z ou t). Fixture gerada pelo metafor com o dataset público `dat.konstantopoulos2011` (56 efeitos em 11 grupos); testes no R com tolerância 1e-6.
 - Na tela de meta-análise: escolher dois ou mais momentos do desfecho. A mesma montagem (regras, conversões, alertas) roda para cada momento; cada estudo vira um grupo, então o mesmo estudo nunca conta como independente. Mostra efeito combinado, IC, variância entre e dentro dos estudos. Menos de 5 estudos: aviso de variâncias instáveis (regra que já valia para a heterogeneidade).
 
+**Etapa 8, passo 3 — OCR de PDF escaneado (feito):**
+- Quando o PDF não tem texto, o worker roda `ocrmypdf` (MPL-2.0) com Tesseract (Apache-2.0), em português e inglês, numa cópia; o texto reconhecido é guardado e o arquivo fica marcado como "texto reconhecido por OCR (pode ter erros de leitura)". O visualizador continua mostrando o PDF original.
+- Busca, localizador e sugestões de IA passam a funcionar em PDFs escaneados. Se o OCR estiver desligado (`OCR_ENABLED=false`), faltar no servidor, falhar ou passar de 10 minutos, o arquivo continua "sem texto", como antes.
+- Instalado pelo `apt` na imagem do backend/worker (sem dependência Python nova); a imagem fica maior. Teste: um PDF de texto vira imagem pelo Ghostscript (como um escaneado) e o OCR precisa ler as palavras de volta.
+
+**Etapa 8, passo 4 — digitalizador de gráficos (feito):**
+- Na tela de extração, "Ler valores de um gráfico": a pessoa escolhe a imagem da figura (fica só no navegador, nunca é enviada), clica em dois pontos conhecidos de cada eixo, digita seus valores (eixos lineares ou logarítmicos) e clica nos pontos de dados. A conversão é só geometria, testada em `digitizer-math.spec.ts`.
+- Cada linha de desfecho ganhou "Origem do número": artigo, contato com autores ou **lido de um gráfico (digitalizado)**. A tela avisa que valores de gráfico são aproximados e sugere análise de sensibilidade sem eles.
+

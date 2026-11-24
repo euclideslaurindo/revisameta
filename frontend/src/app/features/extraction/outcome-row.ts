@@ -270,6 +270,16 @@ const SAVE_DELAY_MS = 800;
         </div>
       }
       <div class="row">
+        <mat-form-field subscriptSizing="dynamic">
+          <mat-label>{{ 'extraction.data.source' | transloco }}</mat-label>
+          <mat-select [(ngModel)]="source" (ngModelChange)="changed()" [disabled]="!editable()">
+            @for (s of sources; track s) {
+              <mat-option [value]="s">{{
+                'extraction.data.sourceName.' + s | transloco
+              }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
         <mat-form-field subscriptSizing="dynamic" class="wide">
           <mat-label>{{ 'extraction.data.sourceLocation' | transloco }}</mat-label>
           <input
@@ -330,6 +340,8 @@ export class OutcomeRow implements OnInit, OnDestroy {
   protected dispersionType: DispersionType | null = null;
   protected dispersionSource = '';
   protected sourceLocation = '';
+  protected source: 'article' | 'author' | 'digitizer' = 'article';
+  protected readonly sources = ['article', 'author', 'digitizer'] as const;
   protected annotationId: string | null = null;
   protected readonly measures = MEASURES;
   protected readonly effectNumbers = EFFECT_NUMBERS;
@@ -377,6 +389,7 @@ export class OutcomeRow implements OnInit, OnDestroy {
     this.dispersionTypeSignal.set(this.dispersionType);
     this.dispersionSource = row.dispersion_source ?? '';
     this.sourceLocation = row.source_location ?? '';
+    this.source = row.source === 'author' || row.source === 'digitizer' ? row.source : 'article';
     this.annotationId = row.annotation_id ?? null;
     const effect = row.effect_reported;
     if (effect) {
@@ -469,6 +482,7 @@ export class OutcomeRow implements OnInit, OnDestroy {
       adjusted: this.adjusted,
       adjusted_for: this.adjusted ? this.adjustedFor || null : null,
       source_location: this.sourceLocation || null,
+      source: this.source,
       annotation_id: this.annotationId,
     };
   }

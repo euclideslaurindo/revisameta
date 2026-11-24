@@ -2,12 +2,16 @@
 
 The object is streamed from storage to a temporary file (never held whole in memory),
 parsed in a thread, and one row per page is stored. PDFs without a text layer
-(scanned) are marked `no_text`; OCR is a later stage.
+(scanned) go through OCR (ocrmypdf + Tesseract, stage 8): the text of the OCR copy is
+stored and the file is marked `ocr`, while the viewer keeps showing the original. When
+OCR is off, missing or fails, the file stays `no_text`.
 """
 
 import asyncio
+import contextlib
 import logging
 import os
+import shutil
 import tempfile
 import unicodedata
 import uuid
@@ -17,6 +21,7 @@ import pypdfium2 as pdfium
 from sqlalchemy import delete
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
+from app.core.config import get_settings
 from app.integrations.storage import Storage
 from app.modules.uploads.models import PdfPageText, StoredFile
 
@@ -29,6 +34,7 @@ class TextStatus:
     PENDING = "pending"
     READY = "ready"
     NO_TEXT = "no_text"
+    OCR = "ocr"  # text recognised from page images; may contain reading errors
     FAILED = "failed"
 
 
@@ -61,6 +67,43 @@ def read_pages(path: str) -> list[str]:
         document.close()
 
 
+def ocr_available() -> bool:
+    return get_settings().ocr_enabled and shutil.which("ocrmypdf") is not None
+
+
+async def ocr_pages(path: str) -> list[str] | None:
+    """Runs ocrmypdf on a copy and reads the text it added. None when off or failed."""
+    if not ocr_available():
+        return None
+    settings = get_settings()
+    out = f"{path}.ocr.pdf"
+    try:
+        process = await asyncio.create_subprocess_exec(
+            "ocrmypdf",
+            "--skip-text",
+            "--quiet",
+            "-l",
+            settings.ocr_languages,
+            path,
+            out,
+            stdout=asyncio.subprocess.DEVNULL,
+            stderr=asyncio.subprocess.PIPE,
+        )
+        try:
+            _, err = await asyncio.wait_for(process.communicate(), settings.ocr_timeout_seconds)
+        except TimeoutError:
+            process.kill()
+            logger.warning("pdf_ocr_timeout")
+            return None
+        if process.returncode != 0:
+            logger.warning("pdf_ocr_failed", extra={"extra_fields": {"error": err.decode()[-500:]}})
+            return None
+        return await asyncio.to_thread(read_pages, out)
+    finally:
+        with contextlib.suppress(FileNotFoundError):
+            os.unlink(out)
+
+
 async def extract_text(
     maker: async_sessionmaker[AsyncSession],
     storage: Storage,
@@ -81,6 +124,10 @@ async def extract_text(
         try:
             pages = await asyncio.to_thread(read_pages, path)
             status = TextStatus.READY if any(pages) else TextStatus.NO_TEXT
+            if status == TextStatus.NO_TEXT:
+                recognised = await ocr_pages(path)
+                if recognised is not None and any(recognised):
+                    pages, status = recognised, TextStatus.OCR
         except pdfium.PdfiumError as exc:
             logger.warning("pdf_text_failed", extra={"extra_fields": {"error": str(exc)}})
             pages, status = [], TextStatus.FAILED

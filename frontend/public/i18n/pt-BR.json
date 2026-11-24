@@ -270,7 +270,8 @@
       "pending": "Texto em processamento",
       "ready": "Texto pesquisável",
       "no_text": "Sem texto (parece escaneado)",
-      "failed": "Não foi possível ler o texto"
+      "failed": "Não foi possível ler o texto",
+      "ocr": "Texto reconhecido por OCR (pode ter erros de leitura; confira no PDF)"
     },
     "errors": {
       "notPdf": "Este arquivo não é um PDF de verdade, mesmo com a extensão .pdf. Envie o PDF original do artigo.",
@@ -402,6 +403,12 @@
         "adjustedFor": "Ajustada para quais variáveis?",
         "t_stat": "Estatística t",
         "p_value": "Valor p exato"
+      },
+      "source": "Origem do número",
+      "sourceName": {
+        "article": "Artigo",
+        "author": "Contato com autores",
+        "digitizer": "Lido de um gráfico (digitalizado)"
       }
     },
     "alert": {
@@ -1774,5 +1781,34 @@
       "results": "Resultados",
       "edit": "Copie para o manuscrito e edite. O texto é um ponto de partida, não uma versão final."
     }
+  },
+  "digitizer": {
+    "open": "Ler valores de um gráfico (digitalizador)",
+    "title": "Digitalizador de gráficos",
+    "intro": "Use quando o artigo só mostra o número num gráfico. A imagem fica no seu navegador e não é enviada. Clique em dois pontos conhecidos de cada eixo e digite seus valores; depois clique nos pontos de dados. Ao usar um valor, marque a origem como \"lido de um gráfico\".",
+    "pick": "Escolher imagem do gráfico (print da figura)",
+    "imageAlt": "Gráfico a digitalizar",
+    "step": {
+      "x1": "Clique no primeiro ponto conhecido do eixo X",
+      "x2": "Clique no segundo ponto conhecido do eixo X",
+      "y1": "Clique no primeiro ponto conhecido do eixo Y",
+      "y2": "Clique no segundo ponto conhecido do eixo Y",
+      "points": "Agora clique nos pontos de dados"
+    },
+    "value": {
+      "x1": "Valor de X1",
+      "x2": "Valor de X2",
+      "y1": "Valor de Y1",
+      "y2": "Valor de Y2"
+    },
+    "logX": "Eixo X logarítmico",
+    "logY": "Eixo Y logarítmico",
+    "undo": "Desfazer último clique",
+    "reset": "Recomeçar",
+    "error": {
+      "values": "Digite os valores dos quatro pontos de calibração.",
+      "axes": "Os dois pontos de cada eixo precisam ter valores diferentes (e positivos, se o eixo for logarítmico)."
+    },
+    "approximate": "Valores lidos de gráfico são aproximados. Prefira o número do texto ou de tabela quando existir, e considere uma análise de sensibilidade sem esses dados."
   }
 }

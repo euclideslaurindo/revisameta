@@ -69,6 +69,11 @@ class Settings(BaseSettings):
     ai_accuracy_window: int = 30
     ai_accuracy_min_decided: int = 10
 
+    # OCR of scanned PDFs in the worker (ocrmypdf + Tesseract; stage 8).
+    ocr_enabled: bool = True
+    ocr_languages: str = "por+eng"
+    ocr_timeout_seconds: int = 600
+
     turnstile_enabled: bool = False
     turnstile_site_key: str = ""
     turnstile_secret_key: str = ""

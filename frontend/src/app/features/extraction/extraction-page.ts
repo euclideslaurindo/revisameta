@@ -58,6 +58,8 @@ import { DirectionCheck } from './direction-check';
 
 const SAVE_DELAY_MS = 800;
 
+import { PlotDigitizer } from './plot-digitizer';
+
 @Component({
   selector: 'rm-extraction-page',
   imports: [
@@ -76,6 +78,7 @@ const SAVE_DELAY_MS = 800;
     OutcomeRow,
     AlertMessage,
     DirectionCheck,
+    PlotDigitizer,
   ],
   providers: [AutosaveState],
   template: `
@@ -393,6 +396,10 @@ const SAVE_DELAY_MS = 800;
     } @else {
       <rm-form-error [error]="error()" />
     }
+    <details class="block">
+      <summary>{{ 'digitizer.open' | transloco }}</summary>
+      <rm-plot-digitizer />
+    </details>
   `,
 })
 export class ExtractionPage {

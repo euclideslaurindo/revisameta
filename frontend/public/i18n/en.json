@@ -270,7 +270,8 @@
       "pending": "Text being processed",
       "ready": "Searchable text",
       "no_text": "No text (looks scanned)",
-      "failed": "Could not read the text"
+      "failed": "Could not read the text",
+      "ocr": "Text recognised by OCR (may contain reading errors; check the PDF)"
     },
     "errors": {
       "notPdf": "This file is not a real PDF, even with the .pdf extension. Send the article's original PDF.",
@@ -402,6 +403,12 @@
         "adjustedFor": "Adjusted for which variables?",
         "t_stat": "t statistic",
         "p_value": "Exact p value"
+      },
+      "source": "Source of the number",
+      "sourceName": {
+        "article": "Article",
+        "author": "Contact with authors",
+        "digitizer": "Read from a graph (digitized)"
       }
     },
     "alert": {
@@ -1774,5 +1781,34 @@
       "results": "Results",
       "edit": "Copy into the manuscript and edit. The text is a starting point, not a final version."
     }
+  },
+  "digitizer": {
+    "open": "Read values from a graph (digitizer)",
+    "title": "Graph digitizer",
+    "intro": "Use it when the article only shows the number in a graph. The image stays in your browser and is not uploaded. Click two known points on each axis and type their values; then click the data points. When you use a value, set its source to \"read from a graph\".",
+    "pick": "Choose the graph image (screenshot of the figure)",
+    "imageAlt": "Graph to digitize",
+    "step": {
+      "x1": "Click the first known point on the X axis",
+      "x2": "Click the second known point on the X axis",
+      "y1": "Click the first known point on the Y axis",
+      "y2": "Click the second known point on the Y axis",
+      "points": "Now click the data points"
+    },
+    "value": {
+      "x1": "X1 value",
+      "x2": "X2 value",
+      "y1": "Y1 value",
+      "y2": "Y2 value"
+    },
+    "logX": "Logarithmic X axis",
+    "logY": "Logarithmic Y axis",
+    "undo": "Undo last click",
+    "reset": "Start over",
+    "error": {
+      "values": "Type the values of the four calibration points.",
+      "axes": "The two points of each axis need different values (and positive ones on a log axis)."
+    },
+    "approximate": "Values read from a graph are approximate. Prefer the number in the text or a table when there is one, and consider a sensitivity analysis without these data."
   }
 }

@@ -3,6 +3,7 @@ COPY --from=ghcr.io/astral-sh/uv:0.13.8 /uv /usr/local/bin/uv
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends libmagic1 \
+        ocrmypdf tesseract-ocr tesseract-ocr-por tesseract-ocr-eng ghostscript \
     && rm -rf /var/lib/apt/lists/*
 
 ENV UV_COMPILE_BYTECODE=1 \
