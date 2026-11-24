@@ -58,6 +58,17 @@ class Settings(BaseSettings):
     smtp_from: str = "RevisaMeta <no-reply@revisameta.local>"
     smtp_tls: bool = False
 
+    # AI (docs/ia.md; stage 7). Off unless a provider is configured; tests use "fake".
+    ai_provider: Literal["none", "gemini", "fake"] = "none"
+    gemini_api_key: str = ""
+    ai_model: str = "gemini-2.5-flash"
+    ai_calls_per_user_day: int = 30
+    ai_calls_per_minute: int = 10
+    ai_calls_per_day: int = 200  # global ceiling; the free quota is per Google project
+    ai_min_accuracy: float = 0.8
+    ai_accuracy_window: int = 30
+    ai_accuracy_min_decided: int = 10
+
     turnstile_enabled: bool = False
     turnstile_site_key: str = ""
     turnstile_secret_key: str = ""

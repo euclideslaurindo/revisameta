@@ -307,3 +307,15 @@ Digitalizador de gráficos, OCR, meta-regressão, modelos multinível, apoio ao 
 - Primeiro achado: a tela do GRADE mostrava "I² = 99.0%" com ponto em português; corrigido para usar o formato de número do app.
 - **Ainda fora:** no fluxo mínimo de 11.3, o cadastro dos 4 estudos e a extração pela interface (o teste usa o projeto de demonstração já extraído), e a migração de uma tabela de RoB existente. Ficam para quando houver os dados reais do grupo.
 
+**Etapa 7 — decisões aprovadas (2026-11-23):**
+- **Plano (primeira parte):** (1) camada de provedores, com provedor falso nos testes e adaptador Gemini; (2) liga/desliga por projeto com aviso de uso de dados (pt/en) e aceite auditado; (3) fila com limite de taxa global, cota por usuário/dia e cache; (4) tutor IA1, que só explica números já calculados pelo R, com marcadores (`{{pooled_effect}}`) e sinalização de número inventado; (5) localizador de trechos IA2, com a citação conferida no texto do PDF e descartada se não existir; (6) métricas de precisão contra o consenso humano e desligamento automático. IA3 a IA6 ficam para a segunda parte.
+- **Limiares (padrão, configuráveis):** 30 chamadas por usuário por dia; 10 chamadas por minuto no sistema todo; função desligada no projeto se o acerto ficar abaixo de 80% nas últimas 30 sugestões decididas por pessoas (só a partir de 10).
+- **Provedor:** Gemini gratuito primeiro, com a chave criada depois pelo responsável no Google AI Studio (sem cartão). Sem chave, a IA fica indisponível e o resto funciona; os testes usam só o provedor falso.
+- **Termos conferidos em 2026-11-23** (ai.google.dev: rate-limits, pricing, billing): no plano gratuito, prompts e respostas podem ser usados para melhorar produtos do Google (por isso o aviso); as cotas valem por projeto do Google, não por chave, mudam sem aviso (há relatos de queda para 20 chamadas por dia) e zeram à meia-noite do Pacífico; desde 19/06/2026 só chaves restritas são aceitas. Por isso há também um teto diário global configurável, e o sistema trata "cota esgotada" como estado normal.
+
+**Etapa 7, passo 1 — camada de provedores (feito):**
+- `app/integrations/ai/`: interface única (`complete`, `complete_structured`, `embed`), provedor falso para testes e adaptador Gemini por REST (httpx, já usado no projeto; sem SDK do fornecedor, para manter a camada trocável).
+- A chave vai no cabeçalho, nunca na URL (não aparece em logs). Instruções do sistema separadas do conteúdo. Resposta fora do esquema é descartada (`AIInvalidOutputError`).
+- Cota esgotada (429) vira estado normal (`AIQuotaExceededError`); sem chave, a IA fica indisponível (`AIUnavailableError`) e o resto funciona.
+- Configuração em `.env` (`AI_PROVIDER=none` por padrão). Nenhum teste chama um provedor real.
+
