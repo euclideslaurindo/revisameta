@@ -24,6 +24,7 @@ import { withJsonBody } from '../../core/errors/problem';
 import { fileNameFrom, saveFile } from '../../shared/download';
 import { FormError } from '../../shared/form-error';
 import { ProjectContext } from '../project/project-context';
+import { formatNumber, formatP } from '../meta-analysis/meta-reading';
 import { localized } from '../risk-of-bias/rob-tool-editor';
 
 const DOWN = ['risk_of_bias', 'inconsistency', 'indirectness', 'imprecision', 'publication_bias'];
@@ -327,8 +328,9 @@ export class GradePage implements OnInit {
 
   protected values(s: SuggestOut, key: string): Record<string, unknown> {
     const v = { ...(s.domains[key].values ?? {}) } as Record<string, unknown>;
-    if (typeof v['i2'] === 'number') v['i2'] = (v['i2'] as number).toFixed(1);
-    if (typeof v['p'] === 'number') v['p'] = (v['p'] as number).toFixed(3);
+    const lang = this.transloco.getActiveLang();
+    if (typeof v['i2'] === 'number') v['i2'] = formatNumber(v['i2'] as number, lang, 1);
+    if (typeof v['p'] === 'number') v['p'] = formatP(v['p'] as number, lang);
     return v;
   }
 

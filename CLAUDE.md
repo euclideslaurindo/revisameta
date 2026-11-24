@@ -186,7 +186,7 @@ revisameta/
 - `cd backend && uv run pytest` / `uv run ruff check .` / `uv run mypy app`
 - `cd frontend && npm test` / `npm run lint`
 - `cd stats-r && Rscript -e 'testthat::test_dir("tests/testthat")'`
-- `cd e2e && npx playwright test`
+- `scripts/test-e2e.sh` — testes de interface (Playwright, imagem oficial no Docker) contra o sistema no ar; cria contas de teste `@example.org` com senha aleatória e um projeto de demonstração novo. Relatório em `e2e/report/index.html`
 - `make seed-demo EMAIL=...` / `scripts/seed-demo.sh <e-mail>` — cria projeto de demonstração com dataset público (`dat.normand1999`) para um usuário existente
 - `docker compose --profile lite up -d` — versão leve (1 worker, 1 processo R) para máquinas com pouca RAM
 - `make tunnel` — expõe o sistema local pelo Cloudflare Tunnel (10.6) *(adiado: fora da Etapa 0, ver docs/roteiro.md)*

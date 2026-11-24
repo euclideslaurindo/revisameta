@@ -1,0 +1,11 @@
+{
+  "name": "revisameta-e2e",
+  "private": true,
+  "description": "Interface tests (Playwright). Run with scripts/test-e2e.sh.",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.0"
+  }
+}

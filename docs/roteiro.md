@@ -72,7 +72,7 @@ Serviço R completo (8.3), conversões, combinação de braços, blocos B e E de
 |---|---|
 | Testes de referência no R (11.1, itens 1 e 2): 28 casos de `dat.bcg` e `dat.normand1999` (REML, DL, Paule-Mandel, efeito fixo, com e sem Hartung-Knapp), tolerância 1e-6 | `stats-r/tests/testthat/test-meta-analysis.R`; fixtures geradas pelo metafor (`scripts/generate-fixtures.sh`) |
 | Mesmos dados pelo cliente Python e pela API (11.1, item 3) | `backend/tests/test_stats_reference.py` (serviço R real, também no CI); `test_analysis_assembly.py`: estudos montados no banco dão os mesmos yᵢ/vᵢ e o mesmo efeito combinado do metafor |
-| Mesmos dados pela interface (11.1, item 4) | **Pendente:** ainda não há Playwright no repositório. Conferido à mão no projeto de demonstração (MD = 15,11; IC −6,11 a 36,32, igual à fixture com o sinal invertido) |
+| Mesmos dados pela interface (11.1, item 4) | `e2e/tests/meta-analysis.spec.ts` (Playwright): o efeito na tela (MD = 15,11; IC −6,11 a 36,32) é comparado com a fixture do metafor, com o sinal invertido |
 | O script R exportado reproduz os números num R limpo (11.1, item 5) | `stats-r/tests/testthat/test-r-script.R` roda o script num processo `Rscript --vanilla` novo. Também conferido com um script baixado do app (diferença máxima 3,6e-14) |
 | Conversões e combinação de braços (8.5) | `stats-r/tests/testthat/test-conversions.R`, `backend/tests/test_stats_reference.py` |
 | O detector acusa os casos sintéticos de EP digitado como DP (bloco B) | `stats-r/tests/testthat/test-plausibility.R`, `backend/tests/test_analysis_assembly.py`. Nos dados reais da demonstração houve 3 falsos positivos (ver `docs/estatistica.md`); os limiares devem ser revistos com os dados do grupo |
@@ -299,3 +299,11 @@ Digitalizador de gráficos, OCR, meta-regressão, modelos multinível, apoio ao 
 *Saída:* cada extra com testes e documentação nos dois idiomas.
 
 **Mudança de fase de hospedagem (F0 → F1)** pode acontecer entre qualquer etapa, quando houver uso contínuo; segue o checklist de `docs/deploy.md` e exige teste de restauração.
+
+**Testes de interface (Playwright), 2026-11-23:**
+- `scripts/test-e2e.sh` roda `e2e/` na imagem oficial do Playwright (1.65.0, Apache-2.0), na mesma rede do Caddy, contra o sistema no ar. Cria contas de teste verificadas em `@example.org` com senha aleatória a cada execução (`app.scripts.e2e_users`, recusado em produção) e um projeto de demonstração novo (`dat.normand1999`).
+- Os textos da interface vêm do próprio arquivo de i18n; os números esperados, das fixtures do metafor. Nada é digitado à mão.
+- Cobertos (9 testes): login; meta-analise com o mesmo efeito do metafor (11.1, item 4); forest plot, histórico e script R; aviso forte do Egger com menos de 10 estudos; risco de viés com dois revisores, conflitos decididos pelo admin, consenso e semáforo (fluxo mínimo de 11.3); GRADE com justificativa e Summary of Findings; comentário com menção chegando como aviso; checklist PRISMA; backup baixado e restaurado como projeto novo.
+- Primeiro achado: a tela do GRADE mostrava "I² = 99.0%" com ponto em português; corrigido para usar o formato de número do app.
+- **Ainda fora:** no fluxo mínimo de 11.3, o cadastro dos 4 estudos e a extração pela interface (o teste usa o projeto de demonstração já extraído), e a migração de uma tabela de RoB existente. Ficam para quando houver os dados reais do grupo.
+
