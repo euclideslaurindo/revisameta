@@ -56,3 +56,29 @@ class AICacheEntry(IdMixin, TimestampMixin, Base):
     answer: Mapped[dict[str, Any]] = mapped_column(JSONB)
 
     __table_args__ = (Index("uq_ai_cache_key", "project_id", "key", unique=True),)
+
+
+class AISuggestion(BusinessMixin, AuditedMixin, Base):
+    """One AI suggestion, kept whatever happens to it (docs/modelo-dados.md `ai_suggestion`).
+
+    status: suggested | accepted | corrected | rejected | discarded. "discarded" means
+    the system threw it away (e.g. the quoted passage is not in the PDF). Decisions by
+    people (accepted/corrected/rejected) feed the accuracy metrics (docs/ia.md 7.15.4).
+    """
+
+    __tablename__ = "ai_suggestions"
+
+    project_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("projects.id"), index=True)
+    task: Mapped[str] = mapped_column(String(20))  # tutor | locate | extract | rob | ...
+    target_entity: Mapped[str] = mapped_column(String(30))
+    target_id: Mapped[uuid.UUID] = mapped_column(index=True)
+    payload: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict)
+    quote: Mapped[str | None] = mapped_column(String(2000))
+    page: Mapped[int | None]
+    quote_verified: Mapped[bool] = mapped_column(Boolean, default=False)
+    status: Mapped[str] = mapped_column(String(16), default="suggested")
+    prompt_version: Mapped[str] = mapped_column(String(40))
+    provider: Mapped[str] = mapped_column(String(20))
+    model: Mapped[str] = mapped_column(String(80))
+    decided_by: Mapped[uuid.UUID | None] = mapped_column(ForeignKey("users.id"))
+    decided_at: Mapped[datetime | None]

@@ -181,6 +181,17 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
     ("GET", "/api/v1/projects/{project_id}/ai/settings", None),
     ("PUT", "/api/v1/projects/{project_id}/ai/settings", {"enabled": False}),
     ("POST", "/api/v1/projects/{project_id}/ai/tutor", {"question": "O que é I²?"}),
+    (
+        "POST",
+        "/api/v1/projects/{project_id}/ai/locate",
+        {"pdf_id": "{pdf_id}", "question": "cegamento"},
+    ),
+    ("GET", "/api/v1/projects/{project_id}/ai/suggestions?target_id={pdf_id}", None),
+    (
+        "PUT",
+        "/api/v1/projects/{project_id}/ai/suggestions/{suggestion_id}/decision",
+        {"status": "accepted"},
+    ),
     ("GET", "/api/v1/projects/{project_id}/grade/settings", None),
     ("PUT", "/api/v1/projects/{project_id}/grade/settings", {}),
     (
@@ -493,6 +504,7 @@ async def _setup(client: AsyncClient, make_user: MakeUser) -> tuple[LoggedUser, 
     ids["analysis_id"] = ids["study_id"]
     ids["assessment_id"] = ids["study_id"]
     ids["comment_id"] = ids["study_id"]
+    ids["suggestion_id"] = ids["study_id"]
     ids["search_id"] = ids["study_id"]
     ids["pair_id"] = ids["study_id"]
     ids["reference_id"] = ids["study_id"]

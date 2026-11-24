@@ -1680,5 +1680,20 @@
     "ask": "Ask the tutor",
     "unverified": "Warning: these numbers did not come from the computation and were not verified: {{items}}. Do not use them without checking.",
     "source": "AI-generated answer ({{provider}}, {{model}}, prompt {{version}}). Check before using."
+  },
+  "locate": {
+    "title": "Find passage",
+    "intro": "Ask where the article talks about something (e.g. \"blinding of assessors\"). The AI points at the page and the exact passage; the system checks the passage exists in the PDF. Read the page and decide yourself.",
+    "question": "What are you looking for?",
+    "ask": "Find with AI",
+    "discarded": "{{n}} suggested passage(s) were not in the PDF text and were discarded.",
+    "none": "No checked passage was found. Try other words or use the search above.",
+    "useful": "Helped",
+    "notUseful": "Did not help",
+    "status": {
+      "accepted": "Marked as useful",
+      "rejected": "Marked as not useful",
+      "corrected": "Corrected"
+    }
   }
 }

@@ -33,6 +33,8 @@ import { readPdfSelection } from './pdf-selection';
 pdfDefaultOptions.enableScripting = false;
 pdfDefaultOptions.useWasm = false;
 
+import { AiLocatePanel } from './ai-locate-panel';
+
 @Component({
   selector: 'rm-pdf-viewer-page',
   imports: [
@@ -44,6 +46,7 @@ pdfDefaultOptions.useWasm = false;
     MatTooltipModule,
     NgxExtendedPdfViewerModule,
     FormError,
+    AiLocatePanel,
   ],
   template: `
     <rm-form-error [error]="error()" />
@@ -67,6 +70,7 @@ pdfDefaultOptions.useWasm = false;
           />
         </div>
         <aside class="viewer-side">
+          <rm-ai-locate-panel [pdfId]="pdfId()" (goTo)="goTo($event)" />
           <section>
             <h3>{{ 'pdfs.search.title' | transloco }}</h3>
             <form (ngSubmit)="search()" class="stack">

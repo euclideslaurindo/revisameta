@@ -1,6 +1,6 @@
 """Imports every model so Alembic and the mapper registry see all tables."""
 
-from app.modules.ai.models import AICacheEntry, AISettings
+from app.modules.ai.models import AICacheEntry, AISettings, AISuggestion
 from app.modules.analysis.models import Analysis, NarrativeEntry
 from app.modules.audit import recorder as _audit_recorder  # noqa: F401 - registers listener
 from app.modules.audit.models import AuditLog
@@ -44,6 +44,7 @@ from app.modules.uploads.models import PdfPageText, StoredFile, UploadSession
 __all__ = [
     "AICacheEntry",
     "AISettings",
+    "AISuggestion",
     "Analysis",
     "AuditLog",
     "BackgroundJob",

@@ -341,3 +341,9 @@ Digitalizador de gráficos, OCR, meta-regressão, modelos multinível, apoio ao 
 - Prompt versionado em `app/integrations/ai/prompts/tutor-v1.md`; a versão, o provedor e o modelo aparecem em cada resposta.
 - **Cadência de testes a partir daqui (aprovada em 2026-11-24):** a cada passo, os testes do que mudou, mais lint e tipos, e o teste de isolamento quando há rota nova; a bateria completa no fim de cada etapa.
 
+**Etapa 7, passo 5 — localizador de trechos IA2 (feito):**
+- Painel "Localizar trecho" na tela do PDF, visível só quando a função está ligada. A pessoa pergunta ("onde fala de cegamento?"); a IA devolve até 3 trechos com página.
+- **Contexto mínimo:** só as até 3 páginas que mais compartilham palavras com a pergunta vão ao provedor, cada uma com no máximo 8.000 caracteres; nunca o PDF inteiro. O texto do PDF vai delimitado como dado, e o prompt manda ignorar qualquer instrução dentro dele.
+- **Citação verificada:** cada trecho é procurado no texto extraído do PDF, sem diferença de maiúsculas, acentos, quebras de linha e hifenização. Trecho que não existe é descartado e fica registrado como falha; trecho achado em outra página fica com a página certa.
+- Toda sugestão fica em `ai_suggestions` (sugerida ou descartada), com versão do prompt, provedor e modelo. A pessoa marca "ajudou" ou "não ajudou", o que alimenta as métricas do passo 6. Nada vira dado.
+

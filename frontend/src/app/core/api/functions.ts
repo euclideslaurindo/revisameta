@@ -387,6 +387,12 @@ export type { UpdateAiSettings$Params as UpdateAiSettings$Params } from './fn/ai
 export { updateAiSettings as updateAiSettings } from './fn/ai/update-ai-settings';
 export type { AskTutor$Params as AskTutor$Params } from './fn/ai/ask-tutor';
 export { askTutor as askTutor } from './fn/ai/ask-tutor';
+export type { LocatePassages$Params as LocatePassages$Params } from './fn/ai/locate-passages';
+export { locatePassages as locatePassages } from './fn/ai/locate-passages';
+export type { AiSuggestions$Params as AiSuggestions$Params } from './fn/ai/ai-suggestions';
+export { aiSuggestions as aiSuggestions } from './fn/ai/ai-suggestions';
+export type { DecideAiSuggestion$Params as DecideAiSuggestion$Params } from './fn/ai/decide-ai-suggestion';
+export { decideAiSuggestion as decideAiSuggestion } from './fn/ai/decide-ai-suggestion';
 export type { MyUsage$Params as MyUsage$Params } from './fn/quotas/my-usage';
 export { myUsage as myUsage } from './fn/quotas/my-usage';
 export type { UserUsage$Params as UserUsage$Params } from './fn/quotas/user-usage';

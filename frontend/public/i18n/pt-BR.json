@@ -1680,5 +1680,20 @@
     "ask": "Perguntar ao tutor",
     "unverified": "Atenção: estes números não vieram do cálculo e não foram verificados: {{items}}. Não use sem conferir.",
     "source": "Resposta gerada por IA ({{provider}}, {{model}}, prompt {{version}}). Confira antes de usar."
+  },
+  "locate": {
+    "title": "Localizar trecho",
+    "intro": "Pergunte onde o artigo fala de algo (por exemplo, \"cegamento dos avaliadores\"). A IA aponta a página e o trecho exato; o sistema confere se o trecho existe no PDF. Leia a página e decida você.",
+    "question": "O que você procura?",
+    "ask": "Localizar com IA",
+    "discarded": "{{n}} trecho(s) sugerido(s) não existiam no texto do PDF e foram descartados.",
+    "none": "Nenhum trecho conferido foi encontrado. Tente outras palavras ou use a busca acima.",
+    "useful": "Ajudou",
+    "notUseful": "Não ajudou",
+    "status": {
+      "accepted": "Marcado como útil",
+      "rejected": "Marcado como não útil",
+      "corrected": "Corrigido"
+    }
   }
 }
