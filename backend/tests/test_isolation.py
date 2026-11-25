@@ -450,6 +450,9 @@ PROJECT_ROUTES: list[tuple[str, str, dict[str, Any] | None]] = [
     ),
     ("POST", "/api/v1/projects/{project_id}/rob/imports/preview", None),
     ("POST", "/api/v1/projects/{project_id}/rob/imports", None),
+    ("POST", "/api/v1/projects/{project_id}/extraction-imports/preview", None),
+    ("POST", "/api/v1/projects/{project_id}/extraction-imports", None),
+    ("GET", "/api/v1/projects/{project_id}/dashboard", None),
     ("GET", "/api/v1/projects/{project_id}/exports/risk-of-bias?tool_id={tool_id}", None),
     ("GET", "/api/v1/projects/{project_id}/rob/table?tool_id={tool_id}", None),
     (
