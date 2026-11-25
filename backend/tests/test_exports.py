@@ -43,7 +43,7 @@ async def test_missing_studies_are_never_left_out_silently(
     ).json()
     assert status["total"] == 2 and status["ready"] == 1
     assert [(m["label"], m["reason"]) for m in status["missing"]] == [
-        ("Sem dados 2019", "no_consensus")
+        ("Sem dados 2019", "no_extraction")
     ]
 
     r = await _export(client, ana, p)
@@ -59,7 +59,7 @@ async def test_missing_studies_are_never_left_out_silently(
     readme = [
         [c for c in row if c is not None] for row in book["Leia-me"].iter_rows(values_only=True)
     ]
-    assert ["  Sem dados 2019", "sem consenso"] in readme
+    assert ["  Sem dados 2019", "sem extração"] in readme
     assert any("Consenso" in str(row) for row in readme)
 
 

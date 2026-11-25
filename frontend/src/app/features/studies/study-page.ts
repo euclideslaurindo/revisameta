@@ -1,5 +1,6 @@
 import { Component, computed, effect, inject, input, signal } from '@angular/core';
 import {
+  FormGroupDirective,
   FormsModule,
   NonNullableFormBuilder,
   ReactiveFormsModule,
@@ -164,7 +165,12 @@ import { STUDY_DESIGNS } from './designs';
           </ul>
 
           @if (canEdit()) {
-            <form [formGroup]="articleForm" (ngSubmit)="addArticle(s)" class="stack">
+            <form
+              [formGroup]="articleForm"
+              #articleFormDir="ngForm"
+              (ngSubmit)="addArticle(s, articleFormDir)"
+              class="stack"
+            >
               <h4>{{ 'studies.addArticle' | transloco }}</h4>
               <p class="muted">{{ 'studies.addArticleHint' | transloco }}</p>
               <mat-form-field>
@@ -307,7 +313,7 @@ export class StudyPage {
     );
   }
 
-  async addArticle(study: StudyOut): Promise<void> {
+  async addArticle(study: StudyOut, dir?: FormGroupDirective): Promise<void> {
     if (this.articleForm.invalid) {
       this.articleForm.markAllAsTouched();
       return;
@@ -327,7 +333,7 @@ export class StudyPage {
         },
       }),
     );
-    if (ok) this.articleForm.reset();
+    if (ok) dir ? dir.resetForm() : this.articleForm.reset();
   }
 
   async removeArticle(study: StudyOut, report: ReportOut): Promise<void> {

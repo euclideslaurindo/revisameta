@@ -16,7 +16,7 @@ import { FormError } from '../../shared/form-error';
   imports: [TranslocoPipe, MatButtonModule, MatProgressBarModule, FormError],
   template: `
     <label class="restore">
-      <span class="mat-mdc-button">{{ 'projects.restore.label' | transloco }}</span>
+      <span>{{ 'projects.restore.label' | transloco }}</span>
       <input
         type="file"
         accept=".zip,application/zip"
@@ -36,8 +36,10 @@ import { FormError } from '../../shared/form-error';
     <rm-form-error [error]="error()" />
   `,
   styles: `
-    .restore input {
-      margin-left: 8px;
+    .restore {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
     }
   `,
 })

@@ -11,8 +11,10 @@ import { enableRobTool } from '../../core/api/fn/risk-of-bias/enable-rob-tool';
 import { listRobTools } from '../../core/api/fn/risk-of-bias/list-rob-tools';
 import { robAgreement } from '../../core/api/fn/risk-of-bias/rob-agreement';
 import { robCatalog } from '../../core/api/fn/risk-of-bias/rob-catalog';
+import { robReview } from '../../core/api/fn/risk-of-bias/rob-review';
 import { CatalogItem } from '../../core/api/models/catalog-item';
 import { RobProjectAgreementOut } from '../../core/api/models/rob-project-agreement-out';
+import { RobReviewOut } from '../../core/api/models/rob-review-out';
 import { ToolOut } from '../../core/api/models/tool-out';
 import { FormError } from '../../shared/form-error';
 import { displayDecimal } from '../../shared/numbers';
@@ -56,6 +58,38 @@ import { RobToolEditor, localized } from './rob-tool-editor';
           </a>
         }
       </p>
+    }
+
+    @if (review(); as r) {
+      <mat-card class="block">
+        <mat-card-header>
+          <mat-card-title
+            ><h3>{{ 'rob.studies.title' | transloco }}</h3></mat-card-title
+          >
+        </mat-card-header>
+        <mat-card-content>
+          @if (r.studies.length === 0) {
+            <p class="empty">{{ 'rob.studies.empty' | transloco }}</p>
+          } @else {
+            <p class="muted">
+              {{ 'rob.review.progress' | transloco: { ready: r.ready, total: r.total } }}
+              {{ 'rob.studies.hint' | transloco }}
+            </p>
+            <ul class="item-list">
+              @for (s of r.studies; track s.study_id) {
+                <li>
+                  <a [routerLink]="['/projetos', projectId(), 'estudos', s.study_id]">{{
+                    s.label
+                  }}</a>
+                  <span class="badge" [class.badge-block]="s.state !== 'ready'">
+                    {{ 'rob.review.state.' + s.state | transloco }}
+                  </span>
+                </li>
+              }
+            </ul>
+          }
+        </mat-card-content>
+      </mat-card>
     }
 
     <mat-card class="block">
@@ -207,6 +241,8 @@ import { RobToolEditor, localized } from './rob-tool-editor';
   `,
 })
 export class RobPage implements OnInit {
+  /** Where each study stands, so nobody has to open the review page to find out. */
+  protected readonly review = signal<RobReviewOut | null>(null);
   private readonly api = inject(Api);
   private readonly context = inject(ProjectContext);
   private readonly lang = toSignal(inject(TranslocoService).langChanges$, {
@@ -237,6 +273,7 @@ export class RobPage implements OnInit {
       this.catalog.set(catalog);
       this.tools.set(tools);
       this.agreement.set(await this.api.invoke(robAgreement, { project_id }));
+      this.review.set(await this.api.invoke(robReview, { project_id }));
     } catch (error) {
       this.error.set(error);
     }

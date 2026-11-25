@@ -139,9 +139,8 @@ async def _sources(
         if mode == ExportMode.CONSENSUS:
             consensus = next((e for e in extractions if e.kind == ExtractionKind.CONSENSUS), None)
             if consensus is None:
-                missing.append(
-                    MissingStudy(study_id=study.id, label=study.label, reason="no_consensus")
-                )
+                reason = "no_consensus" if extractions else "no_extraction"
+                missing.append(MissingStudy(study_id=study.id, label=study.label, reason=reason))
             elif consensus.status == ExtractionStatus.DRAFT:
                 missing.append(
                     MissingStudy(study_id=study.id, label=study.label, reason="consensus_draft")

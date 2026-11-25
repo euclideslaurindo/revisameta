@@ -111,6 +111,8 @@ class _Study:
     rows: list[OutcomeData] = field(default_factory=list)
     measure: OutcomeMeasure | None = None
     open_alerts: int = 0
+    # Someone started extracting this study (tells "not extracted" from "no consensus").
+    extracted: bool = False
 
 
 async def _load(
@@ -129,6 +131,11 @@ async def _load(
             )
         )
     }
+    started = set(
+        await session.scalars(
+            select(Extraction.study_id).where(Extraction.project_id == ctx.project.id)
+        )
+    )
     ids = [e.id for e in consensus.values()]
     arms = list(await session.scalars(select(StudyArm).where(StudyArm.extraction_id.in_(ids))))
     rows = list(
@@ -157,7 +164,7 @@ async def _load(
     out = []
     for study in studies:
         e = consensus.get(study.id)
-        item = _Study(study=study, extraction=e)
+        item = _Study(study=study, extraction=e, extracted=study.id in started)
         if e is not None:
             item.arms = sorted(
                 (a for a in arms if a.extraction_id == e.id), key=lambda a: a.position
@@ -343,7 +350,10 @@ async def assemble(
         e = item.extraction
         if e is None or e.status not in FINAL_STATUSES:
             # A draft says what to do next: open it, check and submit.
-            reasons.append("no_consensus" if e is None else "consensus_draft")
+            if e is not None:
+                reasons.append("consensus_draft")
+            else:
+                reasons.append("no_consensus" if item.extracted else "no_extraction")
             continue
         if item.open_alerts:
             flags.append("open_alerts")

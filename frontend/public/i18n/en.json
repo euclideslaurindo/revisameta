@@ -901,6 +901,11 @@
         "unlock": "Risk of bias unlocked",
         "reopen": "Consensus reopened or import discarded"
       }
+    },
+    "studies": {
+      "title": "Studies",
+      "empty": "No studies yet.",
+      "hint": "Open a study to choose the instrument and start the assessment."
     }
   },
   "plan": {
@@ -1034,7 +1039,8 @@
       "combination_failed": "The study's arms could not be combined.",
       "no_effect_double_zero": "Zero events in both groups: the study does not enter the OR/RR.",
       "no_effect": "The effect of this study could not be computed.",
-      "consensus_draft": "This study's consensus is a draft: open the study, check the consensus and submit it."
+      "consensus_draft": "This study's consensus is a draft: open the study, check the consensus and submit it.",
+      "no_extraction": "This study has not been extracted yet: nobody has entered its data."
     },
     "flag": {
       "converted": "converted",

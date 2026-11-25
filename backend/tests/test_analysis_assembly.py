@@ -178,8 +178,8 @@ async def test_normand_studies_match_metafor(
     ):
         assert math.isclose(included[label]["yi"], yi, abs_tol=TOL)
         assert math.isclose(included[label]["vi"], vi, abs_tol=TOL)
-    # The study of the helper project has no consensus: listed, never hidden.
-    assert next(s for s in out["studies"] if not s["included"])["reasons"] == ["no_consensus"]
+    # The study of the helper project was never extracted: listed, never hidden.
+    assert next(s for s in out["studies"] if not s["included"])["reasons"] == ["no_extraction"]
     assert out["request"]["method"] == "REML" and out["request"]["test"] == "knha"
     assert len(out["request"]["data"]["yi"]) == len(d["label"])
 

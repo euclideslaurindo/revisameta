@@ -901,6 +901,11 @@
         "unlock": "Risco de viés destravado",
         "reopen": "Consenso reaberto ou importação descartada"
       }
+    },
+    "studies": {
+      "title": "Estudos",
+      "empty": "Nenhum estudo cadastrado ainda.",
+      "hint": "Abra um estudo para escolher o instrumento e começar a avaliação."
     }
   },
   "plan": {
@@ -1034,7 +1039,8 @@
       "combination_failed": "Não foi possível combinar os braços do estudo.",
       "no_effect_double_zero": "Zero eventos nos dois grupos: o estudo não entra no OR/RR.",
       "no_effect": "Não foi possível calcular o efeito deste estudo.",
-      "consensus_draft": "O consenso deste estudo está em rascunho: abra o estudo, confira o consenso e envie."
+      "consensus_draft": "O consenso deste estudo está em rascunho: abra o estudo, confira o consenso e envie.",
+      "no_extraction": "Este estudo ainda não foi extraído: ninguém registrou os dados dele."
     },
     "flag": {
       "converted": "convertido",

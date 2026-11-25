@@ -1,5 +1,10 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormGroupDirective,
+  NonNullableFormBuilder,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -134,7 +139,12 @@ import { ProjectContext } from '../project/project-context';
         </ul>
 
         @if (context.isAdmin()) {
-          <form [formGroup]="outcomeForm" (ngSubmit)="addOutcome()" class="stack">
+          <form
+            [formGroup]="outcomeForm"
+            #outcomeFormDir="ngForm"
+            (ngSubmit)="addOutcome(outcomeFormDir)"
+            class="stack"
+          >
             <h3>{{ 'protocol.outcomes.add' | transloco }}</h3>
             <mat-form-field>
               <mat-label>{{ 'protocol.outcomes.name' | transloco }}</mat-label>
@@ -206,7 +216,12 @@ import { ProjectContext } from '../project/project-context';
           }
         </ul>
         @if (context.isAdmin()) {
-          <form [formGroup]="groupForm" (ngSubmit)="addGroup()" class="stack">
+          <form
+            [formGroup]="groupForm"
+            #groupFormDir="ngForm"
+            (ngSubmit)="addGroup(groupFormDir)"
+            class="stack"
+          >
             <h3>{{ 'protocol.groups.add' | transloco }}</h3>
             <mat-form-field>
               <mat-label>{{ 'protocol.groups.label' | transloco }}</mat-label>
@@ -322,7 +337,7 @@ export class ProtocolPage implements OnInit {
     });
   }
 
-  async addOutcome(): Promise<void> {
+  async addOutcome(dir?: FormGroupDirective): Promise<void> {
     if (this.outcomeForm.invalid) {
       this.outcomeForm.markAllAsTouched();
       return;
@@ -341,7 +356,7 @@ export class ProtocolPage implements OnInit {
         },
       }),
     );
-    if (ok) this.outcomeForm.reset();
+    if (ok) dir ? dir.resetForm() : this.outcomeForm.reset();
   }
 
   async removeOutcome(outcome: OutcomeOut): Promise<void> {
@@ -354,7 +369,7 @@ export class ProtocolPage implements OnInit {
     );
   }
 
-  async addGroup(): Promise<void> {
+  async addGroup(dir?: FormGroupDirective): Promise<void> {
     if (this.groupForm.invalid) {
       this.groupForm.markAllAsTouched();
       return;
@@ -370,7 +385,7 @@ export class ProtocolPage implements OnInit {
         },
       }),
     );
-    if (ok) this.groupForm.reset();
+    if (ok) dir ? dir.resetForm() : this.groupForm.reset();
   }
 
   async removeGroup(group: GroupOut): Promise<void> {

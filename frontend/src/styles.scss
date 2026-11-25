@@ -634,3 +634,35 @@ main:has(.extraction-layout) {
 .small {
   font-size: 0.8rem;
 }
+
+/* 13 steps in the project: narrower tabs so most of them fit without scrolling. */
+.project-tabs .mat-mdc-tab-link {
+  min-width: 0;
+  padding: 0 12px;
+  flex-grow: 0;
+}
+
+/* Every file picker looks like the outlined buttons of the app (the input stays native,
+   so keyboard and screen readers keep working). */
+input[type='file'] {
+  font: inherit;
+  color: var(--mat-sys-on-surface-variant);
+}
+input[type='file']::file-selector-button {
+  font: inherit;
+  font-weight: 500;
+  margin-right: 0.75rem;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--mat-sys-outline);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--mat-sys-primary);
+  cursor: pointer;
+}
+input[type='file']::file-selector-button:hover {
+  background: color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
+}
+input[type='file']:disabled::file-selector-button {
+  opacity: 0.5;
+  cursor: default;
+}

@@ -26,124 +26,18 @@ import { ProjectContext } from './project-context';
     } @else if (context.project(); as project) {
       <h1>{{ project.title }}</h1>
       <rm-archived-banner />
-      <nav mat-tab-nav-bar [tabPanel]="panel">
-        <a
-          mat-tab-link
-          routerLink="protocolo"
-          routerLinkActive
-          #protocol="routerLinkActive"
-          [active]="protocol.isActive"
-        >
-          {{ 'project.nav.protocol' | transloco }}
-        </a>
-        <a
-          mat-tab-link
-          routerLink="buscas"
-          routerLinkActive
-          #searches="routerLinkActive"
-          [active]="searches.isActive"
-        >
-          {{ 'project.nav.searches' | transloco }}
-        </a>
-        <a
-          mat-tab-link
-          routerLink="triagem"
-          routerLinkActive
-          #screening="routerLinkActive"
-          [active]="screening.isActive"
-        >
-          {{ 'project.nav.screening' | transloco }}
-        </a>
-        <a
-          mat-tab-link
-          routerLink="grade"
-          routerLinkActive
-          #grade="routerLinkActive"
-          [active]="grade.isActive"
-        >
-          {{ 'project.nav.grade' | transloco }}
-        </a>
-        <a
-          mat-tab-link
-          routerLink="prisma"
-          routerLinkActive
-          #prisma="routerLinkActive"
-          [active]="prisma.isActive"
-        >
-          {{ 'project.nav.prisma' | transloco }}
-        </a>
-        <a
-          mat-tab-link
-          routerLink="estudos"
-          routerLinkActive
-          #studies="routerLinkActive"
-          [active]="studies.isActive"
-        >
-          {{ 'project.nav.studies' | transloco }}
-        </a>
-        <a
-          mat-tab-link
-          routerLink="pendencias"
-          routerLinkActive
-          #pending="routerLinkActive"
-          [active]="pending.isActive"
-        >
-          {{ 'project.nav.pending' | transloco }}
-        </a>
-        <a
-          mat-tab-link
-          routerLink="risco-de-vies"
-          routerLinkActive
-          #rob="routerLinkActive"
-          [active]="rob.isActive"
-        >
-          {{ 'project.nav.rob' | transloco }}
-        </a>
-        <a
-          mat-tab-link
-          routerLink="conferencia"
-          routerLinkActive
-          #review="routerLinkActive"
-          [active]="review.isActive"
-        >
-          {{ 'project.nav.review' | transloco }}
-        </a>
-        <a
-          mat-tab-link
-          routerLink="meta-analise"
-          routerLinkActive
-          #meta="routerLinkActive"
-          [active]="meta.isActive"
-        >
-          {{ 'project.nav.meta' | transloco }}
-        </a>
-        <a
-          mat-tab-link
-          routerLink="exportar"
-          routerLinkActive
-          #exports="routerLinkActive"
-          [active]="exports.isActive"
-        >
-          {{ 'project.nav.export' | transloco }}
-        </a>
-        <a
-          mat-tab-link
-          routerLink="resumo"
-          routerLinkActive
-          #abstract="routerLinkActive"
-          [active]="abstract.isActive"
-        >
-          {{ 'project.nav.abstract' | transloco }}
-        </a>
-        <a
-          mat-tab-link
-          routerLink="configuracoes"
-          routerLinkActive
-          #settings="routerLinkActive"
-          [active]="settings.isActive"
-        >
-          {{ 'project.nav.settings' | transloco }}
-        </a>
+      <nav mat-tab-nav-bar [tabPanel]="panel" class="project-tabs">
+        @for (tab of tabs; track tab.path) {
+          <a
+            mat-tab-link
+            [routerLink]="tab.path"
+            routerLinkActive
+            #link="routerLinkActive"
+            [active]="link.isActive"
+          >
+            {{ 'project.nav.' + tab.key | transloco }}
+          </a>
+        }
       </nav>
       <mat-tab-nav-panel #panel>
         <router-outlet />
@@ -154,6 +48,22 @@ import { ProjectContext } from './project-context';
   `,
 })
 export class ProjectShell {
+  /** In the order of the review: protocol to export, settings last. */
+  protected readonly tabs = [
+    { path: 'protocolo', key: 'protocol' },
+    { path: 'buscas', key: 'searches' },
+    { path: 'triagem', key: 'screening' },
+    { path: 'estudos', key: 'studies' },
+    { path: 'risco-de-vies', key: 'rob' },
+    { path: 'pendencias', key: 'pending' },
+    { path: 'conferencia', key: 'review' },
+    { path: 'meta-analise', key: 'meta' },
+    { path: 'grade', key: 'grade' },
+    { path: 'prisma', key: 'prisma' },
+    { path: 'resumo', key: 'abstract' },
+    { path: 'exportar', key: 'export' },
+    { path: 'configuracoes', key: 'settings' },
+  ];
   protected readonly context = inject(ProjectContext);
   readonly projectId = input.required<string>();
 
