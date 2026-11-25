@@ -451,3 +451,5 @@ export type { JobEvents$Params as JobEvents$Params } from './fn/jobs/job-events'
 export { jobEvents as jobEvents } from './fn/jobs/job-events';
 export type { ProjectDashboard$Params as ProjectDashboard$Params } from './fn/dashboard/project-dashboard';
 export { projectDashboard as projectDashboard } from './fn/dashboard/project-dashboard';
+export type { CreateDemoProject$Params as CreateDemoProject$Params } from './fn/learning/create-demo-project';
+export { createDemoProject as createDemoProject } from './fn/learning/create-demo-project';

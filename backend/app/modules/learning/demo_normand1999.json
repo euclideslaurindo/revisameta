@@ -1,0 +1,82 @@
+{
+ "source": "metafor::dat.normand1999 (copied from stats-r/fixtures/meta-analysis.json, case dat.normand1999_MD_REML_knha; regenerate with scripts/export-demo-data.sh)",
+ "data": {
+  "label": [
+   "Edinburgh",
+   "Orpington-Mild",
+   "Orpington-Moderate",
+   "Orpington-Severe",
+   "Montreal-Home",
+   "Montreal-Transfer",
+   "Newcastle",
+   "Umea",
+   "Uppsala"
+  ],
+  "m1i": [
+   55,
+   27,
+   64,
+   66,
+   14,
+   19,
+   52,
+   21,
+   30
+  ],
+  "sd1i": [
+   47,
+   7,
+   17,
+   20,
+   8,
+   7,
+   45,
+   16,
+   27
+  ],
+  "n1i": [
+   155,
+   31,
+   75,
+   18,
+   8,
+   57,
+   34,
+   110,
+   60
+  ],
+  "m2i": [
+   75,
+   29,
+   119,
+   137,
+   18,
+   18,
+   41,
+   31,
+   23
+  ],
+  "sd2i": [
+   64,
+   4,
+   29,
+   48,
+   11,
+   4,
+   34,
+   27,
+   20
+  ],
+  "n2i": [
+   156,
+   32,
+   71,
+   18,
+   13,
+   52,
+   33,
+   183,
+   52
+  ]
+ }
+}

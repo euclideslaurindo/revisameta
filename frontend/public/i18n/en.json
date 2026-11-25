@@ -5,7 +5,8 @@
     "beta": "Beta version, no availability guarantee. Keep copies of your work.",
     "language": "Language",
     "logout": "Sign out",
-    "skipToContent": "Skip to content"
+    "skipToContent": "Skip to content",
+    "learning": "Learning"
   },
   "languages": {
     "pt-BR": "Português",
@@ -2000,6 +2001,169 @@
       "rob": "Choose each study's instrument and assess its risk of bias.",
       "analysis": "Run and save the meta-analysis of each outcome.",
       "grade": "Assess the certainty of evidence (GRADE) of each outcome."
+    }
+  },
+  "learning": {
+    "title": "Learning",
+    "intro": "A place to understand each step of a systematic review and meta-analysis. Technical terms also appear as tips (?) on the screens.",
+    "demoTitle": "Demonstration project",
+    "demoText": "Creates a project of your own with 9 studies of public data (metafor package, dat.normand1999: length of stay after stroke). Extraction is already done, so you can go straight to the meta-analysis and see how the forest plot, heterogeneity and sign inversion (\"lower is better\") work. The data are real and published, not from your project.",
+    "demoButton": "Create demonstration project",
+    "demoCreated": "Demonstration project created.",
+    "glossaryTitle": "Glossary",
+    "search": "Search a term",
+    "noMatch": "No term found.",
+    "stepsTitle": "The path of a review",
+    "steps": {
+      "1": "Protocol: write the question (PICO/PECO), criteria, outcomes, groups and analysis plan before seeing the data.",
+      "2": "Search and screening: import references from the databases, remove duplicates and decide, in pairs and blinded, what may be useful.",
+      "3": "Full text and studies: read the whole article and group articles about the same patients into one study.",
+      "4": "Extraction: copy the numbers of each group, always stating the dispersion type (SD, SE, CI...) and where it is in the article.",
+      "5": "Risk of bias: judge whether the way each study was done may have distorted its result.",
+      "6": "Meta-analysis: combine the studies into a single result and see how much they differ.",
+      "7": "GRADE and PRISMA: say how much the result can be trusted and report everything transparently."
+    },
+    "sourcesTitle": "Official sources",
+    "sources": {
+      "cochrane": "Cochrane Handbook for Systematic Reviews of Interventions",
+      "prisma": "PRISMA 2020 (statement, flow diagram and checklist)",
+      "rob": "RoB 2, ROBINS-I and ROBINS-E (riskofbias.info)",
+      "grade": "GRADE Handbook",
+      "metafor": "metafor package documentation (R)"
+    },
+    "terms": {
+      "systematicReview": {
+        "term": "Systematic review",
+        "text": "A study that gathers every study on a question, following a fixed and transparent method."
+      },
+      "metaAnalysis": {
+        "term": "Meta-analysis",
+        "text": "The statistical part that combines the numbers of several studies into a single result."
+      },
+      "pico": {
+        "term": "PICO / PECO",
+        "text": "Population, Intervention (or Exposure), Comparison and Outcome: the parts of a well-built question."
+      },
+      "protocol": {
+        "term": "Protocol / PROSPERO",
+        "text": "A plan registered before starting, so the rules are not changed along the way."
+      },
+      "amendment": {
+        "term": "Protocol amendment",
+        "text": "A change to the plan after starting; it must be recorded and justified."
+      },
+      "screening": {
+        "term": "Screening",
+        "text": "Reading title and abstract and deciding whether the study may be useful."
+      },
+      "fullText": {
+        "term": "Full text",
+        "text": "Second screening, reading the whole article."
+      },
+      "studyVsReport": {
+        "term": "Study × report",
+        "text": "One study (the same patients) may have several published articles; they are grouped so nobody is counted twice."
+      },
+      "extraction": {
+        "term": "Data extraction",
+        "text": "Copying the needed numbers from the article (n, mean, SD, events...)."
+      },
+      "riskOfBias": {
+        "term": "Risk of bias",
+        "text": "Judging whether the way a study was done may have distorted its result."
+      },
+      "domain": {
+        "term": "Domain (risk of bias)",
+        "text": "One area assessed, for example confounding or missing data."
+      },
+      "signalling": {
+        "term": "Signalling question",
+        "text": "A question that helps judge a risk-of-bias domain."
+      },
+      "confounding": {
+        "term": "Confounding",
+        "text": "Another factor that affects both the group and the outcome and distorts the comparison."
+      },
+      "adjusted": {
+        "term": "Adjusted estimate",
+        "text": "A result corrected for confounders, common in observational studies."
+      },
+      "effectMeasure": {
+        "term": "Effect measure",
+        "text": "A number summarising the difference between groups (MD, SMD, OR, RR)."
+      },
+      "smd": {
+        "term": "SMD / Hedges' g",
+        "text": "Standardised mean difference; used when studies measure with different scales."
+      },
+      "ci": {
+        "term": "95% CI",
+        "text": "The range where the true value probably lies."
+      },
+      "sdSe": {
+        "term": "SD × SE",
+        "text": "The standard deviation (SD) shows how much patients vary; the standard error (SE) shows the uncertainty of the mean and is much smaller. Swapping them is one of the most common errors in meta-analysis."
+      },
+      "fixed": {
+        "term": "Fixed effect",
+        "text": "Assumes every study measures the same true effect."
+      },
+      "random": {
+        "term": "Random effects",
+        "text": "Assumes the true effect varies between studies (the most common in practice)."
+      },
+      "heterogeneity": {
+        "term": "Heterogeneity",
+        "text": "How much the results of the studies differ from each other."
+      },
+      "i2": {
+        "term": "I²",
+        "text": "Percentage of the variation between studies not explained by chance."
+      },
+      "tau2": {
+        "term": "τ² (tau²)",
+        "text": "Variance of the true effect between studies."
+      },
+      "predictionInterval": {
+        "term": "Prediction interval",
+        "text": "The range where the effect of a new study would probably fall."
+      },
+      "forest": {
+        "term": "Forest plot",
+        "text": "A chart with each study's result (square and line) and the pooled one (diamond). The square's size is the study weight; the vertical line is \"no difference\"."
+      },
+      "funnel": {
+        "term": "Funnel plot",
+        "text": "A chart to investigate publication bias. With fewer than 10 studies it cannot support a conclusion."
+      },
+      "sensitivity": {
+        "term": "Sensitivity analysis",
+        "text": "Redoing the analysis with something changed to see whether the result holds."
+      },
+      "subgroup": {
+        "term": "Subgroup",
+        "text": "Analysing separately by a characteristic, for example the type of surgery."
+      },
+      "metaRegression": {
+        "term": "Meta-regression",
+        "text": "Checking whether a numeric characteristic of the studies (e.g. mean age) explains differences in results."
+      },
+      "unitOfAnalysis": {
+        "term": "Unit of analysis",
+        "text": "Making sure the same patients are not counted twice."
+      },
+      "grade": {
+        "term": "GRADE",
+        "text": "Rates the certainty of evidence as high, moderate, low or very low."
+      },
+      "prisma": {
+        "term": "PRISMA",
+        "text": "Guideline on how to report the review; includes the flow diagram and checklist."
+      },
+      "kappa": {
+        "term": "Cohen's kappa",
+        "text": "Measures agreement between two reviewers beyond what chance would give: 1 is full agreement; 0 is what luck would give."
+      }
     }
   }
 }

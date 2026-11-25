@@ -71,6 +71,8 @@ export type { DedupDecideIn } from './models/dedup-decide-in';
 export type { DedupReportOut } from './models/dedup-report-out';
 export type { DedupRunOut } from './models/dedup-run-out';
 export type { DedupSettings } from './models/dedup-settings';
+export type { DemoIn } from './models/demo-in';
+export type { DemoOut } from './models/demo-out';
 export type { DirectionOut } from './models/direction-out';
 export type { DirectionSideOut } from './models/direction-side-out';
 export type { DisableIn } from './models/disable-in';
@@ -731,3 +733,5 @@ export type { JobEvents$Params as JobEvents$Params } from './fn/jobs/job-events'
 export { jobEvents as jobEvents } from './fn/jobs/job-events';
 export type { ProjectDashboard$Params as ProjectDashboard$Params } from './fn/dashboard/project-dashboard';
 export { projectDashboard as projectDashboard } from './fn/dashboard/project-dashboard';
+export type { CreateDemoProject$Params as CreateDemoProject$Params } from './fn/learning/create-demo-project';
+export { createDemoProject as createDemoProject } from './fn/learning/create-demo-project';

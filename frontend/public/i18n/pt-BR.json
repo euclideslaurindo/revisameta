@@ -5,7 +5,8 @@
     "beta": "Versão beta, sem garantia de disponibilidade. Guarde cópias do seu trabalho.",
     "language": "Idioma",
     "logout": "Sair",
-    "skipToContent": "Pular para o conteúdo"
+    "skipToContent": "Pular para o conteúdo",
+    "learning": "Aprendizado"
   },
   "languages": {
     "pt-BR": "Português",
@@ -2000,6 +2001,169 @@
       "rob": "Escolha o instrumento de cada estudo e faça a avaliação de risco de viés.",
       "analysis": "Rode e salve a meta-análise de cada desfecho.",
       "grade": "Avalie a certeza da evidência (GRADE) de cada desfecho."
+    }
+  },
+  "learning": {
+    "title": "Aprendizado",
+    "intro": "Um lugar para entender cada etapa da revisão sistemática e da meta-análise. Os termos técnicos também aparecem como dicas (?) nas telas.",
+    "demoTitle": "Projeto de demonstração",
+    "demoText": "Cria um projeto seu com 9 estudos de dados públicos (pacote metafor, dat.normand1999: tempo de internação após AVC). A extração já vem pronta, então dá para ir direto à meta-análise e ver como o forest plot, a heterogeneidade e a inversão de sinal (\"menor é melhor\") funcionam. Os dados são reais e publicados, não do seu projeto.",
+    "demoButton": "Criar projeto de demonstração",
+    "demoCreated": "Projeto de demonstração criado.",
+    "glossaryTitle": "Glossário",
+    "search": "Procurar termo",
+    "noMatch": "Nenhum termo encontrado.",
+    "stepsTitle": "O caminho de uma revisão",
+    "steps": {
+      "1": "Protocolo: escreva a pergunta (PICO/PECO), os critérios, os desfechos, os grupos e o plano de análise antes de ver os dados.",
+      "2": "Busca e triagem: importe as referências das bases, remova duplicatas e decida, em dupla e às cegas, o que pode servir.",
+      "3": "Texto completo e estudos: leia o artigo inteiro e agrupe os artigos que falam dos mesmos pacientes num só estudo.",
+      "4": "Extração: copie os números de cada grupo, sempre dizendo o tipo de dispersão (DP, EP, IC...) e onde está no artigo.",
+      "5": "Risco de viés: avalie se o jeito como cada estudo foi feito pode ter distorcido o resultado.",
+      "6": "Meta-análise: combine os estudos num resultado único e veja o quanto eles diferem entre si.",
+      "7": "GRADE e PRISMA: diga o quanto se pode confiar no resultado e relate tudo de forma transparente."
+    },
+    "sourcesTitle": "Fontes oficiais",
+    "sources": {
+      "cochrane": "Cochrane Handbook for Systematic Reviews of Interventions",
+      "prisma": "PRISMA 2020 (diretriz, fluxograma e checklist)",
+      "rob": "RoB 2, ROBINS-I e ROBINS-E (riskofbias.info)",
+      "grade": "Manual do GRADE",
+      "metafor": "Documentação do pacote metafor (R)"
+    },
+    "terms": {
+      "systematicReview": {
+        "term": "Revisão sistemática",
+        "text": "Estudo que reúne todos os estudos sobre uma pergunta, seguindo um método fixo e transparente."
+      },
+      "metaAnalysis": {
+        "term": "Meta-análise",
+        "text": "Parte estatística que combina os números de vários estudos em um resultado único."
+      },
+      "pico": {
+        "term": "PICO / PECO",
+        "text": "População, Intervenção (ou Exposição), Comparação e Outcome (desfecho): as partes de uma pergunta bem feita."
+      },
+      "protocol": {
+        "term": "Protocolo / PROSPERO",
+        "text": "Plano registrado antes de começar, para evitar mudar as regras no meio do caminho."
+      },
+      "amendment": {
+        "term": "Emenda ao protocolo",
+        "text": "Mudança no plano depois de começar; precisa ser registrada e justificada."
+      },
+      "screening": {
+        "term": "Triagem",
+        "text": "Ler título e resumo e decidir se o estudo pode servir."
+      },
+      "fullText": {
+        "term": "Texto completo",
+        "text": "Segunda triagem, lendo o artigo inteiro."
+      },
+      "studyVsReport": {
+        "term": "Estudo × relato",
+        "text": "Um mesmo estudo (os mesmos pacientes) pode ter vários artigos publicados; eles ficam agrupados para ninguém ser contado duas vezes."
+      },
+      "extraction": {
+        "term": "Extração de dados",
+        "text": "Copiar do artigo os números necessários (n, média, DP, eventos...)."
+      },
+      "riskOfBias": {
+        "term": "Risco de viés",
+        "text": "Avaliar se o jeito como o estudo foi feito pode ter distorcido o resultado."
+      },
+      "domain": {
+        "term": "Domínio (risco de viés)",
+        "text": "Uma área avaliada, por exemplo confundimento ou dados faltantes."
+      },
+      "signalling": {
+        "term": "Pergunta sinalizadora",
+        "text": "Pergunta que ajuda a julgar um domínio do risco de viés."
+      },
+      "confounding": {
+        "term": "Confundimento",
+        "text": "Outro fator que influencia tanto o grupo quanto o desfecho e distorce a comparação."
+      },
+      "adjusted": {
+        "term": "Estimativa ajustada",
+        "text": "Resultado corrigido para fatores de confusão, comum em estudos observacionais."
+      },
+      "effectMeasure": {
+        "term": "Medida de efeito",
+        "text": "Número que resume a diferença entre os grupos (MD, SMD, OR, RR)."
+      },
+      "smd": {
+        "term": "SMD / g de Hedges",
+        "text": "Diferença de médias padronizada; usada quando os estudos medem com escalas diferentes."
+      },
+      "ci": {
+        "term": "IC 95%",
+        "text": "Faixa onde o valor verdadeiro provavelmente está."
+      },
+      "sdSe": {
+        "term": "DP × EP",
+        "text": "O desvio padrão (DP) mostra o quanto os pacientes variam; o erro padrão (EP) mostra a incerteza da média e é bem menor. Trocar um pelo outro é um dos erros mais comuns em meta-análise."
+      },
+      "fixed": {
+        "term": "Efeito fixo",
+        "text": "Supõe que todos os estudos medem o mesmo efeito verdadeiro."
+      },
+      "random": {
+        "term": "Efeitos aleatórios",
+        "text": "Supõe que o efeito verdadeiro varia entre os estudos (o mais comum na prática)."
+      },
+      "heterogeneity": {
+        "term": "Heterogeneidade",
+        "text": "Quanto os resultados dos estudos diferem entre si."
+      },
+      "i2": {
+        "term": "I²",
+        "text": "Porcentagem da variação entre os estudos que não é explicada pelo acaso."
+      },
+      "tau2": {
+        "term": "τ² (tau²)",
+        "text": "Variância do efeito verdadeiro entre os estudos."
+      },
+      "predictionInterval": {
+        "term": "Intervalo de predição",
+        "text": "Faixa onde provavelmente cairia o efeito de um novo estudo."
+      },
+      "forest": {
+        "term": "Forest plot",
+        "text": "Gráfico com o resultado de cada estudo (quadrado e linha) e o combinado (losango). O tamanho do quadrado é o peso do estudo; a linha vertical é o \"sem diferença\"."
+      },
+      "funnel": {
+        "term": "Funnel plot",
+        "text": "Gráfico para investigar viés de publicação. Com menos de 10 estudos não serve como conclusão."
+      },
+      "sensitivity": {
+        "term": "Análise de sensibilidade",
+        "text": "Refazer a análise mudando algo para ver se o resultado se mantém."
+      },
+      "subgroup": {
+        "term": "Subgrupo",
+        "text": "Analisar separado por uma característica, por exemplo o tipo de cirurgia."
+      },
+      "metaRegression": {
+        "term": "Meta-regressão",
+        "text": "Ver se uma característica numérica dos estudos (por exemplo, idade média) explica a diferença nos resultados."
+      },
+      "unitOfAnalysis": {
+        "term": "Unidade de análise",
+        "text": "Garantir que os mesmos pacientes não sejam contados duas vezes."
+      },
+      "grade": {
+        "term": "GRADE",
+        "text": "Classifica a certeza da evidência em alta, moderada, baixa ou muito baixa."
+      },
+      "prisma": {
+        "term": "PRISMA",
+        "text": "Diretriz de como relatar a revisão; inclui o fluxograma e o checklist."
+      },
+      "kappa": {
+        "term": "Kappa de Cohen",
+        "text": "Mede a concordância entre dois revisores descontando a que aconteceria por acaso: 1 é concordância total; 0 é o que se esperaria por sorte."
+      }
     }
   }
 }
