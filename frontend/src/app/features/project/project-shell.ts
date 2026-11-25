@@ -50,6 +50,7 @@ import { ProjectContext } from './project-context';
 export class ProjectShell {
   /** In the order of the review: protocol to export, settings last. */
   protected readonly tabs = [
+    { path: 'painel', key: 'dashboard' },
     { path: 'protocolo', key: 'protocol' },
     { path: 'buscas', key: 'searches' },
     { path: 'triagem', key: 'screening' },

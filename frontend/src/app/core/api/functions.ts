@@ -449,3 +449,5 @@ export type { GetJob$Params as GetJob$Params } from './fn/jobs/get-job';
 export { getJob as getJob } from './fn/jobs/get-job';
 export type { JobEvents$Params as JobEvents$Params } from './fn/jobs/job-events';
 export { jobEvents as jobEvents } from './fn/jobs/job-events';
+export type { ProjectDashboard$Params as ProjectDashboard$Params } from './fn/dashboard/project-dashboard';
+export { projectDashboard as projectDashboard } from './fn/dashboard/project-dashboard';

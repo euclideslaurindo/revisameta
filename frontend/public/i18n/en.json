@@ -117,7 +117,8 @@
       "prisma": "PRISMA",
       "grade": "GRADE",
       "settings": "Settings",
-      "abstract": "Abstract"
+      "abstract": "Abstract",
+      "dashboard": "Dashboard"
     },
     "archived": {
       "text": "This project was marked as archived on {{date}} after 12 months without changes. Nothing was deleted and it still works.",
@@ -1954,6 +1955,51 @@
       "scale_min": "Scale: minimum",
       "scale_max": "Scale: maximum",
       "higher_is_better": "Higher is better? (yes/no)"
+    }
+  },
+  "dashboard": {
+    "daysLeft": "{{days}} day(s) left until the deadline.",
+    "today": "The deadline is today.",
+    "late": "The deadline passed {{days}} day(s) ago.",
+    "noDeadline": "No deadline set. You can add one in the project details.",
+    "nextTitle": "Next step",
+    "go": "Go to {{stage}}",
+    "allDone": "Every stage tracked here is done.",
+    "stagesTitle": "Stages",
+    "peopleTitle": "What each person has left",
+    "peopleHint": "Counts only: nobody sees other people's decisions or answers here.",
+    "person": "Person",
+    "screeningLeft": "References to screen",
+    "extractionsOpen": "Extractions not submitted",
+    "robOpen": "Risk-of-bias assessments not submitted",
+    "stage": {
+      "protocol": "Protocol",
+      "screening": "Screening",
+      "extraction": "Extraction",
+      "rob": "Risk of bias",
+      "analysis": "Meta-analysis",
+      "grade": "GRADE"
+    },
+    "state": {
+      "not_started": "not started",
+      "in_progress": "in progress",
+      "done": "done"
+    },
+    "count": {
+      "protocol": "{{done}} of {{total}} items: at least one outcome and two comparison groups.",
+      "screening": "{{done}} of {{total}} references decided.",
+      "extraction": "{{done}} of {{total}} studies with a submitted consensus.",
+      "rob": "{{done}} of {{total}} studies with a final assessment.",
+      "analysis": "{{done}} of {{total}} outcomes with a saved meta-analysis.",
+      "grade": "{{done}} of {{total}} outcomes with certainty of evidence assessed."
+    },
+    "next": {
+      "protocol": "Add the outcomes and the two groups to compare. They organise extraction and analysis.",
+      "screening": "Finish screening the imported references and resolve the conflicts.",
+      "extraction": "Extract each study's numbers, check the alerts and submit the consensus.",
+      "rob": "Choose each study's instrument and assess its risk of bias.",
+      "analysis": "Run and save the meta-analysis of each outcome.",
+      "grade": "Assess the certainty of evidence (GRADE) of each outcome."
     }
   }
 }

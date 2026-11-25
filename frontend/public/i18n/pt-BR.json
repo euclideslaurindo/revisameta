@@ -117,7 +117,8 @@
       "prisma": "PRISMA",
       "grade": "GRADE",
       "settings": "Configurações",
-      "abstract": "Resumo"
+      "abstract": "Resumo",
+      "dashboard": "Painel"
     },
     "archived": {
       "text": "Este projeto foi marcado como arquivado em {{date}} por ficar 12 meses sem alterações. Nada foi apagado e ele continua funcionando.",
@@ -1954,6 +1955,51 @@
       "scale_min": "Escala: mínimo",
       "scale_max": "Escala: máximo",
       "higher_is_better": "Maior é melhor? (sim/não)"
+    }
+  },
+  "dashboard": {
+    "daysLeft": "Faltam {{days}} dia(s) para o prazo.",
+    "today": "O prazo é hoje.",
+    "late": "O prazo passou há {{days}} dia(s).",
+    "noDeadline": "Sem prazo definido. Você pode colocar um prazo nos dados do projeto.",
+    "nextTitle": "Próximo passo",
+    "go": "Ir para {{stage}}",
+    "allDone": "Todas as etapas acompanhadas aqui estão concluídas.",
+    "stagesTitle": "Etapas",
+    "peopleTitle": "Pendências por pessoa",
+    "peopleHint": "Só contagens: ninguém vê as decisões ou respostas dos outros por aqui.",
+    "person": "Pessoa",
+    "screeningLeft": "Referências a triar",
+    "extractionsOpen": "Extrações não enviadas",
+    "robOpen": "Avaliações de risco de viés não enviadas",
+    "stage": {
+      "protocol": "Protocolo",
+      "screening": "Triagem",
+      "extraction": "Extração",
+      "rob": "Risco de viés",
+      "analysis": "Meta-análise",
+      "grade": "GRADE"
+    },
+    "state": {
+      "not_started": "não começou",
+      "in_progress": "em andamento",
+      "done": "concluída"
+    },
+    "count": {
+      "protocol": "{{done}} de {{total}} itens: pelo menos um desfecho e dois grupos de comparação.",
+      "screening": "{{done}} de {{total}} referências decididas.",
+      "extraction": "{{done}} de {{total}} estudos com consenso enviado.",
+      "rob": "{{done}} de {{total}} estudos com avaliação final.",
+      "analysis": "{{done}} de {{total}} desfechos com meta-análise salva.",
+      "grade": "{{done}} de {{total}} desfechos com certeza da evidência avaliada."
+    },
+    "next": {
+      "protocol": "Cadastre os desfechos e os dois grupos que serão comparados. Eles organizam a extração e a análise.",
+      "screening": "Termine a triagem das referências importadas e resolva os conflitos.",
+      "extraction": "Extraia os números de cada estudo, confira os alertas e envie o consenso.",
+      "rob": "Escolha o instrumento de cada estudo e faça a avaliação de risco de viés.",
+      "analysis": "Rode e salve a meta-análise de cada desfecho.",
+      "grade": "Avalie a certeza da evidência (GRADE) de cada desfecho."
     }
   }
 }

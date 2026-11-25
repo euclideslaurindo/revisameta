@@ -447,6 +447,25 @@ async def counts(
     )
 
 
+async def left_per_person(
+    session: AsyncSession, ctx: ProjectContext, user_ids: list[uuid.UUID]
+) -> dict[uuid.UUID, int]:
+    """Title/abstract references each person still has to screen (counts only, so the
+    dashboard can show them without breaking blinding). Only screeners get a count."""
+    state = await _state(session, ctx, "title_abstract")
+    ids = await _ids(session, ctx, "title_abstract")
+    out: dict[uuid.UUID, int] = {}
+    for user_id in user_ids:
+        out[user_id] = sum(
+            1
+            for i in ids
+            if user_id not in state.decisions.get(i, {})
+            and not state.resolutions.get(i)
+            and (not state.assigned.get(i) or user_id in state.assigned[i])
+        )
+    return out
+
+
 # ---- Decisions, undo, history --------------------------------------------------------
 
 

@@ -40,7 +40,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
     loadComponent: () => import('./features/project/project-shell').then((m) => m.ProjectShell),
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'protocolo' },
+      { path: '', pathMatch: 'full', redirectTo: 'painel' },
+      {
+        path: 'painel',
+        loadComponent: () =>
+          import('./features/project/dashboard-page').then((m) => m.DashboardPage),
+      },
       {
         path: 'protocolo',
         loadComponent: () =>
