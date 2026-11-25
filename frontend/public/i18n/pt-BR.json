@@ -2165,5 +2165,22 @@
         "text": "Mede a concordância entre dois revisores descontando a que aconteceria por acaso: 1 é concordância total; 0 é o que se esperaria por sorte."
       }
     }
+  },
+  "details": {
+    "title": "Dados do projeto",
+    "name": "Título do projeto",
+    "question": "Pergunta da revisão",
+    "pico": {
+      "population": "População (P)",
+      "intervention": "Intervenção ou exposição (I/E)",
+      "comparison": "Comparação (C)",
+      "outcome": "Desfecho (O)"
+    },
+    "prospero": "Registro no PROSPERO (opcional)",
+    "prosperoHint": "Ex.: CRD42024000000",
+    "deadline": "Prazo (ex.: submissão do resumo)",
+    "reportLanguage": "Idioma dos relatórios e gráficos",
+    "save": "Salvar dados do projeto",
+    "saved": "Dados do projeto salvos."
   }
 }

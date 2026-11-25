@@ -32,6 +32,7 @@ import { ConfirmDialog, ConfirmData } from '../../shared/confirm-dialog';
 import { FormError } from '../../shared/form-error';
 import { AnalysisPlanEditor } from './analysis-plan-editor';
 import { FormEditor } from './form-editor';
+import { ProjectDetails } from './project-details';
 import { ProjectContext } from '../project/project-context';
 
 @Component({
@@ -51,10 +52,13 @@ import { ProjectContext } from '../project/project-context';
     FormError,
     FormEditor,
     AnalysisPlanEditor,
+    ProjectDetails,
   ],
   template: `
     <p class="muted">{{ 'protocol.intro' | transloco }}</p>
     <rm-form-error [error]="error()" />
+
+    <rm-project-details />
 
     @if (context.project(); as project) {
       <mat-card class="block">

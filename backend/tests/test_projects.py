@@ -264,3 +264,37 @@ async def test_invitation_roles_are_validated(
         f"/api/v1/projects/{project['id']}/invitations", json={"roles": roles}, headers=ana.headers
     )
     assert r.status_code == 422
+
+
+async def test_admin_edits_details_and_pico_and_cannot_erase_the_title(
+    client: AsyncClient, make_user: Any
+) -> None:
+    ana, bia = await make_user("Ana"), await make_user("Bia")
+    project = (
+        await client.post("/api/v1/projects", json={"title": "Antigo"}, headers=ana.headers)
+    ).json()
+    url = f"/api/v1/projects/{project['id']}"
+    body = {
+        "version": project["version"],
+        "title": "Novo título",
+        "question": "Pergunta",
+        "prospero": "CRD42000000000",
+        "deadline": "2027-03-01",
+        "pico": {"population": "Crianças", "intervention": "Cirurgia precoce"},
+    }
+    r = await client.patch(url, json=body, headers=ana.headers)
+    assert r.status_code == 200, r.text
+    out = r.json()
+    assert out["title"] == "Novo título" and out["deadline"] == "2027-03-01"
+    assert out["pico"]["population"] == "Crianças"
+    r = await client.patch(
+        url, json={"version": out["version"], "pico": {"bogus": "x"}}, headers=ana.headers
+    )
+    assert r.status_code == 422
+    r = await client.patch(
+        url, json={"version": out["version"], "title": None}, headers=ana.headers
+    )
+    assert r.status_code == 200 and r.json()["title"] == "Novo título"
+    # Only admins edit; members outside the project see nothing.
+    r = await client.patch(url, json={"version": out["version"], "title": "X"}, headers=bia.headers)
+    assert r.status_code in (403, 404)

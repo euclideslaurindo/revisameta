@@ -173,6 +173,7 @@ export type { PdfViewOut } from './models/pdf-view-out';
 export type { PendingAlert } from './models/pending-alert';
 export type { PendingOut } from './models/pending-out';
 export type { PersonPending } from './models/person-pending';
+export type { Pico } from './models/pico';
 export type { PlanIn } from './models/plan-in';
 export type { PlanOut } from './models/plan-out';
 export type { PlotIn } from './models/plot-in';

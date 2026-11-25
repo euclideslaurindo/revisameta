@@ -22,13 +22,24 @@ class ProjectCreate(BaseModel):
     report_language: Literal["pt-BR", "en"] = "pt-BR"
 
 
+class Pico(BaseModel):
+    """PICO/PECO of the question: free text per part (Intervention or Exposure)."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    population: str | None = Field(default=None, max_length=2000)
+    intervention: str | None = Field(default=None, max_length=2000)
+    comparison: str | None = Field(default=None, max_length=2000)
+    outcome: str | None = Field(default=None, max_length=2000)
+
+
 class ProjectUpdate(BaseModel):
     """Partial update. `version` must match the current one (optimistic lock)."""
 
     version: int
     title: str | None = Field(default=None, min_length=1, max_length=300)
     question: str | None = Field(default=None, max_length=5000)
-    pico: dict[str, Any] | None = None
+    pico: Pico | None = None
     prospero: str | None = Field(default=None, max_length=64)
     deadline: date | None = None
     report_language: Literal["pt-BR", "en"] | None = None

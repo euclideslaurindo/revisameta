@@ -2165,5 +2165,22 @@
         "text": "Measures agreement between two reviewers beyond what chance would give: 1 is full agreement; 0 is what luck would give."
       }
     }
+  },
+  "details": {
+    "title": "Project details",
+    "name": "Project title",
+    "question": "Review question",
+    "pico": {
+      "population": "Population (P)",
+      "intervention": "Intervention or exposure (I/E)",
+      "comparison": "Comparison (C)",
+      "outcome": "Outcome (O)"
+    },
+    "prospero": "PROSPERO registration (optional)",
+    "prosperoHint": "E.g. CRD42024000000",
+    "deadline": "Deadline (e.g. abstract submission)",
+    "reportLanguage": "Language of reports and charts",
+    "save": "Save project details",
+    "saved": "Project details saved."
   }
 }

@@ -68,6 +68,8 @@ async def update_project(
     _check_version(ctx.project.version, data.version)
     was_double = ctx.project.double_extraction
     for key, value in data.model_dump(exclude_unset=True, exclude={"version"}).items():
+        if value is None and key in {"title", "report_language", "double_extraction", "double_rob"}:
+            continue  # required fields: null means "leave as is", never "erase"
         setattr(ctx.project, key, value)
     if was_double and not ctx.project.double_extraction:
         # Studies already extracted once must not get stuck waiting for a second person.
