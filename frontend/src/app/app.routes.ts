@@ -74,6 +74,13 @@ export const routes: Routes = [
         loadComponent: () => import('./features/studies/studies-page').then((m) => m.StudiesPage),
       },
       {
+        path: 'estudos/importar-extracao',
+        loadComponent: () =>
+          import('./features/extraction/extraction-import-page').then(
+            (m) => m.ExtractionImportPage,
+          ),
+      },
+      {
         path: 'estudos/importar',
         loadComponent: () => import('./features/studies/import-page').then((m) => m.ImportPage),
       },

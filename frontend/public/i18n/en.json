@@ -202,7 +202,8 @@
       "other": "Study with the same patients",
       "action": "Merge studies",
       "confirm": "The articles of \"{{other}}\" move to \"{{study}}\", and \"{{other}}\" leaves the list. Continue?"
-    }
+    },
+    "importExtraction": "Import extraction spreadsheet"
   },
   "import": {
     "title": "Import study list",
@@ -250,7 +251,10 @@
       "invalid_doi": "Invalid DOI. It must start with 10., e.g. 10.1000/xyz.",
       "invalid_pmid": "Invalid PMID. Use digits only.",
       "duplicate_label_in_file": "This study name appears more than once in the file.",
-      "duplicate_doi_in_file": "This DOI appears more than once in the file."
+      "duplicate_doi_in_file": "This DOI appears more than once in the file.",
+      "required": "Required cell is empty.",
+      "invalid_number": "Invalid number.",
+      "invalid_integer": "Use a whole number."
     },
     "study": {
       "duplicate_label": "A study with this name already exists in the project.",
@@ -263,6 +267,36 @@
       "already_assessed": "This study already has a consensus or an import for this result; nothing was overwritten.",
       "missing_value": "Empty cell in a required item.",
       "unknown_value": "Value not recognised for this instrument. Use one of its levels (in Portuguese, English or as robvis writes them)."
+    },
+    "extraction_import": {
+      "unknown_study": "Study not linked to any study of the project. Register it or choose the match in step 3.",
+      "unknown_group": "Invalid group.",
+      "unknown_outcome": "Outcome not linked to any outcome of the project.",
+      "unknown_timepoint": "Time point not recognised. Use one of the outcome's time points in the protocol.",
+      "several_dispersions": "The row has more than one dispersion type (e.g. SD and SE). Keep only what the article reports for this group.",
+      "invalid_value_type": "Use \"final\" or \"change\".",
+      "invalid_yes_no": "Use \"yes\" or \"no\".",
+      "invalid_values": "Invalid combination of values in this row.",
+      "duplicate": "This group, outcome and time point appear more than once for the same study.",
+      "group_conflict": "The same group was linked to different comparison groups.",
+      "same_group": "Two arms of this study were linked to the same comparison group. Combine arms with the Cochrane formula (on the study screen), not in the spreadsheet.",
+      "study_has_errors": "This study has rows with problems (see the table below).",
+      "already_extracted": "You already have an extraction with data for this study; nothing was overwritten."
+    },
+    "extraction": {
+      "impossible": {
+        "n_not_positive": "The n (or the total) must be greater than zero.",
+        "sd_not_positive": "The SD must be greater than zero.",
+        "se_not_positive": "The SE must be greater than zero.",
+        "negative_events": "The number of events cannot be negative.",
+        "events_gt_total": "The number of events cannot exceed the group total.",
+        "ci_inverted": "The lower CI limit cannot be greater than the upper limit.",
+        "iqr_inverted": "The 1st quartile cannot be greater than the 3rd.",
+        "range_inverted": "The minimum cannot be greater than the maximum.",
+        "median_outside": "The median must lie between the quartiles (or between the minimum and maximum).",
+        "ratio_not_positive": "OR, RR and HR are always above zero (estimate and CI). Check the value typed.",
+        "p_out_of_range": "The p value must be between 0 and 1."
+      }
     }
   },
   "pdfs": {
@@ -1863,5 +1897,63 @@
     "password": "Password",
     "disable": "Turn off",
     "disableHelp": "To turn it off, type your password and a code from the app (or a recovery code)."
+  },
+  "extractionImport": {
+    "title": "Import an extraction spreadsheet",
+    "intro": "Bring the numbers of a spreadsheet the group already filled in. Each study becomes your draft extraction, with every check of the form (dispersion type, impossible values, direction sentence, double extraction and consensus). Nothing is saved until you check and confirm.",
+    "layoutTitle": "How the spreadsheet must be laid out",
+    "layout": "One row per study, group, outcome and time point, with the numbers of that group. Studies, comparison groups and outcomes must exist in the project (names may differ: you link each one in step 3). Use one column per dispersion type (SD, SE, CI, quartiles or minimum and maximum); the type comes from the filled column, and each row may have only one.",
+    "layoutNote": "FICTITIOUS example. Comma or dot decimals are accepted, in CSV or XLSX.",
+    "mappingHint": "We suggested the matches from the column names. Study, group and outcome are required.",
+    "step": {
+      "names": "Link the spreadsheet names to the project"
+    },
+    "namesHint": "Names equal to the project's are already linked. Choose the ones left without a match here. A group without a match becomes an arm of the study with no comparison group; you can link it later in the extraction.",
+    "names": {
+      "studies": "Studies",
+      "groups": "Groups",
+      "outcomes": "Outcomes"
+    },
+    "none": {
+      "studies": "None (rows refused)",
+      "groups": "Arm without a comparison group",
+      "outcomes": "None (rows refused)"
+    },
+    "status": {
+      "ready": "ready ({{rows}} rows)",
+      "imported": "imported ({{rows}} rows)",
+      "skipped": "not imported"
+    },
+    "errorsIntro": "Problems found: {{count}}. A study with any problem row is not imported (never half); fix the spreadsheet and send it again.",
+    "confirm": "Import the ready studies ({{count}})",
+    "done": "Rows imported: {{rows}}.",
+    "next": "Next step: open each study, check the numbers against the article (each value's source and the alerts are shown there) and submit the extraction.",
+    "fields": {
+      "study": "Study",
+      "group": "Group",
+      "outcome": "Outcome",
+      "timepoint": "Time point",
+      "value_type": "Final value or change",
+      "group_n": "Group n",
+      "n": "n analysed",
+      "mean": "Mean",
+      "sd": "SD",
+      "se": "SE",
+      "ci_low": "95% CI lower",
+      "ci_high": "95% CI upper",
+      "median": "Median",
+      "q1": "1st quartile",
+      "q3": "3rd quartile",
+      "min": "Minimum",
+      "max": "Maximum",
+      "events": "Events",
+      "total": "Total",
+      "source_location": "Where it is in the article",
+      "dispersion_source": "Where the article states the dispersion type",
+      "scale_name": "Scale",
+      "scale_min": "Scale: minimum",
+      "scale_max": "Scale: maximum",
+      "higher_is_better": "Higher is better? (yes/no)"
+    }
   }
 }

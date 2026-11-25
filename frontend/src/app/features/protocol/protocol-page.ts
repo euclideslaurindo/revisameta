@@ -356,7 +356,8 @@ export class ProtocolPage implements OnInit {
         },
       }),
     );
-    if (ok) dir ? dir.resetForm() : this.outcomeForm.reset();
+    if (ok && dir) dir.resetForm();
+    else if (ok) this.outcomeForm.reset();
   }
 
   async removeOutcome(outcome: OutcomeOut): Promise<void> {
@@ -385,7 +386,8 @@ export class ProtocolPage implements OnInit {
         },
       }),
     );
-    if (ok) dir ? dir.resetForm() : this.groupForm.reset();
+    if (ok && dir) dir.resetForm();
+    else if (ok) this.groupForm.reset();
   }
 
   async removeGroup(group: GroupOut): Promise<void> {

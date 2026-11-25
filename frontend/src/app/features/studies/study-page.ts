@@ -333,7 +333,8 @@ export class StudyPage {
         },
       }),
     );
-    if (ok) dir ? dir.resetForm() : this.articleForm.reset();
+    if (ok && dir) dir.resetForm();
+    else if (ok) this.articleForm.reset();
   }
 
   async removeArticle(study: StudyOut, report: ReportOut): Promise<void> {

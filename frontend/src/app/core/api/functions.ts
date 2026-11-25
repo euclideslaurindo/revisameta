@@ -263,6 +263,10 @@ export type { UnlockExtraction$Params as UnlockExtraction$Params } from './fn/ex
 export { unlockExtraction as unlockExtraction } from './fn/extraction/unlock-extraction';
 export type { ReopenConsensus$Params as ReopenConsensus$Params } from './fn/extraction/reopen-consensus';
 export { reopenConsensus as reopenConsensus } from './fn/extraction/reopen-consensus';
+export type { PreviewExtractionImport$Params as PreviewExtractionImport$Params } from './fn/extraction/preview-extraction-import';
+export { previewExtractionImport as previewExtractionImport } from './fn/extraction/preview-extraction-import';
+export type { RunExtractionImport$Params as RunExtractionImport$Params } from './fn/extraction/run-extraction-import';
+export { runExtractionImport as runExtractionImport } from './fn/extraction/run-extraction-import';
 export type { ExtractionExportStatus$Params as ExtractionExportStatus$Params } from './fn/exports/extraction-export-status';
 export { extractionExportStatus as extractionExportStatus } from './fn/exports/extraction-export-status';
 export type { ExportExtraction$Params as ExportExtraction$Params } from './fn/exports/export-extraction';

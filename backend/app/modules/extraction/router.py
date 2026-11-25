@@ -1,11 +1,14 @@
+import json
 import uuid
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, File, Form, UploadFile, status
+from pydantic import ValidationError
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.errors import AppError
 from app.db.session import get_session
 from app.integrations.stats_client import StatsClient, get_stats_client
-from app.modules.extraction import alerts, consensus, review, service
+from app.modules.extraction import alerts, consensus, importer, review, service
 from app.modules.extraction.models import ExtractionForm
 from app.modules.extraction.schemas import (
     ArmIn,
@@ -24,6 +27,7 @@ from app.modules.extraction.schemas import (
 )
 from app.modules.projects.access import ProjectContext, admin_access, member_access, project_access
 from app.modules.projects.models import Role
+from app.modules.studies.importer import MAX_FILE_BYTES
 
 router = APIRouter(prefix="/projects/{project_id}", tags=["extraction"])
 
@@ -303,3 +307,46 @@ async def reopen_consensus(
 ) -> None:
     """Puts a submitted consensus back to draft to correct it (justified)."""
     await review.reopen(session, ctx, extraction_id, body)
+
+
+# ---- Importing an extraction spreadsheet ----------------------------------------------
+
+
+async def _read_upload(file: UploadFile) -> bytes:
+    content = await file.read(MAX_FILE_BYTES + 1)
+    if len(content) > MAX_FILE_BYTES:
+        raise AppError("import.too_large", status_code=413, limit=MAX_FILE_BYTES // (1024 * 1024))
+    return content
+
+
+@router.post("/extraction-imports/preview")
+async def preview_extraction_import(
+    file: UploadFile = File(...),
+    ctx: ProjectContext = Depends(extractor_access),
+    session: AsyncSession = Depends(get_session),
+) -> importer.ExtractionImportPreview:
+    """Columns, a sample, a suggested mapping and the name matches. Nothing is saved."""
+    return await importer.preview(session, ctx, file.filename or "", await _read_upload(file))
+
+
+@router.post("/extraction-imports")
+async def run_extraction_import(
+    file: UploadFile = File(...),
+    mapping: str = Form(..., description='JSON: {"study": "Column name", ...}'),
+    matches: str = Form("{}", description='JSON: {"studies": {...}, "groups": {...}, ...}'),
+    dry_run: bool = Form(True),
+    ctx: ProjectContext = Depends(extractor_access),
+    session: AsyncSession = Depends(get_session),
+) -> importer.ExtractionImportReport:
+    """Validates every row; with dry_run=false the valid studies become the importing
+    person's draft extractions, to be checked and submitted as usual."""
+    try:
+        parsed = json.loads(mapping)
+        chosen = importer.ImportMatches.model_validate_json(matches)
+    except (json.JSONDecodeError, ValidationError) as exc:
+        raise AppError("import.invalid_mapping", status_code=422) from exc
+    if not isinstance(parsed, dict) or not all(isinstance(v, str) for v in parsed.values()):
+        raise AppError("import.invalid_mapping", status_code=422)
+    return await importer.run(
+        session, ctx, file.filename or "", await _read_upload(file), parsed, chosen, dry_run
+    )

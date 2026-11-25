@@ -202,7 +202,8 @@
       "other": "Estudo que tem os mesmos pacientes",
       "action": "Juntar estudos",
       "confirm": "Os artigos de \"{{other}}\" passam para \"{{study}}\", e \"{{other}}\" sai da lista. Continuar?"
-    }
+    },
+    "importExtraction": "Importar planilha de extração"
   },
   "import": {
     "title": "Importar lista de estudos",
@@ -250,7 +251,10 @@
       "invalid_doi": "DOI inválido. Ele deve começar com 10., ex.: 10.1000/xyz.",
       "invalid_pmid": "PMID inválido. Use só números.",
       "duplicate_label_in_file": "Este nome de estudo aparece mais de uma vez no arquivo.",
-      "duplicate_doi_in_file": "Este DOI aparece mais de uma vez no arquivo."
+      "duplicate_doi_in_file": "Este DOI aparece mais de uma vez no arquivo.",
+      "required": "Célula obrigatória vazia.",
+      "invalid_number": "Número inválido.",
+      "invalid_integer": "Use um número inteiro."
     },
     "study": {
       "duplicate_label": "Já existe um estudo com este nome no projeto.",
@@ -263,6 +267,36 @@
       "already_assessed": "Este estudo já tem consenso ou importação para este resultado; nada foi sobrescrito.",
       "missing_value": "Célula vazia num item obrigatório.",
       "unknown_value": "Valor não reconhecido para este instrumento. Use um dos níveis dele (em português, inglês ou como o robvis escreve)."
+    },
+    "extraction_import": {
+      "unknown_study": "Estudo não ligado a nenhum estudo do projeto. Cadastre o estudo ou escolha a correspondência no passo 3.",
+      "unknown_group": "Grupo inválido.",
+      "unknown_outcome": "Desfecho não ligado a nenhum desfecho do projeto.",
+      "unknown_timepoint": "Momento não reconhecido. Use um dos momentos do desfecho no protocolo.",
+      "several_dispersions": "A linha tem mais de um tipo de dispersão (por exemplo, DP e EP). Deixe só o que o artigo informa para este grupo.",
+      "invalid_value_type": "Use \"final\" ou \"mudança\".",
+      "invalid_yes_no": "Use \"sim\" ou \"não\".",
+      "invalid_values": "Combinação de valores inválida nesta linha.",
+      "duplicate": "Este grupo, desfecho e momento aparecem mais de uma vez para o mesmo estudo.",
+      "group_conflict": "O mesmo grupo foi ligado a grupos de comparação diferentes.",
+      "same_group": "Dois braços deste estudo foram ligados ao mesmo grupo de comparação. Combine os braços pela fórmula do Cochrane (na tela do estudo), não na planilha.",
+      "study_has_errors": "Há linhas com problema neste estudo (veja a tabela abaixo).",
+      "already_extracted": "Você já tem uma extração com dados para este estudo; nada foi sobrescrito."
+    },
+    "extraction": {
+      "impossible": {
+        "n_not_positive": "O n (ou o total) precisa ser maior que zero.",
+        "sd_not_positive": "O DP precisa ser maior que zero.",
+        "se_not_positive": "O EP precisa ser maior que zero.",
+        "negative_events": "O número de eventos não pode ser negativo.",
+        "events_gt_total": "O número de eventos não pode ser maior que o total do grupo.",
+        "ci_inverted": "O limite inferior do IC não pode ser maior que o superior.",
+        "iqr_inverted": "O 1º quartil não pode ser maior que o 3º.",
+        "range_inverted": "O mínimo não pode ser maior que o máximo.",
+        "median_outside": "A mediana precisa estar entre os quartis (ou entre o mínimo e o máximo).",
+        "ratio_not_positive": "OR, RR e HR são sempre maiores que zero (estimativa e IC). Confira o valor digitado.",
+        "p_out_of_range": "O valor p precisa estar entre 0 e 1."
+      }
     }
   },
   "pdfs": {
@@ -1863,5 +1897,63 @@
     "password": "Senha",
     "disable": "Desligar",
     "disableHelp": "Para desligar, digite a senha e um código do aplicativo (ou de recuperação)."
+  },
+  "extractionImport": {
+    "title": "Importar planilha de extração",
+    "intro": "Traga os números de uma planilha que o grupo já preencheu. Cada estudo vira a sua extração em rascunho, com todas as conferências do formulário (tipo de dispersão, valores impossíveis, frase de direção, dupla extração e consenso). Nada é gravado até você conferir e confirmar.",
+    "layoutTitle": "Como a planilha precisa estar",
+    "layout": "Uma linha por estudo, grupo, desfecho e momento, com os números daquele grupo. Os estudos, grupos de comparação e desfechos precisam existir no projeto (os nomes podem ser diferentes: você liga cada um no passo 3). Use uma coluna por tipo de dispersão (DP, EP, IC, quartis ou mínimo e máximo); o tipo vem da coluna preenchida, e cada linha só pode ter um.",
+    "layoutNote": "Exemplo FICTÍCIO. Vírgula ou ponto decimal são aceitos, em CSV ou XLSX.",
+    "mappingHint": "Já sugerimos a correspondência pelos nomes das colunas. Estudo, grupo e desfecho são obrigatórios.",
+    "step": {
+      "names": "Ligue os nomes da planilha ao projeto"
+    },
+    "namesHint": "Os nomes iguais aos do projeto já vêm ligados. Escolha aqui os que ficaram sem correspondência. Um grupo sem correspondência entra como braço do estudo sem grupo de comparação; você pode ligá-lo depois na extração.",
+    "names": {
+      "studies": "Estudos",
+      "groups": "Grupos",
+      "outcomes": "Desfechos"
+    },
+    "none": {
+      "studies": "Nenhum (linhas recusadas)",
+      "groups": "Braço sem grupo de comparação",
+      "outcomes": "Nenhum (linhas recusadas)"
+    },
+    "status": {
+      "ready": "pronto ({{rows}} linhas)",
+      "imported": "importado ({{rows}} linhas)",
+      "skipped": "não importado"
+    },
+    "errorsIntro": "Problemas encontrados: {{count}}. Um estudo com qualquer linha com problema não é importado (nunca pela metade); corrija a planilha e envie de novo.",
+    "confirm": "Importar os estudos prontos ({{count}})",
+    "done": "Linhas importadas: {{rows}}.",
+    "next": "Próximo passo: abra cada estudo, confira os números com o artigo (a origem de cada valor e os alertas aparecem lá) e envie a extração.",
+    "fields": {
+      "study": "Estudo",
+      "group": "Grupo",
+      "outcome": "Desfecho",
+      "timepoint": "Momento",
+      "value_type": "Valor final ou mudança",
+      "group_n": "n do grupo",
+      "n": "n analisado",
+      "mean": "Média",
+      "sd": "DP",
+      "se": "EP",
+      "ci_low": "IC 95% inferior",
+      "ci_high": "IC 95% superior",
+      "median": "Mediana",
+      "q1": "1º quartil",
+      "q3": "3º quartil",
+      "min": "Mínimo",
+      "max": "Máximo",
+      "events": "Eventos",
+      "total": "Total",
+      "source_location": "Onde está no artigo",
+      "dispersion_source": "Onde o artigo diz o tipo de dispersão",
+      "scale_name": "Escala",
+      "scale_min": "Escala: mínimo",
+      "scale_max": "Escala: máximo",
+      "higher_is_better": "Maior é melhor? (sim/não)"
+    }
   }
 }

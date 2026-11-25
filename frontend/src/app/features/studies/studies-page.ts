@@ -43,6 +43,9 @@ import { STUDY_DESIGNS } from './designs';
       @if (canEdit()) {
         <div class="actions">
           <a mat-stroked-button routerLink="importar">{{ 'studies.import' | transloco }}</a>
+          <a mat-stroked-button routerLink="importar-extracao">{{
+            'studies.importExtraction' | transloco
+          }}</a>
           @if (!creating()) {
             <button mat-flat-button type="button" (click)="creating.set(true)">
               {{ 'studies.new' | transloco }}

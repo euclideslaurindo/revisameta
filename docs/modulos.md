@@ -18,6 +18,7 @@ Prioridades: **P0** = MVP obrigatório, **P1** = importante, **P2** = desejável
 ### 7.2 Importação, deduplicação e migração (P0 parcial)
 - **(P0) Cadastro manual de estudos** e **importação de lista final** via CSV/XLSX, para projetos que já passaram da triagem.
 - **(P0) Migração de projeto em andamento:** importar a tabela consolidada de risco de viés (CSV/XLSX no formato do robvis ou com mapeamento de colunas feito pelo usuário) e planilhas de extração. Tela de **mapeamento de colunas** com pré-visualização e relatório de erros por linha.
+  - *Planilha de extração (implementado):* formato "longo", uma linha por estudo × grupo × desfecho × momento. O tipo de dispersão vem da coluna preenchida (uma por linha). Nomes de estudos, grupos e desfechos são ligados aos do projeto no passo 3. Os números viram a extração **individual em rascunho** de quem importa, pelas mesmas funções do formulário (valores impossíveis, alertas, frase de direção, dupla extração e consenso continuam valendo). Um estudo com qualquer linha inválida não é importado (nunca pela metade); uma extração já com dados nunca é sobrescrita. Exemplo FICTÍCIO em `docs/exemplos/planilha-extracao-FICTICIA.csv`.
 - **(P1)** Importar RIS, BibTeX, CSV e PubMed (`.nbib`), registrando base de origem, data e estratégia de busca.
 - **(P1) Deduplicação multicritério** (lição L4):
   - DOI igual (normalizado) ou PMID igual = duplicata certa.
