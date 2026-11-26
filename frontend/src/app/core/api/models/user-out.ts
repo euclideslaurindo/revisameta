@@ -7,6 +7,8 @@ export interface UserOut {
   id: string;
   is_system_admin: boolean;
   name: string;
+  terms_outdated?: boolean;
+  terms_version?: string | null;
   two_factor?: boolean;
   ui_language: string;
 }

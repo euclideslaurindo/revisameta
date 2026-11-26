@@ -6,6 +6,7 @@ from sqlalchemy import Boolean, ForeignKey, Index, String, func
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
+from app.core.legal import TERMS_VERSION
 from app.db.base import (
     AuditedMixin,
     Base,
@@ -36,6 +37,10 @@ class User(IdMixin, TimestampMixin, SoftDeleteMixin, VersionedMixin, AuditedMixi
     totp_secret: Mapped[str | None] = mapped_column(String(64))
     totp_enabled_at: Mapped[datetime | None]
     recovery_codes: Mapped[list[str]] = mapped_column(JSONB, default=list, server_default="[]")
+
+    @property
+    def terms_outdated(self) -> bool:
+        return self.terms_version != TERMS_VERSION
 
     @property
     def two_factor(self) -> bool:

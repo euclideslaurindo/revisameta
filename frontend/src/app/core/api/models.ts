@@ -3,6 +3,7 @@
 
 export type { AbstractIn } from './models/abstract-in';
 export type { AbstractOut } from './models/abstract-out';
+export type { AcceptTermsIn } from './models/accept-terms-in';
 export type { AdjustIn } from './models/adjust-in';
 export type { Adjustment } from './models/adjustment';
 export type { AgreementOut } from './models/agreement-out';

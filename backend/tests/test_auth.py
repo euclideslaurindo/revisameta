@@ -1,3 +1,4 @@
+import uuid
 from collections.abc import Callable, Coroutine
 from typing import Any
 
@@ -232,3 +233,29 @@ async def test_login_is_rate_limited(client: AsyncClient, monkeypatch: pytest.Mo
     body = {"email": "x@example.org", "password": "errada123x"}
     codes = [(await client.post("/api/v1/auth/login", json=body)).status_code for _ in range(4)]
     assert codes[-1] == 429
+
+
+async def test_outdated_terms_must_be_accepted_again(
+    client: AsyncClient, session: AsyncSession, make_user
+) -> None:
+    from app.core.legal import TERMS_VERSION
+
+    ana = await make_user("Ana")
+    me = (await client.get("/api/v1/auth/me", headers=ana.headers)).json()
+    assert me["terms_outdated"] is False
+    user = await session.get(User, uuid.UUID(ana.id))
+    assert user is not None
+    user.terms_version = "2000-01-01"
+    await session.commit()
+
+    me = (await client.get("/api/v1/auth/me", headers=ana.headers)).json()
+    assert me["terms_outdated"] is True
+    r = await client.post(
+        "/api/v1/auth/accept-terms", json={"version": "2000-01-01"}, headers=ana.headers
+    )
+    assert r.json()["code"] == "auth.terms_outdated"
+    r = await client.post(
+        "/api/v1/auth/accept-terms", json={"version": TERMS_VERSION}, headers=ana.headers
+    )
+    assert r.status_code == 200
+    assert r.json()["terms_outdated"] is False

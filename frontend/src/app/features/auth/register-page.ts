@@ -76,9 +76,14 @@ import { Turnstile } from '../../shared/turnstile';
               <mat-hint>{{ 'register.passwordHint' | transloco }}</mat-hint>
             </mat-form-field>
 
-            <mat-checkbox formControlName="acceptTerms">{{
-              'register.acceptTerms' | transloco
-            }}</mat-checkbox>
+            <mat-checkbox formControlName="acceptTerms"
+              >{{ 'legal.registerAccept' | transloco }}
+              <a routerLink="/termos" target="_blank">{{ 'legal.termsLink' | transloco }}</a>
+              {{ 'legal.and' | transloco }}
+              <a routerLink="/privacidade" target="_blank">{{
+                'legal.privacyLink' | transloco
+              }}</a></mat-checkbox
+            >
 
             @if (config.captchaSiteKey(); as key) {
               <rm-turnstile

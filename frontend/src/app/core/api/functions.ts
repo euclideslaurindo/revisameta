@@ -29,6 +29,8 @@ export type { Me$Params as Me$Params } from './fn/auth/me';
 export { me as me } from './fn/auth/me';
 export type { UpdateMe$Params as UpdateMe$Params } from './fn/auth/update-me';
 export { updateMe as updateMe } from './fn/auth/update-me';
+export type { AcceptTerms$Params as AcceptTerms$Params } from './fn/auth/accept-terms';
+export { acceptTerms as acceptTerms } from './fn/auth/accept-terms';
 export type { TwoFactorSetup$Params as TwoFactorSetup$Params } from './fn/auth/two-factor-setup';
 export { twoFactorSetup as twoFactorSetup } from './fn/auth/two-factor-setup';
 export type { TwoFactorEnable$Params as TwoFactorEnable$Params } from './fn/auth/two-factor-enable';

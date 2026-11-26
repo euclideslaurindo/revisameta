@@ -13,7 +13,20 @@ html {
         primary: mat.$azure-palette,
         tertiary: mat.$blue-palette,
       ),
-      typography: (plain-family: (system-ui, 'Segoe UI', Roboto, sans-serif), brand-family: (system-ui, 'Segoe UI', Roboto, sans-serif)),
+      typography: (
+        plain-family: (
+          system-ui,
+          'Segoe UI',
+          Roboto,
+          sans-serif,
+        ),
+        brand-family: (
+          system-ui,
+          'Segoe UI',
+          Roboto,
+          sans-serif,
+        ),
+      ),
       density: 0,
     )
   );
@@ -665,4 +678,12 @@ input[type='file']::file-selector-button:hover {
 input[type='file']:disabled::file-selector-button {
   opacity: 0.5;
   cursor: default;
+}
+
+.footer {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  padding: 2rem 1rem;
+  font-size: 0.875rem;
 }

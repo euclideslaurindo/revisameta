@@ -22,6 +22,8 @@ class Settings(BaseSettings):
 
     app_env: Literal["development", "test", "production"] = "development"
     app_base_url: str = "http://localhost:8080"
+    # Contact shown in the terms and privacy policy (LGPD and removal requests).
+    legal_contact_email: str = ""
     allowed_hosts: CsvList = Field(default=["localhost", "127.0.0.1"])
     cors_origins: CsvList = Field(default=["http://localhost:8080"])
 

@@ -46,6 +46,10 @@ import { NotificationsMenu } from './shared/notifications-menu';
     <main id="main" tabindex="-1">
       <router-outlet />
     </main>
+    <footer class="footer">
+      <a routerLink="/termos">{{ 'legal.termsLink' | transloco }}</a>
+      <a routerLink="/privacidade">{{ 'legal.privacyLink' | transloco }}</a>
+    </footer>
   `,
 })
 export class App {

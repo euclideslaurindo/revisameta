@@ -5,6 +5,7 @@
  * What the browser needs before login (no secrets).
  */
 export interface PublicConfig {
+  legal_contact_email: string;
   pdf_max_size_mb: number;
   terms_version: string;
   turnstile_enabled: boolean;

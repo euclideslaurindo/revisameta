@@ -11,6 +11,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import get_settings
 from app.core.errors import ServiceUnavailableError
+from app.core.legal import TERMS_VERSION
 from app.db.session import get_session
 from app.integrations.stats_client import StatsClient, get_stats_client
 
@@ -25,18 +26,19 @@ class PublicConfig(BaseModel):
     turnstile_site_key: str
     terms_version: str
     pdf_max_size_mb: int
+    # Where people send privacy (LGPD) and copyright removal requests; empty until set.
+    legal_contact_email: str
 
 
 @router.get("/public-config")
 async def public_config() -> PublicConfig:
-    from app.modules.auth.service import TERMS_VERSION
-
     settings = get_settings()
     return PublicConfig(
         turnstile_enabled=settings.turnstile_enabled,
         turnstile_site_key=settings.turnstile_site_key if settings.turnstile_enabled else "",
         terms_version=TERMS_VERSION,
         pdf_max_size_mb=settings.pdf_max_size_mb,
+        legal_contact_email=settings.legal_contact_email,
     )
 
 

@@ -72,6 +72,7 @@ async def test_public_config_has_no_secrets(client: AsyncClient) -> None:
         "turnstile_site_key",
         "terms_version",
         "pdf_max_size_mb",
+        "legal_contact_email",
     }
     assert "secret" not in r.text.lower()
 

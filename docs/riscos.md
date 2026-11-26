@@ -26,6 +26,8 @@
 - Como o sistema é aberto ao público: **termos de uso e política de privacidade** (pt e en) aceitos no cadastro, com versão registrada; exclusão de conta e exportação de dados pelo próprio usuário; prazo de retenção de projetos inativos definido (10.8).
 - Aviso claro sobre o envio de dados a provedores de IA (7.15.5).
 
+**Implementado:** páginas públicas `/termos` e `/privacidade` (pt e en, texto em `frontend/public/i18n/*.json`, chave `legal`). A controladora dos dados é a **B-TECH** (provisório). A versão fica em `backend/app/core/legal.py` (`TERMS_VERSION`): ao mudar o texto de forma relevante, aumente a versão; quem aceitou uma versão anterior é levado a `/aceitar-termos` antes de continuar, e o aceite fica registrado no usuário (auditoria). O e-mail de contato (LGPD e remoção por direitos autorais) vem de `LEGAL_CONTACT_EMAIL` no `.env`; sem ele, as páginas mostram "e-mail de contato ainda não definido". Recuperação de senha por e-mail (link de 1 hora, uso único, encerra todas as sessões) e troca de senha no perfil (encerra as outras sessões).
+
 ---
 
 ### 10.4 Desempenho e confiabilidade

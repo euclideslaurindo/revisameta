@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.config import get_settings
 from app.core.errors import AppError, NotAuthenticatedError
 from app.core.i18n import Language, translate
+from app.core.legal import TERMS_VERSION
 from app.core.security import (
     hash_password,
     hash_token,
@@ -21,7 +22,6 @@ from app.db.base import new_id
 from app.integrations.email import Email, EmailSender
 from app.modules.auth.models import EmailToken, RefreshToken, User
 
-TERMS_VERSION = "2026-11-13"
 VERIFY_PURPOSE = "verify_email"
 VERIFY_TTL = timedelta(hours=48)
 
@@ -296,3 +296,13 @@ async def refresh_family(session: AsyncSession, token: str | None) -> uuid.UUID 
         )
     ).first()
     return record.family_id if record else None
+
+
+async def accept_terms(session: AsyncSession, user: User, version: str) -> User:
+    """Record that the user accepted the current terms and privacy policy."""
+    if version != TERMS_VERSION:
+        raise AppError("auth.terms_outdated", status_code=409)
+    user.terms_version = TERMS_VERSION
+    user.terms_accepted_at = _now()
+    await session.commit()
+    return user

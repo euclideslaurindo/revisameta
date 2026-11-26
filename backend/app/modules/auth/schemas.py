@@ -40,6 +40,8 @@ class UserOut(BaseModel):
     is_system_admin: bool
     email_verified_at: datetime | None
     two_factor: bool = False
+    terms_version: str | None = None
+    terms_outdated: bool = False
 
 
 class TokenOut(BaseModel):
@@ -62,3 +64,7 @@ class ResetPasswordIn(BaseModel):
 class ChangePasswordIn(BaseModel):
     current_password: str = Field(min_length=1, max_length=256)
     new_password: str = Field(min_length=1, max_length=256)
+
+
+class AcceptTermsIn(BaseModel):
+    version: str = Field(min_length=1, max_length=32)

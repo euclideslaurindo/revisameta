@@ -2200,5 +2200,111 @@
     "changeTitle": "Change password",
     "changeHelp": "When you change the password, other devices signed in to your account are signed out.",
     "changed": "Password changed."
+  },
+  "legal": {
+    "updated": "Version {{version}}",
+    "draft": "Provisional text under review. It may change; if it does, we will ask you to accept it again.",
+    "contactMissing": "(contact e-mail not set yet)",
+    "termsLink": "Terms of use",
+    "privacyLink": "Privacy policy",
+    "registerAccept": "I have read and accept the",
+    "and": "and the",
+    "acceptTitle": "The terms have been updated",
+    "acceptText": "To keep using RevisaMeta, please read the new version of the terms of use and privacy policy.",
+    "acceptButton": "I have read and accept",
+    "terms": {
+      "title": "Terms of use",
+      "sections": {
+        "1": {
+          "0": "What RevisaMeta is",
+          "1": "RevisaMeta is a web platform to organise systematic reviews with meta-analysis: protocol, screening, data extraction, risk of bias, statistical analyses, GRADE and PRISMA. The service is provided by B-TECH, which is responsible for the platform and for the personal data processed in it (see the Privacy policy)."
+        },
+        "2": {
+          "0": "Beta version, no warranty",
+          "1": "The system is in a testing phase (beta), runs on free infrastructure and may be unavailable, slow or change without notice. It is provided \"as is\", with no warranty of availability or fitness for a particular purpose. Keep copies of what matters: use the exports and the project backup."
+        },
+        "3": {
+          "0": "Who may use it",
+          "1": "To create an account you must be 18 or older and give a valid e-mail, which will be confirmed. Each account is personal: do not share your password. You are responsible for what is done with your account."
+        },
+        "4": {
+          "0": "The system suggests; people decide",
+          "1": "Statistical calculations use recognised packages (metafor, meta, robvis), and the system shows warnings, suggested judgements and, when AI is on, automatic suggestions. None of this replaces the judgement of the review team. Inclusion decisions, risk-of-bias judgements, interpretation of results and anything published are the authors' responsibility."
+        },
+        "5": {
+          "0": "Your content",
+          "1": "Project content (protocols, extracted data, assessments, comments and files) remains the property of whoever created it. You allow us to store and process it only to make the system work for you and for the members you invite. You can export your projects and delete your account at any time."
+        },
+        "6": {
+          "0": "PDFs and copyright",
+          "1": "Upload only files you have the right to use. PDFs stay private to the project, accessible only to its members, and are never published. Official texts of instruments (for example JBI, RoB 2, ROBINS-I, Newcastle-Ottawa) are not shipped with the system; if you add them, respect each licence. Copyright removal requests can be sent to {{contact}}."
+        },
+        "7": {
+          "0": "Acceptable use",
+          "1": "Do not use the system for illegal activities, to send malicious content, to try to access other people's projects, to overload the server or to get around the usage quotas. Accounts that break these rules may be suspended."
+        },
+        "8": {
+          "0": "Quotas and limits",
+          "1": "Because it is free, the system has per-user limits (for example number of projects, PDF storage and daily AI use). The limits may be adjusted by the system administrators."
+        },
+        "9": {
+          "0": "Artificial intelligence",
+          "1": "AI functions are off by default. Only a project administrator can turn them on, after reading and accepting the notice that explains what is sent and to which provider. AI suggestions never become final data without human confirmation."
+        },
+        "10": {
+          "0": "Changes and termination",
+          "1": "These terms may change. If the change is relevant, we will tell you and ask you to accept again before going on. You can stop using the service by deleting your account on your profile. If the service is shut down, we will give advance notice so projects can be exported."
+        },
+        "11": {
+          "0": "Contact",
+          "1": "Questions, requests and reports: {{contact}}."
+        }
+      }
+    },
+    "privacy": {
+      "title": "Privacy policy",
+      "sections": {
+        "1": {
+          "0": "Who looks after your data",
+          "1": "The controller of the personal data processed in RevisaMeta is B-TECH, under the Brazilian General Data Protection Law (Law 13,709/2018, LGPD). Privacy contact: {{contact}}."
+        },
+        "2": {
+          "0": "What we collect",
+          "1": "Account data: name, e-mail, password (stored only as an Argon2id hash, never as text), preferred language, date the terms were accepted and, if you turn it on, the two-step verification secret.\nUsage data: technical logs (IP address, date and time, errors) and the change history of projects (audit), which shows who changed what and when.\nProject content: what you and your team enter or upload, including article PDFs."
+        },
+        "3": {
+          "0": "What we use it for",
+          "1": "To create and protect your account, allow teamwork on projects, send service e-mails (confirmation, invitations, password reset and notices), apply quotas, keep the service secure (rate limits, captcha) and fix errors. We do not sell your data or use it for advertising."
+        },
+        "4": {
+          "0": "Legal basis",
+          "1": "Performance of a contract (these terms of use), to provide the service; legitimate interest, for security, abuse prevention and technical improvement; and consent, when a project turns on the AI functions."
+        },
+        "5": {
+          "0": "Who we share it with",
+          "1": "Only with those needed for the service to work: the e-mail provider (to deliver messages); Cloudflare (which protects access and checks the captcha); and, only in projects that turn AI on, the chosen AI provider, which receives only the passages needed. On the free Gemini plan, Google may use the content sent to improve its products; that is why AI is off by default and requires acceptance. Private notes, comments and unpublished data are not sent to the AI. We may also share data when the law or a court order requires it."
+        },
+        "6": {
+          "0": "Where it is kept and for how long",
+          "1": "During the testing phase, data is kept on a server controlled by B-TECH, with an encrypted backup copy stored elsewhere. Account data is kept while the account exists. When you delete your account, your personal data is removed or anonymised; records other people still need (for example decisions already made in a shared project) remain without your name. Backups are erased in the normal rotation cycle (about 3 months). Projects not accessed for a long time will only be archived after an e-mail notice."
+        },
+        "7": {
+          "0": "Your rights",
+          "1": "At any time you can: confirm whether we process your data and access it; correct incomplete or wrong data (on your profile); ask for portability (export of your data and projects); ask for deletion (by deleting your account on your profile); withdraw AI consent (by turning it off in the project); and ask who we share data with. Use the profile options or write to {{contact}}. You may also complain to the Brazilian data protection authority (ANPD)."
+        },
+        "8": {
+          "0": "Security",
+          "1": "We use encrypted connections (HTTPS), strong password hashing, a protected session cookie, optional two-step verification, isolation between projects, temporary links for files and encrypted backups. No system is fully secure; if an incident may cause relevant risk, we will tell those affected and the ANPD."
+        },
+        "9": {
+          "0": "Cookies",
+          "1": "We use only the cookies needed: a session cookie (to keep you signed in securely) and Cloudflare's captcha cookies at sign-up and sign-in. We do not use advertising or tracking cookies."
+        },
+        "10": {
+          "0": "Changes to this policy",
+          "1": "If this policy changes in a relevant way, we will tell you and ask you to accept it again. The version in force is shown at the top of this page."
+        }
+      }
+    }
   }
 }

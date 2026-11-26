@@ -19,6 +19,7 @@ from app.modules.auth import service, two_factor
 from app.modules.auth.dependencies import get_current_user
 from app.modules.auth.models import User
 from app.modules.auth.schemas import (
+    AcceptTermsIn,
     ChangePasswordIn,
     EmailIn,
     LoginIn,
@@ -202,6 +203,16 @@ async def update_me(
         user.ui_language = body.ui_language
     await session.commit()
     return UserOut.model_validate(user)
+
+
+@router.post("/accept-terms")
+async def accept_terms(
+    body: AcceptTermsIn,
+    user: User = Depends(get_current_user),
+    session: AsyncSession = Depends(get_session),
+) -> UserOut:
+    """Accept the current terms of use and privacy policy (version shown in public-config)."""
+    return UserOut.model_validate(await service.accept_terms(session, user, body.version))
 
 
 @router.post("/2fa/setup")

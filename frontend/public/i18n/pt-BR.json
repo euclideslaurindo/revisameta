@@ -2200,5 +2200,111 @@
     "changeTitle": "Trocar senha",
     "changeHelp": "Ao trocar a senha, os outros aparelhos conectados à sua conta são desconectados.",
     "changed": "Senha alterada."
+  },
+  "legal": {
+    "updated": "Versão {{version}}",
+    "draft": "Texto provisório, em revisão. Pode mudar; se mudar, pediremos um novo aceite.",
+    "contactMissing": "(e-mail de contato ainda não definido)",
+    "termsLink": "Termos de uso",
+    "privacyLink": "Política de privacidade",
+    "registerAccept": "Li e aceito os",
+    "and": "e a",
+    "acceptTitle": "Os termos foram atualizados",
+    "acceptText": "Para continuar usando o RevisaMeta, leia a nova versão dos termos de uso e da política de privacidade.",
+    "acceptButton": "Li e aceito",
+    "terms": {
+      "title": "Termos de uso",
+      "sections": {
+        "1": {
+          "0": "O que é o RevisaMeta",
+          "1": "O RevisaMeta é uma plataforma web para organizar revisões sistemáticas com meta-análise: protocolo, triagem, extração de dados, risco de viés, análises estatísticas, GRADE e PRISMA. O serviço é oferecido pela B-TECH, responsável pela plataforma e pelos dados pessoais tratados nela (veja a Política de privacidade)."
+        },
+        "2": {
+          "0": "Versão beta, sem garantia",
+          "1": "O sistema está em fase de testes (beta), roda em infraestrutura gratuita e pode ficar fora do ar, ficar lento ou mudar sem aviso. Ele é oferecido \"como está\", sem garantia de disponibilidade ou de adequação a um fim específico. Mantenha cópias do que for importante: use as exportações e o backup do projeto."
+        },
+        "3": {
+          "0": "Quem pode usar",
+          "1": "Para criar uma conta é preciso ter 18 anos ou mais e informar um e-mail válido, que será confirmado. Cada conta é pessoal: não compartilhe sua senha. Você é responsável pelo que for feito com a sua conta."
+        },
+        "4": {
+          "0": "O sistema sugere; as pessoas decidem",
+          "1": "Os cálculos estatísticos são feitos com pacotes reconhecidos (metafor, meta, robvis), e o sistema mostra alertas, sugestões de julgamento e, quando a IA estiver ligada, sugestões automáticas. Nada disso substitui o julgamento da equipe da revisão. As decisões de inclusão, os julgamentos de risco de viés, a interpretação dos resultados e o que for publicado são responsabilidade dos autores."
+        },
+        "5": {
+          "0": "Seu conteúdo",
+          "1": "O conteúdo dos projetos (protocolos, dados extraídos, avaliações, comentários e arquivos) continua sendo de quem o criou. Você nos autoriza a guardá-lo e processá-lo só para fazer o sistema funcionar para você e para os membros que você convidar. Você pode exportar seus projetos e excluir sua conta a qualquer momento."
+        },
+        "6": {
+          "0": "PDFs e direitos autorais",
+          "1": "Envie apenas arquivos que você tem o direito de usar. Os PDFs ficam privados ao projeto, acessíveis só aos membros, e nunca são publicados. Os textos oficiais de instrumentos (por exemplo JBI, RoB 2, ROBINS-I, Newcastle-Ottawa) não vêm no sistema; se você os inserir, respeite a licença de cada um. Pedidos de remoção por direitos autorais podem ser enviados para {{contact}}."
+        },
+        "7": {
+          "0": "Uso aceitável",
+          "1": "Não use o sistema para atividades ilegais, para enviar conteúdo malicioso, para tentar acessar projetos de outras pessoas, para sobrecarregar o servidor ou para burlar as cotas de uso. Contas que violarem estas regras podem ser suspensas."
+        },
+        "8": {
+          "0": "Cotas e limites",
+          "1": "Por ser gratuito, o sistema tem limites por usuário (por exemplo, número de projetos, espaço para PDFs e uso diário da IA). Os limites podem ser ajustados pela administração do sistema."
+        },
+        "9": {
+          "0": "Inteligência artificial",
+          "1": "As funções de IA ficam desligadas por padrão. Só o administrador de um projeto pode ligá-las, depois de ler e aceitar o aviso que explica o que é enviado e para qual provedor. Sugestões da IA nunca viram dado final sem confirmação humana."
+        },
+        "10": {
+          "0": "Mudanças e encerramento",
+          "1": "Estes termos podem mudar. Se a mudança for relevante, avisaremos e pediremos um novo aceite antes de você continuar. Você pode encerrar o uso excluindo sua conta no seu perfil. Se o serviço for encerrado, avisaremos com antecedência para que os projetos possam ser exportados."
+        },
+        "11": {
+          "0": "Contato",
+          "1": "Dúvidas, pedidos e denúncias: {{contact}}."
+        }
+      }
+    },
+    "privacy": {
+      "title": "Política de privacidade",
+      "sections": {
+        "1": {
+          "0": "Quem cuida dos seus dados",
+          "1": "A controladora dos dados pessoais tratados no RevisaMeta é a B-TECH, nos termos da Lei Geral de Proteção de Dados (Lei nº 13.709/2018, LGPD). Contato para assuntos de privacidade: {{contact}}."
+        },
+        "2": {
+          "0": "Que dados coletamos",
+          "1": "Dados da conta: nome, e-mail, senha (guardada só como hash Argon2id, nunca em texto), idioma preferido, data de aceite dos termos e, se você ligar, o segredo da verificação em duas etapas.\nDados de uso: registros técnicos (endereço IP, data e hora, erros) e o histórico de alterações nos projetos (auditoria), que mostra quem mudou o quê e quando.\nConteúdo dos projetos: o que você e sua equipe inserem ou enviam, incluindo PDFs de artigos."
+        },
+        "3": {
+          "0": "Para que usamos",
+          "1": "Para criar e proteger sua conta, permitir o trabalho em equipe nos projetos, enviar e-mails do serviço (confirmação, convites, redefinição de senha e avisos), aplicar as cotas, manter a segurança (limite de tentativas, captcha) e corrigir erros. Não vendemos seus dados e não os usamos para publicidade."
+        },
+        "4": {
+          "0": "Base legal",
+          "1": "Execução do contrato (estes termos de uso), para prestar o serviço; legítimo interesse, para segurança, prevenção de abuso e melhoria técnica; e consentimento, quando um projeto liga as funções de IA."
+        },
+        "5": {
+          "0": "Com quem compartilhamos",
+          "1": "Só com quem é necessário para o serviço funcionar: o provedor de e-mail (para enviar as mensagens); a Cloudflare (que protege o acesso e verifica o captcha); e, apenas nos projetos que ligarem a IA, o provedor de IA escolhido, recebendo só os trechos necessários. No plano gratuito do Gemini, o Google pode usar o conteúdo enviado para melhorar os produtos dele; por isso a IA vem desligada e exige aceite. Anotações privadas, comentários e dados não publicados não são enviados à IA. Também podemos compartilhar dados quando a lei ou uma ordem judicial exigir."
+        },
+        "6": {
+          "0": "Onde ficam e por quanto tempo",
+          "1": "Na fase de testes, os dados ficam em um servidor controlado pela B-TECH, com cópia de segurança criptografada fora dele. Os dados da conta ficam enquanto a conta existir. Ao excluir a conta, seus dados pessoais são removidos ou anonimizados; registros que outras pessoas ainda precisam (por exemplo, decisões já tomadas em um projeto compartilhado) ficam sem o seu nome. Cópias de segurança são apagadas no ciclo normal de rotação (cerca de 3 meses). Projetos sem acesso por muito tempo só serão arquivados depois de aviso por e-mail."
+        },
+        "7": {
+          "0": "Seus direitos",
+          "1": "Você pode, a qualquer momento: confirmar se tratamos seus dados e acessá-los; corrigir dados incompletos ou errados (no seu perfil); pedir a portabilidade (exportação dos seus dados e projetos); pedir a eliminação (excluindo a conta no perfil); revogar o consentimento da IA (desligando-a no projeto); e pedir informações sobre com quem compartilhamos. Para isso, use as opções do perfil ou escreva para {{contact}}. Você também pode reclamar à Autoridade Nacional de Proteção de Dados (ANPD)."
+        },
+        "8": {
+          "0": "Segurança",
+          "1": "Usamos conexão criptografada (HTTPS), senhas com hash forte, sessão com cookie protegido, verificação em duas etapas opcional, isolamento entre projetos, links temporários para os arquivos e cópias de segurança criptografadas. Nenhum sistema é totalmente seguro; se houver um incidente que possa causar risco relevante, avisaremos os afetados e a ANPD."
+        },
+        "9": {
+          "0": "Cookies",
+          "1": "Usamos só os cookies necessários: um cookie de sessão (para manter você conectado com segurança) e os do captcha da Cloudflare no cadastro e no login. Não usamos cookies de publicidade nem de rastreamento."
+        },
+        "10": {
+          "0": "Mudanças nesta política",
+          "1": "Se esta política mudar de forma relevante, avisaremos e pediremos um novo aceite. A versão em vigor aparece no topo desta página."
+        }
+      }
+    }
   }
 }

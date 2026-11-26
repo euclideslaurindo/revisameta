@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { authGuard, guestGuard } from './core/auth/auth-guard';
+import { authGuard, guestGuard, loggedInGuard } from './core/auth/auth-guard';
 
 // Paths match the links the backend puts in e-mails (/verificar-email, /convite).
 export const routes: Routes = [
@@ -27,6 +27,21 @@ export const routes: Routes = [
   {
     path: 'redefinir-senha',
     loadComponent: () => import('./features/auth/password-pages').then((m) => m.ResetPasswordPage),
+  },
+  {
+    path: 'termos',
+    data: { kind: 'terms' },
+    loadComponent: () => import('./features/legal/legal-pages').then((m) => m.LegalPage),
+  },
+  {
+    path: 'privacidade',
+    data: { kind: 'privacy' },
+    loadComponent: () => import('./features/legal/legal-pages').then((m) => m.LegalPage),
+  },
+  {
+    path: 'aceitar-termos',
+    canActivate: [loggedInGuard],
+    loadComponent: () => import('./features/legal/legal-pages').then((m) => m.AcceptTermsPage),
   },
   {
     path: 'convite',
