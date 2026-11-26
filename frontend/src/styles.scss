@@ -8,6 +8,19 @@
 // Source Sans 3 (SIL OFL 1.1), served from our own bundle: no request to Google Fonts.
 @use '@fontsource-variable/source-sans-3';
 
+// Dark mode: on when the device prefers it (unless the person chose light), or when
+// the person chose dark in the user menu (html[data-theme]).
+@mixin dark {
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      @content;
+    }
+  }
+  :root[data-theme='dark'] {
+    @content;
+  }
+}
+
 // Institutional look: navy primary, teal accent, cool greys. Status colours (risk of
 // bias traffic light, alerts) are separate and keep their meaning (docs/modulos.md 12).
 html {
@@ -17,7 +30,7 @@ html {
       color: (
         primary: rm-colors.$primary-palette,
         tertiary: rm-colors.$tertiary-palette,
-        theme-type: light,
+        theme-type: color-scheme,
       ),
       typography: (
         plain-family: (
@@ -78,6 +91,9 @@ html {
   --rm-beta-bg: #fff4ce;
   --rm-beta-text: #5c4400;
   --rm-radius: 10px;
+  --rm-heading: #142a47;
+  --rm-header-bg: #1f3a5f;
+  color-scheme: light;
   --rm-shadow: 0 1px 2px rgb(16 24 40 / 6%);
 }
 
@@ -97,7 +113,6 @@ body {
 }
 
 body {
-  color-scheme: light;
   min-height: 100%;
   display: flex;
   flex-direction: column;
@@ -115,14 +130,14 @@ h1 {
   line-height: 1.25;
   font-weight: 650;
   letter-spacing: -0.01em;
-  color: var(--rm-navy-dark);
+  color: var(--rm-heading);
   margin: 0.25rem 0 0.75rem;
 }
 h2 {
   font-size: 1.25rem;
   line-height: 1.3;
   font-weight: 650;
-  color: var(--rm-navy-dark);
+  color: var(--rm-heading);
   margin: 1.25rem 0 0.5rem;
 }
 h3 {
@@ -200,7 +215,7 @@ mat-card.mat-mdc-card {
   gap: 1rem;
   padding: 0 1.5rem;
   min-height: 60px;
-  background: var(--rm-navy);
+  background: var(--rm-header-bg);
   color: #fff;
   box-shadow: 0 1px 0 rgb(0 0 0 / 15%);
 }
@@ -1462,4 +1477,137 @@ table.sample tbody tr:nth-child(even) {
 .confounders-box ul {
   margin: 0.35rem 0;
   padding-left: 1.2rem;
+}
+
+/* ---- Dark mode ------------------------------------------------------------------ */
+@include dark {
+  color-scheme: dark;
+  --rm-navy: #3d6aa8;
+  --rm-navy-dark: #c9d8ec;
+  --rm-heading: #e3ebf5;
+  --rm-header-bg: #0f1d30;
+  --rm-teal: #3fb6a8;
+  --rm-bg: #0e141b;
+  --rm-surface: #161f29;
+  --rm-border: #2a3644;
+  --rm-text: #e2e8ef;
+  --rm-muted: #9eacba;
+  --rm-link: #8fb8ef;
+  --rm-shadow: 0 1px 2px rgb(0 0 0 / 40%);
+
+  .beta-banner {
+    background: #3a3010;
+    color: #f2dc9a;
+    border-bottom-color: #4a3d14;
+  }
+  .notice {
+    background: #16273c;
+    color: #cfe0f5;
+    border-left-color: #5a8ccc;
+  }
+  .notice-error {
+    background: #3a1714;
+    color: #f6c9c3;
+    border-left-color: #e5675a;
+  }
+  .notice-warn,
+  .hint-ni,
+  .my-pending {
+    background: #362c10;
+    color: #f2dc9a;
+    border-color: #5a4a1c;
+  }
+  .notice-ok,
+  .badge {
+    background: #12301f;
+    color: #b8e6c8;
+    border-left-color: #4caf74;
+  }
+  .pill {
+    background: #1d2a39;
+    border-color: #34465c;
+    color: #d5e2f2;
+  }
+  .step-guide,
+  .guide-toggle,
+  .confounders-box {
+    background: #142233;
+    border-color: #2c4157;
+    color: var(--rm-text);
+  }
+  .step-guide-head {
+    color: var(--rm-heading);
+  }
+  .step-guide-avoid {
+    color: #f2dc9a;
+  }
+  .guide-toggle span {
+    background: #4f7fbf;
+  }
+  .empty {
+    border-color: #34465c;
+  }
+  .empty::before {
+    background-color: #1d2a39;
+    filter: invert(0.8) hue-rotate(180deg);
+  }
+  .project-side nav a:hover {
+    background: #1d2a39;
+  }
+  .project-side nav a.active {
+    background: #213247;
+    color: var(--rm-heading);
+  }
+  .stage-progress .bar {
+    background: #2a3644;
+  }
+  .result-table,
+  table.sample,
+  .review-table,
+  .rob-table {
+    background: var(--rm-surface);
+  }
+  .result-table th,
+  table.sample th,
+  .review-table th,
+  .rob-table th {
+    background: #1d2a39;
+    color: var(--rm-heading);
+  }
+  .result-table th,
+  .result-table td {
+    border-bottom-color: #233040;
+  }
+  .result-table tbody tr:nth-child(even),
+  table.sample tbody tr:nth-child(even) {
+    background: #19232e;
+  }
+  .result-table tbody tr:hover {
+    background: #1f2b38;
+  }
+  .skeleton-block {
+    background: linear-gradient(90deg, #1d2732 25%, #26323f 50%, #1d2732 75%);
+    background-size: 200% 100%;
+  }
+  .checklist li {
+    border-bottom-color: #233040;
+  }
+  .project-card:hover,
+  .project-card:focus-within {
+    border-color: #4f6f94;
+  }
+  .project-card-title a {
+    color: var(--rm-heading);
+  }
+  .footer a {
+    color: var(--rm-muted);
+  }
+  .auth-intro .auth-name {
+    color: var(--rm-heading);
+  }
+  /* Charts made by R have a white background; frame them so they do not glare. */
+  main img {
+    background: #fff;
+    border-radius: 6px;
+  }
 }

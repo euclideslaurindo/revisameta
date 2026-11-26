@@ -11,7 +11,12 @@
     "mainNav": "Main navigation",
     "projects": "My projects",
     "profile": "My profile",
-    "footer": "RevisaMeta · systematic reviews with meta-analysis · B-TECH"
+    "footer": "RevisaMeta · systematic reviews with meta-analysis · B-TECH",
+    "theme": {
+      "auto": "Theme: automatic",
+      "light": "Theme: light",
+      "dark": "Theme: dark"
+    }
   },
   "languages": {
     "pt-BR": "Português",

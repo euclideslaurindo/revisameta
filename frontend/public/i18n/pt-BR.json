@@ -11,7 +11,12 @@
     "mainNav": "Navegação principal",
     "projects": "Meus projetos",
     "profile": "Meu perfil",
-    "footer": "RevisaMeta · revisões sistemáticas com meta-análise · B-TECH"
+    "footer": "RevisaMeta · revisões sistemáticas com meta-análise · B-TECH",
+    "theme": {
+      "auto": "Tema: automático",
+      "light": "Tema: claro",
+      "dark": "Tema: escuro"
+    }
   },
   "languages": {
     "pt-BR": "Português",

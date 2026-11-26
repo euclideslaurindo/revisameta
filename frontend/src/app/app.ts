@@ -5,6 +5,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 import { AuthService } from './core/auth/auth';
+import { ThemeChoice, ThemeService } from './core/theme';
 import { LANGUAGES, Language, LanguageService } from './core/i18n/language';
 import { NotificationsMenu } from './shared/notifications-menu';
 
@@ -65,6 +66,17 @@ import { NotificationsMenu } from './shared/notifications-menu';
         </button>
         <mat-menu #userMenu="matMenu">
           <a mat-menu-item routerLink="/perfil">{{ 'app.profile' | transloco }}</a>
+          @for (t of themes; track t) {
+            <button
+              mat-menu-item
+              type="button"
+              role="menuitemradio"
+              [attr.aria-checked]="theme.choice() === t"
+              (click)="theme.set(t)"
+            >
+              {{ theme.choice() === t ? '✓ ' : '' }}{{ 'app.theme.' + t | transloco }}
+            </button>
+          }
           <!-- On phones the language select is hidden from the bar and lives here. -->
           @for (lang of languages; track lang) {
             @if (lang !== language.current()) {
@@ -98,6 +110,8 @@ export class App {
   protected readonly auth = inject(AuthService);
   protected readonly language = inject(LanguageService);
   protected readonly languages = LANGUAGES;
+  protected readonly theme = inject(ThemeService);
+  protected readonly themes: ThemeChoice[] = ['auto', 'light', 'dark'];
 
   protected initials(name: string): string {
     const parts = name.trim().split(/\s+/);
