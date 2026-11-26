@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import APIRouter, Cookie, Depends, Request, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -15,7 +17,7 @@ from app.core.security import create_access_token
 from app.db.session import get_session
 from app.integrations.captcha import CaptchaVerifier, get_captcha_verifier
 from app.integrations.email import EmailSender, get_email_sender
-from app.modules.auth import service, two_factor
+from app.modules.auth import account, service, two_factor
 from app.modules.auth.dependencies import get_current_user
 from app.modules.auth.models import User
 from app.modules.auth.schemas import (
@@ -213,6 +215,34 @@ async def accept_terms(
 ) -> UserOut:
     """Accept the current terms of use and privacy policy (version shown in public-config)."""
     return UserOut.model_validate(await service.accept_terms(session, user, body.version))
+
+
+@router.get("/me/export")
+async def export_my_data(
+    user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)
+) -> dict[str, Any]:
+    """The user's personal data as JSON (LGPD portability)."""
+    return await account.export_data(session, user)
+
+
+@router.get("/me/deletion-check")
+async def deletion_check(
+    user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)
+) -> account.DeletionCheckOut:
+    """What deleting the account would do, and which projects must be handed over first."""
+    return await account.deletion_check(session, user)
+
+
+@router.post("/me/delete", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_my_account(
+    response: Response,
+    body: account.DeleteAccountIn,
+    user: User = Depends(get_current_user),
+    session: AsyncSession = Depends(get_session),
+) -> None:
+    """Delete (anonymise) the account after confirming the password."""
+    await account.delete_account(session, user, body)
+    response.delete_cookie(REFRESH_COOKIE, path=REFRESH_COOKIE_PATH)
 
 
 @router.post("/2fa/setup")

@@ -2306,5 +2306,22 @@
         }
       }
     }
+  },
+  "account": {
+    "title": "Your data and your account",
+    "exportHelp": "Download a file (JSON) with the personal data the system keeps about you: account, projects you take part in and comments. Each project's content is exported through the project backup.",
+    "export": "Download my data",
+    "deleteTitle": "Delete my account",
+    "deleteHelp": "Your name, e-mail and password are erased and you leave every project. Work already done in shared projects stays there, without your name, so the team is not harmed.",
+    "deleteStart": "I want to delete my account",
+    "blocking": "Before deleting, hand over the administration of these projects to another member (in the project settings):",
+    "reason": {
+      "owner_with_members": "you are the owner and there are other members",
+      "last_admin": "you are the only administrator"
+    },
+    "warning": "This cannot be undone. After deleting, you will not be able to sign in with this account.",
+    "soloProjects": "These projects, where you are the only member, will be deleted:",
+    "leaves": "You will leave {{count}} shared project(s).",
+    "deleteConfirm": "Delete my account permanently"
   }
 }

@@ -2306,5 +2306,22 @@
         }
       }
     }
+  },
+  "account": {
+    "title": "Seus dados e sua conta",
+    "exportHelp": "Baixe um arquivo (JSON) com os dados pessoais que o sistema guarda sobre você: conta, projetos de que participa e comentários. O conteúdo de cada projeto é exportado pelo backup do projeto.",
+    "export": "Baixar meus dados",
+    "deleteTitle": "Excluir minha conta",
+    "deleteHelp": "Seu nome, e-mail e senha são apagados e você sai de todos os projetos. O trabalho já feito em projetos compartilhados continua lá, sem o seu nome, para não prejudicar a equipe.",
+    "deleteStart": "Quero excluir minha conta",
+    "blocking": "Antes de excluir, passe a administração destes projetos para outro membro (em Configurações do projeto):",
+    "reason": {
+      "owner_with_members": "você é o dono e há outros membros",
+      "last_admin": "você é o único administrador"
+    },
+    "warning": "Isto não pode ser desfeito. Depois de excluir, não será possível entrar com esta conta.",
+    "soloProjects": "Estes projetos, em que só você participa, serão excluídos:",
+    "leaves": "Você sairá de {{count}} projeto(s) compartilhado(s).",
+    "deleteConfirm": "Excluir minha conta definitivamente"
   }
 }

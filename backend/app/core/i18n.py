@@ -40,6 +40,10 @@ MESSAGES: dict[Language, dict[str, str]] = {
         "auth.terms_required": "É preciso aceitar os termos de uso e a política de privacidade.",
         "auth.invalid_token": "Este link é inválido ou expirou.",
         "auth.wrong_password": "A senha atual não confere.",
+        "account.transfer_first": (
+            "Antes de excluir a conta, passe a administração dos projetos compartilhados "
+            "para outro membro."
+        ),
         "auth.terms_outdated": "Os termos mudaram. Recarregue a página e leia a versão nova.",
         "email.reset.subject": "Redefinir sua senha no RevisaMeta",
         "email.reset.body": (
@@ -255,6 +259,10 @@ MESSAGES: dict[Language, dict[str, str]] = {
         "auth.terms_required": "You must accept the terms of use and the privacy policy.",
         "auth.invalid_token": "This link is invalid or has expired.",
         "auth.wrong_password": "The current password does not match.",
+        "account.transfer_first": (
+            "Before deleting the account, hand over the administration of shared projects "
+            "to another member."
+        ),
         "auth.terms_outdated": "The terms have changed. Reload the page and read the new version.",
         "email.reset.subject": "Reset your RevisaMeta password",
         "email.reset.body": (

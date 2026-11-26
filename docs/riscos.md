@@ -28,6 +28,8 @@
 
 **Implementado:** páginas públicas `/termos` e `/privacidade` (pt e en, texto em `frontend/public/i18n/*.json`, chave `legal`). A controladora dos dados é a **B-TECH** (provisório). A versão fica em `backend/app/core/legal.py` (`TERMS_VERSION`): ao mudar o texto de forma relevante, aumente a versão; quem aceitou uma versão anterior é levado a `/aceitar-termos` antes de continuar, e o aceite fica registrado no usuário (auditoria). O e-mail de contato (LGPD e remoção por direitos autorais) vem de `LEGAL_CONTACT_EMAIL` no `.env`; sem ele, as páginas mostram "e-mail de contato ainda não definido". Recuperação de senha por e-mail (link de 1 hora, uso único, encerra todas as sessões) e troca de senha no perfil (encerra as outras sessões).
 
+No perfil, a pessoa baixa os próprios dados (JSON: conta, projetos e comentários) e exclui a conta. A exclusão pede a senha (e o código de 2FA, se ligado), **anonimiza** a conta (nome, e-mail, senha e 2FA apagados; sai de todas as sessões), encerra as participações e apaga (soft delete) os projetos em que a pessoa estava sozinha. Se ela for dona de um projeto com outros membros, ou a única administradora, precisa antes passar a administração; assim ninguém perde uma revisão compartilhada. O trabalho já feito fica no projeto, sem o nome dela.
+
 ---
 
 ### 10.4 Desempenho e confiabilidade

@@ -14,6 +14,7 @@ import { twoFactorSetup } from '../../core/api/fn/auth/two-factor-setup';
 import { AuthService } from '../../core/auth/auth';
 import { withJsonBody } from '../../core/errors/problem';
 import { FormError } from '../../shared/form-error';
+import { AccountData } from './account-data';
 import { ChangePassword } from './password-pages';
 
 /** My profile: optional two-step verification with an authenticator app (TOTP). */
@@ -28,6 +29,7 @@ import { ChangePassword } from './password-pages';
     MatInputModule,
     FormError,
     ChangePassword,
+    AccountData,
   ],
   template: `
     <h1>{{ 'profile.title' | transloco }}</h1>
@@ -99,6 +101,7 @@ import { ChangePassword } from './password-pages';
         }
       </mat-card-content>
     </mat-card>
+    <rm-account-data />
   `,
 })
 export class ProfilePage {
