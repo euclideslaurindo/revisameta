@@ -1,8 +1,8 @@
 import uuid
 from datetime import date, datetime
-from typing import Any, Literal
+from typing import Annotated, Any, Literal
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, StringConstraints, field_validator
 
 from app.modules.projects.models import Role
 
@@ -33,6 +33,9 @@ class Pico(BaseModel):
     outcome: str | None = Field(default=None, max_length=2000)
 
 
+Confounder = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=200)]
+
+
 class ProjectUpdate(BaseModel):
     """Partial update. `version` must match the current one (optimistic lock)."""
 
@@ -45,6 +48,7 @@ class ProjectUpdate(BaseModel):
     report_language: Literal["pt-BR", "en"] | None = None
     double_extraction: bool | None = None
     double_rob: bool | None = None
+    confounders: list[Confounder] | None = Field(default=None, max_length=30)
 
 
 class ProjectOut(BaseModel):
@@ -59,6 +63,7 @@ class ProjectOut(BaseModel):
     report_language: str
     double_extraction: bool
     double_rob: bool
+    confounders: list[str] = Field(default_factory=list)
     locked_stages: list[str]
     archived_at: datetime | None = None
     owner_id: uuid.UUID

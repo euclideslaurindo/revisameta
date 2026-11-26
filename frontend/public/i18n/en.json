@@ -763,7 +763,11 @@
       "missing": "{{count}} item(s) left before submitting:",
       "ready": "Everything is filled in. Check and submit.",
       "submit": "Submit assessment",
-      "hintNoInfo": "Did you choose this because the article does not report it? Then the right answer is “{{ni}}”. “No” and “Probably no” are for when the article shows the problem exists."
+      "hintNoInfo": "Did you choose this because the article does not report it? Then the right answer is “{{ni}}”. “No” and “Probably no” are for when the article shows the problem exists.",
+      "confoundersTitle": "Confounders set in the protocol",
+      "confoundersHelp": "Check whether the study measured and adjusted for each of them.",
+      "confoundersMissing": "The protocol does not list the important confounders yet; without the list, each reviewer judges by a different standard.",
+      "confoundersGo": "Set them in the protocol"
     },
     "answer": {
       "Y": "Yes",
@@ -2213,7 +2217,11 @@
     "deadline": "Deadline (e.g. abstract submission)",
     "reportLanguage": "Language of reports and charts",
     "save": "Save project details",
-    "saved": "Project details saved."
+    "saved": "Project details saved.",
+    "confoundersTitle": "Confounders",
+    "confounders": "Important confounders",
+    "confoundersHelp": "Before assessing studies, list the factors that may affect both the group and the outcome (for example disease severity, age, socioeconomic status). They appear in the risk-of-bias confounding domain, so every reviewer judges against the same list.",
+    "confoundersHint": "One per line (up to 30)."
   },
   "password": {
     "forgotLink": "I forgot my password",

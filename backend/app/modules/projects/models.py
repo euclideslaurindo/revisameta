@@ -46,6 +46,9 @@ class Project(BusinessMixin, AuditedMixin, Base):
     # Two independent risk-of-bias reviewers per study (on by default); off, one
     # submitted assessment is enough to start the consensus. The group decides.
     double_rob: Mapped[bool] = mapped_column(Boolean, default=True, server_default=true())
+    # Important confounders agreed in the protocol (ROBINS-I/E domain 1 and the JBI/NOS
+    # confounding items show them, so every reviewer judges against the same list).
+    confounders: Mapped[list[str]] = mapped_column(JSONB, default=list, server_default="[]")
     # Owner: the creator until administration is transferred. Cannot be removed.
     owner_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), index=True)
 

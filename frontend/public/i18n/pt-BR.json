@@ -763,7 +763,11 @@
       "missing": "Faltam {{count}} item(ns) para enviar:",
       "ready": "Tudo preenchido. Confira e envie.",
       "submit": "Enviar avaliação",
-      "hintNoInfo": "Escolheu esta resposta porque o artigo não informa? Nesse caso a resposta certa é “{{ni}}”. “Não” e “Provavelmente não” são para quando o artigo mostra que o problema existe."
+      "hintNoInfo": "Escolheu esta resposta porque o artigo não informa? Nesse caso a resposta certa é “{{ni}}”. “Não” e “Provavelmente não” são para quando o artigo mostra que o problema existe.",
+      "confoundersTitle": "Fatores de confusão definidos no protocolo",
+      "confoundersHelp": "Confira se o estudo mediu e ajustou para cada um deles.",
+      "confoundersMissing": "O protocolo ainda não lista os fatores de confusão importantes; sem a lista, cada revisor julga por um critério diferente.",
+      "confoundersGo": "Definir no protocolo"
     },
     "answer": {
       "Y": "Sim",
@@ -2213,7 +2217,11 @@
     "deadline": "Prazo (ex.: submissão do resumo)",
     "reportLanguage": "Idioma dos relatórios e gráficos",
     "save": "Salvar dados do projeto",
-    "saved": "Dados do projeto salvos."
+    "saved": "Dados do projeto salvos.",
+    "confoundersTitle": "Fatores de confusão",
+    "confounders": "Fatores de confusão importantes",
+    "confoundersHelp": "Liste, antes de avaliar os estudos, os fatores que podem influenciar tanto o grupo quanto o desfecho (por exemplo, gravidade da doença, idade, nível socioeconômico). Eles aparecem no domínio de confundimento do risco de viés, para todos os revisores julgarem com a mesma lista.",
+    "confoundersHint": "Um por linha (até 30)."
   },
   "password": {
     "forgotLink": "Esqueci minha senha",

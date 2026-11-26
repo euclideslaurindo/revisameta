@@ -118,6 +118,28 @@ interface TemplateView {
                 >
               </mat-card-header>
               <mat-card-content>
+                @if (isConfounding(domain)) {
+                  <div class="confounders-box" role="note">
+                    <strong>{{ 'rob.assessment.confoundersTitle' | transloco }}</strong>
+                    @if (confounders().length) {
+                      <ul>
+                        @for (c of confounders(); track c) {
+                          <li>{{ c }}</li>
+                        }
+                      </ul>
+                      <span class="muted small">{{
+                        'rob.assessment.confoundersHelp' | transloco
+                      }}</span>
+                    } @else {
+                      <span>
+                        {{ 'rob.assessment.confoundersMissing' | transloco }}
+                        <a [routerLink]="['/projetos', projectId(), 'protocolo']">{{
+                          'rob.assessment.confoundersGo' | transloco
+                        }}</a>
+                      </span>
+                    }
+                  </div>
+                }
                 @if (domain.variants?.length) {
                   <p class="muted">{{ 'rob.assessment.chooseVariant' | transloco }}</p>
                   <mat-radio-group
@@ -255,6 +277,12 @@ export class RobAssessmentPage {
   private readonly outcomes = signal<Record<string, string>>({});
 
   protected readonly projectId = computed(() => this.context.project()!.id);
+  protected readonly confounders = computed(() => this.context.project()?.confounders ?? []);
+
+  /** Confounding domain of any instrument (ROBINS-I/E d1, JBI "confounding", NOS "comparability"). */
+  protected isConfounding(domain: TemplateDomain): boolean {
+    return /confound|comparab|confus/i.test(JSON.stringify(domain.name ?? '') + ' ' + domain.key);
+  }
   protected readonly template = computed(() => this.tool()?.structure as TemplateView | undefined);
   protected readonly hasDomainJudgements = computed(() => {
     const kind = this.assessment()?.judgement_kind;

@@ -65,6 +65,21 @@ const PICO = ['population', 'intervention', 'comparison', 'outcome'] as const;
               </mat-form-field>
             }
           </div>
+          <h3>
+            {{ 'details.confoundersTitle' | transloco }}
+            <span
+              class="term"
+              tabindex="0"
+              [matTooltip]="'learning.terms.confounding.text' | transloco"
+              >?</span
+            >
+          </h3>
+          <p class="muted small">{{ 'details.confoundersHelp' | transloco }}</p>
+          <mat-form-field>
+            <mat-label>{{ 'details.confounders' | transloco }}</mat-label>
+            <textarea matInput formControlName="confounders" rows="3" maxlength="6000"></textarea>
+            <mat-hint>{{ 'details.confoundersHint' | transloco }}</mat-hint>
+          </mat-form-field>
           <div class="mapping-grid">
             <mat-form-field>
               <mat-label>{{ 'details.prospero' | transloco }}</mat-label>
@@ -111,6 +126,7 @@ export class ProjectDetails {
     prospero: [''],
     deadline: [''],
     report_language: ['pt-BR' as 'pt-BR' | 'en'],
+    confounders: [''],
   });
 
   constructor() {
@@ -133,6 +149,7 @@ export class ProjectDetails {
       prospero: project.prospero ?? '',
       deadline: project.deadline ?? '',
       report_language: project.report_language === 'en' ? 'en' : 'pt-BR',
+      confounders: (project.confounders ?? []).join('\n'),
     });
     if (this.context.isAdmin()) this.form.enable();
     else this.form.disable();
@@ -165,6 +182,14 @@ export class ProjectDetails {
           prospero: text(v.prospero),
           deadline: v.deadline || null,
           report_language: v.report_language,
+          confounders: [
+            ...new Set(
+              v.confounders
+                .split('\n')
+                .map((x) => x.trim())
+                .filter(Boolean),
+            ),
+          ].slice(0, 30),
         },
       });
       this.form.markAsPristine();

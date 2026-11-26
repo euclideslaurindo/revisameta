@@ -7,6 +7,7 @@ import { Pico } from '../models/pico';
  * Partial update. `version` must match the current one (optimistic lock).
  */
 export interface ProjectUpdate {
+  confounders?: Array<string> | null;
   deadline?: string | null;
   double_extraction?: boolean | null;
   double_rob?: boolean | null;

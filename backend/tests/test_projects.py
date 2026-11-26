@@ -298,3 +298,22 @@ async def test_admin_edits_details_and_pico_and_cannot_erase_the_title(
     # Only admins edit; members outside the project see nothing.
     r = await client.patch(url, json={"version": out["version"], "title": "X"}, headers=bia.headers)
     assert r.status_code in (403, 404)
+
+
+async def test_confounders_are_saved_on_the_protocol(client: AsyncClient, make_user) -> None:
+    ana = await make_user("Ana")
+    project = await _project(client, ana)
+    assert project["confounders"] == []
+    r = await client.patch(
+        f"/api/v1/projects/{project['id']}",
+        json={"version": project["version"], "confounders": [" idade ", "gravidade"]},
+        headers=ana.headers,
+    )
+    assert r.status_code == 200, r.text
+    assert r.json()["confounders"] == ["idade", "gravidade"]
+    r = await client.patch(
+        f"/api/v1/projects/{project['id']}",
+        json={"version": r.json()["version"], "confounders": [""]},
+        headers=ana.headers,
+    )
+    assert r.status_code == 422

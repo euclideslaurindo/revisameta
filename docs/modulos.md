@@ -126,6 +126,8 @@ Regras gerais: as checagens **avisam e pedem confirmação**, não bloqueiam (ex
 - Domínios RoB 2: (1) randomização, (2) desvios das intervenções pretendidas, (3) dados de desfecho faltantes, (4) mensuração do desfecho, (5) seleção do resultado relatado.
 - Domínios ROBINS-I (versão original): (1) confundimento, (2) seleção dos participantes, (3) classificação das intervenções, (4) desvios das intervenções pretendidas, (5) dados faltantes, (6) mensuração dos desfechos, (7) seleção do resultado relatado. Ajustar se o grupo usar a versão 2.
 
+**Fatores de confusão (implementado):** o protocolo tem uma lista de fatores de confusão importantes (`projects.confounders`, até 30). Ela aparece no domínio de confundimento de qualquer instrumento (ROBINS-I/E domínio 1, JBI "confounding", NOS "comparabilidade"), para todos os revisores julgarem com a mesma lista; sem lista, a tela avisa e leva ao protocolo.
+
 #### Regras de julgamento
 - O sistema **sugere** o julgamento pelo algoritmo do instrumento. O revisor pode discordar, com justificativa obrigatória.
 - RoB 2, geral sugerido: Baixo se todos os domínios forem Baixo; Alto se algum for Alto; Algumas preocupações nos demais casos. O manual permite julgar Alto quando há várias "algumas preocupações": a decisão fica com o revisor, com aviso.
