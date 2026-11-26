@@ -1,7 +1,7 @@
 {
   "app": {
     "name": "RevisaMeta",
-    "tagline": "Systematic reviews and meta-analyses, step by step",
+    "tagline": "Systematic reviews with meta-analysis, from protocol to forest plot, in one place.",
     "beta": "Beta version, no availability guarantee. Keep copies of your work.",
     "language": "Language",
     "logout": "Sign out",
@@ -69,7 +69,8 @@
       "label": "Restore a project from a backup (.zip)",
       "absent": "Project restored. These people have no account here, and their work was attributed to you: {{names}}."
     },
-    "archived": "Archived for inactivity"
+    "archived": "Archived for inactivity",
+    "moreTools": "More actions"
   },
   "roles": {
     "admin": "Administrator",

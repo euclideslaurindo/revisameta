@@ -42,7 +42,6 @@ import { RestoreBackup } from './restore-backup';
         </button>
       }
     </header>
-    <rm-restore-backup (restored)="reload()" />
     @if (usage(); as u) {
       <p class="muted">{{ 'projects.usage' | transloco: u }}</p>
     }
@@ -119,6 +118,10 @@ import { RestoreBackup } from './restore-backup';
         }
       </div>
     }
+    <details class="secondary-tools">
+      <summary>{{ 'projects.moreTools' | transloco }}</summary>
+      <rm-restore-backup (restored)="reload()" />
+    </details>
   `,
 })
 export class ProjectsPage implements OnInit {

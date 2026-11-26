@@ -34,6 +34,11 @@ import { Turnstile } from '../../shared/turnstile';
     Turnstile,
   ],
   template: `
+    <div class="auth-intro">
+      <img src="logo.svg" alt="" width="56" height="56" />
+      <p class="auth-name">{{ 'app.name' | transloco }}</p>
+      <p class="muted">{{ 'app.tagline' | transloco }}</p>
+    </div>
     <mat-card class="auth-card">
       <mat-card-header>
         <mat-card-title

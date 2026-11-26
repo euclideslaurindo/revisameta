@@ -1,7 +1,7 @@
 {
   "app": {
     "name": "RevisaMeta",
-    "tagline": "Revisões sistemáticas e meta-análises, passo a passo",
+    "tagline": "Revisões sistemáticas com meta-análise, do protocolo ao forest plot, em um só lugar.",
     "beta": "Versão beta, sem garantia de disponibilidade. Guarde cópias do seu trabalho.",
     "language": "Idioma",
     "logout": "Sair",
@@ -69,7 +69,8 @@
       "label": "Restaurar projeto de um backup (.zip)",
       "absent": "Projeto restaurado. Estas pessoas não têm conta aqui, e o que fizeram ficou atribuído a você: {{names}}."
     },
-    "archived": "Arquivado por inatividade"
+    "archived": "Arquivado por inatividade",
+    "moreTools": "Outras ações"
   },
   "roles": {
     "admin": "Administrador",
