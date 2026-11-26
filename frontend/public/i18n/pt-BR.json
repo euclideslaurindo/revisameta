@@ -762,7 +762,8 @@
       "groupRuleHint": "Este instrumento não tem regra oficial para o julgamento geral. Se o grupo definir uma regra, o sistema sugere; sem regra, o julgamento é livre.",
       "missing": "Faltam {{count}} item(ns) para enviar:",
       "ready": "Tudo preenchido. Confira e envie.",
-      "submit": "Enviar avaliação"
+      "submit": "Enviar avaliação",
+      "hintNoInfo": "Escolheu esta resposta porque o artigo não informa? Nesse caso a resposta certa é “{{ni}}”. “Não” e “Provavelmente não” são para quando o artigo mostra que o problema existe."
     },
     "answer": {
       "Y": "Sim",
@@ -1363,7 +1364,8 @@
       "few": "Menos de 5 estudos: as variâncias entre e dentro dos estudos ficam instáveis.",
       "counts": "{{k}} resultado(s) de {{studies}} estudo(s)",
       "variance": "variância entre estudos {{between}}; dentro dos estudos {{within}}"
-    }
+    },
+    "i2Caution": "O I² é uma regra prática, não um veredito: um I² alto não invalida a análise. Olhe também o intervalo de predição e procure o que explica a diferença entre os estudos (por exemplo, subgrupos)."
   },
   "searches": {
     "title": "Buscas",

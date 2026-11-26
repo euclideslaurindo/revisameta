@@ -762,7 +762,8 @@
       "groupRuleHint": "This instrument has no official rule for the overall judgement. If the group defines one, the system suggests; without it, the judgement is free.",
       "missing": "{{count}} item(s) left before submitting:",
       "ready": "Everything is filled in. Check and submit.",
-      "submit": "Submit assessment"
+      "submit": "Submit assessment",
+      "hintNoInfo": "Did you choose this because the article does not report it? Then the right answer is “{{ni}}”. “No” and “Probably no” are for when the article shows the problem exists."
     },
     "answer": {
       "Y": "Yes",
@@ -1363,7 +1364,8 @@
       "few": "Fewer than 5 studies: the between- and within-study variances are unstable.",
       "counts": "{{k}} result(s) from {{studies}} study(ies)",
       "variance": "between-study variance {{between}}; within-study {{within}}"
-    }
+    },
+    "i2Caution": "I² is a rule of thumb, not a verdict: a high I² does not make the analysis invalid. Also look at the prediction interval and at what may explain the differences between studies (for example, subgroups)."
   },
   "searches": {
     "title": "Searches",

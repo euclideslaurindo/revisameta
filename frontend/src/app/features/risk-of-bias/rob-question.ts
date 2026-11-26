@@ -20,6 +20,10 @@ export interface AnswerSlot {
 }
 
 /** Answer of one signalling question, with justification and the passage that supports it. */
+/** Phrases meaning "the article does not say" (pt and en). */
+export const MISSING =
+  /n[aã]o (informa|relata|descreve|menciona|reporta|cita|deixa claro)|sem informa|n[aã]o h[aá] informa|not (report|describ|mention|stat)|no information|unclear|n[aã]o est[aá] claro/;
+
 @Component({
   selector: 'rm-rob-question',
   imports: [
@@ -49,6 +53,11 @@ export interface AnswerSlot {
           }}</mat-button-toggle>
         }
       </mat-button-toggle-group>
+      @if (suggestNoInfo()) {
+        <p class="hint-ni" role="note">
+          {{ 'rob.assessment.hintNoInfo' | transloco: { ni: ('rob.answer.NI' | transloco) } }}
+        </p>
+      }
       <div class="row">
         <mat-form-field subscriptSizing="dynamic" class="wide">
           <mat-label>{{ 'rob.assessment.justification' | transloco }}</mat-label>
@@ -97,6 +106,19 @@ export class RobQuestion {
   protected readonly passage = computed(() => {
     const id = this.current()?.annotation_id;
     return id ? (this.annotations().find((a) => a.id === id) ?? null) : null;
+  });
+
+  /**
+   * Common ROBINS-I/RoB 2 mistake: answering "No" because the article does not report
+   * something. Shown for N/PN when "No information" exists and the justification is
+   * empty or says the information is missing. Only a hint: the reviewer decides.
+   */
+  protected readonly suggestNoInfo = computed(() => {
+    const now = this.current();
+    if (!this.editable() || !now || !['N', 'PN'].includes(now.answer ?? '')) return false;
+    if (!this.options().includes('NI')) return false;
+    const why = (now.justification ?? '').toLowerCase();
+    return !why.trim() || MISSING.test(why);
   });
 
   protected answerLabel(option: string): string {

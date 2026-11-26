@@ -1400,3 +1400,13 @@ table.sample tbody tr:nth-child(even) {
   color: var(--rm-muted);
   text-decoration: line-through;
 }
+
+.hint-ni {
+  margin: 0.4rem 0 0.25rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 6px;
+  background: #fff6db;
+  border-left: 3px solid #b98900;
+  color: #5c4400;
+  font-size: 0.9rem;
+}

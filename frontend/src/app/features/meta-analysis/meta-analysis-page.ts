@@ -366,6 +366,9 @@ import { MultilevelCard } from './multilevel-card';
             <mat-card-content>
               <p class="lead">{{ summary() }}</p>
               <p>{{ heterogeneityText() }}</p>
+              @if (heterogeneityText()) {
+                <p class="muted small">{{ 'meta.i2Caution' | transloco }}</p>
+              }
               <p class="muted">{{ predictionText() }}</p>
             </mat-card-content>
           </mat-card>
