@@ -324,11 +324,12 @@ main {
 }
 
 .empty {
-  padding: 2rem;
+  padding: 2.25rem 1.5rem;
   text-align: center;
   color: var(--rm-muted);
   background: var(--rm-surface);
-  border-radius: 8px;
+  border: 1px dashed #c3ccd7;
+  border-radius: var(--rm-radius);
 }
 
 .notice {
@@ -388,11 +389,13 @@ mat-card-title h2 {
 }
 .badge {
   margin-left: 0.5rem;
-  padding: 0.1rem 0.5rem;
+  padding: 0.1rem 0.55rem;
   border-radius: 999px;
-  background: #e6f4ea;
+  background: #e7f5ec;
   color: #1e5e2f;
   font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
 }
 .item-list {
   list-style: none;
@@ -992,4 +995,119 @@ main:has(.project-layout) {
   .project-side .project-name {
     display: none;
   }
+}
+
+/* Pills: roles and neutral labels (status colours stay on .badge / .rob-level). */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid #c9d3e0;
+  background: #f1f4f8;
+  color: var(--rm-navy-dark);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.pill-muted {
+  color: var(--rm-muted);
+  background: transparent;
+}
+
+/* Project list cards. */
+.project-card {
+  height: 100%;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+.project-card:hover,
+.project-card:focus-within {
+  border-color: #9fb3cc;
+  box-shadow: 0 4px 14px rgb(16 24 40 / 8%);
+}
+.project-card mat-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: 100%;
+  padding-top: 1rem;
+}
+.project-card-title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+.project-card-title a {
+  color: var(--rm-navy-dark);
+  text-decoration: none;
+}
+.project-card-title a::after {
+  /* The whole card is clickable; the link stays the only focus stop. */
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.project-card {
+  position: relative;
+}
+.project-card-title a:hover {
+  text-decoration: underline;
+}
+.project-card-question {
+  margin: 0;
+  color: var(--rm-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.project-card-footer {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--rm-border);
+}
+
+/* Data tables: one look everywhere. */
+.result-table,
+table.sample,
+.review-table,
+.rob-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--rm-surface);
+  border: 1px solid var(--rm-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.result-table th,
+table.sample th,
+.review-table th,
+.rob-table th {
+  background: #eef2f7;
+  color: var(--rm-navy-dark);
+  font-weight: 650;
+  font-size: 0.85rem;
+  text-align: left;
+  border-bottom: 1px solid var(--rm-border);
+}
+.result-table th,
+.result-table td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid #edf0f4;
+}
+.result-table tbody tr:nth-child(even),
+table.sample tbody tr:nth-child(even) {
+  background: #fafbfc;
+}
+.result-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+.result-table tbody tr:hover {
+  background: #f2f6fb;
 }

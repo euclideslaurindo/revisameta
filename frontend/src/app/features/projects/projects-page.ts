@@ -2,7 +2,6 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -28,7 +27,6 @@ import { RestoreBackup } from './restore-backup';
     TranslocoPipe,
     MatButtonModule,
     MatCardModule,
-    MatChipsModule,
     MatFormFieldModule,
     MatInputModule,
     MatProgressBarModule,
@@ -93,29 +91,29 @@ import { RestoreBackup } from './restore-backup';
     } @else {
       <div class="grid">
         @for (project of projects(); track project.id) {
-          <mat-card>
-            <mat-card-header>
-              <mat-card-title
-                ><a [routerLink]="['/projetos', project.id]">{{ project.title }}</a></mat-card-title
-              >
-            </mat-card-header>
+          <mat-card class="project-card">
             <mat-card-content>
+              <h2 class="project-card-title">
+                <a [routerLink]="['/projetos', project.id]">{{ project.title }}</a>
+              </h2>
               @if (project.archived_at) {
-                <p class="muted">{{ 'projects.archived' | transloco }}</p>
+                <span class="pill pill-muted">{{ 'projects.archived' | transloco }}</span>
               }
               @if (project.question) {
-                <p>{{ project.question }}</p>
+                <p class="project-card-question">{{ project.question }}</p>
               }
-              @if (project.deadline) {
-                <p class="muted">
-                  {{ 'projects.deadline' | transloco }}: {{ project.deadline | localDate }}
-                </p>
-              }
-              <mat-chip-set [attr.aria-label]="'projects.roles' | transloco">
-                @for (role of project.my_roles ?? []; track role) {
-                  <mat-chip>{{ 'roles.' + role | transloco }}</mat-chip>
+              <div class="project-card-footer">
+                @if (project.deadline) {
+                  <span class="muted small">
+                    {{ 'projects.deadline' | transloco }}: {{ project.deadline | localDate }}
+                  </span>
                 }
-              </mat-chip-set>
+                <span class="tags" [attr.aria-label]="'projects.roles' | transloco">
+                  @for (role of project.my_roles ?? []; track role) {
+                    <span class="pill">{{ 'roles.' + role | transloco }}</span>
+                  }
+                </span>
+              </div>
             </mat-card-content>
           </mat-card>
         }
