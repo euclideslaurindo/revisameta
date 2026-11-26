@@ -2559,5 +2559,10 @@
         ]
       }
     }
+  },
+  "readonly": {
+    "text": "Você pode ver esta parte, mas só quem é {{allowed}} pode mudá-la. Seu papel neste projeto: {{mine}}. Para mudar, fale com um administrador do projeto.",
+    "none": "nenhum",
+    "or": " ou "
   }
 }

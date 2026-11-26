@@ -17,6 +17,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
+import { ReadonlyNote } from '../../shared/readonly-note';
 
 import { Api } from '../../core/api/api';
 import { updateProject } from '../../core/api/fn/projects/update-project';
@@ -38,6 +39,7 @@ import { ProjectContext } from '../project/project-context';
 @Component({
   selector: 'rm-protocol-page',
   imports: [
+    ReadonlyNote,
     ReactiveFormsModule,
     TranslocoPipe,
     MatButtonModule,
@@ -56,6 +58,7 @@ import { ProjectContext } from '../project/project-context';
   ],
   template: `
     <p class="muted">{{ 'protocol.intro' | transloco }}</p>
+    <rm-readonly-note />
     <rm-form-error [error]="error()" />
 
     <rm-project-details />

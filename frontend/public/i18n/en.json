@@ -2559,5 +2559,10 @@
         ]
       }
     }
+  },
+  "readonly": {
+    "text": "You can see this part, but only a {{allowed}} can change it. Your role in this project: {{mine}}. To change it, talk to a project administrator.",
+    "none": "none",
+    "or": " or "
   }
 }

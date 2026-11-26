@@ -6,6 +6,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
+import { ReadonlyNote } from '../../shared/readonly-note';
 
 import { Api } from '../../core/api/api';
 import { aiSettings } from '../../core/api/fn/ai/ai-settings';
@@ -26,6 +27,7 @@ interface Notice {
 @Component({
   selector: 'rm-settings-page',
   imports: [
+    ReadonlyNote,
     DatePipe,
     FormsModule,
     TranslocoPipe,
@@ -37,6 +39,7 @@ interface Notice {
     AiMetrics,
   ],
   template: `
+    <rm-readonly-note />
     <mat-card class="block">
       <mat-card-content>
         <h2>

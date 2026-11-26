@@ -16,6 +16,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
+import { ReadonlyNote } from '../../shared/readonly-note';
 
 import { Api } from '../../core/api/api';
 import { addReport } from '../../core/api/fn/studies/add-report';
@@ -40,6 +41,7 @@ import { STUDY_DESIGNS } from './designs';
 @Component({
   selector: 'rm-study-page',
   imports: [
+    ReadonlyNote,
     StudyRobTool,
     FormsModule,
     ReactiveFormsModule,
@@ -57,6 +59,7 @@ import { STUDY_DESIGNS } from './designs';
     CommentsPanel,
   ],
   template: `
+    <rm-readonly-note [roles]="['admin', 'extractor']" />
     <a routerLink=".." class="back">← {{ 'project.nav.studies' | transloco }}</a>
     <rm-form-error [error]="error()" />
     @if (study(); as s) {
