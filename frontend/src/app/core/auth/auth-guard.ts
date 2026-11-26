@@ -24,3 +24,12 @@ export const authGuard: CanActivateFn = (route, state) => {
 
 export const guestGuard: CanActivateFn = () =>
   inject(AuthService).isLoggedIn() ? inject(Router).createUrlTree(['/projetos']) : true;
+
+/** System administrators only (screen 21); the backend checks again on every call. */
+export const systemAdminGuard: CanActivateFn = (route, state) => {
+  const allowed = authGuard(route, state);
+  if (allowed !== true) return allowed;
+  return inject(AuthService).user()?.is_system_admin
+    ? true
+    : inject(Router).createUrlTree(['/projetos']);
+};

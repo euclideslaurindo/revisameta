@@ -6,7 +6,8 @@
     "language": "Idioma",
     "logout": "Sair",
     "skipToContent": "Pular para o conteúdo",
-    "learning": "Aprendizado"
+    "learning": "Aprendizado",
+    "admin": "Administração"
   },
   "languages": {
     "pt-BR": "Português",
@@ -2323,5 +2324,49 @@
     "soloProjects": "Estes projetos, em que só você participa, serão excluídos:",
     "leaves": "Você sairá de {{count}} projeto(s) compartilhado(s).",
     "deleteConfirm": "Excluir minha conta definitivamente"
+  },
+  "admin": {
+    "title": "Administração do sistema",
+    "intro": "Usuários, cotas e situação dos serviços. A administração do sistema não vê o conteúdo dos projetos, a menos que seja membro deles.",
+    "status": "Situação dos serviços",
+    "refresh": "Atualizar",
+    "services": {
+      "database": "Banco de dados",
+      "redis": "Fila (Redis)",
+      "stats_r": "Serviço estatístico (R)",
+      "storage": "Armazenamento de arquivos"
+    },
+    "state": {
+      "ok": "funcionando",
+      "degraded": "com problemas",
+      "down": "fora do ar"
+    },
+    "overview": "Resumo",
+    "counts": "{{users}} conta(s), {{users_verified}} com e-mail confirmado, {{users_inactive}} suspensa(s); {{projects}} projeto(s).",
+    "defaults": "Cotas padrão por pessoa: {{projects}} projeto(s), {{storage}} MB de arquivos, {{ai}} uso(s) de IA por dia.",
+    "users": "Usuários",
+    "search": "Procurar por nome ou e-mail",
+    "searchButton": "Procurar",
+    "total": "{{total}} conta(s) encontrada(s).",
+    "unverified": "e-mail não confirmado",
+    "col": {
+      "name": "Nome",
+      "email": "E-mail",
+      "created": "Criada em",
+      "projects": "Projetos",
+      "active": "Ativa",
+      "admin": "Administra o sistema"
+    },
+    "quotas": "Cotas",
+    "kind": {
+      "projects": "Projetos",
+      "storage_mb": "Arquivos (MB)",
+      "ai_calls": "IA por dia"
+    },
+    "used": "usa {{used}}",
+    "saveQuotas": "Salvar cotas",
+    "quotaHint": "Deixe o campo vazio para voltar ao padrão. Suspender uma conta desconecta a pessoa na hora; o conteúdo dos projetos não é apagado.",
+    "previous": "Anteriores",
+    "next": "Próximos"
   }
 }

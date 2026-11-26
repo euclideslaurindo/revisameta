@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { authGuard, guestGuard, loggedInGuard } from './core/auth/auth-guard';
+import { authGuard, guestGuard, loggedInGuard, systemAdminGuard } from './core/auth/auth-guard';
 
 // Paths match the links the backend puts in e-mails (/verificar-email, /convite).
 export const routes: Routes = [
@@ -53,6 +53,11 @@ export const routes: Routes = [
     path: 'aprendizado',
     canActivate: [authGuard],
     loadComponent: () => import('./features/learning/learning-page').then((m) => m.LearningPage),
+  },
+  {
+    path: 'admin',
+    canActivate: [systemAdminGuard],
+    loadComponent: () => import('./features/admin/admin-page').then((m) => m.AdminPage),
   },
   {
     path: 'perfil',

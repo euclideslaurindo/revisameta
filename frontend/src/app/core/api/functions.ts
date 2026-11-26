@@ -467,3 +467,9 @@ export type { ProjectDashboard$Params as ProjectDashboard$Params } from './fn/da
 export { projectDashboard as projectDashboard } from './fn/dashboard/project-dashboard';
 export type { CreateDemoProject$Params as CreateDemoProject$Params } from './fn/learning/create-demo-project';
 export { createDemoProject as createDemoProject } from './fn/learning/create-demo-project';
+export type { Overview$Params as Overview$Params } from './fn/admin/overview';
+export { overview as overview } from './fn/admin/overview';
+export type { ListUsers$Params as ListUsers$Params } from './fn/admin/list-users';
+export { listUsers as listUsers } from './fn/admin/list-users';
+export type { UpdateUser$Params as UpdateUser$Params } from './fn/admin/update-user';
+export { updateUser as updateUser } from './fn/admin/update-user';

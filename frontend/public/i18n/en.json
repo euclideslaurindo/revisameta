@@ -6,7 +6,8 @@
     "language": "Language",
     "logout": "Sign out",
     "skipToContent": "Skip to content",
-    "learning": "Learning"
+    "learning": "Learning",
+    "admin": "Administration"
   },
   "languages": {
     "pt-BR": "Português",
@@ -2323,5 +2324,49 @@
     "soloProjects": "These projects, where you are the only member, will be deleted:",
     "leaves": "You will leave {{count}} shared project(s).",
     "deleteConfirm": "Delete my account permanently"
+  },
+  "admin": {
+    "title": "System administration",
+    "intro": "Users, quotas and service status. System administrators do not see project content unless they are members of the project.",
+    "status": "Service status",
+    "refresh": "Refresh",
+    "services": {
+      "database": "Database",
+      "redis": "Queue (Redis)",
+      "stats_r": "Statistics service (R)",
+      "storage": "File storage"
+    },
+    "state": {
+      "ok": "working",
+      "degraded": "having problems",
+      "down": "down"
+    },
+    "overview": "Summary",
+    "counts": "{{users}} account(s), {{users_verified}} with confirmed e-mail, {{users_inactive}} suspended; {{projects}} project(s).",
+    "defaults": "Default quotas per person: {{projects}} project(s), {{storage}} MB of files, {{ai}} AI use(s) per day.",
+    "users": "Users",
+    "search": "Search by name or e-mail",
+    "searchButton": "Search",
+    "total": "{{total}} account(s) found.",
+    "unverified": "e-mail not confirmed",
+    "col": {
+      "name": "Name",
+      "email": "E-mail",
+      "created": "Created",
+      "projects": "Projects",
+      "active": "Active",
+      "admin": "System admin"
+    },
+    "quotas": "Quotas",
+    "kind": {
+      "projects": "Projects",
+      "storage_mb": "Files (MB)",
+      "ai_calls": "AI per day"
+    },
+    "used": "uses {{used}}",
+    "saveQuotas": "Save quotas",
+    "quotaHint": "Leave a field empty to go back to the default. Suspending an account signs the person out at once; project content is not deleted.",
+    "previous": "Previous",
+    "next": "Next"
   }
 }

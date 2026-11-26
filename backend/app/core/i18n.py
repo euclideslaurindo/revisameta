@@ -40,6 +40,7 @@ MESSAGES: dict[Language, dict[str, str]] = {
         "auth.terms_required": "É preciso aceitar os termos de uso e a política de privacidade.",
         "auth.invalid_token": "Este link é inválido ou expirou.",
         "auth.wrong_password": "A senha atual não confere.",
+        "admin.not_on_self": "Você não pode suspender nem tirar a administração da sua própria conta.",
         "account.transfer_first": (
             "Antes de excluir a conta, passe a administração dos projetos compartilhados "
             "para outro membro."
@@ -259,6 +260,7 @@ MESSAGES: dict[Language, dict[str, str]] = {
         "auth.terms_required": "You must accept the terms of use and the privacy policy.",
         "auth.invalid_token": "This link is invalid or has expired.",
         "auth.wrong_password": "The current password does not match.",
+        "admin.not_on_self": "You cannot suspend or remove administration from your own account.",
         "account.transfer_first": (
             "Before deleting the account, hand over the administration of shared projects "
             "to another member."

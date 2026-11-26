@@ -30,6 +30,8 @@
 
 No perfil, a pessoa baixa os próprios dados (JSON: conta, projetos e comentários) e exclui a conta. A exclusão pede a senha (e o código de 2FA, se ligado), **anonimiza** a conta (nome, e-mail, senha e 2FA apagados; sai de todas as sessões), encerra as participações e apaga (soft delete) os projetos em que a pessoa estava sozinha. Se ela for dona de um projeto com outros membros, ou a única administradora, precisa antes passar a administração; assim ninguém perde uma revisão compartilhada. O trabalho já feito fica no projeto, sem o nome dela.
 
+**Administração do sistema** (`/admin`, só para quem tem `is_system_admin`): situação dos serviços, resumo de contas e projetos, lista de usuários com busca, suspender/reativar conta (desconecta na hora), dar/tirar administração (nunca da própria conta) e ajustar cotas por pessoa. Não dá acesso ao conteúdo dos projetos. O primeiro administrador é criado com `scripts/make-admin.sh <e-mail>`.
+
 ---
 
 ### 10.4 Desempenho e confiabilidade

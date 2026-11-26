@@ -36,6 +36,9 @@ import { NotificationsMenu } from './shared/notifications-menu';
       </mat-form-field>
       @if (auth.user(); as user) {
         <a routerLink="/aprendizado">{{ 'app.learning' | transloco }}</a>
+        @if (user.is_system_admin) {
+          <a routerLink="/admin">{{ 'app.admin' | transloco }}</a>
+        }
         <rm-notifications-menu />
         <a class="user" routerLink="/perfil">{{ user.name }}</a>
         <button mat-button type="button" (click)="auth.logout()">
