@@ -12,15 +12,20 @@ import { ScreeningQueuePage } from '../../models/screening-queue-page';
 export interface ScreeningQueue$Params {
   project_id: string;
   view?: 'todo' | 'done' | 'conflicts' | 'all';
-  after?: (string | null);
+  after?: string | null;
   limit?: number;
-  q?: (string | null);
+  q?: string | null;
   stage?: 'title_abstract' | 'full_text';
   order?: 'import' | 'priority';
   offset?: number;
 }
 
-export function screeningQueue(http: HttpClient, rootUrl: string, params: ScreeningQueue$Params, context?: HttpContext): Observable<StrictHttpResponse<ScreeningQueuePage>> {
+export function screeningQueue(
+  http: HttpClient,
+  rootUrl: string,
+  params: ScreeningQueue$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ScreeningQueuePage>> {
   const rb = new RequestBuilder(rootUrl, screeningQueue.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
@@ -33,13 +38,11 @@ export function screeningQueue(http: HttpClient, rootUrl: string, params: Screen
     rb.query('offset', params.offset, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ScreeningQueuePage>;
-    })
+    }),
   );
 }
 

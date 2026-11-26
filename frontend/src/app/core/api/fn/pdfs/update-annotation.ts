@@ -13,10 +13,15 @@ import { AnnotationUpdate } from '../../models/annotation-update';
 export interface UpdateAnnotation$Params {
   annotation_id: string;
   project_id: string;
-      body: AnnotationUpdate
+  body: AnnotationUpdate;
 }
 
-export function updateAnnotation(http: HttpClient, rootUrl: string, params: UpdateAnnotation$Params, context?: HttpContext): Observable<StrictHttpResponse<AnnotationOut>> {
+export function updateAnnotation(
+  http: HttpClient,
+  rootUrl: string,
+  params: UpdateAnnotation$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<AnnotationOut>> {
   const rb = new RequestBuilder(rootUrl, updateAnnotation.PATH, 'patch');
   if (params) {
     rb.path('annotation_id', params.annotation_id, {});
@@ -24,13 +29,11 @@ export function updateAnnotation(http: HttpClient, rootUrl: string, params: Upda
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<AnnotationOut>;
-    })
+    }),
   );
 }
 

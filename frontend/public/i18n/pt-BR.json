@@ -2182,5 +2182,23 @@
     "reportLanguage": "Idioma dos relatórios e gráficos",
     "save": "Salvar dados do projeto",
     "saved": "Dados do projeto salvos."
+  },
+  "password": {
+    "forgotLink": "Esqueci minha senha",
+    "forgotTitle": "Recuperar senha",
+    "forgotHelp": "Informe o e-mail da sua conta. Enviaremos um link para criar uma nova senha (vale por 1 hora).",
+    "send": "Enviar link",
+    "sent": "Se este e-mail tiver uma conta, o link já foi enviado. Confira também a caixa de spam.",
+    "backToLogin": "Voltar para entrar",
+    "resetTitle": "Criar nova senha",
+    "askAgain": "Pedir um novo link",
+    "new": "Nova senha",
+    "current": "Senha atual",
+    "rule": "Pelo menos 10 caracteres, com letras e números.",
+    "save": "Salvar nova senha",
+    "resetDone": "Senha alterada. Entre com a nova senha.",
+    "changeTitle": "Trocar senha",
+    "changeHelp": "Ao trocar a senha, os outros aparelhos conectados à sua conta são desconectados.",
+    "changed": "Senha alterada."
   }
 }

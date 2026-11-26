@@ -4,18 +4,18 @@
 export interface ToolOut {
   family: string;
   id: string;
-  overall_rule: ({
-[key: string]: any;
-} | null);
+  overall_rule: {
+    [key: string]: any;
+  } | null;
   questions: number;
   structure: {
-[key: string]: any;
-};
+    [key: string]: any;
+  };
   template_key: string;
   template_version: string;
   texts: {
-[key: string]: string;
-};
+    [key: string]: string;
+  };
   texts_filled: number;
   version: number;
 }

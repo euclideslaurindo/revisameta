@@ -4,6 +4,6 @@
 import { SuggestionOut } from '../models/suggestion-out';
 export interface ExtractOut {
   discarded: number;
-  dispersion_warning: (string | null);
+  dispersion_warning: string | null;
   suggestions: Array<SuggestionOut>;
 }

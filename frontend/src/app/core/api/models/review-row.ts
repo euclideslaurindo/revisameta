@@ -4,13 +4,13 @@
 import { ReviewNumber } from '../models/review-number';
 export interface ReviewRow {
   arm_label: string;
-  dispersion_source: (string | null);
-  dispersion_type: (string | null);
-  group_label: (string | null);
+  dispersion_source: string | null;
+  dispersion_type: string | null;
+  group_label: string | null;
   has_annotation: boolean;
   numbers: Array<ReviewNumber>;
   outcome_name: string;
-  source_location: (string | null);
+  source_location: string | null;
   timepoint: string;
   value_type: string;
 }

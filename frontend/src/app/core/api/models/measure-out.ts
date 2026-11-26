@@ -5,8 +5,8 @@ export interface MeasureOut {
   higher_is_better?: boolean;
   id: string;
   outcome_id: string;
-  scale_max?: (string | null);
-  scale_min?: (string | null);
-  scale_name?: (string | null);
+  scale_max?: string | null;
+  scale_min?: string | null;
+  scale_name?: string | null;
   version: number;
 }

@@ -12,23 +12,26 @@ import { Sections } from '../../models/sections';
 
 export interface DraftAbstract$Params {
   project_id: string;
-      body: DraftIn
+  body: DraftIn;
 }
 
-export function draftAbstract(http: HttpClient, rootUrl: string, params: DraftAbstract$Params, context?: HttpContext): Observable<StrictHttpResponse<Sections>> {
+export function draftAbstract(
+  http: HttpClient,
+  rootUrl: string,
+  params: DraftAbstract$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Sections>> {
   const rb = new RequestBuilder(rootUrl, draftAbstract.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<Sections>;
-    })
+    }),
   );
 }
 

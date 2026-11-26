@@ -3,7 +3,7 @@
 
 import { Role } from '../models/role';
 export interface InvitationPreview {
-  email: (string | null);
+  email: string | null;
   expires_at: string;
   project_title: string;
   roles: Array<Role>;

@@ -13,19 +13,22 @@ export interface BibliographyStatus$Params {
   project_id: string;
 }
 
-export function bibliographyStatus(http: HttpClient, rootUrl: string, params: BibliographyStatus$Params, context?: HttpContext): Observable<StrictHttpResponse<BibStatus>> {
+export function bibliographyStatus(
+  http: HttpClient,
+  rootUrl: string,
+  params: BibliographyStatus$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<BibStatus>> {
   const rb = new RequestBuilder(rootUrl, bibliographyStatus.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<BibStatus>;
-    })
+    }),
   );
 }
 

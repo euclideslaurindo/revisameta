@@ -3,18 +3,18 @@
 
 export interface MetaRegressionOut {
   kinds: {
-[key: string]: string;
-};
+    [key: string]: string;
+  };
   left_out: Array<string>;
   measure: string;
   moderators: Array<string>;
   result: {
-[key: string]: any;
-};
+    [key: string]: any;
+  };
   values: {
-[key: string]: {
-[key: string]: any;
-};
-};
+    [key: string]: {
+      [key: string]: any;
+    };
+  };
   warnings: Array<string>;
 }

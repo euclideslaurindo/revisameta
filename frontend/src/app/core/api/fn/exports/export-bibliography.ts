@@ -14,21 +14,26 @@ export interface ExportBibliography$Params {
   file_format?: BibFormat;
 }
 
-export function exportBibliography(http: HttpClient, rootUrl: string, params: ExportBibliography$Params, context?: HttpContext): Observable<StrictHttpResponse<Blob>> {
+export function exportBibliography(
+  http: HttpClient,
+  rootUrl: string,
+  params: ExportBibliography$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Blob>> {
   const rb = new RequestBuilder(rootUrl, exportBibliography.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.query('file_format', params.file_format, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'blob', accept: 'application/octet-stream', context })
-  ).pipe(
-    filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
-    map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Blob>;
-    })
-  );
+  return http
+    .request(rb.build({ responseType: 'blob', accept: 'application/octet-stream', context }))
+    .pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Blob>;
+      }),
+    );
 }
 
 exportBibliography.PATH = '/api/v1/projects/{project_id}/exports/bibliography';

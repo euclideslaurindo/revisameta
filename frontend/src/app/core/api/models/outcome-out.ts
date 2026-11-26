@@ -3,7 +3,7 @@
 
 import { OutcomeType } from '../models/outcome-type';
 export interface OutcomeOut {
-  description: (string | null);
+  description: string | null;
   higher_is_better: boolean;
   id: string;
   is_primary: boolean;

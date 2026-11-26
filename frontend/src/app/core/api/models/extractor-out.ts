@@ -4,6 +4,6 @@
 export interface ExtractorOut {
   extraction_id: string;
   id: string;
-  name: (string | null);
+  name: string | null;
   side: string;
 }

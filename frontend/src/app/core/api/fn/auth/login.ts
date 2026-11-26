@@ -11,22 +11,25 @@ import { LoginIn } from '../../models/login-in';
 import { TokenOut } from '../../models/token-out';
 
 export interface Login$Params {
-      body: LoginIn
+  body: LoginIn;
 }
 
-export function login(http: HttpClient, rootUrl: string, params: Login$Params, context?: HttpContext): Observable<StrictHttpResponse<TokenOut>> {
+export function login(
+  http: HttpClient,
+  rootUrl: string,
+  params: Login$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<TokenOut>> {
   const rb = new RequestBuilder(rootUrl, login.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<TokenOut>;
-    })
+    }),
   );
 }
 

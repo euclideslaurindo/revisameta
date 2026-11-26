@@ -4,12 +4,12 @@
 export interface PendingAlert {
   code: string;
   extraction_id: string;
-  field: (string | null);
+  field: string | null;
   id: string;
-  justification: (string | null);
+  justification: string | null;
   params: {
-[key: string]: any;
-};
+    [key: string]: any;
+  };
   severity: string;
   status: string;
   study_id: string;

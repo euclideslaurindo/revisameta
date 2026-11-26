@@ -46,6 +46,9 @@ import { Turnstile } from '../../shared/turnstile';
             {{ 'login.sessionExpired' | transloco }}
           </div>
         }
+        @if (senha()) {
+          <div class="notice notice-ok" role="status">{{ 'password.resetDone' | transloco }}</div>
+        }
         @if (verificado()) {
           <div class="notice notice-ok" role="status">{{ 'login.verified' | transloco }}</div>
         }
@@ -94,6 +97,9 @@ import { Turnstile } from '../../shared/turnstile';
           </button>
         </form>
         <p class="muted">
+          <a routerLink="/esqueci-senha">{{ 'password.forgotLink' | transloco }}</a>
+        </p>
+        <p class="muted">
           {{ 'login.noAccount' | transloco }}
           <a routerLink="/cadastro">{{ 'login.createAccount' | transloco }}</a>
         </p>
@@ -111,6 +117,7 @@ export class LoginPage {
   readonly voltar = input<string>();
   readonly sessao = input<string>();
   readonly verificado = input<string>();
+  readonly senha = input<string>();
 
   protected readonly form = inject(NonNullableFormBuilder).group({
     email: ['', [Validators.required, Validators.email]],

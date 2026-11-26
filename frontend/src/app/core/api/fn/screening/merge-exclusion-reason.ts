@@ -13,10 +13,15 @@ import { ReasonOut } from '../../models/reason-out';
 export interface MergeExclusionReason$Params {
   reason_id: string;
   project_id: string;
-      body: ReasonMergeIn
+  body: ReasonMergeIn;
 }
 
-export function mergeExclusionReason(http: HttpClient, rootUrl: string, params: MergeExclusionReason$Params, context?: HttpContext): Observable<StrictHttpResponse<ReasonOut>> {
+export function mergeExclusionReason(
+  http: HttpClient,
+  rootUrl: string,
+  params: MergeExclusionReason$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ReasonOut>> {
   const rb = new RequestBuilder(rootUrl, mergeExclusionReason.PATH, 'post');
   if (params) {
     rb.path('reason_id', params.reason_id, {});
@@ -24,14 +29,13 @@ export function mergeExclusionReason(http: HttpClient, rootUrl: string, params: 
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ReasonOut>;
-    })
+    }),
   );
 }
 
-mergeExclusionReason.PATH = '/api/v1/projects/{project_id}/screening/exclusion-reasons/{reason_id}/merge';
+mergeExclusionReason.PATH =
+  '/api/v1/projects/{project_id}/screening/exclusion-reasons/{reason_id}/merge';

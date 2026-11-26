@@ -3,9 +3,9 @@
 
 import { StudyDesign } from '../models/study-design';
 export interface ToStudyIn {
-  design?: (StudyDesign | null);
-  label?: (string | null);
+  design?: StudyDesign | null;
+  label?: string | null;
   mode: 'new' | 'attach';
   primary?: boolean;
-  study_id?: (string | null);
+  study_id?: string | null;
 }

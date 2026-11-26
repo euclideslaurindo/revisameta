@@ -13,19 +13,22 @@ export interface GradeSettings$Params {
   project_id: string;
 }
 
-export function gradeSettings(http: HttpClient, rootUrl: string, params: GradeSettings$Params, context?: HttpContext): Observable<StrictHttpResponse<GradeSettings>> {
+export function gradeSettings(
+  http: HttpClient,
+  rootUrl: string,
+  params: GradeSettings$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<GradeSettings>> {
   const rb = new RequestBuilder(rootUrl, gradeSettings.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<GradeSettings>;
-    })
+    }),
   );
 }
 

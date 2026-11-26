@@ -13,10 +13,15 @@ import { RobDecideIn } from '../../models/rob-decide-in';
 export interface DecideRobConflict$Params {
   assessment_id: string;
   project_id: string;
-      body: RobDecideIn
+  body: RobDecideIn;
 }
 
-export function decideRobConflict(http: HttpClient, rootUrl: string, params: DecideRobConflict$Params, context?: HttpContext): Observable<StrictHttpResponse<RobComparisonOut>> {
+export function decideRobConflict(
+  http: HttpClient,
+  rootUrl: string,
+  params: DecideRobConflict$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<RobComparisonOut>> {
   const rb = new RequestBuilder(rootUrl, decideRobConflict.PATH, 'post');
   if (params) {
     rb.path('assessment_id', params.assessment_id, {});
@@ -24,13 +29,11 @@ export function decideRobConflict(http: HttpClient, rootUrl: string, params: Dec
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<RobComparisonOut>;
-    })
+    }),
   );
 }
 

@@ -7,7 +7,7 @@ export interface StudyOut {
   design: StudyDesign;
   id: string;
   label: string;
-  notes: (string | null);
+  notes: string | null;
   reports: Array<ReportOut>;
   version: number;
 }

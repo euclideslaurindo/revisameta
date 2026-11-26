@@ -13,10 +13,15 @@ import { ScreeningAssignmentSummary } from '../../models/screening-assignment-su
 export interface AssignBatch$Params {
   project_id: string;
   stage?: 'title_abstract' | 'full_text';
-      body: ScreeningAssignIn
+  body: ScreeningAssignIn;
 }
 
-export function assignBatch(http: HttpClient, rootUrl: string, params: AssignBatch$Params, context?: HttpContext): Observable<StrictHttpResponse<ScreeningAssignmentSummary>> {
+export function assignBatch(
+  http: HttpClient,
+  rootUrl: string,
+  params: AssignBatch$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ScreeningAssignmentSummary>> {
   const rb = new RequestBuilder(rootUrl, assignBatch.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
@@ -24,13 +29,11 @@ export function assignBatch(http: HttpClient, rootUrl: string, params: AssignBat
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ScreeningAssignmentSummary>;
-    })
+    }),
   );
 }
 

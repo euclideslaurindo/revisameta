@@ -6,7 +6,4 @@ import { ValueType } from './value-type';
 /**
  * Each possible value of `ValueType`
  */
-export const VALUE_TYPE: ValueType[] = [
-  'final',
-  'change'
-];
+export const VALUE_TYPE: ValueType[] = ['final', 'change'];

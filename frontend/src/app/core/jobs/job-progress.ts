@@ -38,7 +38,10 @@ export class JobProgressService {
   ): Promise<JobOut | null> {
     const token = this.auth.accessToken();
     const response = await fetch(`/api/v1/projects/${projectId}/jobs/${jobId}/events`, {
-      headers: { Accept: 'text/event-stream', ...(token ? { Authorization: `Bearer ${token}` } : {}) },
+      headers: {
+        Accept: 'text/event-stream',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
     });
     if (!response.ok || !response.body) return null;
     const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
@@ -67,7 +70,11 @@ export class JobProgressService {
     return last && TERMINAL.has(last.status) ? last : null;
   }
 
-  private async poll(projectId: string, jobId: string, onUpdate: (job: JobOut) => void): Promise<JobOut> {
+  private async poll(
+    projectId: string,
+    jobId: string,
+    onUpdate: (job: JobOut) => void,
+  ): Promise<JobOut> {
     const started = Date.now();
     for (;;) {
       const job = await this.api.invoke(getJob, { project_id: projectId, job_id: jobId });

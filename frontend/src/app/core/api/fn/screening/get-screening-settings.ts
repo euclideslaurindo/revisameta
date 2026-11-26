@@ -13,19 +13,22 @@ export interface GetScreeningSettings$Params {
   project_id: string;
 }
 
-export function getScreeningSettings(http: HttpClient, rootUrl: string, params: GetScreeningSettings$Params, context?: HttpContext): Observable<StrictHttpResponse<ScreeningSettings>> {
+export function getScreeningSettings(
+  http: HttpClient,
+  rootUrl: string,
+  params: GetScreeningSettings$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ScreeningSettings>> {
   const rb = new RequestBuilder(rootUrl, getScreeningSettings.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ScreeningSettings>;
-    })
+    }),
   );
 }
 

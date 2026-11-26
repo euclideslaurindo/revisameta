@@ -12,23 +12,26 @@ import { GroupOut } from '../../models/group-out';
 
 export interface CreateGroup$Params {
   project_id: string;
-      body: GroupCreate
+  body: GroupCreate;
 }
 
-export function createGroup(http: HttpClient, rootUrl: string, params: CreateGroup$Params, context?: HttpContext): Observable<StrictHttpResponse<GroupOut>> {
+export function createGroup(
+  http: HttpClient,
+  rootUrl: string,
+  params: CreateGroup$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<GroupOut>> {
   const rb = new RequestBuilder(rootUrl, createGroup.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<GroupOut>;
-    })
+    }),
   );
 }
 

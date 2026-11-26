@@ -5,16 +5,16 @@ import { AssemblyOut } from '../models/assembly-out';
 export interface RunOut {
   assembly: AssemblyOut;
   favours_right: 'group1' | 'group2';
-  group1_label: (string | null);
-  group2_label: (string | null);
+  group1_label: string | null;
+  group2_label: string | null;
   method: 'REML' | 'DL' | 'PM' | 'FE';
   not_planned: Array<string>;
   r_meta: {
-[key: string]: any;
-};
+    [key: string]: any;
+  };
   result: {
-[key: string]: any;
-};
+    [key: string]: any;
+  };
   test: 'knha' | 'z';
   warnings: Array<string>;
 }

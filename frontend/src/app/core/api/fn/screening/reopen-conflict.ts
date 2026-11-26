@@ -7,14 +7,18 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-
 export interface ReopenConflict$Params {
   reference_id: string;
   project_id: string;
   stage?: 'title_abstract' | 'full_text';
 }
 
-export function reopenConflict(http: HttpClient, rootUrl: string, params: ReopenConflict$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+export function reopenConflict(
+  http: HttpClient,
+  rootUrl: string,
+  params: ReopenConflict$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<void>> {
   const rb = new RequestBuilder(rootUrl, reopenConflict.PATH, 'delete');
   if (params) {
     rb.path('reference_id', params.reference_id, {});
@@ -22,14 +26,13 @@ export function reopenConflict(http: HttpClient, rootUrl: string, params: Reopen
     rb.query('stage', params.stage, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'text', accept: '*/*', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'text', accept: '*/*', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
-    })
+    }),
   );
 }
 
-reopenConflict.PATH = '/api/v1/projects/{project_id}/screening/references/{reference_id}/resolution';
+reopenConflict.PATH =
+  '/api/v1/projects/{project_id}/screening/references/{reference_id}/resolution';

@@ -12,23 +12,26 @@ import { ImportReport } from '../../models/import-report';
 
 export interface RunImport$Params {
   project_id: string;
-      body: BodyRunImport
+  body: BodyRunImport;
 }
 
-export function runImport(http: HttpClient, rootUrl: string, params: RunImport$Params, context?: HttpContext): Observable<StrictHttpResponse<ImportReport>> {
+export function runImport(
+  http: HttpClient,
+  rootUrl: string,
+  params: RunImport$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ImportReport>> {
   const rb = new RequestBuilder(rootUrl, runImport.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'multipart/form-data');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ImportReport>;
-    })
+    }),
   );
 }
 

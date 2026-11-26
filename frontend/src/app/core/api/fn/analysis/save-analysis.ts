@@ -12,23 +12,26 @@ import { SaveIn } from '../../models/save-in';
 
 export interface SaveAnalysis$Params {
   project_id: string;
-      body: SaveIn
+  body: SaveIn;
 }
 
-export function saveAnalysis(http: HttpClient, rootUrl: string, params: SaveAnalysis$Params, context?: HttpContext): Observable<StrictHttpResponse<AnalysisOut>> {
+export function saveAnalysis(
+  http: HttpClient,
+  rootUrl: string,
+  params: SaveAnalysis$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<AnalysisOut>> {
   const rb = new RequestBuilder(rootUrl, saveAnalysis.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<AnalysisOut>;
-    })
+    }),
   );
 }
 

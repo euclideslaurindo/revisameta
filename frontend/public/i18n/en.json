@@ -2182,5 +2182,23 @@
     "reportLanguage": "Language of reports and charts",
     "save": "Save project details",
     "saved": "Project details saved."
+  },
+  "password": {
+    "forgotLink": "I forgot my password",
+    "forgotTitle": "Recover password",
+    "forgotHelp": "Enter your account e-mail. We will send a link to choose a new password (valid for 1 hour).",
+    "send": "Send link",
+    "sent": "If this e-mail has an account, the link has been sent. Check your spam folder too.",
+    "backToLogin": "Back to sign in",
+    "resetTitle": "Choose a new password",
+    "askAgain": "Ask for a new link",
+    "new": "New password",
+    "current": "Current password",
+    "rule": "At least 10 characters, with letters and numbers.",
+    "save": "Save new password",
+    "resetDone": "Password changed. Sign in with the new password.",
+    "changeTitle": "Change password",
+    "changeHelp": "When you change the password, other devices signed in to your account are signed out.",
+    "changed": "Password changed."
   }
 }

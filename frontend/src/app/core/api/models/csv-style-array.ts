@@ -6,7 +6,4 @@ import { CsvStyle } from './csv-style';
 /**
  * Each possible value of `CsvStyle`
  */
-export const CSV_STYLE: CsvStyle[] = [
-  'excel',
-  'r'
-];
+export const CSV_STYLE: CsvStyle[] = ['excel', 'r'];

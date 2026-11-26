@@ -4,13 +4,18 @@
 import { ScenarioResult } from '../models/scenario-result';
 export interface SensitivityOut {
   leave_one_out: Array<{
-[key: string]: any;
-}>;
+    [key: string]: any;
+  }>;
   main: ScenarioResult;
   measure: string;
   no_assessment: Array<string>;
   planned: boolean;
-  scenario: 'leave_one_out' | 'exclude_high_risk_of_bias' | 'exclude_estimated_data' | 'fixed_vs_random' | 'other_estimator';
+  scenario:
+    | 'leave_one_out'
+    | 'exclude_high_risk_of_bias'
+    | 'exclude_estimated_data'
+    | 'fixed_vs_random'
+    | 'other_estimator';
   scenarios: Array<ScenarioResult>;
   warnings: Array<string>;
 }

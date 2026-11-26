@@ -6,7 +6,4 @@ import { OutcomeType } from './outcome-type';
 /**
  * Each possible value of `OutcomeType`
  */
-export const OUTCOME_TYPE: OutcomeType[] = [
-  'continuous',
-  'dichotomous'
-];
+export const OUTCOME_TYPE: OutcomeType[] = ['continuous', 'dichotomous'];

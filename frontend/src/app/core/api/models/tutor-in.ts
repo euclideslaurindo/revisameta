@@ -3,7 +3,7 @@
 
 import { RunIn } from '../models/run-in';
 export interface TutorIn {
-  analysis?: (RunIn | null);
+  analysis?: RunIn | null;
   lang?: 'pt-BR' | 'en';
   question: string;
 }

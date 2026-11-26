@@ -7,13 +7,13 @@ import { Pico } from '../models/pico';
  * Partial update. `version` must match the current one (optimistic lock).
  */
 export interface ProjectUpdate {
-  deadline?: (string | null);
-  double_extraction?: (boolean | null);
-  double_rob?: (boolean | null);
-  pico?: (Pico | null);
-  prospero?: (string | null);
-  question?: (string | null);
-  report_language?: ('pt-BR' | 'en' | null);
-  title?: (string | null);
+  deadline?: string | null;
+  double_extraction?: boolean | null;
+  double_rob?: boolean | null;
+  pico?: Pico | null;
+  prospero?: string | null;
+  question?: string | null;
+  report_language?: 'pt-BR' | 'en' | null;
+  title?: string | null;
   version: number;
 }

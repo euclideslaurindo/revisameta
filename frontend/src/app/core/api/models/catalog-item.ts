@@ -8,8 +8,8 @@ export interface CatalogItem {
   family: string;
   key: string;
   name: {
-[key: string]: string;
-};
+    [key: string]: string;
+  };
   questions: number;
   scope: string;
   source_url: string;

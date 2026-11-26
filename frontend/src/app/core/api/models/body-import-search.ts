@@ -5,5 +5,5 @@ export interface BodyImportSearch {
   database: string;
   file: string;
   search_date: string;
-  strategy?: (string | null);
+  strategy?: string | null;
 }

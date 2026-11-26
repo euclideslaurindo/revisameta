@@ -4,7 +4,7 @@
 export interface CommentIn {
   entity: 'study' | 'reference' | 'analysis';
   entity_id: string;
-  field?: (string | null);
+  field?: string | null;
   mentions?: Array<string>;
   text: string;
 }

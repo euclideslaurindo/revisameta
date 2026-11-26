@@ -3,7 +3,7 @@
 
 export interface MeasureIn {
   higher_is_better?: boolean;
-  scale_max?: (number | string | null);
-  scale_min?: (number | string | null);
-  scale_name?: (string | null);
+  scale_max?: number | string | null;
+  scale_min?: number | string | null;
+  scale_name?: string | null;
 }

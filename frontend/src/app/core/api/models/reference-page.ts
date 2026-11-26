@@ -8,6 +8,6 @@ export interface ReferencePage {
   /**
    * Pass as `after` for the next page
    */
-  next_cursor: (string | null);
+  next_cursor: string | null;
   total: number;
 }

@@ -14,20 +14,23 @@ export interface ScreeningCounts$Params {
   stage?: 'title_abstract' | 'full_text';
 }
 
-export function screeningCounts(http: HttpClient, rootUrl: string, params: ScreeningCounts$Params, context?: HttpContext): Observable<StrictHttpResponse<ScreeningCounts>> {
+export function screeningCounts(
+  http: HttpClient,
+  rootUrl: string,
+  params: ScreeningCounts$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ScreeningCounts>> {
   const rb = new RequestBuilder(rootUrl, screeningCounts.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.query('stage', params.stage, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ScreeningCounts>;
-    })
+    }),
   );
 }
 

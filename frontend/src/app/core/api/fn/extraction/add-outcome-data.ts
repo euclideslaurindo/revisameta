@@ -13,10 +13,15 @@ import { OutcomeDataOut } from '../../models/outcome-data-out';
 export interface AddOutcomeData$Params {
   extraction_id: string;
   project_id: string;
-      body: OutcomeDataIn
+  body: OutcomeDataIn;
 }
 
-export function addOutcomeData(http: HttpClient, rootUrl: string, params: AddOutcomeData$Params, context?: HttpContext): Observable<StrictHttpResponse<OutcomeDataOut>> {
+export function addOutcomeData(
+  http: HttpClient,
+  rootUrl: string,
+  params: AddOutcomeData$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<OutcomeDataOut>> {
   const rb = new RequestBuilder(rootUrl, addOutcomeData.PATH, 'post');
   if (params) {
     rb.path('extraction_id', params.extraction_id, {});
@@ -24,13 +29,11 @@ export function addOutcomeData(http: HttpClient, rootUrl: string, params: AddOut
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<OutcomeDataOut>;
-    })
+    }),
   );
 }
 

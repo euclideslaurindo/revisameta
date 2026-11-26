@@ -7,14 +7,18 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-
 export interface SummaryOfFindings$Params {
   project_id: string;
   format?: 'docx' | 'xlsx';
   lang?: 'pt-BR' | 'en';
 }
 
-export function summaryOfFindings(http: HttpClient, rootUrl: string, params: SummaryOfFindings$Params, context?: HttpContext): Observable<StrictHttpResponse<Blob>> {
+export function summaryOfFindings(
+  http: HttpClient,
+  rootUrl: string,
+  params: SummaryOfFindings$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Blob>> {
   const rb = new RequestBuilder(rootUrl, summaryOfFindings.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
@@ -22,14 +26,14 @@ export function summaryOfFindings(http: HttpClient, rootUrl: string, params: Sum
     rb.query('lang', params.lang, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'blob', accept: 'application/octet-stream', context })
-  ).pipe(
-    filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
-    map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Blob>;
-    })
-  );
+  return http
+    .request(rb.build({ responseType: 'blob', accept: 'application/octet-stream', context }))
+    .pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Blob>;
+      }),
+    );
 }
 
 summaryOfFindings.PATH = '/api/v1/projects/{project_id}/grade/summary-of-findings';

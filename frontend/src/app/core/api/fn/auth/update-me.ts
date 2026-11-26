@@ -11,22 +11,25 @@ import { UserOut } from '../../models/user-out';
 import { UserUpdateIn } from '../../models/user-update-in';
 
 export interface UpdateMe$Params {
-      body: UserUpdateIn
+  body: UserUpdateIn;
 }
 
-export function updateMe(http: HttpClient, rootUrl: string, params: UpdateMe$Params, context?: HttpContext): Observable<StrictHttpResponse<UserOut>> {
+export function updateMe(
+  http: HttpClient,
+  rootUrl: string,
+  params: UpdateMe$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<UserOut>> {
   const rb = new RequestBuilder(rootUrl, updateMe.PATH, 'patch');
   if (params) {
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<UserOut>;
-    })
+    }),
   );
 }
 

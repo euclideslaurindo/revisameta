@@ -6,8 +6,4 @@ import { QuotaKind } from './quota-kind';
 /**
  * Each possible value of `QuotaKind`
  */
-export const QUOTA_KIND: QuotaKind[] = [
-  'projects',
-  'storage_mb',
-  'ai_calls'
-];
+export const QUOTA_KIND: QuotaKind[] = ['projects', 'storage_mb', 'ai_calls'];

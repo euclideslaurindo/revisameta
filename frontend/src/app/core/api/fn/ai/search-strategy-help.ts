@@ -13,19 +13,22 @@ export interface SearchStrategyHelp$Params {
   project_id: string;
 }
 
-export function searchStrategyHelp(http: HttpClient, rootUrl: string, params: SearchStrategyHelp$Params, context?: HttpContext): Observable<StrictHttpResponse<SearchHelpOut>> {
+export function searchStrategyHelp(
+  http: HttpClient,
+  rootUrl: string,
+  params: SearchStrategyHelp$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<SearchHelpOut>> {
   const rb = new RequestBuilder(rootUrl, searchStrategyHelp.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<SearchHelpOut>;
-    })
+    }),
   );
 }
 

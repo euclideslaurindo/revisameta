@@ -13,19 +13,22 @@ export interface TrainPriority$Params {
   project_id: string;
 }
 
-export function trainPriority(http: HttpClient, rootUrl: string, params: TrainPriority$Params, context?: HttpContext): Observable<StrictHttpResponse<PriorityInfo>> {
+export function trainPriority(
+  http: HttpClient,
+  rootUrl: string,
+  params: TrainPriority$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<PriorityInfo>> {
   const rb = new RequestBuilder(rootUrl, trainPriority.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<PriorityInfo>;
-    })
+    }),
   );
 }
 

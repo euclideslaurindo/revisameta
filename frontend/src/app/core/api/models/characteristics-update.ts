@@ -3,7 +3,7 @@
 
 export interface CharacteristicsUpdate {
   characteristics: {
-[key: string]: any;
-};
+    [key: string]: any;
+  };
   version: number;
 }

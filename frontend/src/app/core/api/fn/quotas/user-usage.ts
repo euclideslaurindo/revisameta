@@ -13,19 +13,22 @@ export interface UserUsage$Params {
   user_id: string;
 }
 
-export function userUsage(http: HttpClient, rootUrl: string, params: UserUsage$Params, context?: HttpContext): Observable<StrictHttpResponse<UsageOut>> {
+export function userUsage(
+  http: HttpClient,
+  rootUrl: string,
+  params: UserUsage$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<UsageOut>> {
   const rb = new RequestBuilder(rootUrl, userUsage.PATH, 'get');
   if (params) {
     rb.path('user_id', params.user_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<UsageOut>;
-    })
+    }),
   );
 }
 

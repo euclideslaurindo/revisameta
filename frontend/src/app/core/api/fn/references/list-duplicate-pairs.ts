@@ -11,11 +11,16 @@ import { DuplicatePairOut } from '../../models/duplicate-pair-out';
 
 export interface ListDuplicatePairs$Params {
   project_id: string;
-  kind?: (string | null);
-  status?: (string | null);
+  kind?: string | null;
+  status?: string | null;
 }
 
-export function listDuplicatePairs(http: HttpClient, rootUrl: string, params: ListDuplicatePairs$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<DuplicatePairOut>>> {
+export function listDuplicatePairs(
+  http: HttpClient,
+  rootUrl: string,
+  params: ListDuplicatePairs$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Array<DuplicatePairOut>>> {
   const rb = new RequestBuilder(rootUrl, listDuplicatePairs.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
@@ -23,13 +28,11 @@ export function listDuplicatePairs(http: HttpClient, rootUrl: string, params: Li
     rb.query('status', params.status, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<Array<DuplicatePairOut>>;
-    })
+    }),
   );
 }
 

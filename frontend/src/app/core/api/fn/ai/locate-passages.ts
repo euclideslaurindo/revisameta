@@ -12,23 +12,26 @@ import { LocateOut } from '../../models/locate-out';
 
 export interface LocatePassages$Params {
   project_id: string;
-      body: LocateIn
+  body: LocateIn;
 }
 
-export function locatePassages(http: HttpClient, rootUrl: string, params: LocatePassages$Params, context?: HttpContext): Observable<StrictHttpResponse<LocateOut>> {
+export function locatePassages(
+  http: HttpClient,
+  rootUrl: string,
+  params: LocatePassages$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<LocateOut>> {
   const rb = new RequestBuilder(rootUrl, locatePassages.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<LocateOut>;
-    })
+    }),
   );
 }
 

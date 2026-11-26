@@ -13,19 +13,22 @@ export interface ExtractionExportStatus$Params {
   project_id: string;
 }
 
-export function extractionExportStatus(http: HttpClient, rootUrl: string, params: ExtractionExportStatus$Params, context?: HttpContext): Observable<StrictHttpResponse<ExportStatus>> {
+export function extractionExportStatus(
+  http: HttpClient,
+  rootUrl: string,
+  params: ExtractionExportStatus$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ExportStatus>> {
   const rb = new RequestBuilder(rootUrl, extractionExportStatus.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ExportStatus>;
-    })
+    }),
   );
 }
 

@@ -14,20 +14,23 @@ export interface ScreeningAgreement$Params {
   stage?: 'title_abstract' | 'full_text';
 }
 
-export function screeningAgreement(http: HttpClient, rootUrl: string, params: ScreeningAgreement$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<ScreeningAgreementOut>>> {
+export function screeningAgreement(
+  http: HttpClient,
+  rootUrl: string,
+  params: ScreeningAgreement$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Array<ScreeningAgreementOut>>> {
   const rb = new RequestBuilder(rootUrl, screeningAgreement.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.query('stage', params.stage, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<Array<ScreeningAgreementOut>>;
-    })
+    }),
   );
 }
 

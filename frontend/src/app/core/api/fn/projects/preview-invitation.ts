@@ -13,19 +13,22 @@ export interface PreviewInvitation$Params {
   token: string;
 }
 
-export function previewInvitation(http: HttpClient, rootUrl: string, params: PreviewInvitation$Params, context?: HttpContext): Observable<StrictHttpResponse<InvitationPreview>> {
+export function previewInvitation(
+  http: HttpClient,
+  rootUrl: string,
+  params: PreviewInvitation$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<InvitationPreview>> {
   const rb = new RequestBuilder(rootUrl, previewInvitation.PATH, 'get');
   if (params) {
     rb.path('token', params.token, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<InvitationPreview>;
-    })
+    }),
   );
 }
 

@@ -13,10 +13,15 @@ import { AssessmentOut } from '../../models/assessment-out';
 export interface SaveRobAnswers$Params {
   assessment_id: string;
   project_id: string;
-      body: AnswersIn
+  body: AnswersIn;
 }
 
-export function saveRobAnswers(http: HttpClient, rootUrl: string, params: SaveRobAnswers$Params, context?: HttpContext): Observable<StrictHttpResponse<AssessmentOut>> {
+export function saveRobAnswers(
+  http: HttpClient,
+  rootUrl: string,
+  params: SaveRobAnswers$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<AssessmentOut>> {
   const rb = new RequestBuilder(rootUrl, saveRobAnswers.PATH, 'put');
   if (params) {
     rb.path('assessment_id', params.assessment_id, {});
@@ -24,13 +29,11 @@ export function saveRobAnswers(http: HttpClient, rootUrl: string, params: SaveRo
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<AssessmentOut>;
-    })
+    }),
   );
 }
 

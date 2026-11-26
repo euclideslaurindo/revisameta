@@ -15,7 +15,12 @@ export interface RemoveReport$Params {
   project_id: string;
 }
 
-export function removeReport(http: HttpClient, rootUrl: string, params: RemoveReport$Params, context?: HttpContext): Observable<StrictHttpResponse<StudyOut>> {
+export function removeReport(
+  http: HttpClient,
+  rootUrl: string,
+  params: RemoveReport$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<StudyOut>> {
   const rb = new RequestBuilder(rootUrl, removeReport.PATH, 'delete');
   if (params) {
     rb.path('study_id', params.study_id, {});
@@ -23,13 +28,11 @@ export function removeReport(http: HttpClient, rootUrl: string, params: RemoveRe
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<StudyOut>;
-    })
+    }),
   );
 }
 

@@ -14,20 +14,23 @@ export interface ListRobAssessments$Params {
   project_id: string;
 }
 
-export function listRobAssessments(http: HttpClient, rootUrl: string, params: ListRobAssessments$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<AssessmentSummary>>> {
+export function listRobAssessments(
+  http: HttpClient,
+  rootUrl: string,
+  params: ListRobAssessments$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Array<AssessmentSummary>>> {
   const rb = new RequestBuilder(rootUrl, listRobAssessments.PATH, 'get');
   if (params) {
     rb.path('study_id', params.study_id, {});
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<Array<AssessmentSummary>>;
-    })
+    }),
   );
 }
 

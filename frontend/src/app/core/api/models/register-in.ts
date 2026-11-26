@@ -3,9 +3,9 @@
 
 export interface RegisterIn {
   accept_terms: boolean;
-  captcha_token?: (string | null);
+  captcha_token?: string | null;
   email: string;
-  language?: ('pt-BR' | 'en' | null);
+  language?: 'pt-BR' | 'en' | null;
   name: string;
   password: string;
 }

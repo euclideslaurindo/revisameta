@@ -14,20 +14,23 @@ export interface GetSearch$Params {
   project_id: string;
 }
 
-export function getSearch(http: HttpClient, rootUrl: string, params: GetSearch$Params, context?: HttpContext): Observable<StrictHttpResponse<SearchDetail>> {
+export function getSearch(
+  http: HttpClient,
+  rootUrl: string,
+  params: GetSearch$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<SearchDetail>> {
   const rb = new RequestBuilder(rootUrl, getSearch.PATH, 'get');
   if (params) {
     rb.path('search_id', params.search_id, {});
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<SearchDetail>;
-    })
+    }),
   );
 }
 

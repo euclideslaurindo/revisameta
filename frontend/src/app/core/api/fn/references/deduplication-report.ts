@@ -13,19 +13,22 @@ export interface DeduplicationReport$Params {
   project_id: string;
 }
 
-export function deduplicationReport(http: HttpClient, rootUrl: string, params: DeduplicationReport$Params, context?: HttpContext): Observable<StrictHttpResponse<DedupReportOut>> {
+export function deduplicationReport(
+  http: HttpClient,
+  rootUrl: string,
+  params: DeduplicationReport$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<DedupReportOut>> {
   const rb = new RequestBuilder(rootUrl, deduplicationReport.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<DedupReportOut>;
-    })
+    }),
   );
 }
 

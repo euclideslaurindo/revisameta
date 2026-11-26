@@ -6,9 +6,9 @@ import { ConsensusRef } from '../models/consensus-ref';
 import { ExtractorOut } from '../models/extractor-out';
 import { ItemOut } from '../models/item-out';
 export interface ComparisonOut {
-  agreement: (AgreementOut | null);
-  agreement_error: (string | null);
-  consensus: (ConsensusRef | null);
+  agreement: AgreementOut | null;
+  agreement_error: string | null;
+  consensus: ConsensusRef | null;
   divergences: number;
   double_extraction: boolean;
   extractors: Array<ExtractorOut>;

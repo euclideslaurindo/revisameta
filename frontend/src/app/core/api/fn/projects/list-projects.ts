@@ -9,21 +9,23 @@ import { RequestBuilder } from '../../request-builder';
 
 import { ProjectOut } from '../../models/project-out';
 
-export interface ListProjects$Params {
-}
+export interface ListProjects$Params {}
 
-export function listProjects(http: HttpClient, rootUrl: string, params?: ListProjects$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<ProjectOut>>> {
+export function listProjects(
+  http: HttpClient,
+  rootUrl: string,
+  params?: ListProjects$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Array<ProjectOut>>> {
   const rb = new RequestBuilder(rootUrl, listProjects.PATH, 'get');
   if (params) {
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<Array<ProjectOut>>;
-    })
+    }),
   );
 }
 

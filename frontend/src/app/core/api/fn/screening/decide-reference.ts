@@ -14,10 +14,15 @@ export interface DecideReference$Params {
   reference_id: string;
   project_id: string;
   stage?: 'title_abstract' | 'full_text';
-      body: ScreeningDecideIn
+  body: ScreeningDecideIn;
 }
 
-export function decideReference(http: HttpClient, rootUrl: string, params: DecideReference$Params, context?: HttpContext): Observable<StrictHttpResponse<ScreeningDecisionOut>> {
+export function decideReference(
+  http: HttpClient,
+  rootUrl: string,
+  params: DecideReference$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ScreeningDecisionOut>> {
   const rb = new RequestBuilder(rootUrl, decideReference.PATH, 'post');
   if (params) {
     rb.path('reference_id', params.reference_id, {});
@@ -26,13 +31,11 @@ export function decideReference(http: HttpClient, rootUrl: string, params: Decid
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ScreeningDecisionOut>;
-    })
+    }),
   );
 }
 

@@ -6,6 +6,6 @@ import { StudyDesign } from '../models/study-design';
 export interface StudyCreate {
   design: StudyDesign;
   label: string;
-  notes?: (string | null);
+  notes?: string | null;
   reference: ReferenceIn;
 }

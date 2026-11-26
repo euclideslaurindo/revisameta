@@ -3,24 +3,24 @@
 
 export interface GradeOut {
   analysis: {
-[key: string]: any;
-};
+    [key: string]: any;
+  };
   approach: string;
   domains: {
-[key: string]: any;
-};
+    [key: string]: any;
+  };
   final_certainty: string;
   id: string;
-  note: (string | null);
+  note: string | null;
   outcome_id: string;
   outcome_name: string;
   start_certainty: string;
   suggestions: {
-[key: string]: any;
-};
+    [key: string]: any;
+  };
   summary: {
-[key: string]: any;
-};
+    [key: string]: any;
+  };
   timepoint: string;
   version: number;
 }

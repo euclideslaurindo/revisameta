@@ -13,10 +13,15 @@ import { GroupUpdate } from '../../models/group-update';
 export interface UpdateGroup$Params {
   group_id: string;
   project_id: string;
-      body: GroupUpdate
+  body: GroupUpdate;
 }
 
-export function updateGroup(http: HttpClient, rootUrl: string, params: UpdateGroup$Params, context?: HttpContext): Observable<StrictHttpResponse<GroupOut>> {
+export function updateGroup(
+  http: HttpClient,
+  rootUrl: string,
+  params: UpdateGroup$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<GroupOut>> {
   const rb = new RequestBuilder(rootUrl, updateGroup.PATH, 'patch');
   if (params) {
     rb.path('group_id', params.group_id, {});
@@ -24,13 +29,11 @@ export function updateGroup(http: HttpClient, rootUrl: string, params: UpdateGro
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<GroupOut>;
-    })
+    }),
   );
 }
 

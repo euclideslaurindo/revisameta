@@ -4,5 +4,5 @@
 export interface OutcomePlan {
   measure?: 'auto' | 'MD' | 'SMD' | 'OR' | 'RR' | 'RD';
   outcome_id: string;
-  timepoint?: (string | null);
+  timepoint?: string | null;
 }

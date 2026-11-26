@@ -4,5 +4,5 @@
 export interface GroupCreate {
   label: string;
   position?: number;
-  rule_description?: (string | null);
+  rule_description?: string | null;
 }

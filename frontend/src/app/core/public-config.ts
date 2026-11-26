@@ -19,6 +19,8 @@ export class PublicConfigService {
 
   captchaSiteKey(): string | null {
     const config = this.config();
-    return config?.turnstile_enabled && config.turnstile_site_key ? config.turnstile_site_key : null;
+    return config?.turnstile_enabled && config.turnstile_site_key
+      ? config.turnstile_site_key
+      : null;
   }
 }

@@ -13,10 +13,15 @@ import { SuggestionOut } from '../../models/suggestion-out';
 export interface DecideAiSuggestion$Params {
   suggestion_id: string;
   project_id: string;
-      body: DecisionIn
+  body: DecisionIn;
 }
 
-export function decideAiSuggestion(http: HttpClient, rootUrl: string, params: DecideAiSuggestion$Params, context?: HttpContext): Observable<StrictHttpResponse<SuggestionOut>> {
+export function decideAiSuggestion(
+  http: HttpClient,
+  rootUrl: string,
+  params: DecideAiSuggestion$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<SuggestionOut>> {
   const rb = new RequestBuilder(rootUrl, decideAiSuggestion.PATH, 'put');
   if (params) {
     rb.path('suggestion_id', params.suggestion_id, {});
@@ -24,13 +29,11 @@ export function decideAiSuggestion(http: HttpClient, rootUrl: string, params: De
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<SuggestionOut>;
-    })
+    }),
   );
 }
 

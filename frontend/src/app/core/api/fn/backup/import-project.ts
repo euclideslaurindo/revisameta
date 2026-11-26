@@ -11,22 +11,25 @@ import { BodyImportProject } from '../../models/body-import-project';
 import { ImportStarted } from '../../models/import-started';
 
 export interface ImportProject$Params {
-      body: BodyImportProject
+  body: BodyImportProject;
 }
 
-export function importProject(http: HttpClient, rootUrl: string, params: ImportProject$Params, context?: HttpContext): Observable<StrictHttpResponse<ImportStarted>> {
+export function importProject(
+  http: HttpClient,
+  rootUrl: string,
+  params: ImportProject$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ImportStarted>> {
   const rb = new RequestBuilder(rootUrl, importProject.PATH, 'post');
   if (params) {
     rb.body(params.body, 'multipart/form-data');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ImportStarted>;
-    })
+    }),
   );
 }
 

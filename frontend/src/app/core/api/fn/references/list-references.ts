@@ -11,12 +11,17 @@ import { ReferencePage } from '../../models/reference-page';
 
 export interface ListReferences$Params {
   project_id: string;
-  search_id?: (string | null);
-  after?: (string | null);
+  search_id?: string | null;
+  after?: string | null;
   limit?: number;
 }
 
-export function listReferences(http: HttpClient, rootUrl: string, params: ListReferences$Params, context?: HttpContext): Observable<StrictHttpResponse<ReferencePage>> {
+export function listReferences(
+  http: HttpClient,
+  rootUrl: string,
+  params: ListReferences$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ReferencePage>> {
   const rb = new RequestBuilder(rootUrl, listReferences.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
@@ -25,13 +30,11 @@ export function listReferences(http: HttpClient, rootUrl: string, params: ListRe
     rb.query('limit', params.limit, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ReferencePage>;
-    })
+    }),
   );
 }
 

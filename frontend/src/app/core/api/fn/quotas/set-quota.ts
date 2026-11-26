@@ -11,23 +11,26 @@ import { QuotaUpdate } from '../../models/quota-update';
 
 export interface SetQuota$Params {
   user_id: string;
-      body: QuotaUpdate
+  body: QuotaUpdate;
 }
 
-export function setQuota(http: HttpClient, rootUrl: string, params: SetQuota$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+export function setQuota(
+  http: HttpClient,
+  rootUrl: string,
+  params: SetQuota$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<void>> {
   const rb = new RequestBuilder(rootUrl, setQuota.PATH, 'put');
   if (params) {
     rb.path('user_id', params.user_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'text', accept: '*/*', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'text', accept: '*/*', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
-    })
+    }),
   );
 }
 

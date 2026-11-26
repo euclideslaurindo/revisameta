@@ -39,6 +39,13 @@ MESSAGES: dict[Language, dict[str, str]] = {
         "auth.captcha_failed": "Não foi possível confirmar que você não é um robô. Tente de novo.",
         "auth.terms_required": "É preciso aceitar os termos de uso e a política de privacidade.",
         "auth.invalid_token": "Este link é inválido ou expirou.",
+        "auth.wrong_password": "A senha atual não confere.",
+        "email.reset.subject": "Redefinir sua senha no RevisaMeta",
+        "email.reset.body": (
+            "Olá, {name}!\n\nPara criar uma nova senha, abra o link abaixo:\n{link}\n\n"
+            "O link vale por 1 hora. Se você não pediu isso, ignore esta mensagem; "
+            "sua senha continua a mesma."
+        ),
         "auth.session_expired": "Sua sessão expirou. Entre novamente.",
         "project.creator_cannot_be_removed": (
             "O criador do projeto não pode ser removido sem antes transferir a administração."
@@ -246,6 +253,13 @@ MESSAGES: dict[Language, dict[str, str]] = {
         "auth.captcha_failed": "We could not confirm you are not a robot. Please try again.",
         "auth.terms_required": "You must accept the terms of use and the privacy policy.",
         "auth.invalid_token": "This link is invalid or has expired.",
+        "auth.wrong_password": "The current password does not match.",
+        "email.reset.subject": "Reset your RevisaMeta password",
+        "email.reset.body": (
+            "Hello, {name}!\n\nTo choose a new password, open the link below:\n{link}\n\n"
+            "The link is valid for 1 hour. If you did not ask for this, ignore this message; "
+            "your password stays the same."
+        ),
         "auth.session_expired": "Your session has expired. Please sign in again.",
         "project.creator_cannot_be_removed": (
             "The project creator cannot be removed before transferring administration."

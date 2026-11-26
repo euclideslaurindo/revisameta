@@ -12,23 +12,26 @@ import { AbstractOut } from '../../models/abstract-out';
 
 export interface SaveAbstract$Params {
   project_id: string;
-      body: AbstractIn
+  body: AbstractIn;
 }
 
-export function saveAbstract(http: HttpClient, rootUrl: string, params: SaveAbstract$Params, context?: HttpContext): Observable<StrictHttpResponse<AbstractOut>> {
+export function saveAbstract(
+  http: HttpClient,
+  rootUrl: string,
+  params: SaveAbstract$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<AbstractOut>> {
   const rb = new RequestBuilder(rootUrl, saveAbstract.PATH, 'put');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<AbstractOut>;
-    })
+    }),
   );
 }
 

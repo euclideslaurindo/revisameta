@@ -9,7 +9,7 @@ export interface BodyRunRobImport {
    * JSON: {"study": "Column", "overall": "Column", ...}
    */
   mapping: string;
-  outcome_id?: (string | null);
-  timepoint?: (string | null);
+  outcome_id?: string | null;
+  timepoint?: string | null;
   tool_id: string;
 }

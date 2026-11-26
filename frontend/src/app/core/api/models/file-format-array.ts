@@ -6,7 +6,4 @@ import { FileFormat } from './file-format';
 /**
  * Each possible value of `FileFormat`
  */
-export const FILE_FORMAT: FileFormat[] = [
-  'xlsx',
-  'csv'
-];
+export const FILE_FORMAT: FileFormat[] = ['xlsx', 'csv'];

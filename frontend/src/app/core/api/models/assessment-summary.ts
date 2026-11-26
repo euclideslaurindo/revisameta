@@ -4,12 +4,12 @@
 export interface AssessmentSummary {
   id: string;
   kind: string;
-  outcome_id: (string | null);
-  reviewer_id: (string | null);
-  reviewer_name: (string | null);
+  outcome_id: string | null;
+  reviewer_id: string | null;
+  reviewer_name: string | null;
   status: string;
   study_id: string;
-  timepoint: (string | null);
+  timepoint: string | null;
   tool_id: string;
   version: number;
 }

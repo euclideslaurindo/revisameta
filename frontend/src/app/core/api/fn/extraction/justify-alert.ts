@@ -13,10 +13,15 @@ import { JustifyIn } from '../../models/justify-in';
 export interface JustifyAlert$Params {
   alert_id: string;
   project_id: string;
-      body: JustifyIn
+  body: JustifyIn;
 }
 
-export function justifyAlert(http: HttpClient, rootUrl: string, params: JustifyAlert$Params, context?: HttpContext): Observable<StrictHttpResponse<AlertOut>> {
+export function justifyAlert(
+  http: HttpClient,
+  rootUrl: string,
+  params: JustifyAlert$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<AlertOut>> {
   const rb = new RequestBuilder(rootUrl, justifyAlert.PATH, 'post');
   if (params) {
     rb.path('alert_id', params.alert_id, {});
@@ -24,13 +29,11 @@ export function justifyAlert(http: HttpClient, rootUrl: string, params: JustifyA
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<AlertOut>;
-    })
+    }),
   );
 }
 

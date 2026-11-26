@@ -14,20 +14,23 @@ export interface DownloadUrl$Params {
   project_id: string;
 }
 
-export function downloadUrl(http: HttpClient, rootUrl: string, params: DownloadUrl$Params, context?: HttpContext): Observable<StrictHttpResponse<DownloadUrl>> {
+export function downloadUrl(
+  http: HttpClient,
+  rootUrl: string,
+  params: DownloadUrl$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<DownloadUrl>> {
   const rb = new RequestBuilder(rootUrl, downloadUrl.PATH, 'get');
   if (params) {
     rb.path('upload_id', params.upload_id, {});
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<DownloadUrl>;
-    })
+    }),
   );
 }
 

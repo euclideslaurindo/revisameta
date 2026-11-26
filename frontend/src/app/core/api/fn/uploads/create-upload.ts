@@ -12,23 +12,26 @@ import { UploadOut } from '../../models/upload-out';
 
 export interface CreateUpload$Params {
   project_id: string;
-      body: UploadCreate
+  body: UploadCreate;
 }
 
-export function createUpload(http: HttpClient, rootUrl: string, params: CreateUpload$Params, context?: HttpContext): Observable<StrictHttpResponse<UploadOut>> {
+export function createUpload(
+  http: HttpClient,
+  rootUrl: string,
+  params: CreateUpload$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<UploadOut>> {
   const rb = new RequestBuilder(rootUrl, createUpload.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<UploadOut>;
-    })
+    }),
   );
 }
 

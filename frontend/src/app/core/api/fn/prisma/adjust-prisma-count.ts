@@ -11,12 +11,28 @@ import { AdjustIn } from '../../models/adjust-in';
 import { PrismaCounts } from '../../models/prisma-counts';
 
 export interface AdjustPrismaCount$Params {
-  key: 'identified_total' | 'duplicates_removed' | 'records_screened' | 'records_excluded' | 'reports_sought' | 'reports_not_retrieved' | 'reports_assessed' | 'reports_excluded_total' | 'studies_included' | 'reports_included' | 'studies_meta_analysis';
+  key:
+    | 'identified_total'
+    | 'duplicates_removed'
+    | 'records_screened'
+    | 'records_excluded'
+    | 'reports_sought'
+    | 'reports_not_retrieved'
+    | 'reports_assessed'
+    | 'reports_excluded_total'
+    | 'studies_included'
+    | 'reports_included'
+    | 'studies_meta_analysis';
   project_id: string;
-      body: AdjustIn
+  body: AdjustIn;
 }
 
-export function adjustPrismaCount(http: HttpClient, rootUrl: string, params: AdjustPrismaCount$Params, context?: HttpContext): Observable<StrictHttpResponse<PrismaCounts>> {
+export function adjustPrismaCount(
+  http: HttpClient,
+  rootUrl: string,
+  params: AdjustPrismaCount$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<PrismaCounts>> {
   const rb = new RequestBuilder(rootUrl, adjustPrismaCount.PATH, 'put');
   if (params) {
     rb.path('key', params.key, {});
@@ -24,13 +40,11 @@ export function adjustPrismaCount(http: HttpClient, rootUrl: string, params: Adj
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<PrismaCounts>;
-    })
+    }),
   );
 }
 

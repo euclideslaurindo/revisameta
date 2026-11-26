@@ -16,11 +16,16 @@ export interface ExportExtraction$Params {
   file_format?: FileFormat;
   mode?: ExportMode;
   csv_style?: CsvStyle;
-  lang?: (string | null);
+  lang?: string | null;
   acknowledge_missing?: boolean;
 }
 
-export function exportExtraction(http: HttpClient, rootUrl: string, params: ExportExtraction$Params, context?: HttpContext): Observable<StrictHttpResponse<Blob>> {
+export function exportExtraction(
+  http: HttpClient,
+  rootUrl: string,
+  params: ExportExtraction$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Blob>> {
   const rb = new RequestBuilder(rootUrl, exportExtraction.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
@@ -31,14 +36,14 @@ export function exportExtraction(http: HttpClient, rootUrl: string, params: Expo
     rb.query('acknowledge_missing', params.acknowledge_missing, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'blob', accept: 'application/octet-stream', context })
-  ).pipe(
-    filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
-    map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Blob>;
-    })
-  );
+  return http
+    .request(rb.build({ responseType: 'blob', accept: 'application/octet-stream', context }))
+    .pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Blob>;
+      }),
+    );
 }
 
 exportExtraction.PATH = '/api/v1/projects/{project_id}/exports/extraction';

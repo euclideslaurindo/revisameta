@@ -37,6 +37,7 @@ export type { BodyRunExtractionImport } from './models/body-run-extraction-impor
 export type { BodyRunImport } from './models/body-run-import';
 export type { BodyRunRobImport } from './models/body-run-rob-import';
 export type { CatalogItem } from './models/catalog-item';
+export type { ChangePasswordIn } from './models/change-password-in';
 export type { CharacteristicsUpdate } from './models/characteristics-update';
 export type { ChecklistIn } from './models/checklist-in';
 export type { ChecklistOut } from './models/checklist-out';
@@ -194,6 +195,7 @@ export type { ReferenceUpdate } from './models/reference-update';
 export type { RegisterIn } from './models/register-in';
 export type { ReportCreate } from './models/report-create';
 export type { ReportOut } from './models/report-out';
+export type { ResetPasswordIn } from './models/reset-password-in';
 export type { ReviewArm } from './models/review-arm';
 export type { ReviewNumber } from './models/review-number';
 export type { ReviewRow } from './models/review-row';

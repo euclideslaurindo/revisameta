@@ -3,13 +3,13 @@
 
 import { MentionOut } from '../models/mention-out';
 export interface CommentOut {
-  author_id: (string | null);
+  author_id: string | null;
   author_name: string;
   created_at: string;
   edited: boolean;
   entity: string;
   entity_id: string;
-  field: (string | null);
+  field: string | null;
   id: string;
   mentions: Array<MentionOut>;
   text: string;

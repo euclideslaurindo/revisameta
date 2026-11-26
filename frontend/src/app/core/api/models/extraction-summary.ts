@@ -3,8 +3,8 @@
 
 export interface ExtractionSummary {
   data_version: number;
-  extractor_id: (string | null);
-  extractor_name: (string | null);
+  extractor_id: string | null;
+  extractor_name: string | null;
   form_id: string;
   id: string;
   kind: string;

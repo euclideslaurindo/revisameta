@@ -6,7 +6,7 @@ export interface PlotIn {
   format: 'svg' | 'png';
   kind: 'traffic_light' | 'summary';
   lang?: 'pt-BR' | 'en';
-  outcome_id?: (string | null);
-  timepoint?: (string | null);
+  outcome_id?: string | null;
+  timepoint?: string | null;
   tool_id: string;
 }

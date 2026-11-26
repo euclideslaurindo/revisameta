@@ -6,9 +6,4 @@ import { RobFormat } from './rob-format';
 /**
  * Each possible value of `RobFormat`
  */
-export const ROB_FORMAT: RobFormat[] = [
-  'robvis',
-  'csv',
-  'xlsx',
-  'docx'
-];
+export const ROB_FORMAT: RobFormat[] = ['robvis', 'csv', 'xlsx', 'docx'];

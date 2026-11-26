@@ -13,19 +13,22 @@ export interface AcceptInvitation$Params {
   token: string;
 }
 
-export function acceptInvitation(http: HttpClient, rootUrl: string, params: AcceptInvitation$Params, context?: HttpContext): Observable<StrictHttpResponse<ProjectOut>> {
+export function acceptInvitation(
+  http: HttpClient,
+  rootUrl: string,
+  params: AcceptInvitation$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ProjectOut>> {
   const rb = new RequestBuilder(rootUrl, acceptInvitation.PATH, 'post');
   if (params) {
     rb.path('token', params.token, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ProjectOut>;
-    })
+    }),
   );
 }
 

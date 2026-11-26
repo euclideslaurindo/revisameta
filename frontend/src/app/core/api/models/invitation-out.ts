@@ -3,9 +3,9 @@
 
 import { Role } from '../models/role';
 export interface InvitationOut {
-  accepted_at: (string | null);
+  accepted_at: string | null;
   created_at: string;
-  email: (string | null);
+  email: string | null;
   expires_at: string;
   id: string;
   roles: Array<Role>;

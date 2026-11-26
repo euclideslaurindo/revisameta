@@ -14,20 +14,23 @@ export interface UndoLastDecision$Params {
   stage?: 'title_abstract' | 'full_text';
 }
 
-export function undoLastDecision(http: HttpClient, rootUrl: string, params: UndoLastDecision$Params, context?: HttpContext): Observable<StrictHttpResponse<(ScreeningDecisionOut | null)>> {
+export function undoLastDecision(
+  http: HttpClient,
+  rootUrl: string,
+  params: UndoLastDecision$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ScreeningDecisionOut | null>> {
   const rb = new RequestBuilder(rootUrl, undoLastDecision.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.query('stage', params.stage, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<(ScreeningDecisionOut | null)>;
-    })
+      return r as StrictHttpResponse<ScreeningDecisionOut | null>;
+    }),
   );
 }
 

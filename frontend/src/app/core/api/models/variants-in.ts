@@ -3,6 +3,6 @@
 
 export interface VariantsIn {
   variants: {
-[key: string]: string;
-};
+    [key: string]: string;
+  };
 }

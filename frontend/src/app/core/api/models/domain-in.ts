@@ -3,5 +3,5 @@
 
 export interface DomainIn {
   change: number;
-  justification?: (string | null);
+  justification?: string | null;
 }

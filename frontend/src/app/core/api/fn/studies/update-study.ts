@@ -13,10 +13,15 @@ import { StudyUpdate } from '../../models/study-update';
 export interface UpdateStudy$Params {
   study_id: string;
   project_id: string;
-      body: StudyUpdate
+  body: StudyUpdate;
 }
 
-export function updateStudy(http: HttpClient, rootUrl: string, params: UpdateStudy$Params, context?: HttpContext): Observable<StrictHttpResponse<StudyOut>> {
+export function updateStudy(
+  http: HttpClient,
+  rootUrl: string,
+  params: UpdateStudy$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<StudyOut>> {
   const rb = new RequestBuilder(rootUrl, updateStudy.PATH, 'patch');
   if (params) {
     rb.path('study_id', params.study_id, {});
@@ -24,13 +29,11 @@ export function updateStudy(http: HttpClient, rootUrl: string, params: UpdateStu
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<StudyOut>;
-    })
+    }),
   );
 }
 

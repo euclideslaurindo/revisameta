@@ -13,10 +13,15 @@ import { StudyToolOut } from '../../models/study-tool-out';
 export interface ConfirmStudyRobTool$Params {
   study_id: string;
   project_id: string;
-      body: StudyToolIn
+  body: StudyToolIn;
 }
 
-export function confirmStudyRobTool(http: HttpClient, rootUrl: string, params: ConfirmStudyRobTool$Params, context?: HttpContext): Observable<StrictHttpResponse<StudyToolOut>> {
+export function confirmStudyRobTool(
+  http: HttpClient,
+  rootUrl: string,
+  params: ConfirmStudyRobTool$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<StudyToolOut>> {
   const rb = new RequestBuilder(rootUrl, confirmStudyRobTool.PATH, 'put');
   if (params) {
     rb.path('study_id', params.study_id, {});
@@ -24,13 +29,11 @@ export function confirmStudyRobTool(http: HttpClient, rootUrl: string, params: C
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<StudyToolOut>;
-    })
+    }),
   );
 }
 

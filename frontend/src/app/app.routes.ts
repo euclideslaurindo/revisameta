@@ -20,6 +20,15 @@ export const routes: Routes = [
     loadComponent: () => import('./features/auth/verify-email-page').then((m) => m.VerifyEmailPage),
   },
   {
+    path: 'esqueci-senha',
+    canActivate: [guestGuard],
+    loadComponent: () => import('./features/auth/password-pages').then((m) => m.ForgotPasswordPage),
+  },
+  {
+    path: 'redefinir-senha',
+    loadComponent: () => import('./features/auth/password-pages').then((m) => m.ResetPasswordPage),
+  },
+  {
     path: 'convite',
     canActivate: [authGuard],
     loadComponent: () =>

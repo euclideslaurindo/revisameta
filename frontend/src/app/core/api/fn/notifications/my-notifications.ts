@@ -9,21 +9,23 @@ import { RequestBuilder } from '../../request-builder';
 
 import { NotificationsOut } from '../../models/notifications-out';
 
-export interface MyNotifications$Params {
-}
+export interface MyNotifications$Params {}
 
-export function myNotifications(http: HttpClient, rootUrl: string, params?: MyNotifications$Params, context?: HttpContext): Observable<StrictHttpResponse<NotificationsOut>> {
+export function myNotifications(
+  http: HttpClient,
+  rootUrl: string,
+  params?: MyNotifications$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<NotificationsOut>> {
   const rb = new RequestBuilder(rootUrl, myNotifications.PATH, 'get');
   if (params) {
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<NotificationsOut>;
-    })
+    }),
   );
 }
 

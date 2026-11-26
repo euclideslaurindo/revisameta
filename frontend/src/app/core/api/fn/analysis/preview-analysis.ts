@@ -12,23 +12,26 @@ import { AssemblyOut } from '../../models/assembly-out';
 
 export interface PreviewAnalysis$Params {
   project_id: string;
-      body: AssemblyIn
+  body: AssemblyIn;
 }
 
-export function previewAnalysis(http: HttpClient, rootUrl: string, params: PreviewAnalysis$Params, context?: HttpContext): Observable<StrictHttpResponse<AssemblyOut>> {
+export function previewAnalysis(
+  http: HttpClient,
+  rootUrl: string,
+  params: PreviewAnalysis$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<AssemblyOut>> {
   const rb = new RequestBuilder(rootUrl, previewAnalysis.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<AssemblyOut>;
-    })
+    }),
   );
 }
 

@@ -12,23 +12,26 @@ import { SearchOut } from '../../models/search-out';
 
 export interface ImportSearch$Params {
   project_id: string;
-      body: BodyImportSearch
+  body: BodyImportSearch;
 }
 
-export function importSearch(http: HttpClient, rootUrl: string, params: ImportSearch$Params, context?: HttpContext): Observable<StrictHttpResponse<SearchOut>> {
+export function importSearch(
+  http: HttpClient,
+  rootUrl: string,
+  params: ImportSearch$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<SearchOut>> {
   const rb = new RequestBuilder(rootUrl, importSearch.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'multipart/form-data');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<SearchOut>;
-    })
+    }),
   );
 }
 

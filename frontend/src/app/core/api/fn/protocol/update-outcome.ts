@@ -13,10 +13,15 @@ import { OutcomeUpdate } from '../../models/outcome-update';
 export interface UpdateOutcome$Params {
   outcome_id: string;
   project_id: string;
-      body: OutcomeUpdate
+  body: OutcomeUpdate;
 }
 
-export function updateOutcome(http: HttpClient, rootUrl: string, params: UpdateOutcome$Params, context?: HttpContext): Observable<StrictHttpResponse<OutcomeOut>> {
+export function updateOutcome(
+  http: HttpClient,
+  rootUrl: string,
+  params: UpdateOutcome$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<OutcomeOut>> {
   const rb = new RequestBuilder(rootUrl, updateOutcome.PATH, 'patch');
   if (params) {
     rb.path('outcome_id', params.outcome_id, {});
@@ -24,13 +29,11 @@ export function updateOutcome(http: HttpClient, rootUrl: string, params: UpdateO
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<OutcomeOut>;
-    })
+    }),
   );
 }
 

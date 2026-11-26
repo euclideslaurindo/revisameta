@@ -13,10 +13,15 @@ import { VariantsIn } from '../../models/variants-in';
 export interface SetRobVariants$Params {
   assessment_id: string;
   project_id: string;
-      body: VariantsIn
+  body: VariantsIn;
 }
 
-export function setRobVariants(http: HttpClient, rootUrl: string, params: SetRobVariants$Params, context?: HttpContext): Observable<StrictHttpResponse<AssessmentOut>> {
+export function setRobVariants(
+  http: HttpClient,
+  rootUrl: string,
+  params: SetRobVariants$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<AssessmentOut>> {
   const rb = new RequestBuilder(rootUrl, setRobVariants.PATH, 'put');
   if (params) {
     rb.path('assessment_id', params.assessment_id, {});
@@ -24,13 +29,11 @@ export function setRobVariants(http: HttpClient, rootUrl: string, params: SetRob
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<AssessmentOut>;
-    })
+    }),
   );
 }
 

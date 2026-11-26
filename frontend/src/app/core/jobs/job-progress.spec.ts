@@ -47,7 +47,9 @@ describe('JobProgressService (ADR-005)', () => {
   afterEach(() => vi.unstubAllGlobals());
 
   it('follows the SSE stream and sends the bearer token', async () => {
-    const fetchMock = vi.fn().mockResolvedValue(sseResponse([job('running', 40), job('succeeded', 100)]));
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(sseResponse([job('running', 40), job('succeeded', 100)]));
     vi.stubGlobal('fetch', fetchMock);
     const seen: number[] = [];
     const final = await service.follow('p1', 'job-1', (j) => seen.push(j.progress));

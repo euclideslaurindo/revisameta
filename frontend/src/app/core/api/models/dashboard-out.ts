@@ -4,9 +4,9 @@
 import { PersonPending } from '../models/person-pending';
 import { StageOut } from '../models/stage-out';
 export interface DashboardOut {
-  days_left: (number | null);
-  deadline: (string | null);
-  next_stage: ('protocol' | 'screening' | 'extraction' | 'rob' | 'analysis' | 'grade' | null);
+  days_left: number | null;
+  deadline: string | null;
+  next_stage: 'protocol' | 'screening' | 'extraction' | 'rob' | 'analysis' | 'grade' | null;
   people: Array<PersonPending>;
   stages: Array<StageOut>;
   studies: number;

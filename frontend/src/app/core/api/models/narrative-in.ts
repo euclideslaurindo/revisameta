@@ -3,8 +3,8 @@
 
 export interface NarrativeIn {
   direction: 'favours_group1' | 'favours_group2' | 'no_clear_difference' | 'mixed' | 'not_reported';
-  note?: (string | null);
+  note?: string | null;
   outcome_id: string;
   timepoint: string;
-  version?: (number | null);
+  version?: number | null;
 }

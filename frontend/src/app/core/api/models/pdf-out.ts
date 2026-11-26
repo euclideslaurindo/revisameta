@@ -5,7 +5,7 @@ export interface PdfOut {
   created_at: string;
   id: string;
   original_filename: string;
-  page_count: (number | null);
+  page_count: number | null;
   report_id: string;
   size_bytes: number;
   text_status: string;

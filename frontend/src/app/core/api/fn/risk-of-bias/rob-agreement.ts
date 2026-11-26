@@ -13,19 +13,22 @@ export interface RobAgreement$Params {
   project_id: string;
 }
 
-export function robAgreement(http: HttpClient, rootUrl: string, params: RobAgreement$Params, context?: HttpContext): Observable<StrictHttpResponse<RobProjectAgreementOut>> {
+export function robAgreement(
+  http: HttpClient,
+  rootUrl: string,
+  params: RobAgreement$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<RobProjectAgreementOut>> {
   const rb = new RequestBuilder(rootUrl, robAgreement.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<RobProjectAgreementOut>;
-    })
+    }),
   );
 }
 

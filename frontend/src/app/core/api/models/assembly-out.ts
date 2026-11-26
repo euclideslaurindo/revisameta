@@ -12,9 +12,9 @@ export interface AssemblyOut {
   outcome_id: string;
   outcome_name: string;
   outcome_type: string;
-  request: ({
-[key: string]: any;
-} | null);
+  request: {
+    [key: string]: any;
+  } | null;
   studies: Array<StudyRow>;
   timepoint: string;
   warnings: Array<string>;

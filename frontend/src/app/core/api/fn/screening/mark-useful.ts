@@ -12,12 +12,19 @@ import { ScreeningUsefulIn } from '../../models/screening-useful-in';
 export interface MarkUseful$Params {
   reference_id: string;
   project_id: string;
-      body: ScreeningUsefulIn
+  body: ScreeningUsefulIn;
 }
 
-export function markUseful(http: HttpClient, rootUrl: string, params: MarkUseful$Params, context?: HttpContext): Observable<StrictHttpResponse<{
-[key: string]: boolean;
-}>> {
+export function markUseful(
+  http: HttpClient,
+  rootUrl: string,
+  params: MarkUseful$Params,
+  context?: HttpContext,
+): Observable<
+  StrictHttpResponse<{
+    [key: string]: boolean;
+  }>
+> {
   const rb = new RequestBuilder(rootUrl, markUseful.PATH, 'put');
   if (params) {
     rb.path('reference_id', params.reference_id, {});
@@ -25,15 +32,13 @@ export function markUseful(http: HttpClient, rootUrl: string, params: MarkUseful
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<{
-      [key: string]: boolean;
+        [key: string]: boolean;
       }>;
-    })
+    }),
   );
 }
 

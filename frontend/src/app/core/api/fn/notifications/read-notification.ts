@@ -7,24 +7,26 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-
 export interface ReadNotification$Params {
   notification_id: string;
 }
 
-export function readNotification(http: HttpClient, rootUrl: string, params: ReadNotification$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+export function readNotification(
+  http: HttpClient,
+  rootUrl: string,
+  params: ReadNotification$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<void>> {
   const rb = new RequestBuilder(rootUrl, readNotification.PATH, 'post');
   if (params) {
     rb.path('notification_id', params.notification_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'text', accept: '*/*', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'text', accept: '*/*', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
-    })
+    }),
   );
 }
 

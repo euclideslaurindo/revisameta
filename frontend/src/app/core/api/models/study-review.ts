@@ -7,10 +7,10 @@ export interface StudyReview {
   state: string;
   study_id: string;
   targets: Array<TargetState>;
-  tool_id: (string | null);
-  tool_key: (string | null);
-  tool_name: ({
-[key: string]: string;
-} | null);
-  tool_version: (string | null);
+  tool_id: string | null;
+  tool_key: string | null;
+  tool_name: {
+    [key: string]: string;
+  } | null;
+  tool_version: string | null;
 }

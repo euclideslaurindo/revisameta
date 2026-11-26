@@ -15,7 +15,12 @@ export interface ListComments$Params {
   entity_id: string;
 }
 
-export function listComments(http: HttpClient, rootUrl: string, params: ListComments$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<CommentOut>>> {
+export function listComments(
+  http: HttpClient,
+  rootUrl: string,
+  params: ListComments$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Array<CommentOut>>> {
   const rb = new RequestBuilder(rootUrl, listComments.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
@@ -23,13 +28,11 @@ export function listComments(http: HttpClient, rootUrl: string, params: ListComm
     rb.query('entity_id', params.entity_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<Array<CommentOut>>;
-    })
+    }),
   );
 }
 

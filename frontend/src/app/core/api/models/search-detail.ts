@@ -3,20 +3,20 @@
 
 export interface SearchDetail {
   created_at: string;
-  created_by: (string | null);
+  created_by: string | null;
   database: string;
-  error_code: (string | null);
+  error_code: string | null;
   error_count: number;
   errors: Array<{
-[key: string]: any;
-}>;
+    [key: string]: any;
+  }>;
   file_format: string;
   filename: string;
   id: string;
-  job_id: (string | null);
+  job_id: string | null;
   record_count: number;
   search_date: string;
   status: string;
-  strategy: (string | null);
+  strategy: string | null;
   warning_count: number;
 }

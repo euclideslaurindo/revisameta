@@ -13,10 +13,15 @@ import { StudyOut } from '../../models/study-out';
 export interface AddReport$Params {
   study_id: string;
   project_id: string;
-      body: ReportCreate
+  body: ReportCreate;
 }
 
-export function addReport(http: HttpClient, rootUrl: string, params: AddReport$Params, context?: HttpContext): Observable<StrictHttpResponse<StudyOut>> {
+export function addReport(
+  http: HttpClient,
+  rootUrl: string,
+  params: AddReport$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<StudyOut>> {
   const rb = new RequestBuilder(rootUrl, addReport.PATH, 'post');
   if (params) {
     rb.path('study_id', params.study_id, {});
@@ -24,13 +29,11 @@ export function addReport(http: HttpClient, rootUrl: string, params: AddReport$P
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<StudyOut>;
-    })
+    }),
   );
 }
 

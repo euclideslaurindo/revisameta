@@ -3,7 +3,7 @@
 
 import { Role } from '../models/role';
 export interface InvitationCreate {
-  email?: (string | null);
+  email?: string | null;
   expires_in_days?: number;
   roles: Array<Role>;
 }

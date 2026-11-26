@@ -13,15 +13,20 @@ import { RobFormat } from '../../models/rob-format';
 export interface ExportRiskOfBias$Params {
   project_id: string;
   tool_id: string;
-  outcome_id?: (string | null);
-  timepoint?: (string | null);
+  outcome_id?: string | null;
+  timepoint?: string | null;
   file_format?: RobFormat;
   csv_style?: CsvStyle;
   lang?: string;
   acknowledge_missing?: boolean;
 }
 
-export function exportRiskOfBias(http: HttpClient, rootUrl: string, params: ExportRiskOfBias$Params, context?: HttpContext): Observable<StrictHttpResponse<Blob>> {
+export function exportRiskOfBias(
+  http: HttpClient,
+  rootUrl: string,
+  params: ExportRiskOfBias$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Blob>> {
   const rb = new RequestBuilder(rootUrl, exportRiskOfBias.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
@@ -34,14 +39,14 @@ export function exportRiskOfBias(http: HttpClient, rootUrl: string, params: Expo
     rb.query('acknowledge_missing', params.acknowledge_missing, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'blob', accept: 'application/octet-stream', context })
-  ).pipe(
-    filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
-    map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Blob>;
-    })
-  );
+  return http
+    .request(rb.build({ responseType: 'blob', accept: 'application/octet-stream', context }))
+    .pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Blob>;
+      }),
+    );
 }
 
 exportRiskOfBias.PATH = '/api/v1/projects/{project_id}/exports/risk-of-bias';

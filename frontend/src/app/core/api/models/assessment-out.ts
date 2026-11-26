@@ -12,19 +12,19 @@ export interface AssessmentOut {
   judgement_kind: string;
   kind: string;
   missing: Array<string>;
-  outcome_id: (string | null);
+  outcome_id: string | null;
   overall: OverallState;
-  reviewer_id: (string | null);
-  reviewer_name: (string | null);
+  reviewer_id: string | null;
+  reviewer_name: string | null;
   status: string;
   study_id: string;
   targets: Array<TargetOut>;
   template_key: string;
   template_version: string;
-  timepoint: (string | null);
+  timepoint: string | null;
   tool_id: string;
   variants: {
-[key: string]: string;
-};
+    [key: string]: string;
+  };
   version: number;
 }

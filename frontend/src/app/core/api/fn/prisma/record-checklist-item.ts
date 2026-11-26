@@ -13,10 +13,15 @@ import { ChecklistRow } from '../../models/checklist-row';
 export interface RecordChecklistItem$Params {
   code: string;
   project_id: string;
-      body: ChecklistIn
+  body: ChecklistIn;
 }
 
-export function recordChecklistItem(http: HttpClient, rootUrl: string, params: RecordChecklistItem$Params, context?: HttpContext): Observable<StrictHttpResponse<ChecklistRow>> {
+export function recordChecklistItem(
+  http: HttpClient,
+  rootUrl: string,
+  params: RecordChecklistItem$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ChecklistRow>> {
   const rb = new RequestBuilder(rootUrl, recordChecklistItem.PATH, 'put');
   if (params) {
     rb.path('code', params.code, {});
@@ -24,13 +29,11 @@ export function recordChecklistItem(http: HttpClient, rootUrl: string, params: R
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ChecklistRow>;
-    })
+    }),
   );
 }
 

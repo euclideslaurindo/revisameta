@@ -3,15 +3,15 @@
 
 export interface SubgroupOut {
   groups: {
-[key: string]: string;
-};
-  key: (string | null);
+    [key: string]: string;
+  };
+  key: string | null;
   left_out: Array<string>;
   measure: string;
   planned: boolean;
   result: {
-[key: string]: any;
-};
+    [key: string]: any;
+  };
   variable: string;
   warnings: Array<string>;
 }

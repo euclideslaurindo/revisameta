@@ -9,7 +9,7 @@ export interface DirectionOut {
   higher_is_better: boolean;
   outcome_id: string;
   outcome_name: string;
-  scale_name: (string | null);
+  scale_name: string | null;
   second: DirectionSideOut;
   timepoint: string;
 }

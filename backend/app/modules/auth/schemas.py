@@ -52,3 +52,13 @@ class TokenOut(BaseModel):
 class UserUpdateIn(BaseModel):
     name: str | None = Field(default=None, min_length=1, max_length=200)
     ui_language: Literal["pt-BR", "en"] | None = None
+
+
+class ResetPasswordIn(BaseModel):
+    token: str = Field(min_length=10, max_length=200)
+    password: str = Field(min_length=1, max_length=256)
+
+
+class ChangePasswordIn(BaseModel):
+    current_password: str = Field(min_length=1, max_length=256)
+    new_password: str = Field(min_length=1, max_length=256)

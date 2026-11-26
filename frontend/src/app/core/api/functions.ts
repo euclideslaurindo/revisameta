@@ -13,6 +13,12 @@ export type { VerifyEmail$Params as VerifyEmail$Params } from './fn/auth/verify-
 export { verifyEmail as verifyEmail } from './fn/auth/verify-email';
 export type { ResendVerification$Params as ResendVerification$Params } from './fn/auth/resend-verification';
 export { resendVerification as resendVerification } from './fn/auth/resend-verification';
+export type { ForgotPassword$Params as ForgotPassword$Params } from './fn/auth/forgot-password';
+export { forgotPassword as forgotPassword } from './fn/auth/forgot-password';
+export type { ResetPassword$Params as ResetPassword$Params } from './fn/auth/reset-password';
+export { resetPassword as resetPassword } from './fn/auth/reset-password';
+export type { ChangePassword$Params as ChangePassword$Params } from './fn/auth/change-password';
+export { changePassword as changePassword } from './fn/auth/change-password';
 export type { Login$Params as Login$Params } from './fn/auth/login';
 export { login as login } from './fn/auth/login';
 export type { Refresh$Params as Refresh$Params } from './fn/auth/refresh';

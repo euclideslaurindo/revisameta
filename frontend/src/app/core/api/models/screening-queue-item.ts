@@ -6,11 +6,12 @@ import { SearchReferenceOut } from '../models/search-reference-out';
 export interface ScreeningQueueItem {
   assigned_to: Array<string>;
   decisions: number;
-  my_decision: (string | null);
-  my_reason_id?: (string | null);
+  my_decision: string | null;
+  my_reason_id?: string | null;
   others: Array<ScreeningDecisionOut>;
-  priority_score?: (number | null);
+  priority_score?: number | null;
   reference: SearchReferenceOut;
-  status: ('pending' | 'include' | 'exclude' | 'conflict' | 'resolved_include' | 'resolved_exclude' | null);
+  status:
+    'pending' | 'include' | 'exclude' | 'conflict' | 'resolved_include' | 'resolved_exclude' | null;
   useful_as_reference: boolean;
 }

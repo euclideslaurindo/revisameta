@@ -13,10 +13,15 @@ import { RobReviewOut } from '../../models/rob-review-out';
 export interface DiscardRobImport$Params {
   assessment_id: string;
   project_id: string;
-      body: JustificationIn
+  body: JustificationIn;
 }
 
-export function discardRobImport(http: HttpClient, rootUrl: string, params: DiscardRobImport$Params, context?: HttpContext): Observable<StrictHttpResponse<RobReviewOut>> {
+export function discardRobImport(
+  http: HttpClient,
+  rootUrl: string,
+  params: DiscardRobImport$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<RobReviewOut>> {
   const rb = new RequestBuilder(rootUrl, discardRobImport.PATH, 'post');
   if (params) {
     rb.path('assessment_id', params.assessment_id, {});
@@ -24,14 +29,13 @@ export function discardRobImport(http: HttpClient, rootUrl: string, params: Disc
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<RobReviewOut>;
-    })
+    }),
   );
 }
 
-discardRobImport.PATH = '/api/v1/projects/{project_id}/rob/assessments/{assessment_id}/discard-import';
+discardRobImport.PATH =
+  '/api/v1/projects/{project_id}/rob/assessments/{assessment_id}/discard-import';

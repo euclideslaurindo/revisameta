@@ -6,7 +6,7 @@ export interface DedupReportOut {
   duplicates_removed: number;
   imported: number;
   pending: {
-[key: string]: number;
-};
+    [key: string]: number;
+  };
   rejected: number;
 }

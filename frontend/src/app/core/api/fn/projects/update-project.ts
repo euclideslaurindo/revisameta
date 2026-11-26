@@ -12,23 +12,26 @@ import { ProjectUpdate } from '../../models/project-update';
 
 export interface UpdateProject$Params {
   project_id: string;
-      body: ProjectUpdate
+  body: ProjectUpdate;
 }
 
-export function updateProject(http: HttpClient, rootUrl: string, params: UpdateProject$Params, context?: HttpContext): Observable<StrictHttpResponse<ProjectOut>> {
+export function updateProject(
+  http: HttpClient,
+  rootUrl: string,
+  params: UpdateProject$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ProjectOut>> {
   const rb = new RequestBuilder(rootUrl, updateProject.PATH, 'patch');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ProjectOut>;
-    })
+    }),
   );
 }
 

@@ -4,18 +4,18 @@
 import { RobDecisionOut } from '../models/rob-decision-out';
 export interface RobItemOut {
   agree: boolean;
-  annotation_a: (string | null);
-  annotation_b: (string | null);
-  consensus_value: (string | null);
-  decision: (RobDecisionOut | null);
-  domain_key: (string | null);
-  justification_a: (string | null);
-  justification_b: (string | null);
+  annotation_a: string | null;
+  annotation_b: string | null;
+  consensus_value: string | null;
+  decision: RobDecisionOut | null;
+  domain_key: string | null;
+  justification_a: string | null;
+  justification_b: string | null;
   key: string;
   kind: string;
-  outcome_id: (string | null);
-  question_key: (string | null);
-  timepoint: (string | null);
-  value_a: (string | null);
-  value_b: (string | null);
+  outcome_id: string | null;
+  question_key: string | null;
+  timepoint: string | null;
+  value_a: string | null;
+  value_b: string | null;
 }

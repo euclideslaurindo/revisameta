@@ -7,24 +7,26 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-
 export interface DeduplicationReportCsv$Params {
   project_id: string;
 }
 
-export function deduplicationReportCsv(http: HttpClient, rootUrl: string, params: DeduplicationReportCsv$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+export function deduplicationReportCsv(
+  http: HttpClient,
+  rootUrl: string,
+  params: DeduplicationReportCsv$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<string>> {
   const rb = new RequestBuilder(rootUrl, deduplicationReportCsv.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'text', accept: 'text/csv', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'text', accept: 'text/csv', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<string>;
-    })
+    }),
   );
 }
 

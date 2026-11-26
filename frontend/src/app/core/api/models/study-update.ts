@@ -3,8 +3,8 @@
 
 import { StudyDesign } from '../models/study-design';
 export interface StudyUpdate {
-  design?: (StudyDesign | null);
-  label?: (string | null);
-  notes?: (string | null);
+  design?: StudyDesign | null;
+  label?: string | null;
+  notes?: string | null;
   version: number;
 }

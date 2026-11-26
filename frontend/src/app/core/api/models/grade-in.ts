@@ -4,17 +4,17 @@
 import { DomainIn } from '../models/domain-in';
 export interface GradeIn {
   approach: 'classic' | 'robins_i';
-  data_set?: ('unadjusted' | 'adjusted' | null);
+  data_set?: 'unadjusted' | 'adjusted' | null;
   domains: {
-[key: string]: DomainIn;
-};
-  measure?: ('MD' | 'SMD' | 'OR' | 'RR' | 'RD' | null);
-  method?: ('REML' | 'DL' | 'PM' | 'FE' | null);
-  note?: (string | null);
+    [key: string]: DomainIn;
+  };
+  measure?: 'MD' | 'SMD' | 'OR' | 'RR' | 'RD' | null;
+  method?: 'REML' | 'DL' | 'PM' | 'FE' | null;
+  note?: string | null;
   outcome_id: string;
-  rob_tool_id?: (string | null);
+  rob_tool_id?: string | null;
   start_certainty: 'low' | 'high';
-  test?: ('knha' | 'z' | null);
+  test?: 'knha' | 'z' | null;
   timepoint: string;
-  version?: (number | null);
+  version?: number | null;
 }

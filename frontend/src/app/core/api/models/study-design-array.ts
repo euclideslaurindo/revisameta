@@ -13,5 +13,5 @@ export const STUDY_DESIGN: StudyDesign[] = [
   'case_control',
   'cross_sectional',
   'case_series',
-  'other'
+  'other',
 ];

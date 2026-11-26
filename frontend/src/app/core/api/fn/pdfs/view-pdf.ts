@@ -14,20 +14,23 @@ export interface ViewPdf$Params {
   project_id: string;
 }
 
-export function viewPdf(http: HttpClient, rootUrl: string, params: ViewPdf$Params, context?: HttpContext): Observable<StrictHttpResponse<PdfViewOut>> {
+export function viewPdf(
+  http: HttpClient,
+  rootUrl: string,
+  params: ViewPdf$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<PdfViewOut>> {
   const rb = new RequestBuilder(rootUrl, viewPdf.PATH, 'get');
   if (params) {
     rb.path('pdf_id', params.pdf_id, {});
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<PdfViewOut>;
-    })
+    }),
   );
 }
 

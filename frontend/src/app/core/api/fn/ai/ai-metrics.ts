@@ -13,19 +13,22 @@ export interface AiMetrics$Params {
   project_id: string;
 }
 
-export function aiMetrics(http: HttpClient, rootUrl: string, params: AiMetrics$Params, context?: HttpContext): Observable<StrictHttpResponse<MetricsOut>> {
+export function aiMetrics(
+  http: HttpClient,
+  rootUrl: string,
+  params: AiMetrics$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<MetricsOut>> {
   const rb = new RequestBuilder(rootUrl, aiMetrics.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<MetricsOut>;
-    })
+    }),
   );
 }
 

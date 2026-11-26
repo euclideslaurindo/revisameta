@@ -13,10 +13,15 @@ import { ItemOut } from '../../models/item-out';
 export interface DecideDivergence$Params {
   study_id: string;
   project_id: string;
-      body: DecideIn
+  body: DecideIn;
 }
 
-export function decideDivergence(http: HttpClient, rootUrl: string, params: DecideDivergence$Params, context?: HttpContext): Observable<StrictHttpResponse<ItemOut>> {
+export function decideDivergence(
+  http: HttpClient,
+  rootUrl: string,
+  params: DecideDivergence$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ItemOut>> {
   const rb = new RequestBuilder(rootUrl, decideDivergence.PATH, 'post');
   if (params) {
     rb.path('study_id', params.study_id, {});
@@ -24,13 +29,11 @@ export function decideDivergence(http: HttpClient, rootUrl: string, params: Deci
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ItemOut>;
-    })
+    }),
   );
 }
 

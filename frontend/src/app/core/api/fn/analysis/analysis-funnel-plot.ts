@@ -11,24 +11,29 @@ import { FunnelIn } from '../../models/funnel-in';
 
 export interface AnalysisFunnelPlot$Params {
   project_id: string;
-      body: FunnelIn
+  body: FunnelIn;
 }
 
-export function analysisFunnelPlot(http: HttpClient, rootUrl: string, params: AnalysisFunnelPlot$Params, context?: HttpContext): Observable<StrictHttpResponse<Blob>> {
+export function analysisFunnelPlot(
+  http: HttpClient,
+  rootUrl: string,
+  params: AnalysisFunnelPlot$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Blob>> {
   const rb = new RequestBuilder(rootUrl, analysisFunnelPlot.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'blob', accept: 'application/octet-stream', context })
-  ).pipe(
-    filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
-    map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Blob>;
-    })
-  );
+  return http
+    .request(rb.build({ responseType: 'blob', accept: 'application/octet-stream', context }))
+    .pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Blob>;
+      }),
+    );
 }
 
 analysisFunnelPlot.PATH = '/api/v1/projects/{project_id}/analyses/funnel-plot';

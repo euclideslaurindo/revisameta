@@ -42,7 +42,9 @@ export class PdfUploadService {
     onCreated?.(upload.id);
     const state = await this.api.invoke(getUpload, { project_id: projectId, upload_id: upload.id });
     const done = new Set(state.uploaded_parts ?? []);
-    const missing = Array.from({ length: upload.part_count }, (_, i) => i + 1).filter((n) => !done.has(n));
+    const missing = Array.from({ length: upload.part_count }, (_, i) => i + 1).filter(
+      (n) => !done.has(n),
+    );
     const report = () =>
       onProgress({ phase: 'sending', percent: Math.round((100 * done.size) / upload.part_count) });
     report();
@@ -62,7 +64,10 @@ export class PdfUploadService {
       }
     }
 
-    const job = await this.api.invoke(completeUpload, { project_id: projectId, upload_id: upload.id });
+    const job = await this.api.invoke(completeUpload, {
+      project_id: projectId,
+      upload_id: upload.id,
+    });
     const finished = await this.jobs.follow(projectId, job.id, (current) =>
       onProgress({ phase: 'processing', percent: current.progress }),
     );

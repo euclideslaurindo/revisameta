@@ -12,23 +12,26 @@ import { CommentOut } from '../../models/comment-out';
 
 export interface CreateComment$Params {
   project_id: string;
-      body: CommentIn
+  body: CommentIn;
 }
 
-export function createComment(http: HttpClient, rootUrl: string, params: CreateComment$Params, context?: HttpContext): Observable<StrictHttpResponse<CommentOut>> {
+export function createComment(
+  http: HttpClient,
+  rootUrl: string,
+  params: CreateComment$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<CommentOut>> {
   const rb = new RequestBuilder(rootUrl, createComment.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<CommentOut>;
-    })
+    }),
   );
 }
 

@@ -11,22 +11,25 @@ import { ProjectCreate } from '../../models/project-create';
 import { ProjectOut } from '../../models/project-out';
 
 export interface CreateProject$Params {
-      body: ProjectCreate
+  body: ProjectCreate;
 }
 
-export function createProject(http: HttpClient, rootUrl: string, params: CreateProject$Params, context?: HttpContext): Observable<StrictHttpResponse<ProjectOut>> {
+export function createProject(
+  http: HttpClient,
+  rootUrl: string,
+  params: CreateProject$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ProjectOut>> {
   const rb = new RequestBuilder(rootUrl, createProject.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ProjectOut>;
-    })
+    }),
   );
 }
 

@@ -4,6 +4,6 @@
 import { SuggestionOut } from '../models/suggestion-out';
 export interface RobHintOut {
   discarded: boolean;
-  reason: (string | null);
-  suggestion: (SuggestionOut | null);
+  reason: string | null;
+  suggestion: SuggestionOut | null;
 }

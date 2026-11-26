@@ -3,6 +3,6 @@
 
 export interface ScreeningDecideIn {
   decision: 'include' | 'exclude' | 'maybe';
-  exclusion_reason_id?: (string | null);
-  note?: (string | null);
+  exclusion_reason_id?: string | null;
+  note?: string | null;
 }

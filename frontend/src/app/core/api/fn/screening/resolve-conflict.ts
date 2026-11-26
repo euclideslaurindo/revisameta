@@ -13,12 +13,19 @@ export interface ResolveConflict$Params {
   reference_id: string;
   project_id: string;
   stage?: 'title_abstract' | 'full_text';
-      body: ScreeningResolveIn
+  body: ScreeningResolveIn;
 }
 
-export function resolveConflict(http: HttpClient, rootUrl: string, params: ResolveConflict$Params, context?: HttpContext): Observable<StrictHttpResponse<{
-[key: string]: string;
-}>> {
+export function resolveConflict(
+  http: HttpClient,
+  rootUrl: string,
+  params: ResolveConflict$Params,
+  context?: HttpContext,
+): Observable<
+  StrictHttpResponse<{
+    [key: string]: string;
+  }>
+> {
   const rb = new RequestBuilder(rootUrl, resolveConflict.PATH, 'post');
   if (params) {
     rb.path('reference_id', params.reference_id, {});
@@ -27,16 +34,15 @@ export function resolveConflict(http: HttpClient, rootUrl: string, params: Resol
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<{
-      [key: string]: string;
+        [key: string]: string;
       }>;
-    })
+    }),
   );
 }
 
-resolveConflict.PATH = '/api/v1/projects/{project_id}/screening/references/{reference_id}/resolution';
+resolveConflict.PATH =
+  '/api/v1/projects/{project_id}/screening/references/{reference_id}/resolution';

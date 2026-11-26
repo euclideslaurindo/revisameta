@@ -7,9 +7,9 @@ export interface ExtractionImportPreview {
   groups: Array<NameMatch>;
   outcomes: Array<NameMatch>;
   row_count: number;
-  sample: Array<Array<(string | null)>>;
+  sample: Array<Array<string | null>>;
   studies: Array<NameMatch>;
   suggested_mapping: {
-[key: string]: string;
-};
+    [key: string]: string;
+  };
 }

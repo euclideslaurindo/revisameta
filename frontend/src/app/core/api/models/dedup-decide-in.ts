@@ -3,6 +3,6 @@
 
 export interface DedupDecideIn {
   action: 'confirm' | 'reject' | 'undo';
-  keep?: ('a' | 'b' | null);
+  keep?: 'a' | 'b' | null;
   version: number;
 }

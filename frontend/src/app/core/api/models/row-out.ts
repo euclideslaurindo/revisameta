@@ -5,9 +5,9 @@ export interface RowOut {
   assessment_id: string;
   kind: string;
   label: string;
-  overall: (string | null);
+  overall: string | null;
   study_id: string;
   values: {
-[key: string]: (string | null);
-};
+    [key: string]: string | null;
+  };
 }

@@ -13,10 +13,15 @@ import { PdfOut } from '../../models/pdf-out';
 export interface AttachPdf$Params {
   report_id: string;
   project_id: string;
-      body: AttachPdfIn
+  body: AttachPdfIn;
 }
 
-export function attachPdf(http: HttpClient, rootUrl: string, params: AttachPdf$Params, context?: HttpContext): Observable<StrictHttpResponse<PdfOut>> {
+export function attachPdf(
+  http: HttpClient,
+  rootUrl: string,
+  params: AttachPdf$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<PdfOut>> {
   const rb = new RequestBuilder(rootUrl, attachPdf.PATH, 'post');
   if (params) {
     rb.path('report_id', params.report_id, {});
@@ -24,13 +29,11 @@ export function attachPdf(http: HttpClient, rootUrl: string, params: AttachPdf$P
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<PdfOut>;
-    })
+    }),
   );
 }
 

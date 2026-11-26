@@ -3,7 +3,7 @@
 
 export interface UserOut {
   email: string;
-  email_verified_at: (string | null);
+  email_verified_at: string | null;
   id: string;
   is_system_admin: boolean;
   name: string;

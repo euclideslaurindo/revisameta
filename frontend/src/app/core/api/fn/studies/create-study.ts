@@ -12,23 +12,26 @@ import { StudyOut } from '../../models/study-out';
 
 export interface CreateStudy$Params {
   project_id: string;
-      body: StudyCreate
+  body: StudyCreate;
 }
 
-export function createStudy(http: HttpClient, rootUrl: string, params: CreateStudy$Params, context?: HttpContext): Observable<StrictHttpResponse<StudyOut>> {
+export function createStudy(
+  http: HttpClient,
+  rootUrl: string,
+  params: CreateStudy$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<StudyOut>> {
   const rb = new RequestBuilder(rootUrl, createStudy.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<StudyOut>;
-    })
+    }),
   );
 }
 

@@ -13,10 +13,15 @@ import { DirectionOut } from '../../models/direction-out';
 export interface ConfirmDirection$Params {
   extraction_id: string;
   project_id: string;
-      body: ConfirmDirectionIn
+  body: ConfirmDirectionIn;
 }
 
-export function confirmDirection(http: HttpClient, rootUrl: string, params: ConfirmDirection$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<DirectionOut>>> {
+export function confirmDirection(
+  http: HttpClient,
+  rootUrl: string,
+  params: ConfirmDirection$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Array<DirectionOut>>> {
   const rb = new RequestBuilder(rootUrl, confirmDirection.PATH, 'post');
   if (params) {
     rb.path('extraction_id', params.extraction_id, {});
@@ -24,14 +29,13 @@ export function confirmDirection(http: HttpClient, rootUrl: string, params: Conf
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<Array<DirectionOut>>;
-    })
+    }),
   );
 }
 
-confirmDirection.PATH = '/api/v1/projects/{project_id}/extractions/{extraction_id}/direction/confirm';
+confirmDirection.PATH =
+  '/api/v1/projects/{project_id}/extractions/{extraction_id}/direction/confirm';

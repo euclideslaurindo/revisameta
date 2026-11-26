@@ -6,8 +6,4 @@ import { DecisionChoice } from './decision-choice';
 /**
  * Each possible value of `DecisionChoice`
  */
-export const DECISION_CHOICE: DecisionChoice[] = [
-  'a',
-  'b',
-  'consensus'
-];
+export const DECISION_CHOICE: DecisionChoice[] = ['a', 'b', 'consensus'];

@@ -12,23 +12,26 @@ import { ExtractionImportPreview } from '../../models/extraction-import-preview'
 
 export interface PreviewExtractionImport$Params {
   project_id: string;
-      body: BodyPreviewExtractionImport
+  body: BodyPreviewExtractionImport;
 }
 
-export function previewExtractionImport(http: HttpClient, rootUrl: string, params: PreviewExtractionImport$Params, context?: HttpContext): Observable<StrictHttpResponse<ExtractionImportPreview>> {
+export function previewExtractionImport(
+  http: HttpClient,
+  rootUrl: string,
+  params: PreviewExtractionImport$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ExtractionImportPreview>> {
   const rb = new RequestBuilder(rootUrl, previewExtractionImport.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'multipart/form-data');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ExtractionImportPreview>;
-    })
+    }),
   );
 }
 

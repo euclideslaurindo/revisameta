@@ -13,10 +13,15 @@ import { ArmOut } from '../../models/arm-out';
 export interface AddArm$Params {
   extraction_id: string;
   project_id: string;
-      body: ArmIn
+  body: ArmIn;
 }
 
-export function addArm(http: HttpClient, rootUrl: string, params: AddArm$Params, context?: HttpContext): Observable<StrictHttpResponse<ArmOut>> {
+export function addArm(
+  http: HttpClient,
+  rootUrl: string,
+  params: AddArm$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ArmOut>> {
   const rb = new RequestBuilder(rootUrl, addArm.PATH, 'post');
   if (params) {
     rb.path('extraction_id', params.extraction_id, {});
@@ -24,13 +29,11 @@ export function addArm(http: HttpClient, rootUrl: string, params: AddArm$Params,
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ArmOut>;
-    })
+    }),
   );
 }
 

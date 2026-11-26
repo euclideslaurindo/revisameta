@@ -14,20 +14,23 @@ export interface CreateConsensus$Params {
   project_id: string;
 }
 
-export function createConsensus(http: HttpClient, rootUrl: string, params: CreateConsensus$Params, context?: HttpContext): Observable<StrictHttpResponse<ConsensusRef>> {
+export function createConsensus(
+  http: HttpClient,
+  rootUrl: string,
+  params: CreateConsensus$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ConsensusRef>> {
   const rb = new RequestBuilder(rootUrl, createConsensus.PATH, 'post');
   if (params) {
     rb.path('study_id', params.study_id, {});
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ConsensusRef>;
-    })
+    }),
   );
 }
 

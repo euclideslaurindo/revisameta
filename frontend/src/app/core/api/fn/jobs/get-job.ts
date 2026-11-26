@@ -14,20 +14,23 @@ export interface GetJob$Params {
   project_id: string;
 }
 
-export function getJob(http: HttpClient, rootUrl: string, params: GetJob$Params, context?: HttpContext): Observable<StrictHttpResponse<JobOut>> {
+export function getJob(
+  http: HttpClient,
+  rootUrl: string,
+  params: GetJob$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<JobOut>> {
   const rb = new RequestBuilder(rootUrl, getJob.PATH, 'get');
   if (params) {
     rb.path('job_id', params.job_id, {});
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<JobOut>;
-    })
+    }),
   );
 }
 

@@ -13,10 +13,15 @@ import { DuplicatePairOut } from '../../models/duplicate-pair-out';
 export interface DecideDuplicatePair$Params {
   pair_id: string;
   project_id: string;
-      body: DedupDecideIn
+  body: DedupDecideIn;
 }
 
-export function decideDuplicatePair(http: HttpClient, rootUrl: string, params: DecideDuplicatePair$Params, context?: HttpContext): Observable<StrictHttpResponse<DuplicatePairOut>> {
+export function decideDuplicatePair(
+  http: HttpClient,
+  rootUrl: string,
+  params: DecideDuplicatePair$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<DuplicatePairOut>> {
   const rb = new RequestBuilder(rootUrl, decideDuplicatePair.PATH, 'post');
   if (params) {
     rb.path('pair_id', params.pair_id, {});
@@ -24,13 +29,11 @@ export function decideDuplicatePair(http: HttpClient, rootUrl: string, params: D
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<DuplicatePairOut>;
-    })
+    }),
   );
 }
 

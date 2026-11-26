@@ -3,17 +3,17 @@
 
 export interface SearchOut {
   created_at: string;
-  created_by: (string | null);
+  created_by: string | null;
   database: string;
-  error_code: (string | null);
+  error_code: string | null;
   error_count: number;
   file_format: string;
   filename: string;
   id: string;
-  job_id: (string | null);
+  job_id: string | null;
   record_count: number;
   search_date: string;
   status: string;
-  strategy: (string | null);
+  strategy: string | null;
   warning_count: number;
 }

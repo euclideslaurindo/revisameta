@@ -7,26 +7,28 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-
 export interface JobEvents$Params {
   job_id: string;
   project_id: string;
 }
 
-export function jobEvents(http: HttpClient, rootUrl: string, params: JobEvents$Params, context?: HttpContext): Observable<StrictHttpResponse<any>> {
+export function jobEvents(
+  http: HttpClient,
+  rootUrl: string,
+  params: JobEvents$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<any>> {
   const rb = new RequestBuilder(rootUrl, jobEvents.PATH, 'get');
   if (params) {
     rb.path('job_id', params.job_id, {});
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<any>;
-    })
+    }),
   );
 }
 

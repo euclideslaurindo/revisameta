@@ -12,23 +12,26 @@ import { AiSettingsOut } from '../../models/ai-settings-out';
 
 export interface UpdateAiSettings$Params {
   project_id: string;
-      body: AiSettingsIn
+  body: AiSettingsIn;
 }
 
-export function updateAiSettings(http: HttpClient, rootUrl: string, params: UpdateAiSettings$Params, context?: HttpContext): Observable<StrictHttpResponse<AiSettingsOut>> {
+export function updateAiSettings(
+  http: HttpClient,
+  rootUrl: string,
+  params: UpdateAiSettings$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<AiSettingsOut>> {
   const rb = new RequestBuilder(rootUrl, updateAiSettings.PATH, 'put');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<AiSettingsOut>;
-    })
+    }),
   );
 }
 

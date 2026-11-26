@@ -11,24 +11,29 @@ import { FlowIn } from '../../models/flow-in';
 
 export interface PrismaFlowDiagram$Params {
   project_id: string;
-      body: FlowIn
+  body: FlowIn;
 }
 
-export function prismaFlowDiagram(http: HttpClient, rootUrl: string, params: PrismaFlowDiagram$Params, context?: HttpContext): Observable<StrictHttpResponse<Blob>> {
+export function prismaFlowDiagram(
+  http: HttpClient,
+  rootUrl: string,
+  params: PrismaFlowDiagram$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Blob>> {
   const rb = new RequestBuilder(rootUrl, prismaFlowDiagram.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'blob', accept: 'application/octet-stream', context })
-  ).pipe(
-    filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
-    map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Blob>;
-    })
-  );
+  return http
+    .request(rb.build({ responseType: 'blob', accept: 'application/octet-stream', context }))
+    .pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Blob>;
+      }),
+    );
 }
 
 prismaFlowDiagram.PATH = '/api/v1/projects/{project_id}/prisma/flow';

@@ -14,20 +14,23 @@ export interface PrismaChecklist$Params {
   kind?: 'prisma2020' | 'abstracts';
 }
 
-export function prismaChecklist(http: HttpClient, rootUrl: string, params: PrismaChecklist$Params, context?: HttpContext): Observable<StrictHttpResponse<ChecklistOut>> {
+export function prismaChecklist(
+  http: HttpClient,
+  rootUrl: string,
+  params: PrismaChecklist$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ChecklistOut>> {
   const rb = new RequestBuilder(rootUrl, prismaChecklist.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.query('kind', params.kind, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ChecklistOut>;
-    })
+    }),
   );
 }
 

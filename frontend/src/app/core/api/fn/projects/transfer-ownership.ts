@@ -12,23 +12,26 @@ import { TransferOwnershipIn } from '../../models/transfer-ownership-in';
 
 export interface TransferOwnership$Params {
   project_id: string;
-      body: TransferOwnershipIn
+  body: TransferOwnershipIn;
 }
 
-export function transferOwnership(http: HttpClient, rootUrl: string, params: TransferOwnership$Params, context?: HttpContext): Observable<StrictHttpResponse<ProjectOut>> {
+export function transferOwnership(
+  http: HttpClient,
+  rootUrl: string,
+  params: TransferOwnership$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ProjectOut>> {
   const rb = new RequestBuilder(rootUrl, transferOwnership.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ProjectOut>;
-    })
+    }),
   );
 }
 

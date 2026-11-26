@@ -15,7 +15,12 @@ export interface ReferenceHistory$Params {
   stage?: 'title_abstract' | 'full_text';
 }
 
-export function referenceHistory(http: HttpClient, rootUrl: string, params: ReferenceHistory$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<ScreeningDecisionOut>>> {
+export function referenceHistory(
+  http: HttpClient,
+  rootUrl: string,
+  params: ReferenceHistory$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Array<ScreeningDecisionOut>>> {
   const rb = new RequestBuilder(rootUrl, referenceHistory.PATH, 'get');
   if (params) {
     rb.path('reference_id', params.reference_id, {});
@@ -23,13 +28,11 @@ export function referenceHistory(http: HttpClient, rootUrl: string, params: Refe
     rb.query('stage', params.stage, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<Array<ScreeningDecisionOut>>;
-    })
+    }),
   );
 }
 

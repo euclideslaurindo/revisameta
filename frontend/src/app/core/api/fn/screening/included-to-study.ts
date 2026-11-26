@@ -13,10 +13,15 @@ import { ToStudyIn } from '../../models/to-study-in';
 export interface IncludedToStudy$Params {
   reference_id: string;
   project_id: string;
-      body: ToStudyIn
+  body: ToStudyIn;
 }
 
-export function includedToStudy(http: HttpClient, rootUrl: string, params: IncludedToStudy$Params, context?: HttpContext): Observable<StrictHttpResponse<StudyOut>> {
+export function includedToStudy(
+  http: HttpClient,
+  rootUrl: string,
+  params: IncludedToStudy$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<StudyOut>> {
   const rb = new RequestBuilder(rootUrl, includedToStudy.PATH, 'post');
   if (params) {
     rb.path('reference_id', params.reference_id, {});
@@ -24,13 +29,11 @@ export function includedToStudy(http: HttpClient, rootUrl: string, params: Inclu
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<StudyOut>;
-    })
+    }),
   );
 }
 

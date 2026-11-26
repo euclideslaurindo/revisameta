@@ -5,11 +5,11 @@ export interface ScreeningDecisionOut {
   created_at: string;
   current: boolean;
   decision: string;
-  exclusion_reason_id?: (string | null);
+  exclusion_reason_id?: string | null;
   id: string;
-  note: (string | null);
+  note: string | null;
   reference_id: string;
   undone: boolean;
   user_id: string;
-  user_name?: (string | null);
+  user_name?: string | null;
 }

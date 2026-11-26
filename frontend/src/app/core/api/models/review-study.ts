@@ -7,10 +7,10 @@ import { ReviewRow } from '../models/review-row';
 export interface ReviewStudy {
   arms: Array<ReviewArm>;
   blockers: Array<string>;
-  checked_at: (string | null);
-  checked_by: (string | null);
-  consensus_id: (string | null);
-  consensus_status: (string | null);
+  checked_at: string | null;
+  checked_by: string | null;
+  consensus_id: string | null;
+  consensus_status: string | null;
   extractors: Array<string>;
   justified_alerts: number;
   label: string;

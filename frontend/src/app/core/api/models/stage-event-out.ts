@@ -4,7 +4,7 @@
 export interface StageEventOut {
   action: string;
   created_at: string;
-  justification: (string | null);
-  target_id: (string | null);
-  user_name: (string | null);
+  justification: string | null;
+  target_id: string | null;
+  user_name: string | null;
 }

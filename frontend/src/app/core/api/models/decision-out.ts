@@ -4,6 +4,6 @@
 export interface DecisionOut {
   choice: string;
   decided_at: string;
-  decided_by_name: (string | null);
-  reason: (string | null);
+  decided_by_name: string | null;
+  reason: string | null;
 }

@@ -5,6 +5,6 @@ export interface GroupOut {
   id: string;
   label: string;
   position: number;
-  rule_description: (string | null);
+  rule_description: string | null;
   version: number;
 }

@@ -12,23 +12,26 @@ import { TutorOut } from '../../models/tutor-out';
 
 export interface AskTutor$Params {
   project_id: string;
-      body: TutorIn
+  body: TutorIn;
 }
 
-export function askTutor(http: HttpClient, rootUrl: string, params: AskTutor$Params, context?: HttpContext): Observable<StrictHttpResponse<TutorOut>> {
+export function askTutor(
+  http: HttpClient,
+  rootUrl: string,
+  params: AskTutor$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<TutorOut>> {
   const rb = new RequestBuilder(rootUrl, askTutor.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<TutorOut>;
-    })
+    }),
   );
 }
 

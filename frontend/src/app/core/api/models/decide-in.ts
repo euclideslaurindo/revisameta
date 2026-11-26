@@ -5,5 +5,5 @@ import { DecisionChoice } from '../models/decision-choice';
 export interface DecideIn {
   choice: DecisionChoice;
   key: string;
-  reason?: (string | null);
+  reason?: string | null;
 }

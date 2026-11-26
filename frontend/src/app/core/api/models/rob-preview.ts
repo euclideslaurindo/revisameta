@@ -5,9 +5,9 @@ import { TargetColumn } from '../models/target-column';
 export interface RobPreview {
   columns: Array<string>;
   row_count: number;
-  sample: Array<Array<(string | null)>>;
+  sample: Array<Array<string | null>>;
   suggested_mapping: {
-[key: string]: string;
-};
+    [key: string]: string;
+  };
   targets: Array<TargetColumn>;
 }

@@ -9,13 +9,20 @@ import { OutcomePlan } from '../models/outcome-plan';
 export interface PlanOut {
   adjusted?: 'separate' | 'adjusted_only' | 'unadjusted_only';
   checks?: ChecksPlan;
-  comparison?: (ComparisonPlan | null);
-  cutoff?: (CutoffPlan | null);
+  comparison?: ComparisonPlan | null;
+  cutoff?: CutoffPlan | null;
   defined: boolean;
   model?: ModelPlan;
-  notes?: (string | null);
+  notes?: string | null;
   outcomes?: Array<OutcomePlan>;
-  sensitivity?: Array<'leave_one_out' | 'exclude_high_risk_of_bias' | 'exclude_estimated_data' | 'fixed_vs_random' | 'other_estimator' | 'by_cutoff'>;
+  sensitivity?: Array<
+    | 'leave_one_out'
+    | 'exclude_high_risk_of_bias'
+    | 'exclude_estimated_data'
+    | 'fixed_vs_random'
+    | 'other_estimator'
+    | 'by_cutoff'
+  >;
   subgroups?: Array<string>;
   version: number;
 }

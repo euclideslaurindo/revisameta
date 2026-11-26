@@ -5,6 +5,6 @@ import { NumberCheck } from '../models/number-check';
 export interface ReviewArm {
   arm_label: string;
   check: NumberCheck;
-  group_label: (string | null);
-  n: (number | null);
+  group_label: string | null;
+  n: number | null;
 }

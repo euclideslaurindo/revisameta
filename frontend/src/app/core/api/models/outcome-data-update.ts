@@ -8,8 +8,8 @@ import { ValueType } from '../models/value-type';
  * Full replacement of the numbers of a row (keeps autosave simple and explicit).
  */
 export interface OutcomeDataUpdate {
-  timepoint?: (string | null);
-  value_type?: (ValueType | null);
+  timepoint?: string | null;
+  value_type?: ValueType | null;
   values: OutcomeDataFields;
   version: number;
 }

@@ -11,22 +11,25 @@ import { DemoIn } from '../../models/demo-in';
 import { DemoOut } from '../../models/demo-out';
 
 export interface CreateDemoProject$Params {
-      body: DemoIn
+  body: DemoIn;
 }
 
-export function createDemoProject(http: HttpClient, rootUrl: string, params: CreateDemoProject$Params, context?: HttpContext): Observable<StrictHttpResponse<DemoOut>> {
+export function createDemoProject(
+  http: HttpClient,
+  rootUrl: string,
+  params: CreateDemoProject$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<DemoOut>> {
   const rb = new RequestBuilder(rootUrl, createDemoProject.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<DemoOut>;
-    })
+    }),
   );
 }
 

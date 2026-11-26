@@ -13,10 +13,15 @@ import { ArmUpdate } from '../../models/arm-update';
 export interface UpdateArm$Params {
   arm_id: string;
   project_id: string;
-      body: ArmUpdate
+  body: ArmUpdate;
 }
 
-export function updateArm(http: HttpClient, rootUrl: string, params: UpdateArm$Params, context?: HttpContext): Observable<StrictHttpResponse<ArmOut>> {
+export function updateArm(
+  http: HttpClient,
+  rootUrl: string,
+  params: UpdateArm$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ArmOut>> {
   const rb = new RequestBuilder(rootUrl, updateArm.PATH, 'patch');
   if (params) {
     rb.path('arm_id', params.arm_id, {});
@@ -24,13 +29,11 @@ export function updateArm(http: HttpClient, rootUrl: string, params: UpdateArm$P
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ArmOut>;
-    })
+    }),
   );
 }
 

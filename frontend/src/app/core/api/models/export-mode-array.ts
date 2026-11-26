@@ -6,7 +6,4 @@ import { ExportMode } from './export-mode';
 /**
  * Each possible value of `ExportMode`
  */
-export const EXPORT_MODE: ExportMode[] = [
-  'consensus',
-  'individual'
-];
+export const EXPORT_MODE: ExportMode[] = ['consensus', 'individual'];

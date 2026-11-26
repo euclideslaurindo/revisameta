@@ -12,10 +12,15 @@ import { JustificationIn } from '../../models/justification-in';
 export interface ReopenConsensus$Params {
   extraction_id: string;
   project_id: string;
-      body: JustificationIn
+  body: JustificationIn;
 }
 
-export function reopenConsensus(http: HttpClient, rootUrl: string, params: ReopenConsensus$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+export function reopenConsensus(
+  http: HttpClient,
+  rootUrl: string,
+  params: ReopenConsensus$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<void>> {
   const rb = new RequestBuilder(rootUrl, reopenConsensus.PATH, 'post');
   if (params) {
     rb.path('extraction_id', params.extraction_id, {});
@@ -23,13 +28,11 @@ export function reopenConsensus(http: HttpClient, rootUrl: string, params: Reope
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'text', accept: '*/*', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'text', accept: '*/*', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
-    })
+    }),
   );
 }
 

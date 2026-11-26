@@ -13,19 +13,22 @@ export interface GetDedupSettings$Params {
   project_id: string;
 }
 
-export function getDedupSettings(http: HttpClient, rootUrl: string, params: GetDedupSettings$Params, context?: HttpContext): Observable<StrictHttpResponse<DedupSettings>> {
+export function getDedupSettings(
+  http: HttpClient,
+  rootUrl: string,
+  params: GetDedupSettings$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<DedupSettings>> {
   const rb = new RequestBuilder(rootUrl, getDedupSettings.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<DedupSettings>;
-    })
+    }),
   );
 }
 

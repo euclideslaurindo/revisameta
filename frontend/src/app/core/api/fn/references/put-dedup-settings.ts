@@ -11,23 +11,26 @@ import { DedupSettings } from '../../models/dedup-settings';
 
 export interface PutDedupSettings$Params {
   project_id: string;
-      body: DedupSettings
+  body: DedupSettings;
 }
 
-export function putDedupSettings(http: HttpClient, rootUrl: string, params: PutDedupSettings$Params, context?: HttpContext): Observable<StrictHttpResponse<DedupSettings>> {
+export function putDedupSettings(
+  http: HttpClient,
+  rootUrl: string,
+  params: PutDedupSettings$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<DedupSettings>> {
   const rb = new RequestBuilder(rootUrl, putDedupSettings.PATH, 'put');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<DedupSettings>;
-    })
+    }),
   );
 }
 

@@ -3,6 +3,6 @@
 
 import { RunIn } from '../models/run-in';
 export interface DraftIn {
-  analysis?: (RunIn | null);
+  analysis?: RunIn | null;
   lang?: 'pt-BR' | 'en';
 }

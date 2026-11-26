@@ -4,5 +4,5 @@
 import { QuotaKind } from '../models/quota-kind';
 export interface QuotaUpdate {
   kind: QuotaKind;
-  limit?: (number | null);
+  limit?: number | null;
 }

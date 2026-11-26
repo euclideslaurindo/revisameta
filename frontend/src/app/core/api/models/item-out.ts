@@ -4,26 +4,26 @@
 import { DecisionOut } from '../models/decision-out';
 export interface ItemOut {
   agree: boolean;
-  arm_key?: (string | null);
-  arm_label?: (string | null);
+  arm_key?: string | null;
+  arm_label?: string | null;
   consensus_value?: any;
-  decision?: (DecisionOut | null);
+  decision?: DecisionOut | null;
   divergent: boolean;
   field: string;
-  group_id?: (string | null);
+  group_id?: string | null;
   key: string;
   kind: string;
-  label?: (string | null);
-  label_key?: (string | null);
-  outcome_id?: (string | null);
+  label?: string | null;
+  label_key?: string | null;
+  outcome_id?: string | null;
   section: string;
-  source_a?: ({
-[key: string]: any;
-} | null);
-  source_b?: ({
-[key: string]: any;
-} | null);
-  timepoint?: (string | null);
+  source_a?: {
+    [key: string]: any;
+  } | null;
+  source_b?: {
+    [key: string]: any;
+  } | null;
+  timepoint?: string | null;
   value_a: any;
   value_b: any;
 }

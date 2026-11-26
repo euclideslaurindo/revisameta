@@ -12,23 +12,26 @@ import { MetaRegressionOut } from '../../models/meta-regression-out';
 
 export interface RunMetaRegression$Params {
   project_id: string;
-      body: MetaRegressionIn
+  body: MetaRegressionIn;
 }
 
-export function runMetaRegression(http: HttpClient, rootUrl: string, params: RunMetaRegression$Params, context?: HttpContext): Observable<StrictHttpResponse<MetaRegressionOut>> {
+export function runMetaRegression(
+  http: HttpClient,
+  rootUrl: string,
+  params: RunMetaRegression$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<MetaRegressionOut>> {
   const rb = new RequestBuilder(rootUrl, runMetaRegression.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<MetaRegressionOut>;
-    })
+    }),
   );
 }
 

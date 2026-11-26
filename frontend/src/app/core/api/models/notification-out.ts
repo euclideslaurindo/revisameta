@@ -6,8 +6,8 @@ export interface NotificationOut {
   id: string;
   kind: string;
   payload: {
-[key: string]: any;
-};
+    [key: string]: any;
+  };
   project_id: string;
   project_title: string;
   read: boolean;

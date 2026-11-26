@@ -12,23 +12,26 @@ import { InvitationCreated } from '../../models/invitation-created';
 
 export interface CreateInvitation$Params {
   project_id: string;
-      body: InvitationCreate
+  body: InvitationCreate;
 }
 
-export function createInvitation(http: HttpClient, rootUrl: string, params: CreateInvitation$Params, context?: HttpContext): Observable<StrictHttpResponse<InvitationCreated>> {
+export function createInvitation(
+  http: HttpClient,
+  rootUrl: string,
+  params: CreateInvitation$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<InvitationCreated>> {
   const rb = new RequestBuilder(rootUrl, createInvitation.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<InvitationCreated>;
-    })
+    }),
   );
 }
 

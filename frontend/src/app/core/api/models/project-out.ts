@@ -3,9 +3,9 @@
 
 import { Role } from '../models/role';
 export interface ProjectOut {
-  archived_at?: (string | null);
+  archived_at?: string | null;
   created_at: string;
-  deadline: (string | null);
+  deadline: string | null;
   double_extraction: boolean;
   double_rob: boolean;
   id: string;
@@ -13,10 +13,10 @@ export interface ProjectOut {
   my_roles?: Array<Role>;
   owner_id: string;
   pico: {
-[key: string]: any;
-};
-  prospero: (string | null);
-  question: (string | null);
+    [key: string]: any;
+  };
+  prospero: string | null;
+  question: string | null;
   report_language: string;
   title: string;
   version: number;

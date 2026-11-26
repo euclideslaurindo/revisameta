@@ -3,6 +3,6 @@
 
 export interface RowError {
   code: string;
-  field: (string | null);
+  field: string | null;
   row: number;
 }

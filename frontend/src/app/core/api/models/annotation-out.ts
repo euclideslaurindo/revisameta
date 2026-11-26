@@ -6,7 +6,7 @@ export interface AnnotationOut {
   color: string;
   created_at: string;
   id: string;
-  note: (string | null);
+  note: string | null;
   page: number;
   pdf_file_id: string;
   quote: string;

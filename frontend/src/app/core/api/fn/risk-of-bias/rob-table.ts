@@ -12,11 +12,16 @@ import { TableOut } from '../../models/table-out';
 export interface RobTable$Params {
   project_id: string;
   tool_id: string;
-  outcome_id?: (string | null);
-  timepoint?: (string | null);
+  outcome_id?: string | null;
+  timepoint?: string | null;
 }
 
-export function robTable(http: HttpClient, rootUrl: string, params: RobTable$Params, context?: HttpContext): Observable<StrictHttpResponse<TableOut>> {
+export function robTable(
+  http: HttpClient,
+  rootUrl: string,
+  params: RobTable$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<TableOut>> {
   const rb = new RequestBuilder(rootUrl, robTable.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
@@ -25,13 +30,11 @@ export function robTable(http: HttpClient, rootUrl: string, params: RobTable$Par
     rb.query('timepoint', params.timepoint, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<TableOut>;
-    })
+    }),
   );
 }
 

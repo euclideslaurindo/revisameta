@@ -11,22 +11,25 @@ import { CodeIn } from '../../models/code-in';
 import { RecoveryOut } from '../../models/recovery-out';
 
 export interface TwoFactorEnable$Params {
-      body: CodeIn
+  body: CodeIn;
 }
 
-export function twoFactorEnable(http: HttpClient, rootUrl: string, params: TwoFactorEnable$Params, context?: HttpContext): Observable<StrictHttpResponse<RecoveryOut>> {
+export function twoFactorEnable(
+  http: HttpClient,
+  rootUrl: string,
+  params: TwoFactorEnable$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<RecoveryOut>> {
   const rb = new RequestBuilder(rootUrl, twoFactorEnable.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<RecoveryOut>;
-    })
+    }),
   );
 }
 

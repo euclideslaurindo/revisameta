@@ -3,7 +3,7 @@
 
 export interface TaskMetrics {
   accepted: number;
-  accuracy: (number | null);
+  accuracy: number | null;
   corrected: number;
   decided: number;
   disabled: boolean;

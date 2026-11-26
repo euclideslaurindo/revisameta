@@ -13,10 +13,15 @@ import { PartUrlsIn } from '../../models/part-urls-in';
 export interface PartUrls$Params {
   upload_id: string;
   project_id: string;
-      body: PartUrlsIn
+  body: PartUrlsIn;
 }
 
-export function partUrls(http: HttpClient, rootUrl: string, params: PartUrls$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<PartUrl>>> {
+export function partUrls(
+  http: HttpClient,
+  rootUrl: string,
+  params: PartUrls$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Array<PartUrl>>> {
   const rb = new RequestBuilder(rootUrl, partUrls.PATH, 'post');
   if (params) {
     rb.path('upload_id', params.upload_id, {});
@@ -24,13 +29,11 @@ export function partUrls(http: HttpClient, rootUrl: string, params: PartUrls$Par
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<Array<PartUrl>>;
-    })
+    }),
   );
 }
 

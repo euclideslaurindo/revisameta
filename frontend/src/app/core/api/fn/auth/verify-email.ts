@@ -10,22 +10,25 @@ import { RequestBuilder } from '../../request-builder';
 import { TokenIn } from '../../models/token-in';
 
 export interface VerifyEmail$Params {
-      body: TokenIn
+  body: TokenIn;
 }
 
-export function verifyEmail(http: HttpClient, rootUrl: string, params: VerifyEmail$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+export function verifyEmail(
+  http: HttpClient,
+  rootUrl: string,
+  params: VerifyEmail$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<void>> {
   const rb = new RequestBuilder(rootUrl, verifyEmail.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'text', accept: '*/*', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'text', accept: '*/*', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
-    })
+    }),
   );
 }
 

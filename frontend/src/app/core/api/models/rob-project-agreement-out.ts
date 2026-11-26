@@ -3,7 +3,7 @@
 
 import { RobAgreementOut } from '../models/rob-agreement-out';
 export interface RobProjectAgreementOut {
-  agreement: (RobAgreementOut | null);
-  agreement_error: (string | null);
+  agreement: RobAgreementOut | null;
+  agreement_error: string | null;
   pairs: number;
 }

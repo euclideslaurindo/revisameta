@@ -3,7 +3,7 @@
 
 export interface RobReviewerOut {
   assessment_id: string;
-  name: (string | null);
-  side: (string | null);
+  name: string | null;
+  side: string | null;
   status: string;
 }

@@ -14,20 +14,23 @@ export interface ListAnnotations$Params {
   project_id: string;
 }
 
-export function listAnnotations(http: HttpClient, rootUrl: string, params: ListAnnotations$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<AnnotationOut>>> {
+export function listAnnotations(
+  http: HttpClient,
+  rootUrl: string,
+  params: ListAnnotations$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Array<AnnotationOut>>> {
   const rb = new RequestBuilder(rootUrl, listAnnotations.PATH, 'get');
   if (params) {
     rb.path('pdf_id', params.pdf_id, {});
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<Array<AnnotationOut>>;
-    })
+    }),
   );
 }
 

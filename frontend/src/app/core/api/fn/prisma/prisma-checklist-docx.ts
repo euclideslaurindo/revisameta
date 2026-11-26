@@ -7,14 +7,18 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-
 export interface PrismaChecklistDocx$Params {
   project_id: string;
   lang?: 'pt-BR' | 'en';
   kind?: 'prisma2020' | 'abstracts';
 }
 
-export function prismaChecklistDocx(http: HttpClient, rootUrl: string, params: PrismaChecklistDocx$Params, context?: HttpContext): Observable<StrictHttpResponse<Blob>> {
+export function prismaChecklistDocx(
+  http: HttpClient,
+  rootUrl: string,
+  params: PrismaChecklistDocx$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Blob>> {
   const rb = new RequestBuilder(rootUrl, prismaChecklistDocx.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
@@ -22,14 +26,14 @@ export function prismaChecklistDocx(http: HttpClient, rootUrl: string, params: P
     rb.query('kind', params.kind, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'blob', accept: 'application/octet-stream', context })
-  ).pipe(
-    filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
-    map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Blob>;
-    })
-  );
+  return http
+    .request(rb.build({ responseType: 'blob', accept: 'application/octet-stream', context }))
+    .pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Blob>;
+      }),
+    );
 }
 
 prismaChecklistDocx.PATH = '/api/v1/projects/{project_id}/prisma/checklist.docx';

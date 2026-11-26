@@ -15,7 +15,12 @@ export interface SearchPdf$Params {
   q: string;
 }
 
-export function searchPdf(http: HttpClient, rootUrl: string, params: SearchPdf$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<SearchHit>>> {
+export function searchPdf(
+  http: HttpClient,
+  rootUrl: string,
+  params: SearchPdf$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Array<SearchHit>>> {
   const rb = new RequestBuilder(rootUrl, searchPdf.PATH, 'get');
   if (params) {
     rb.path('pdf_id', params.pdf_id, {});
@@ -23,13 +28,11 @@ export function searchPdf(http: HttpClient, rootUrl: string, params: SearchPdf$P
     rb.query('q', params.q, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<Array<SearchHit>>;
-    })
+    }),
   );
 }
 

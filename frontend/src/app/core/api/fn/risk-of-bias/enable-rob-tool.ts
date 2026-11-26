@@ -12,23 +12,26 @@ import { ToolOut } from '../../models/tool-out';
 
 export interface EnableRobTool$Params {
   project_id: string;
-      body: EnableIn
+  body: EnableIn;
 }
 
-export function enableRobTool(http: HttpClient, rootUrl: string, params: EnableRobTool$Params, context?: HttpContext): Observable<StrictHttpResponse<ToolOut>> {
+export function enableRobTool(
+  http: HttpClient,
+  rootUrl: string,
+  params: EnableRobTool$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ToolOut>> {
   const rb = new RequestBuilder(rootUrl, enableRobTool.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ToolOut>;
-    })
+    }),
   );
 }
 

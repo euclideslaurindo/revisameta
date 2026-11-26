@@ -6,12 +6,12 @@ export interface DuplicatePairOut {
   a: SearchReferenceOut;
   b: SearchReferenceOut;
   criteria: {
-[key: string]: any;
-};
-  decided_at: (string | null);
-  decided_by: (string | null);
+    [key: string]: any;
+  };
+  decided_at: string | null;
+  decided_by: string | null;
   id: string;
-  kept_id: (string | null);
+  kept_id: string | null;
   kind: string;
   score: number;
   status: string;

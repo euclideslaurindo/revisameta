@@ -6,18 +6,18 @@ import { DatabaseCount } from '../models/database-count';
 import { ReasonCount } from '../models/reason-count';
 export interface PrismaCounts {
   adjusted: {
-[key: string]: Adjustment;
-};
+    [key: string]: Adjustment;
+  };
   computed: {
-[key: string]: number;
-};
+    [key: string]: number;
+  };
   identified: Array<DatabaseCount>;
   pending: {
-[key: string]: number;
-};
+    [key: string]: number;
+  };
   reports_excluded: Array<ReasonCount>;
   values: {
-[key: string]: number;
-};
+    [key: string]: number;
+  };
   warnings: Array<string>;
 }

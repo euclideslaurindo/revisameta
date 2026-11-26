@@ -5,6 +5,6 @@ export interface StudyToolOut {
   confirmed: boolean;
   design: string;
   study_id: string;
-  suggested_tool_id: (string | null);
-  tool_id: (string | null);
+  suggested_tool_id: string | null;
+  tool_id: string | null;
 }

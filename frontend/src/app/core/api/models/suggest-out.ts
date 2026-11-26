@@ -3,22 +3,22 @@
 
 import { DomainSuggestion } from '../models/domain-suggestion';
 export interface SuggestOut {
-  ci_lb: (number | null);
-  ci_ub: (number | null);
+  ci_lb: number | null;
+  ci_ub: number | null;
   domains: {
-[key: string]: DomainSuggestion;
-};
-  estimate: (number | null);
-  i2: (number | null);
+    [key: string]: DomainSuggestion;
+  };
+  estimate: number | null;
+  i2: number | null;
   k: number;
   measure: string;
   method: string;
-  natural?: ({
-[key: string]: number;
-} | null);
+  natural?: {
+    [key: string]: number;
+  } | null;
   observational: boolean;
   outcome_id: string;
-  participants: (number | null);
+  participants: number | null;
   ratio: boolean;
   start_suggested: 'very_low' | 'low' | 'moderate' | 'high';
   test: string;

@@ -13,10 +13,15 @@ import { ToolOut } from '../../models/tool-out';
 export interface SetRobToolTexts$Params {
   tool_id: string;
   project_id: string;
-      body: TextsIn
+  body: TextsIn;
 }
 
-export function setRobToolTexts(http: HttpClient, rootUrl: string, params: SetRobToolTexts$Params, context?: HttpContext): Observable<StrictHttpResponse<ToolOut>> {
+export function setRobToolTexts(
+  http: HttpClient,
+  rootUrl: string,
+  params: SetRobToolTexts$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ToolOut>> {
   const rb = new RequestBuilder(rootUrl, setRobToolTexts.PATH, 'put');
   if (params) {
     rb.path('tool_id', params.tool_id, {});
@@ -24,13 +29,11 @@ export function setRobToolTexts(http: HttpClient, rootUrl: string, params: SetRo
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ToolOut>;
-    })
+    }),
   );
 }
 

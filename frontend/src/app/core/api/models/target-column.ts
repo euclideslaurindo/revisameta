@@ -4,8 +4,8 @@
 export interface TargetColumn {
   key: string;
   name: {
-[key: string]: string;
-};
+    [key: string]: string;
+  };
   required: boolean;
   short: string;
 }

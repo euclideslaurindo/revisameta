@@ -8,9 +8,9 @@ export interface TableOut {
   columns: Array<ColumnOut>;
   levels: Array<string>;
   needs_target: boolean;
-  outcome_id: (string | null);
+  outcome_id: string | null;
   pending: Array<PendingOut>;
   rows: Array<RowOut>;
-  timepoint: (string | null);
+  timepoint: string | null;
   tool_id: string;
 }

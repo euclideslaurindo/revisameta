@@ -9,21 +9,23 @@ import { RequestBuilder } from '../../request-builder';
 
 import { UsageOut } from '../../models/usage-out';
 
-export interface MyUsage$Params {
-}
+export interface MyUsage$Params {}
 
-export function myUsage(http: HttpClient, rootUrl: string, params?: MyUsage$Params, context?: HttpContext): Observable<StrictHttpResponse<UsageOut>> {
+export function myUsage(
+  http: HttpClient,
+  rootUrl: string,
+  params?: MyUsage$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<UsageOut>> {
   const rb = new RequestBuilder(rootUrl, myUsage.PATH, 'get');
   if (params) {
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<UsageOut>;
-    })
+    }),
   );
 }
 

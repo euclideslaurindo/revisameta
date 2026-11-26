@@ -14,20 +14,23 @@ export interface AiSuggestions$Params {
   target_id: string;
 }
 
-export function aiSuggestions(http: HttpClient, rootUrl: string, params: AiSuggestions$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<SuggestionOut>>> {
+export function aiSuggestions(
+  http: HttpClient,
+  rootUrl: string,
+  params: AiSuggestions$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Array<SuggestionOut>>> {
   const rb = new RequestBuilder(rootUrl, aiSuggestions.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.query('target_id', params.target_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<Array<SuggestionOut>>;
-    })
+    }),
   );
 }
 

@@ -4,12 +4,12 @@
 export interface MultilevelOut {
   k: number;
   left_out: {
-[key: string]: Array<string>;
-};
+    [key: string]: Array<string>;
+  };
   measure: string;
   result: {
-[key: string]: any;
-};
+    [key: string]: any;
+  };
   studies: number;
   timepoints: Array<string>;
   warnings: Array<string>;

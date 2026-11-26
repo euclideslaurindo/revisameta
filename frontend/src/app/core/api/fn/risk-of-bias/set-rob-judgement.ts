@@ -13,10 +13,15 @@ import { JudgementIn } from '../../models/judgement-in';
 export interface SetRobJudgement$Params {
   assessment_id: string;
   project_id: string;
-      body: JudgementIn
+  body: JudgementIn;
 }
 
-export function setRobJudgement(http: HttpClient, rootUrl: string, params: SetRobJudgement$Params, context?: HttpContext): Observable<StrictHttpResponse<AssessmentOut>> {
+export function setRobJudgement(
+  http: HttpClient,
+  rootUrl: string,
+  params: SetRobJudgement$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<AssessmentOut>> {
   const rb = new RequestBuilder(rootUrl, setRobJudgement.PATH, 'put');
   if (params) {
     rb.path('assessment_id', params.assessment_id, {});
@@ -24,13 +29,11 @@ export function setRobJudgement(http: HttpClient, rootUrl: string, params: SetRo
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<AssessmentOut>;
-    })
+    }),
   );
 }
 

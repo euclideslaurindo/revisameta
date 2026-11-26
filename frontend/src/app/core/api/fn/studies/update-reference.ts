@@ -13,10 +13,15 @@ import { ReferenceUpdate } from '../../models/reference-update';
 export interface UpdateReference$Params {
   reference_id: string;
   project_id: string;
-      body: ReferenceUpdate
+  body: ReferenceUpdate;
 }
 
-export function updateReference(http: HttpClient, rootUrl: string, params: UpdateReference$Params, context?: HttpContext): Observable<StrictHttpResponse<ReferenceOut>> {
+export function updateReference(
+  http: HttpClient,
+  rootUrl: string,
+  params: UpdateReference$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ReferenceOut>> {
   const rb = new RequestBuilder(rootUrl, updateReference.PATH, 'patch');
   if (params) {
     rb.path('reference_id', params.reference_id, {});
@@ -24,13 +29,11 @@ export function updateReference(http: HttpClient, rootUrl: string, params: Updat
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ReferenceOut>;
-    })
+    }),
   );
 }
 

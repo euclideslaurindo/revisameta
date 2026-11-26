@@ -12,23 +12,26 @@ import { OutcomeOut } from '../../models/outcome-out';
 
 export interface CreateOutcome$Params {
   project_id: string;
-      body: OutcomeCreate
+  body: OutcomeCreate;
 }
 
-export function createOutcome(http: HttpClient, rootUrl: string, params: CreateOutcome$Params, context?: HttpContext): Observable<StrictHttpResponse<OutcomeOut>> {
+export function createOutcome(
+  http: HttpClient,
+  rootUrl: string,
+  params: CreateOutcome$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<OutcomeOut>> {
   const rb = new RequestBuilder(rootUrl, createOutcome.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<OutcomeOut>;
-    })
+    }),
   );
 }
 

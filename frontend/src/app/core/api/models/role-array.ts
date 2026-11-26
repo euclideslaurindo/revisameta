@@ -6,10 +6,4 @@ import { Role } from './role';
 /**
  * Each possible value of `Role`
  */
-export const ROLE: Role[] = [
-  'admin',
-  'reviewer',
-  'extractor',
-  'statistician',
-  'reader'
-];
+export const ROLE: Role[] = ['admin', 'reviewer', 'extractor', 'statistician', 'reader'];

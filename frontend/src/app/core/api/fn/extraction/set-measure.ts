@@ -14,10 +14,15 @@ export interface SetMeasure$Params {
   extraction_id: string;
   outcome_id: string;
   project_id: string;
-      body: MeasureIn
+  body: MeasureIn;
 }
 
-export function setMeasure(http: HttpClient, rootUrl: string, params: SetMeasure$Params, context?: HttpContext): Observable<StrictHttpResponse<MeasureOut>> {
+export function setMeasure(
+  http: HttpClient,
+  rootUrl: string,
+  params: SetMeasure$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<MeasureOut>> {
   const rb = new RequestBuilder(rootUrl, setMeasure.PATH, 'put');
   if (params) {
     rb.path('extraction_id', params.extraction_id, {});
@@ -26,13 +31,11 @@ export function setMeasure(http: HttpClient, rootUrl: string, params: SetMeasure
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<MeasureOut>;
-    })
+    }),
   );
 }
 

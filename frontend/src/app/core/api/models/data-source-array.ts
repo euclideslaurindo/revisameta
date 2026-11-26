@@ -6,9 +6,4 @@ import { DataSource } from './data-source';
 /**
  * Each possible value of `DataSource`
  */
-export const DATA_SOURCE: DataSource[] = [
-  'article',
-  'author',
-  'digitizer',
-  'ai'
-];
+export const DATA_SOURCE: DataSource[] = ['article', 'author', 'digitizer', 'ai'];

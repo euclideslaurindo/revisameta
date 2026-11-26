@@ -5,6 +5,6 @@ export interface DomainSuggestion {
   reason: string;
   suggested: number;
   values?: {
-[key: string]: any;
-};
+    [key: string]: any;
+  };
 }

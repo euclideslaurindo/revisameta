@@ -4,8 +4,8 @@
 export interface PriorityInfo {
   excludes: number;
   includes: number;
-  job_id?: (string | null);
+  job_id?: string | null;
   min_each?: number;
   scored: number;
-  trained_at: (string | null);
+  trained_at: string | null;
 }

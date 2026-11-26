@@ -12,23 +12,26 @@ import { NarrativeOut } from '../../models/narrative-out';
 
 export interface NarrativeTable$Params {
   project_id: string;
-      body: AssemblyIn
+  body: AssemblyIn;
 }
 
-export function narrativeTable(http: HttpClient, rootUrl: string, params: NarrativeTable$Params, context?: HttpContext): Observable<StrictHttpResponse<NarrativeOut>> {
+export function narrativeTable(
+  http: HttpClient,
+  rootUrl: string,
+  params: NarrativeTable$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<NarrativeOut>> {
   const rb = new RequestBuilder(rootUrl, narrativeTable.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<NarrativeOut>;
-    })
+    }),
   );
 }
 

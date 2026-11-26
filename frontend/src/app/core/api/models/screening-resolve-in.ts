@@ -3,6 +3,6 @@
 
 export interface ScreeningResolveIn {
   decision: 'include' | 'exclude';
-  exclusion_reason_id?: (string | null);
+  exclusion_reason_id?: string | null;
   reason: string;
 }

@@ -14,20 +14,23 @@ export interface Direction$Params {
   project_id: string;
 }
 
-export function direction(http: HttpClient, rootUrl: string, params: Direction$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<DirectionOut>>> {
+export function direction(
+  http: HttpClient,
+  rootUrl: string,
+  params: Direction$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Array<DirectionOut>>> {
   const rb = new RequestBuilder(rootUrl, direction.PATH, 'get');
   if (params) {
     rb.path('extraction_id', params.extraction_id, {});
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<Array<DirectionOut>>;
-    })
+    }),
   );
 }
 

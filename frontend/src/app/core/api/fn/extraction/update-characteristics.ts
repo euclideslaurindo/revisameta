@@ -13,10 +13,15 @@ import { ExtractionSummary } from '../../models/extraction-summary';
 export interface UpdateCharacteristics$Params {
   extraction_id: string;
   project_id: string;
-      body: CharacteristicsUpdate
+  body: CharacteristicsUpdate;
 }
 
-export function updateCharacteristics(http: HttpClient, rootUrl: string, params: UpdateCharacteristics$Params, context?: HttpContext): Observable<StrictHttpResponse<ExtractionSummary>> {
+export function updateCharacteristics(
+  http: HttpClient,
+  rootUrl: string,
+  params: UpdateCharacteristics$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ExtractionSummary>> {
   const rb = new RequestBuilder(rootUrl, updateCharacteristics.PATH, 'patch');
   if (params) {
     rb.path('extraction_id', params.extraction_id, {});
@@ -24,13 +29,11 @@ export function updateCharacteristics(http: HttpClient, rootUrl: string, params:
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ExtractionSummary>;
-    })
+    }),
   );
 }
 

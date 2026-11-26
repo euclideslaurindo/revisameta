@@ -6,8 +6,4 @@ import { BibFormat } from './bib-format';
 /**
  * Each possible value of `BibFormat`
  */
-export const BIB_FORMAT: BibFormat[] = [
-  'ris',
-  'bibtex',
-  'vancouver'
-];
+export const BIB_FORMAT: BibFormat[] = ['ris', 'bibtex', 'vancouver'];

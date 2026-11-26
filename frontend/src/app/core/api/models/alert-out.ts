@@ -4,12 +4,12 @@
 export interface AlertOut {
   code: string;
   extraction_id: string;
-  field: (string | null);
+  field: string | null;
   id: string;
-  justification: (string | null);
+  justification: string | null;
   params: {
-[key: string]: any;
-};
+    [key: string]: any;
+  };
   severity: string;
   status: string;
   target_id: string;

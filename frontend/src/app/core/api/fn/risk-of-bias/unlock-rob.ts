@@ -12,23 +12,26 @@ import { RobReviewOut } from '../../models/rob-review-out';
 
 export interface UnlockRob$Params {
   project_id: string;
-      body: JustificationIn
+  body: JustificationIn;
 }
 
-export function unlockRob(http: HttpClient, rootUrl: string, params: UnlockRob$Params, context?: HttpContext): Observable<StrictHttpResponse<RobReviewOut>> {
+export function unlockRob(
+  http: HttpClient,
+  rootUrl: string,
+  params: UnlockRob$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<RobReviewOut>> {
   const rb = new RequestBuilder(rootUrl, unlockRob.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<RobReviewOut>;
-    })
+    }),
   );
 }
 

@@ -9,21 +9,23 @@ import { RequestBuilder } from '../../request-builder';
 
 import { PublicConfig } from '../../models/public-config';
 
-export interface PublicConfig$Params {
-}
+export interface PublicConfig$Params {}
 
-export function publicConfig(http: HttpClient, rootUrl: string, params?: PublicConfig$Params, context?: HttpContext): Observable<StrictHttpResponse<PublicConfig>> {
+export function publicConfig(
+  http: HttpClient,
+  rootUrl: string,
+  params?: PublicConfig$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<PublicConfig>> {
   const rb = new RequestBuilder(rootUrl, publicConfig.PATH, 'get');
   if (params) {
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<PublicConfig>;
-    })
+    }),
   );
 }
 

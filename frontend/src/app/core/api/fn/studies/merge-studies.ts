@@ -13,10 +13,15 @@ import { StudyOut } from '../../models/study-out';
 export interface MergeStudies$Params {
   study_id: string;
   project_id: string;
-      body: MergeIn
+  body: MergeIn;
 }
 
-export function mergeStudies(http: HttpClient, rootUrl: string, params: MergeStudies$Params, context?: HttpContext): Observable<StrictHttpResponse<StudyOut>> {
+export function mergeStudies(
+  http: HttpClient,
+  rootUrl: string,
+  params: MergeStudies$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<StudyOut>> {
   const rb = new RequestBuilder(rootUrl, mergeStudies.PATH, 'post');
   if (params) {
     rb.path('study_id', params.study_id, {});
@@ -24,13 +29,11 @@ export function mergeStudies(http: HttpClient, rootUrl: string, params: MergeStu
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<StudyOut>;
-    })
+    }),
   );
 }
 

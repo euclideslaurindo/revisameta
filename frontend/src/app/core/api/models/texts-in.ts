@@ -3,7 +3,7 @@
 
 export interface TextsIn {
   texts: {
-[key: string]: (string | null);
-};
+    [key: string]: string | null;
+  };
   version: number;
 }

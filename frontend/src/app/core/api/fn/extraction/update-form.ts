@@ -12,23 +12,26 @@ import { FormUpdate } from '../../models/form-update';
 
 export interface UpdateForm$Params {
   project_id: string;
-      body: FormUpdate
+  body: FormUpdate;
 }
 
-export function updateForm(http: HttpClient, rootUrl: string, params: UpdateForm$Params, context?: HttpContext): Observable<StrictHttpResponse<FormOut>> {
+export function updateForm(
+  http: HttpClient,
+  rootUrl: string,
+  params: UpdateForm$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<FormOut>> {
   const rb = new RequestBuilder(rootUrl, updateForm.PATH, 'put');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<FormOut>;
-    })
+    }),
   );
 }
 

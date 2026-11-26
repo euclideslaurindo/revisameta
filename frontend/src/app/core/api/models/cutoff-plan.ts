@@ -3,8 +3,8 @@
 
 export interface CutoffPlan {
   rule?: 'strict' | 'tolerant';
-  tolerance_max?: (number | null);
-  tolerance_min?: (number | null);
+  tolerance_max?: number | null;
+  tolerance_min?: number | null;
   unit?: 'years' | 'months';
   value: number;
 }

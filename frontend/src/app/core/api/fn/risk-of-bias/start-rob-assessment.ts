@@ -13,10 +13,15 @@ import { StartIn } from '../../models/start-in';
 export interface StartRobAssessment$Params {
   study_id: string;
   project_id: string;
-      body: StartIn
+  body: StartIn;
 }
 
-export function startRobAssessment(http: HttpClient, rootUrl: string, params: StartRobAssessment$Params, context?: HttpContext): Observable<StrictHttpResponse<AssessmentOut>> {
+export function startRobAssessment(
+  http: HttpClient,
+  rootUrl: string,
+  params: StartRobAssessment$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<AssessmentOut>> {
   const rb = new RequestBuilder(rootUrl, startRobAssessment.PATH, 'post');
   if (params) {
     rb.path('study_id', params.study_id, {});
@@ -24,13 +29,11 @@ export function startRobAssessment(http: HttpClient, rootUrl: string, params: St
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<AssessmentOut>;
-    })
+    }),
   );
 }
 

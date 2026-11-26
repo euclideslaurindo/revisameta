@@ -7,27 +7,31 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-
 export interface AiStatement$Params {
   project_id: string;
   lang?: 'pt-BR' | 'en';
 }
 
-export function aiStatement(http: HttpClient, rootUrl: string, params: AiStatement$Params, context?: HttpContext): Observable<StrictHttpResponse<Blob>> {
+export function aiStatement(
+  http: HttpClient,
+  rootUrl: string,
+  params: AiStatement$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Blob>> {
   const rb = new RequestBuilder(rootUrl, aiStatement.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.query('lang', params.lang, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'blob', accept: 'application/octet-stream', context })
-  ).pipe(
-    filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
-    map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Blob>;
-    })
-  );
+  return http
+    .request(rb.build({ responseType: 'blob', accept: 'application/octet-stream', context }))
+    .pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Blob>;
+      }),
+    );
 }
 
 aiStatement.PATH = '/api/v1/projects/{project_id}/ai/statement.docx';

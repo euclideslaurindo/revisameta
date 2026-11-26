@@ -194,3 +194,105 @@ async def logout(session: AsyncSession, token: str | None) -> None:
     if record is not None:
         await _revoke_family(session, record.family_id)
         await session.commit()
+
+
+RESET_PURPOSE = "reset_password"
+RESET_TTL = timedelta(hours=1)
+
+
+async def _revoke_all(session: AsyncSession, user_id: uuid.UUID) -> None:
+    await session.execute(
+        update(RefreshToken)
+        .where(RefreshToken.user_id == user_id, RefreshToken.revoked_at.is_(None))
+        .values(revoked_at=_now())
+    )
+
+
+async def request_password_reset(session: AsyncSession, email: str, sender: EmailSender) -> None:
+    """Send a one-hour reset link. Silent when the e-mail has no active account."""
+    user = await get_user_by_email(session, email)
+    if user is None or not user.is_active:
+        return
+    # Older reset links stop working when a new one is asked for.
+    await session.execute(
+        update(EmailToken)
+        .where(
+            EmailToken.user_id == user.id,
+            EmailToken.purpose == RESET_PURPOSE,
+            EmailToken.used_at.is_(None),
+        )
+        .values(used_at=_now())
+    )
+    token, token_hash = new_opaque_token()
+    session.add(
+        EmailToken(
+            user_id=user.id,
+            purpose=RESET_PURPOSE,
+            token_hash=token_hash,
+            expires_at=_now() + RESET_TTL,
+        )
+    )
+    await session.commit()
+    language: Language = "en" if user.ui_language == "en" else "pt-BR"
+    link = f"{get_settings().app_base_url}/redefinir-senha?token={token}"
+    await sender.send(
+        Email(
+            to=user.email,
+            subject=translate("email.reset.subject", language),
+            body=translate("email.reset.body", language, name=user.name, link=link),
+        )
+    )
+
+
+async def reset_password(session: AsyncSession, token: str, password: str) -> None:
+    record = (
+        await session.scalars(
+            select(EmailToken).where(
+                EmailToken.token_hash == hash_token(token),
+                EmailToken.purpose == RESET_PURPOSE,
+            )
+        )
+    ).first()
+    if record is None or record.used_at is not None or record.expires_at < _now():
+        raise AppError("auth.invalid_token", status_code=400)
+    user = await session.get(User, record.user_id)
+    if user is None or not user.is_active or user.deleted_at is not None:
+        raise AppError("auth.invalid_token", status_code=400)
+    if not is_strong_password(password):
+        raise AppError("auth.weak_password", status_code=422)
+    record.used_at = _now()
+    user.password_hash = hash_password(password)
+    # The link proves the e-mail is the user's.
+    if user.email_verified_at is None:
+        user.email_verified_at = _now()
+    await _revoke_all(session, user.id)
+    await session.commit()
+
+
+async def change_password(
+    session: AsyncSession, user: User, current: str, new: str, keep_family: uuid.UUID | None
+) -> None:
+    """Change the password; every other session is signed out."""
+    if not verify_password(user.password_hash, current):
+        raise AppError("auth.wrong_password", status_code=400)
+    if not is_strong_password(new):
+        raise AppError("auth.weak_password", status_code=422)
+    user.password_hash = hash_password(new)
+    stmt = update(RefreshToken).where(
+        RefreshToken.user_id == user.id, RefreshToken.revoked_at.is_(None)
+    )
+    if keep_family is not None:
+        stmt = stmt.where(RefreshToken.family_id != keep_family)
+    await session.execute(stmt.values(revoked_at=_now()))
+    await session.commit()
+
+
+async def refresh_family(session: AsyncSession, token: str | None) -> uuid.UUID | None:
+    if not token:
+        return None
+    record = (
+        await session.scalars(
+            select(RefreshToken).where(RefreshToken.token_hash == hash_token(token))
+        )
+    ).first()
+    return record.family_id if record else None

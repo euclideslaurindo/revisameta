@@ -12,23 +12,26 @@ import { ExtractionImportReport } from '../../models/extraction-import-report';
 
 export interface RunExtractionImport$Params {
   project_id: string;
-      body: BodyRunExtractionImport
+  body: BodyRunExtractionImport;
 }
 
-export function runExtractionImport(http: HttpClient, rootUrl: string, params: RunExtractionImport$Params, context?: HttpContext): Observable<StrictHttpResponse<ExtractionImportReport>> {
+export function runExtractionImport(
+  http: HttpClient,
+  rootUrl: string,
+  params: RunExtractionImport$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ExtractionImportReport>> {
   const rb = new RequestBuilder(rootUrl, runExtractionImport.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'multipart/form-data');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ExtractionImportReport>;
-    })
+    }),
   );
 }
 

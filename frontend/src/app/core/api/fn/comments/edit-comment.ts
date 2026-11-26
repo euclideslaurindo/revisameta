@@ -13,10 +13,15 @@ import { CommentOut } from '../../models/comment-out';
 export interface EditComment$Params {
   comment_id: string;
   project_id: string;
-      body: CommentEdit
+  body: CommentEdit;
 }
 
-export function editComment(http: HttpClient, rootUrl: string, params: EditComment$Params, context?: HttpContext): Observable<StrictHttpResponse<CommentOut>> {
+export function editComment(
+  http: HttpClient,
+  rootUrl: string,
+  params: EditComment$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<CommentOut>> {
   const rb = new RequestBuilder(rootUrl, editComment.PATH, 'put');
   if (params) {
     rb.path('comment_id', params.comment_id, {});
@@ -24,13 +29,11 @@ export function editComment(http: HttpClient, rootUrl: string, params: EditComme
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<CommentOut>;
-    })
+    }),
   );
 }
 

@@ -5,7 +5,7 @@ export interface AgreementOut {
   agreeing_items: number;
   agreement_percent: number;
   items: number;
-  kappa: (number | null);
+  kappa: number | null;
   kappa_items: number;
   warnings: Array<string>;
 }

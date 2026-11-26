@@ -14,6 +14,7 @@ import { twoFactorSetup } from '../../core/api/fn/auth/two-factor-setup';
 import { AuthService } from '../../core/auth/auth';
 import { withJsonBody } from '../../core/errors/problem';
 import { FormError } from '../../shared/form-error';
+import { ChangePassword } from './password-pages';
 
 /** My profile: optional two-step verification with an authenticator app (TOTP). */
 @Component({
@@ -26,9 +27,11 @@ import { FormError } from '../../shared/form-error';
     MatFormFieldModule,
     MatInputModule,
     FormError,
+    ChangePassword,
   ],
   template: `
     <h1>{{ 'profile.title' | transloco }}</h1>
+    <rm-change-password />
     <mat-card class="block">
       <mat-card-content>
         <h2>{{ 'profile.twoFactor' | transloco }}</h2>

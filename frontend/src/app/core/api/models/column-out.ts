@@ -5,7 +5,7 @@ export interface ColumnOut {
   key: string;
   kind: string;
   name: {
-[key: string]: string;
-};
+    [key: string]: string;
+  };
   short: string;
 }

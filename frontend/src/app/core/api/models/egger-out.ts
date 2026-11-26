@@ -6,7 +6,7 @@ export interface EggerOut {
   k: number;
   measure: string;
   result: {
-[key: string]: any;
-};
+    [key: string]: any;
+  };
   warnings: Array<string>;
 }

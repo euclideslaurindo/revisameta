@@ -7,27 +7,30 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-
 export interface DeleteExclusionReason$Params {
   reason_id: string;
   project_id: string;
 }
 
-export function deleteExclusionReason(http: HttpClient, rootUrl: string, params: DeleteExclusionReason$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+export function deleteExclusionReason(
+  http: HttpClient,
+  rootUrl: string,
+  params: DeleteExclusionReason$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<void>> {
   const rb = new RequestBuilder(rootUrl, deleteExclusionReason.PATH, 'delete');
   if (params) {
     rb.path('reason_id', params.reason_id, {});
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'text', accept: '*/*', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'text', accept: '*/*', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
-    })
+    }),
   );
 }
 
-deleteExclusionReason.PATH = '/api/v1/projects/{project_id}/screening/exclusion-reasons/{reason_id}';
+deleteExclusionReason.PATH =
+  '/api/v1/projects/{project_id}/screening/exclusion-reasons/{reason_id}';

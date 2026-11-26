@@ -4,7 +4,7 @@
 import { ScreeningQueueItem } from '../models/screening-queue-item';
 export interface ScreeningQueuePage {
   items: Array<ScreeningQueueItem>;
-  next_cursor: (string | null);
-  next_offset?: (number | null);
+  next_cursor: string | null;
+  next_offset?: number | null;
   total: number;
 }

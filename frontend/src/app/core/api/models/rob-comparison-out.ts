@@ -6,17 +6,17 @@ import { RobConsensusRef } from '../models/rob-consensus-ref';
 import { RobItemOut } from '../models/rob-item-out';
 import { RobReviewerOut } from '../models/rob-reviewer-out';
 export interface RobComparisonOut {
-  agreement: (RobAgreementOut | null);
-  agreement_error: (string | null);
-  consensus: (RobConsensusRef | null);
+  agreement: RobAgreementOut | null;
+  agreement_error: string | null;
+  consensus: RobConsensusRef | null;
   divergences: number;
   items: Array<RobItemOut>;
   needed?: number;
-  outcome_id: (string | null);
+  outcome_id: string | null;
   reviewers: Array<RobReviewerOut>;
   study_id: string;
   submitted: number;
-  timepoint: (string | null);
+  timepoint: string | null;
   tool_id: string;
   undecided: number;
 }

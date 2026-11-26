@@ -13,19 +13,22 @@ export interface PendingChecks$Params {
   project_id: string;
 }
 
-export function pendingChecks(http: HttpClient, rootUrl: string, params: PendingChecks$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<PendingAlert>>> {
+export function pendingChecks(
+  http: HttpClient,
+  rootUrl: string,
+  params: PendingChecks$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<Array<PendingAlert>>> {
   const rb = new RequestBuilder(rootUrl, pendingChecks.PATH, 'get');
   if (params) {
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<Array<PendingAlert>>;
-    })
+    }),
   );
 }
 

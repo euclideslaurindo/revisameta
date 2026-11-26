@@ -19,9 +19,11 @@ from app.modules.auth import service, two_factor
 from app.modules.auth.dependencies import get_current_user
 from app.modules.auth.models import User
 from app.modules.auth.schemas import (
+    ChangePasswordIn,
     EmailIn,
     LoginIn,
     RegisterIn,
+    ResetPasswordIn,
     TokenIn,
     TokenOut,
     UserOut,
@@ -98,6 +100,39 @@ async def resend_verification(
 ) -> None:
     """Always 204, so the answer does not reveal whether the e-mail has an account."""
     await service.resend_verification(session, body.email, sender)
+
+
+@router.post("/forgot-password", status_code=status.HTTP_204_NO_CONTENT)
+@limiter.limit("3/minute")
+async def forgot_password(
+    request: Request,
+    body: EmailIn,
+    session: AsyncSession = Depends(get_session),
+    sender: EmailSender = Depends(get_email_sender),
+) -> None:
+    """Always 204, so the answer does not reveal whether the e-mail has an account."""
+    await service.request_password_reset(session, body.email, sender)
+
+
+@router.post("/reset-password", status_code=status.HTTP_204_NO_CONTENT)
+@limiter.limit("10/minute")
+async def reset_password(
+    request: Request, body: ResetPasswordIn, session: AsyncSession = Depends(get_session)
+) -> None:
+    """Set a new password from the e-mailed link; every session is signed out."""
+    await service.reset_password(session, body.token, body.password)
+
+
+@router.post("/change-password", status_code=status.HTTP_204_NO_CONTENT)
+async def change_password(
+    body: ChangePasswordIn,
+    user: User = Depends(get_current_user),
+    session: AsyncSession = Depends(get_session),
+    rm_refresh: str | None = Cookie(default=None),
+) -> None:
+    """Change the password with the current one; other devices are signed out."""
+    family = await service.refresh_family(session, rm_refresh)
+    await service.change_password(session, user, body.current_password, body.new_password, family)
 
 
 @router.post("/login")

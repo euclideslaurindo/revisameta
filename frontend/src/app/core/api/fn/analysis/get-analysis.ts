@@ -14,20 +14,23 @@ export interface GetAnalysis$Params {
   project_id: string;
 }
 
-export function getAnalysis(http: HttpClient, rootUrl: string, params: GetAnalysis$Params, context?: HttpContext): Observable<StrictHttpResponse<AnalysisOut>> {
+export function getAnalysis(
+  http: HttpClient,
+  rootUrl: string,
+  params: GetAnalysis$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<AnalysisOut>> {
   const rb = new RequestBuilder(rootUrl, getAnalysis.PATH, 'get');
   if (params) {
     rb.path('analysis_id', params.analysis_id, {});
     rb.path('project_id', params.project_id, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<AnalysisOut>;
-    })
+    }),
   );
 }
 

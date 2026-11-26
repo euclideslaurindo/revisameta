@@ -9,21 +9,23 @@ import { RequestBuilder } from '../../request-builder';
 
 import { SetupOut } from '../../models/setup-out';
 
-export interface TwoFactorSetup$Params {
-}
+export interface TwoFactorSetup$Params {}
 
-export function twoFactorSetup(http: HttpClient, rootUrl: string, params?: TwoFactorSetup$Params, context?: HttpContext): Observable<StrictHttpResponse<SetupOut>> {
+export function twoFactorSetup(
+  http: HttpClient,
+  rootUrl: string,
+  params?: TwoFactorSetup$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<SetupOut>> {
   const rb = new RequestBuilder(rootUrl, twoFactorSetup.PATH, 'post');
   if (params) {
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<SetupOut>;
-    })
+    }),
   );
 }
 

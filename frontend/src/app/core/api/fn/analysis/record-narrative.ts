@@ -13,10 +13,15 @@ import { NarrativeRow } from '../../models/narrative-row';
 export interface RecordNarrative$Params {
   study_id: string;
   project_id: string;
-      body: NarrativeIn
+  body: NarrativeIn;
 }
 
-export function recordNarrative(http: HttpClient, rootUrl: string, params: RecordNarrative$Params, context?: HttpContext): Observable<StrictHttpResponse<NarrativeRow>> {
+export function recordNarrative(
+  http: HttpClient,
+  rootUrl: string,
+  params: RecordNarrative$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<NarrativeRow>> {
   const rb = new RequestBuilder(rootUrl, recordNarrative.PATH, 'put');
   if (params) {
     rb.path('study_id', params.study_id, {});
@@ -24,13 +29,11 @@ export function recordNarrative(http: HttpClient, rootUrl: string, params: Recor
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<NarrativeRow>;
-    })
+    }),
   );
 }
 

@@ -4,14 +4,14 @@
 export interface ChecklistRow {
   code: string;
   has_data: boolean;
-  location: (string | null);
+  location: string | null;
   section: string;
   status: string;
   summary: {
-[key: string]: string;
-};
+    [key: string]: string;
+  };
   topic: {
-[key: string]: string;
-};
-  version: (number | null);
+    [key: string]: string;
+  };
+  version: number | null;
 }

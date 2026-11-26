@@ -3,9 +3,9 @@
 
 export interface ReasonOut {
   id: string;
-  key: (string | null);
-  label: (string | null);
-  merged_into_id: (string | null);
+  key: string | null;
+  label: string | null;
+  merged_into_id: string | null;
   position: number;
   uses: number;
   version: number;

@@ -12,23 +12,26 @@ import { ExtractOut } from '../../models/extract-out';
 
 export interface SuggestExtraction$Params {
   project_id: string;
-      body: ExtractIn
+  body: ExtractIn;
 }
 
-export function suggestExtraction(http: HttpClient, rootUrl: string, params: SuggestExtraction$Params, context?: HttpContext): Observable<StrictHttpResponse<ExtractOut>> {
+export function suggestExtraction(
+  http: HttpClient,
+  rootUrl: string,
+  params: SuggestExtraction$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<ExtractOut>> {
   const rb = new RequestBuilder(rootUrl, suggestExtraction.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<ExtractOut>;
-    })
+    }),
   );
 }
 

@@ -4,7 +4,7 @@
 import { Rect } from '../models/rect';
 export interface AnnotationIn {
   color?: 'yellow' | 'green' | 'blue' | 'pink';
-  note?: (string | null);
+  note?: string | null;
   page: number;
   quote: string;
   rects?: Array<Rect>;

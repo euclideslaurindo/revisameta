@@ -3,10 +3,10 @@
 
 export interface DomainState {
   asked: Array<string>;
-  direction: (string | null);
+  direction: string | null;
   domain_key: string;
-  final: (string | null);
-  justification: (string | null);
-  suggested: (string | null);
-  variant: (string | null);
+  final: string | null;
+  justification: string | null;
+  suggested: string | null;
+  variant: string | null;
 }

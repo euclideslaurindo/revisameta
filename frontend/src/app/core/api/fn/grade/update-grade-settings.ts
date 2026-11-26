@@ -11,23 +11,26 @@ import { GradeSettings } from '../../models/grade-settings';
 
 export interface UpdateGradeSettings$Params {
   project_id: string;
-      body: GradeSettings
+  body: GradeSettings;
 }
 
-export function updateGradeSettings(http: HttpClient, rootUrl: string, params: UpdateGradeSettings$Params, context?: HttpContext): Observable<StrictHttpResponse<GradeSettings>> {
+export function updateGradeSettings(
+  http: HttpClient,
+  rootUrl: string,
+  params: UpdateGradeSettings$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<GradeSettings>> {
   const rb = new RequestBuilder(rootUrl, updateGradeSettings.PATH, 'put');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<GradeSettings>;
-    })
+    }),
   );
 }
 

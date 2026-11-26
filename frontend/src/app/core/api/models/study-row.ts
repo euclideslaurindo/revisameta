@@ -4,25 +4,25 @@
 import { GroupValues } from '../models/group-values';
 export interface StudyRow {
   checks?: Array<{
-[key: string]: any;
-}>;
+    [key: string]: any;
+  }>;
   conversions: Array<{
-[key: string]: any;
-}>;
-  cutoff: (string | null);
-  cutoff_status: (string | null);
+    [key: string]: any;
+  }>;
+  cutoff: string | null;
+  cutoff_status: string | null;
   flags: Array<string>;
-  group1: (GroupValues | null);
-  group2: (GroupValues | null);
-  higher_is_better: (boolean | null);
+  group1: GroupValues | null;
+  group2: GroupValues | null;
+  higher_is_better: boolean | null;
   included: boolean;
   inverted?: boolean;
   label: string;
   reasons: Array<string>;
-  scale_name: (string | null);
-  source: (string | null);
+  scale_name: string | null;
+  source: string | null;
   study_id: string;
-  value_type: (string | null);
-  vi?: (number | null);
-  yi?: (number | null);
+  value_type: string | null;
+  vi?: number | null;
+  yi?: number | null;
 }

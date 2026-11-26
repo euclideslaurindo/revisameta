@@ -12,5 +12,5 @@ export const DISPERSION_TYPE: DispersionType[] = [
   'ci95',
   'iqr',
   'range',
-  'not_reported'
+  'not_reported',
 ];

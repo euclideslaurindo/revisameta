@@ -4,5 +4,5 @@
 export interface RobDecideIn {
   choice: string;
   key: string;
-  reason?: (string | null);
+  reason?: string | null;
 }

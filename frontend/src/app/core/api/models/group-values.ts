@@ -3,9 +3,9 @@
 
 export interface GroupValues {
   arms?: Array<string>;
-  events?: (number | null);
-  mean?: (number | null);
-  n?: (number | null);
-  sd?: (number | null);
-  total?: (number | null);
+  events?: number | null;
+  mean?: number | null;
+  n?: number | null;
+  sd?: number | null;
+  total?: number | null;
 }

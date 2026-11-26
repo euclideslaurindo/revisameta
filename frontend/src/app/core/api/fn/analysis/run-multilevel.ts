@@ -12,23 +12,26 @@ import { MultilevelOut } from '../../models/multilevel-out';
 
 export interface RunMultilevel$Params {
   project_id: string;
-      body: MultilevelIn
+  body: MultilevelIn;
 }
 
-export function runMultilevel(http: HttpClient, rootUrl: string, params: RunMultilevel$Params, context?: HttpContext): Observable<StrictHttpResponse<MultilevelOut>> {
+export function runMultilevel(
+  http: HttpClient,
+  rootUrl: string,
+  params: RunMultilevel$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<MultilevelOut>> {
   const rb = new RequestBuilder(rootUrl, runMultilevel.PATH, 'post');
   if (params) {
     rb.path('project_id', params.project_id, {});
     rb.body(params.body, 'application/json');
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
+  return http.request(rb.build({ responseType: 'json', accept: 'application/json', context })).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
       return r as StrictHttpResponse<MultilevelOut>;
-    })
+    }),
   );
 }
 
