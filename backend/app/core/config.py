@@ -63,7 +63,7 @@ class Settings(BaseSettings):
     # AI (docs/ia.md; stage 7). Off unless a provider is configured; tests use "fake".
     ai_provider: Literal["none", "gemini", "fake"] = "none"
     gemini_api_key: str = ""
-    ai_model: str = "gemini-2.5-flash"
+    ai_model: str = "gemini-3.5-flash"
     ai_calls_per_user_day: int = 30
     ai_calls_per_minute: int = 10
     ai_calls_per_day: int = 200  # global ceiling; the free quota is per Google project

@@ -114,7 +114,7 @@ test("two reviewers, conflicts resolved by the admin, traffic-light plot", async
     await groups.nth(i).locator("mat-button-toggle").nth(1).click();
   }
   await pageB.getByLabel(t("rob.assessment.overallJudgement")).click();
-  await pageB.getByRole("option").nth(1).click();
+  await pageB.getByRole("listbox").getByRole("option").nth(1).click();
   const why = pageB
     .getByLabel(
       new RegExp(
@@ -160,7 +160,7 @@ test("two reviewers, conflicts resolved by the admin, traffic-light plot", async
   // Consolidated table and traffic-light plot.
   await pageA.goto(`/projetos/${DEMO_ID}/risco-de-vies/tabela`);
   await pageA.getByLabel(t("rob.table.tool")).click();
-  await pageA.getByRole("option").first().click();
+  await pageA.getByRole("listbox").getByRole("option").first().click();
   await pageA
     .getByRole("button", { name: t("rob.plots.traffic_light") })
     .click();

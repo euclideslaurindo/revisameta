@@ -188,6 +188,7 @@ revisameta/
 - `cd stats-r && Rscript -e 'testthat::test_dir("tests/testthat")'`
 - `scripts/test-e2e.sh` — testes de interface (Playwright, imagem oficial no Docker) contra o sistema no ar; cria contas de teste `@example.org` com senha aleatória e um projeto de demonstração novo. Relatório em `e2e/report/index.html`
 - `make seed-demo EMAIL=...` / `scripts/seed-demo.sh <e-mail>` — cria projeto de demonstração com dataset público (`dat.normand1999`) para um usuário existente (também pelo botão em Aprendizado). `scripts/export-demo-data.sh` recopia os dados da fixture do R para o backend
+- `scripts/create-user.sh <e-mail> "<nome>"` — cria uma conta já confirmada com senha provisória (mostrada uma vez), sem precisar de e-mail; a pessoa aceita os termos no primeiro acesso
 - `scripts/make-admin.sh <e-mail>` — torna uma conta existente administradora do sistema (tela `/admin`: usuários, cotas e situação dos serviços); `--remove` desfaz. Use uma vez para criar o primeiro administrador
 - `docker compose --profile lite up -d` — versão leve (1 worker, 1 processo R) para máquinas com pouca RAM
 - `scripts/tunnel.sh start` / `stop` / `url` — expõe o sistema local pelo túnel rápido da Cloudflare (10.6): endereço `https://….trycloudflare.com` que muda a cada início; o script grava `.env.tunnel` (endereço público para links, CORS, uploads e cookie seguro) sem mexer no `.env`
