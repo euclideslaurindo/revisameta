@@ -16,7 +16,18 @@ from app.main import app as fastapi_app
 
 @pytest.fixture(scope="session", autouse=True)
 async def _database() -> AsyncIterator[None]:
-    """Run every migration once, exactly like a deploy does."""
+    """Run every migration once, exactly like a deploy does.
+
+    Two test runs on the same test database would drop each other's tables mid-run
+    ("relation does not exist", duplicate users). A session-wide advisory lock, held
+    on its own connection, makes a second run wait until the first one finishes.
+    """
+    from sqlalchemy.ext.asyncio import create_async_engine
+
+    lock_engine = create_async_engine(get_settings().database_url, pool_size=1)
+    lock_conn = await lock_engine.connect()
+    await lock_conn.execute(text("SELECT pg_advisory_lock(424242)"))
+    await lock_conn.commit()
     engine = get_engine()
     async with engine.begin() as conn:
         await conn.execute(text("DROP SCHEMA public CASCADE"))
@@ -26,6 +37,9 @@ async def _database() -> AsyncIterator[None]:
     await _run_in_thread(command.upgrade, config, "head")
     yield
     await dispose_engine()
+    await lock_conn.execute(text("SELECT pg_advisory_unlock(424242)"))
+    await lock_conn.close()
+    await lock_engine.dispose()
 
 
 async def _run_in_thread(fn: object, *args: object) -> None:
@@ -48,11 +62,42 @@ async def session() -> AsyncIterator[AsyncSession]:
         yield s
 
 
+# Error responses (status >= 400) seen during the current test. When a test fails,
+# they are added to its report, so an intermittent failure shows what the API said
+# instead of only a KeyError further down.
+_ERRORS: list[str] = []
+
+
+async def _record_error(response: object) -> None:
+    import httpx
+
+    assert isinstance(response, httpx.Response)
+    if response.status_code >= 400:
+        await response.aread()
+        _ERRORS.append(
+            f"{response.request.method} {response.request.url.path} -> "
+            f"{response.status_code} {response.text[:500]}"
+        )
+
+
 @pytest.fixture
 async def client() -> AsyncIterator[AsyncClient]:
+    _ERRORS.clear()
     transport = ASGITransport(app=fastapi_app)
-    async with AsyncClient(transport=transport, base_url="http://testserver") as c:
+    async with AsyncClient(
+        transport=transport,
+        base_url="http://testserver",
+        event_hooks={"response": [_record_error]},
+    ) as c:
         yield c
+
+
+@pytest.hookimpl(wrapper=True)
+def pytest_runtest_makereport(item: pytest.Item, call: pytest.CallInfo[None]):  # type: ignore[no-untyped-def]
+    report = yield
+    if report.failed and call.when == "call" and _ERRORS:
+        report.sections.append(("API error responses in this test", "\n".join(_ERRORS[-15:])))
+    return report
 
 
 # ---- Auth helpers -----------------------------------------------------------
