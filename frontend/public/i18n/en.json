@@ -136,7 +136,9 @@
         "bias": "Risk of bias",
         "analysis": "Analysis",
         "report": "Reporting"
-      }
+      },
+      "mine": "My pending work",
+      "mineCount": "{{count}} task(s) waiting for you"
     },
     "archived": {
       "text": "This project was marked as archived on {{date}} after 12 months without changes. Nothing was deleted and it still works.",
@@ -2384,5 +2386,157 @@
     "quotaHint": "Leave a field empty to go back to the default. Suspending an account signs the person out at once; project content is not deleted.",
     "previous": "Previous",
     "next": "Next"
+  },
+  "guide": {
+    "title": "How to do this step",
+    "mistakes": "Common mistakes",
+    "hide": "Hide guide",
+    "show": "How to do this step?",
+    "next": "Next step: {{name}}",
+    "previous": "Previous step: {{name}}",
+    "steps": {
+      "dashboard": {
+        "do": [
+          "See which step the project is at and what is missing in each one.",
+          "Use the “Next step” button to go straight to what needs doing.",
+          "Check what is pending for each team member."
+        ],
+        "avoid": [
+          "Skipping the protocol: without outcomes and groups, extraction and analysis cannot work."
+        ]
+      },
+      "protocol": {
+        "do": [
+          "Write the question and the PICO/PECO in “Project details”.",
+          "Add the outcomes (with the direction: higher is better or worse) and the two groups compared.",
+          "Set the analysis plan before seeing the data."
+        ],
+        "avoid": [
+          "Changing the plan after seeing the results without recording why.",
+          "Forgetting the scale direction: it decides which side of the chart is “better”."
+        ]
+      },
+      "searches": {
+        "do": [
+          "Export the result of each database (PubMed, LILACS, Embase...) as RIS, BibTeX, CSV or .nbib.",
+          "Import one file per database, with the date and strategy used.",
+          "Review the suggested duplicates: only certain ones are removed on their own."
+        ],
+        "avoid": [
+          "Merging several databases into one file: PRISMA needs the count per database.",
+          "Confirming “probable” duplicates without comparing the two records side by side."
+        ]
+      },
+      "screening": {
+        "do": [
+          "Read title and abstract and choose Include, Exclude or Maybe.",
+          "Use the keyboard shortcuts to go faster.",
+          "When both reviewers finish, the admin resolves conflicts."
+        ],
+        "avoid": [
+          "Excluding when in doubt: choose Maybe and decide at full text.",
+          "Agreeing answers with the other reviewer before finishing (screening is blinded)."
+        ]
+      },
+      "studies": {
+        "do": [
+          "Add each study or import the final list as CSV/XLSX.",
+          "Attach each article's PDF to extract with the source beside you.",
+          "If several articles report the same patients, group them in one study."
+        ],
+        "avoid": [
+          "Adding the same group of patients twice: it would be counted twice in the analysis."
+        ]
+      },
+      "pending": {
+        "do": [
+          "Open each alert and check the number in the article.",
+          "Fix the value or justify why it is right."
+        ],
+        "avoid": [
+          "Justifying without checking: the alert exists because the number looks odd (for example, an SE typed as an SD)."
+        ]
+      },
+      "review": {
+        "do": [
+          "Check every number that goes into the analysis and where it came from.",
+          "Resolve or justify open alerts.",
+          "Lock extraction when every study is ready."
+        ],
+        "avoid": [
+          "Locking with studies lacking consensus: they would be left out of the analysis."
+        ]
+      },
+      "rob": {
+        "do": [
+          "Choose each study's instrument (ROBINS-I for cohorts, RoB 2 for trials...).",
+          "Each reviewer assesses alone, with the PDF beside them and a justification per answer.",
+          "Then resolve conflicts together and record the consensus."
+        ],
+        "avoid": [
+          "Marking “high risk” only because the article does not report something: the answer is then “No information”.",
+          "Judging confounding without the list of confounders set in the protocol."
+        ]
+      },
+      "meta": {
+        "do": [
+          "Choose the outcome and time point and see which studies are in (and why others are out).",
+          "Check the direction of the effect and the suggested measure.",
+          "Run the analysis and read the explanation; ask the tutor if in doubt."
+        ],
+        "avoid": [
+          "Drawing conclusions from few studies without looking at the prediction interval.",
+          "Treating I² as a verdict: it is a rule of thumb, not a sign the analysis is invalid."
+        ]
+      },
+      "grade": {
+        "do": [
+          "Choose the outcome and look at each domain's suggestion.",
+          "Accept or change each suggestion, always with a justification.",
+          "Generate the Summary of Findings table."
+        ],
+        "avoid": [
+          "Downgrading twice for the same problem in different domains."
+        ]
+      },
+      "prisma": {
+        "do": [
+          "Check the flow diagram counts, which come from the system.",
+          "If the group imported only the final list, adjust the counts with a justification.",
+          "Mark in the checklist where each item appears in the manuscript."
+        ],
+        "avoid": [
+          "Adjusting numbers without recording where they came from."
+        ]
+      },
+      "abstract": {
+        "do": [
+          "Generate the draft with the system's numbers.",
+          "Write the conclusion with the group and check the congress word limit."
+        ],
+        "avoid": [
+          "Copying numbers by hand into the text: use the draft's, which come from the saved analysis."
+        ]
+      },
+      "export": {
+        "do": [
+          "Choose what to download: extracted data, risk of bias, charts, R script, bibliography or backup.",
+          "Read the warning if a study has no consensus yet."
+        ],
+        "avoid": [
+          "Sending the congress a chart from an analysis marked as out of date."
+        ]
+      },
+      "settings": {
+        "do": [
+          "Invite the team and set each person's roles.",
+          "Turn double extraction and double risk-of-bias assessment on or off.",
+          "Turn AI on only after reading the data-use notice."
+        ],
+        "avoid": [
+          "Leaving the project with a single administrator who may leave the group."
+        ]
+      }
+    }
   }
 }

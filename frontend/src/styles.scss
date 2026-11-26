@@ -1230,3 +1230,134 @@ table.sample tbody tr:nth-child(even) {
     padding-right: 0.85rem !important;
   }
 }
+
+/* ---- Step guide, pager, progress (fronts A and B) ------------------------------ */
+.step-guide {
+  background: #f4f8fc;
+  border: 1px solid #cddbeb;
+  border-left: 4px solid var(--rm-teal);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 0 0 1.25rem;
+}
+.step-guide-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  color: var(--rm-navy-dark);
+}
+.step-guide ol {
+  margin: 0.5rem 0 0.25rem;
+  padding-left: 1.25rem;
+}
+.step-guide li {
+  margin: 0.15rem 0;
+}
+.step-guide-avoid {
+  margin: 0.5rem 0 0;
+  font-size: 0.92rem;
+  color: #5c4400;
+}
+.step-guide-avoid span {
+  display: block;
+  margin-top: 0.15rem;
+}
+.step-guide-avoid span::before {
+  content: '⚠ ';
+}
+.guide-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 1rem;
+  padding: 0.25rem 0.7rem;
+  border: 1px solid #cddbeb;
+  border-radius: 999px;
+  background: #f4f8fc;
+  color: var(--rm-navy);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+.guide-toggle span {
+  display: inline-grid;
+  place-items: center;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: var(--rm-navy);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.step-pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rm-border);
+}
+.step-pager a {
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.5rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid var(--rm-border);
+  background: var(--rm-surface);
+}
+.step-pager a.next {
+  margin-left: auto;
+  background: var(--rm-navy);
+  border-color: var(--rm-navy);
+  color: #fff;
+}
+.step-pager a:hover {
+  box-shadow: 0 2px 8px rgb(16 24 40 / 10%);
+}
+.stage-progress {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex: none;
+}
+.stage-progress .bar {
+  display: inline-block;
+  width: 34px;
+  height: 5px;
+  border-radius: 3px;
+  background: #e1e6ed;
+  overflow: hidden;
+}
+.stage-progress .bar span {
+  display: block;
+  height: 100%;
+  background: #b98900;
+}
+.stage-progress.done .bar span {
+  background: #2e7d4f;
+}
+.stage-progress .count {
+  font-size: 0.72rem;
+  color: var(--rm-muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 2.2rem;
+  text-align: right;
+}
+.my-pending {
+  display: block;
+  margin: 0.25rem 0.5rem 0.25rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 8px;
+  background: #fff6db;
+  border: 1px solid #f0dc9a;
+  color: #5c4400;
+  text-decoration: none;
+  font-size: 0.9rem;
+  line-height: 1.3;
+}
+.my-pending strong {
+  display: block;
+}

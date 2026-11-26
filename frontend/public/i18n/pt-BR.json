@@ -136,7 +136,9 @@
         "bias": "Risco de viés",
         "analysis": "Análise",
         "report": "Relato"
-      }
+      },
+      "mine": "Minhas pendências",
+      "mineCount": "{{count}} tarefa(s) esperando por você"
     },
     "archived": {
       "text": "Este projeto foi marcado como arquivado em {{date}} por ficar 12 meses sem alterações. Nada foi apagado e ele continua funcionando.",
@@ -2384,5 +2386,157 @@
     "quotaHint": "Deixe o campo vazio para voltar ao padrão. Suspender uma conta desconecta a pessoa na hora; o conteúdo dos projetos não é apagado.",
     "previous": "Anteriores",
     "next": "Próximos"
+  },
+  "guide": {
+    "title": "Como fazer esta etapa",
+    "mistakes": "Erros comuns",
+    "hide": "Ocultar guia",
+    "show": "Como fazer esta etapa?",
+    "next": "Próxima etapa: {{name}}",
+    "previous": "Etapa anterior: {{name}}",
+    "steps": {
+      "dashboard": {
+        "do": [
+          "Veja em qual etapa o projeto está e o que falta em cada uma.",
+          "Use o botão do “Próximo passo” para ir direto ao que precisa ser feito.",
+          "Confira as pendências de cada pessoa da equipe."
+        ],
+        "avoid": [
+          "Pular o protocolo: sem desfechos e grupos definidos, a extração e a análise não funcionam."
+        ]
+      },
+      "protocol": {
+        "do": [
+          "Escreva a pergunta e o PICO/PECO em “Dados do projeto”.",
+          "Cadastre os desfechos (com a direção: maior é melhor ou pior) e os dois grupos comparados.",
+          "Defina o plano de análise antes de ver os dados."
+        ],
+        "avoid": [
+          "Mudar o plano depois de ver os resultados sem registrar o motivo.",
+          "Esquecer a direção da escala: ela decide qual lado do gráfico é “melhor”."
+        ]
+      },
+      "searches": {
+        "do": [
+          "Exporte o resultado de cada base (PubMed, LILACS, Embase...) em RIS, BibTeX, CSV ou .nbib.",
+          "Importe um arquivo por base, com a data e a estratégia usadas.",
+          "Revise as duplicatas sugeridas: só as certas saem sozinhas."
+        ],
+        "avoid": [
+          "Juntar várias bases num arquivo só: o PRISMA precisa da contagem por base.",
+          "Confirmar duplicatas “prováveis” sem olhar os dois registros lado a lado."
+        ]
+      },
+      "screening": {
+        "do": [
+          "Leia título e resumo e escolha Incluir, Excluir ou Talvez.",
+          "Use os atalhos de teclado para ir mais rápido.",
+          "Quando os dois revisores terminarem, o admin resolve os conflitos."
+        ],
+        "avoid": [
+          "Excluir na dúvida: use Talvez e decida no texto completo.",
+          "Combinar respostas com o outro revisor antes de terminar (a triagem é cega)."
+        ]
+      },
+      "studies": {
+        "do": [
+          "Cadastre cada estudo ou importe a lista final em CSV/XLSX.",
+          "Anexe o PDF de cada artigo para extrair com a fonte ao lado.",
+          "Se vários artigos são dos mesmos pacientes, agrupe-os num só estudo."
+        ],
+        "avoid": [
+          "Cadastrar o mesmo grupo de pacientes duas vezes: ele seria contado em dobro na análise."
+        ]
+      },
+      "pending": {
+        "do": [
+          "Abra cada alerta e confira o número no artigo.",
+          "Corrija o valor ou justifique por que ele está certo."
+        ],
+        "avoid": [
+          "Justificar sem conferir: o alerta existe porque o número parece estranho (por exemplo, um EP digitado como DP)."
+        ]
+      },
+      "review": {
+        "do": [
+          "Confira cada número que vai para a análise e de onde ele veio.",
+          "Resolva ou justifique os alertas em aberto.",
+          "Trave a extração quando todos os estudos estiverem prontos."
+        ],
+        "avoid": [
+          "Travar com estudos sem consenso: eles ficariam de fora da análise."
+        ]
+      },
+      "rob": {
+        "do": [
+          "Escolha o instrumento de cada estudo (ROBINS-I para coortes, RoB 2 para ensaios...).",
+          "Cada revisor avalia sozinho, com o PDF ao lado e uma justificativa por resposta.",
+          "Depois, resolvam juntos os conflitos e registrem o consenso."
+        ],
+        "avoid": [
+          "Marcar “alto risco” só porque o artigo não informa: nesse caso a resposta é “Sem informação”.",
+          "Avaliar o confundimento sem a lista de fatores de confusão definida no protocolo."
+        ]
+      },
+      "meta": {
+        "do": [
+          "Escolha o desfecho e o momento e veja quais estudos entram (e por que outros ficam de fora).",
+          "Confira a direção do efeito e a medida sugerida.",
+          "Rode a análise e leia a explicação do resultado; use o tutor se tiver dúvida."
+        ],
+        "avoid": [
+          "Concluir com poucos estudos sem olhar o intervalo de predição.",
+          "Tratar o I² como veredito: é uma regra prática, não diz se a análise é válida."
+        ]
+      },
+      "grade": {
+        "do": [
+          "Escolha o desfecho e veja as sugestões de cada domínio.",
+          "Aceite ou mude cada sugestão, sempre com justificativa.",
+          "Gere a tabela Summary of Findings."
+        ],
+        "avoid": [
+          "Rebaixar duas vezes pelo mesmo problema em domínios diferentes."
+        ]
+      },
+      "prisma": {
+        "do": [
+          "Confira as contagens do fluxograma, que vêm do sistema.",
+          "Se o grupo importou só a lista final, ajuste as contagens com justificativa.",
+          "Marque no checklist onde cada item aparece no manuscrito."
+        ],
+        "avoid": [
+          "Ajustar números sem registrar de onde vieram."
+        ]
+      },
+      "abstract": {
+        "do": [
+          "Gere o rascunho com os números do sistema.",
+          "Escreva a conclusão com o grupo e confira o limite de palavras do congresso."
+        ],
+        "avoid": [
+          "Copiar números à mão para o texto: use os do rascunho, que vêm da análise salva."
+        ]
+      },
+      "export": {
+        "do": [
+          "Escolha o que baixar: dados extraídos, risco de viés, gráficos, script R, bibliografia ou backup.",
+          "Leia o aviso se algum estudo ainda não tiver consenso."
+        ],
+        "avoid": [
+          "Mandar para o congresso um gráfico de uma análise marcada como desatualizada."
+        ]
+      },
+      "settings": {
+        "do": [
+          "Convide a equipe e defina os papéis de cada pessoa.",
+          "Ligue ou desligue a dupla extração e a dupla avaliação de risco de viés.",
+          "Ligue a IA só depois de ler o aviso de uso de dados."
+        ],
+        "avoid": [
+          "Deixar o projeto com um único administrador que pode sair do grupo."
+        ]
+      }
+    }
   }
 }
