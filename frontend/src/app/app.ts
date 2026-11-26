@@ -1,8 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { MatMenuModule } from '@angular/material/menu';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 import { AuthService } from './core/auth/auth';
@@ -13,43 +12,65 @@ import { NotificationsMenu } from './shared/notifications-menu';
   selector: 'rm-root',
   imports: [
     RouterLink,
+    RouterLinkActive,
     RouterOutlet,
     TranslocoPipe,
     MatButtonModule,
-    MatFormFieldModule,
-    MatSelectModule,
+    MatMenuModule,
     NotificationsMenu,
   ],
   template: `
     <a class="skip-link" href="#main">{{ 'app.skipToContent' | transloco }}</a>
     <div class="beta-banner" role="note">{{ 'app.beta' | transloco }}</div>
     <header class="topbar">
-      <a routerLink="/" class="brand">{{ 'app.name' | transloco }}</a>
-      <span class="spacer"></span>
-      <mat-form-field class="language" subscriptSizing="dynamic">
-        <mat-label>{{ 'app.language' | transloco }}</mat-label>
-        <mat-select [value]="language.current()" (valueChange)="changeLanguage($event)">
-          @for (lang of languages; track lang) {
-            <mat-option [value]="lang">{{ 'languages.' + lang | transloco }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
+      <a routerLink="/" class="brand">
+        <img src="logo.svg" alt="" />
+        <span>{{ 'app.name' | transloco }}</span>
+      </a>
       @if (auth.user(); as user) {
-        <a routerLink="/aprendizado">{{ 'app.learning' | transloco }}</a>
-        @if (user.is_system_admin) {
-          <a routerLink="/admin">{{ 'app.admin' | transloco }}</a>
+        <nav [attr.aria-label]="'app.mainNav' | transloco">
+          <a routerLink="/projetos" routerLinkActive="active">{{ 'app.projects' | transloco }}</a>
+          <a routerLink="/aprendizado" routerLinkActive="active">{{
+            'app.learning' | transloco
+          }}</a>
+          @if (user.is_system_admin) {
+            <a routerLink="/admin" routerLinkActive="active">{{ 'app.admin' | transloco }}</a>
+          }
+        </nav>
+      }
+      <span class="spacer"></span>
+      <label class="sr-only" for="ui-language">{{ 'app.language' | transloco }}</label>
+      <select
+        id="ui-language"
+        class="lang-select"
+        [value]="language.current()"
+        (change)="changeLanguage($any($event.target).value)"
+      >
+        @for (lang of languages; track lang) {
+          <option [value]="lang" [selected]="lang === language.current()">
+            {{ 'languages.' + lang | transloco }}
+          </option>
         }
-        <rm-notifications-menu />
-        <a class="user" routerLink="/perfil">{{ user.name }}</a>
-        <button mat-button type="button" (click)="auth.logout()">
-          {{ 'app.logout' | transloco }}
+      </select>
+      @if (auth.user(); as user) {
+        <rm-notifications-menu class="on-dark" />
+        <button type="button" class="top-button" [matMenuTriggerFor]="userMenu">
+          <span class="avatar" aria-hidden="true">{{ initials(user.name) }}</span>
+          <span class="user-name">{{ user.name }}</span>
         </button>
+        <mat-menu #userMenu="matMenu">
+          <a mat-menu-item routerLink="/perfil">{{ 'app.profile' | transloco }}</a>
+          <button mat-menu-item type="button" (click)="auth.logout()">
+            {{ 'app.logout' | transloco }}
+          </button>
+        </mat-menu>
       }
     </header>
     <main id="main" tabindex="-1">
       <router-outlet />
     </main>
     <footer class="footer">
+      <span>{{ 'app.footer' | transloco }}</span>
       <a routerLink="/termos">{{ 'legal.termsLink' | transloco }}</a>
       <a routerLink="/privacidade">{{ 'legal.privacyLink' | transloco }}</a>
     </footer>
@@ -59,6 +80,13 @@ export class App {
   protected readonly auth = inject(AuthService);
   protected readonly language = inject(LanguageService);
   protected readonly languages = LANGUAGES;
+
+  protected initials(name: string): string {
+    const parts = name.trim().split(/\s+/);
+    return (
+      (parts[0]?.[0] ?? '') + (parts.length > 1 ? (parts.at(-1)?.[0] ?? '') : '')
+    ).toUpperCase();
+  }
 
   protected changeLanguage(language: Language): void {
     this.language.set(language);

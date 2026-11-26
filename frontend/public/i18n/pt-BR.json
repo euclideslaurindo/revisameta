@@ -7,7 +7,11 @@
     "logout": "Sair",
     "skipToContent": "Pular para o conteúdo",
     "learning": "Aprendizado",
-    "admin": "Administração"
+    "admin": "Administração",
+    "mainNav": "Navegação principal",
+    "projects": "Meus projetos",
+    "profile": "Meu perfil",
+    "footer": "RevisaMeta · revisões sistemáticas com meta-análise · B-TECH"
   },
   "languages": {
     "pt-BR": "Português",
