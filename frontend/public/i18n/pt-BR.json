@@ -124,7 +124,18 @@
       "grade": "GRADE",
       "settings": "Configurações",
       "abstract": "Resumo",
-      "dashboard": "Painel"
+      "dashboard": "Painel",
+      "menu": "Etapas do projeto",
+      "label": "Etapas do projeto",
+      "groups": {
+        "overview": "Visão geral",
+        "planning": "Planejamento",
+        "search": "Busca e triagem",
+        "data": "Estudos e extração",
+        "bias": "Risco de viés",
+        "analysis": "Análise",
+        "report": "Relato"
+      }
     },
     "archived": {
       "text": "Este projeto foi marcado como arquivado em {{date}} por ficar 12 meses sem alterações. Nada foi apagado e ele continua funcionando.",

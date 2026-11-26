@@ -124,7 +124,18 @@
       "grade": "GRADE",
       "settings": "Settings",
       "abstract": "Abstract",
-      "dashboard": "Dashboard"
+      "dashboard": "Dashboard",
+      "menu": "Project steps",
+      "label": "Project steps",
+      "groups": {
+        "overview": "Overview",
+        "planning": "Planning",
+        "search": "Search and screening",
+        "data": "Studies and extraction",
+        "bias": "Risk of bias",
+        "analysis": "Analysis",
+        "report": "Reporting"
+      }
     },
     "archived": {
       "text": "This project was marked as archived on {{date}} after 12 months without changes. Nothing was deleted and it still works.",
