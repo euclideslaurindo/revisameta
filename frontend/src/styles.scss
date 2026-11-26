@@ -1410,3 +1410,44 @@ table.sample tbody tr:nth-child(even) {
   color: #5c4400;
   font-size: 0.9rem;
 }
+
+/* ---- Loading placeholders and empty states (fronts D and E) -------------------- */
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0.5rem 0;
+}
+.skeleton-block {
+  border-radius: 10px;
+  background: linear-gradient(90deg, #e9edf2 25%, #f4f6f9 50%, #e9edf2 75%);
+  background-size: 200% 100%;
+  animation: rm-shimmer 1.3s ease-in-out infinite;
+}
+.skeleton-block:first-of-type {
+  max-width: 45%;
+}
+@keyframes rm-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-block {
+    animation: none;
+  }
+}
+.empty::before {
+  content: '';
+  display: block;
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 0.75rem;
+  border-radius: 12px;
+  background: #e3eaf4
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231f3a5f' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z'/%3E%3Cpath d='M14 3v5h5'/%3E%3Cpath d='M9 13h6M9 17h4'/%3E%3C/svg%3E")
+    center / 24px no-repeat;
+}

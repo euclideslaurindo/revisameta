@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { Skeleton } from '../../shared/skeleton';
 
 import { LocalDatePipe } from '../../shared/local-date.pipe';
 import { Api } from '../../core/api/api';
@@ -21,6 +22,7 @@ import { RestoreBackup } from './restore-backup';
 @Component({
   selector: 'rm-projects-page',
   imports: [
+    Skeleton,
     LocalDatePipe,
     ReactiveFormsModule,
     RouterLink,
@@ -83,8 +85,7 @@ import { RestoreBackup } from './restore-backup';
     }
 
     @if (loading()) {
-      <p role="status">{{ 'common.loading' | transloco }}</p>
-      <mat-progress-bar mode="indeterminate" />
+      <rm-skeleton [lines]="[160, 160]" />
     } @else if (projects().length === 0) {
       <p class="empty">{{ 'projects.empty' | transloco }}</p>
     } @else {

@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { Skeleton } from '../../shared/skeleton';
 
 import { Api } from '../../core/api/api';
 import { projectDashboard } from '../../core/api/fn/dashboard/project-dashboard';
@@ -16,6 +17,7 @@ import { ProjectContext } from './project-context';
 @Component({
   selector: 'rm-dashboard-page',
   imports: [
+    Skeleton,
     RouterLink,
     TranslocoPipe,
     MatButtonModule,
@@ -150,7 +152,7 @@ import { ProjectContext } from './project-context';
         </mat-card-content>
       </mat-card>
     } @else if (!error()) {
-      <p role="status">{{ 'common.loading' | transloco }}</p>
+      <rm-skeleton [lines]="[90, 140, 220]" />
     }
   `,
   styles: `

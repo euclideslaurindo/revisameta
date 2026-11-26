@@ -3,6 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { filter } from 'rxjs';
+import { Skeleton } from '../../shared/skeleton';
 
 import { Api } from '../../core/api/api';
 import { projectDashboard } from '../../core/api/fn/dashboard/project-dashboard';
@@ -65,6 +66,7 @@ const GROUPS: NavGroup[] = [
 @Component({
   selector: 'rm-project-shell',
   imports: [
+    Skeleton,
     RouterLink,
     RouterLinkActive,
     RouterOutlet,
@@ -155,7 +157,7 @@ const GROUPS: NavGroup[] = [
         </section>
       </div>
     } @else {
-      <p role="status">{{ 'common.loading' | transloco }}</p>
+      <rm-skeleton [lines]="[36, 120, 200]" />
     }
   `,
 })
