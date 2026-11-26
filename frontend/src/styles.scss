@@ -176,8 +176,13 @@ mat-card.mat-mdc-card {
   position: absolute;
   width: 1px;
   height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
   overflow: hidden;
   clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 .beta-banner {
@@ -491,7 +496,7 @@ table.sample td {
 }
 @media (max-width: 900px) {
   .viewer-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 .viewer-side section {
@@ -530,7 +535,7 @@ main:has(.extraction-layout) {
 }
 @media (max-width: 1100px) {
   .extraction-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .extraction-layout .pdf-pane {
     position: static;
@@ -1138,4 +1143,90 @@ table.sample tbody tr:nth-child(even) {
 }
 .result-table tbody tr:hover {
   background: #f2f6fb;
+}
+
+/* ---- Phones ------------------------------------------------------------------- */
+.menu-language {
+  display: none !important;
+}
+@media (max-width: 720px) {
+  /* Wide tables scroll inside their own box instead of widening the whole page
+     (which made the phone zoom out and everything look tiny). */
+  main table {
+    /* Containing block for absolutely positioned bits (e.g. .sr-only in headers),
+       so they scroll with the table instead of widening the page. */
+    position: relative;
+    display: block;
+    max-width: 100%;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+  main table th,
+  main table td {
+    min-width: 6rem;
+  }
+  img,
+  svg,
+  canvas,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+  pre,
+  code {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  mat-form-field {
+    max-width: 100%;
+  }
+  /* Compact header: one row (logo, notices, user) + a slim row of links. */
+  .beta-banner {
+    font-size: 0.72rem;
+    padding: 0.15rem 0.75rem;
+  }
+  .topbar {
+    min-height: 52px;
+    gap: 0.5rem;
+    padding: 0.35rem 0.75rem;
+  }
+  .topbar .brand span {
+    font-size: 1.05rem;
+  }
+  .topbar .lang-select {
+    display: none;
+  }
+  .menu-language {
+    display: flex !important;
+  }
+  .topbar nav {
+    gap: 0;
+    margin: 0 -0.25rem;
+  }
+  .topbar nav a {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+  }
+  /* Comfortable touch targets. */
+  .mat-mdc-button,
+  .mat-mdc-outlined-button,
+  .mat-mdc-unelevated-button {
+    min-height: 40px;
+  }
+  .actions {
+    flex-wrap: wrap;
+  }
+  .page-header {
+    gap: 0.5rem;
+  }
+  .mat-vertical-content {
+    padding: 0 0.75rem 1rem 1rem !important;
+  }
+  .mat-vertical-content-container {
+    margin-left: 18px !important;
+  }
+  mat-card-content {
+    padding-left: 0.85rem !important;
+    padding-right: 0.85rem !important;
+  }
 }

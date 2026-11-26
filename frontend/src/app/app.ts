@@ -54,12 +54,30 @@ import { NotificationsMenu } from './shared/notifications-menu';
       </select>
       @if (auth.user(); as user) {
         <rm-notifications-menu class="on-dark" />
-        <button type="button" class="top-button" [matMenuTriggerFor]="userMenu">
+        <button
+          type="button"
+          class="top-button"
+          [matMenuTriggerFor]="userMenu"
+          [attr.aria-label]="user.name"
+        >
           <span class="avatar" aria-hidden="true">{{ initials(user.name) }}</span>
           <span class="user-name">{{ user.name }}</span>
         </button>
         <mat-menu #userMenu="matMenu">
           <a mat-menu-item routerLink="/perfil">{{ 'app.profile' | transloco }}</a>
+          <!-- On phones the language select is hidden from the bar and lives here. -->
+          @for (lang of languages; track lang) {
+            @if (lang !== language.current()) {
+              <button
+                mat-menu-item
+                type="button"
+                class="menu-language"
+                (click)="changeLanguage(lang)"
+              >
+                {{ 'languages.' + lang | transloco }}
+              </button>
+            }
+          }
           <button mat-menu-item type="button" (click)="auth.logout()">
             {{ 'app.logout' | transloco }}
           </button>
