@@ -1361,3 +1361,42 @@ table.sample tbody tr:nth-child(even) {
 .my-pending strong {
   display: block;
 }
+
+.first-steps {
+  border-left: 4px solid var(--rm-teal) !important;
+}
+.checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+}
+.checklist li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #edf0f4;
+}
+.checklist li:last-child {
+  border-bottom: 0;
+}
+.checklist .check-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  border: 2px solid #9aa5b1;
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex: none;
+}
+.checklist li.done .check-mark {
+  background: #2e7d4f;
+  border-color: #2e7d4f;
+  color: #fff;
+}
+.checklist li.done a {
+  color: var(--rm-muted);
+  text-decoration: line-through;
+}

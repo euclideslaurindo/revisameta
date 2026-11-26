@@ -2020,6 +2020,17 @@
       "rob": "Choose each study's instrument and assess its risk of bias.",
       "analysis": "Run and save the meta-analysis of each outcome.",
       "grade": "Assess the certainty of evidence (GRADE) of each outcome."
+    },
+    "first": {
+      "title": "First steps",
+      "intro": "Start here. Each item opens the right screen; this list disappears once the basics are in place.",
+      "question": "Write the review question and the PICO/PECO",
+      "protocol": "Add the outcomes and the two groups compared",
+      "team": "Invite the team (second reviewer, supervisor...)",
+      "studies": "Add or import the studies",
+      "optional": "optional",
+      "doneLabel": "done:",
+      "todoLabel": "to do:"
     }
   },
   "learning": {

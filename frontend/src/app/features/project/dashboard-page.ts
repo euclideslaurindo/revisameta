@@ -45,6 +45,32 @@ import { ProjectContext } from './project-context';
         <p class="muted">{{ 'dashboard.noDeadline' | transloco }}</p>
       }
 
+      @if (firstSteps(d); as steps) {
+        <mat-card class="block first-steps">
+          <mat-card-content>
+            <h3>{{ 'dashboard.first.title' | transloco }}</h3>
+            <p class="muted">{{ 'dashboard.first.intro' | transloco }}</p>
+            <ol class="checklist">
+              @for (step of steps; track step.key) {
+                <li [class.done]="step.done">
+                  <span class="check-mark" aria-hidden="true">{{ step.done ? '✓' : '' }}</span>
+                  <span class="sr-only">{{
+                    (step.done ? 'dashboard.first.doneLabel' : 'dashboard.first.todoLabel')
+                      | transloco
+                  }}</span>
+                  <a [routerLink]="['..', step.route]">{{
+                    'dashboard.first.' + step.key | transloco
+                  }}</a>
+                  @if (step.optional) {
+                    <span class="muted small">({{ 'dashboard.first.optional' | transloco }})</span>
+                  }
+                </li>
+              }
+            </ol>
+          </mat-card-content>
+        </mat-card>
+      }
+
       @if (next(d); as n) {
         <mat-card class="block">
           <mat-card-content>
@@ -139,6 +165,21 @@ import { ProjectContext } from './project-context';
 export class DashboardPage implements OnInit {
   private readonly api = inject(Api);
   private readonly context = inject(ProjectContext);
+
+  /** "First steps" checklist (front A): shown until the project's basics are in place. */
+  protected firstSteps(
+    d: DashboardOut,
+  ): { key: string; route: string; done: boolean; optional?: boolean }[] | null {
+    const project = this.context.project();
+    const protocol = d.stages.find((s) => s.key === 'protocol');
+    const steps = [
+      { key: 'question', route: 'protocolo', done: !!project?.question },
+      { key: 'protocol', route: 'protocolo', done: protocol?.state === 'done' },
+      { key: 'team', route: 'configuracoes', done: d.people.length > 1, optional: true },
+      { key: 'studies', route: 'estudos', done: d.studies > 0 },
+    ];
+    return steps.filter((x) => !x.optional).every((x) => x.done) ? null : steps;
+  }
   protected readonly data = signal<DashboardOut | null>(null);
   protected readonly error = signal<unknown>(null);
 

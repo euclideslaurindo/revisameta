@@ -2020,6 +2020,17 @@
       "rob": "Escolha o instrumento de cada estudo e faça a avaliação de risco de viés.",
       "analysis": "Rode e salve a meta-análise de cada desfecho.",
       "grade": "Avalie a certeza da evidência (GRADE) de cada desfecho."
+    },
+    "first": {
+      "title": "Primeiros passos",
+      "intro": "Comece por aqui. Cada item leva à tela certa; esta lista some quando o básico estiver pronto.",
+      "question": "Escreva a pergunta da revisão e o PICO/PECO",
+      "protocol": "Cadastre os desfechos e os dois grupos comparados",
+      "team": "Convide a equipe (segundo revisor, orientador...)",
+      "studies": "Cadastre ou importe os estudos",
+      "optional": "opcional",
+      "doneLabel": "feito:",
+      "todoLabel": "a fazer:"
     }
   },
   "learning": {
