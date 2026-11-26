@@ -190,7 +190,7 @@ revisameta/
 - `make seed-demo EMAIL=...` / `scripts/seed-demo.sh <e-mail>` — cria projeto de demonstração com dataset público (`dat.normand1999`) para um usuário existente (também pelo botão em Aprendizado). `scripts/export-demo-data.sh` recopia os dados da fixture do R para o backend
 - `scripts/make-admin.sh <e-mail>` — torna uma conta existente administradora do sistema (tela `/admin`: usuários, cotas e situação dos serviços); `--remove` desfaz. Use uma vez para criar o primeiro administrador
 - `docker compose --profile lite up -d` — versão leve (1 worker, 1 processo R) para máquinas com pouca RAM
-- `make tunnel` — expõe o sistema local pelo Cloudflare Tunnel (10.6) *(adiado: fora da Etapa 0, ver docs/roteiro.md)*
+- `scripts/tunnel.sh start` / `stop` / `url` — expõe o sistema local pelo túnel rápido da Cloudflare (10.6): endereço `https://….trycloudflare.com` que muda a cada início; o script grava `.env.tunnel` (endereço público para links, CORS, uploads e cookie seguro) sem mexer no `.env`
 - `scripts/backup.sh` / `scripts/restore.sh <arquivo>` — backup criptografado e restauração (10.8); teste: `scripts/test-backup.sh`
 - `git config core.hooksPath .githooks` — ativa o hook de commits (rodar uma vez após clonar)
 - `scripts/check-commit-messages.sh` — confere se nenhuma mensagem de commit menciona IA (também roda no CI)

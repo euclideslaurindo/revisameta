@@ -8,12 +8,16 @@
 name: revisameta
 
 x-backend-env: &backend-env
-  env_file: .env
+  env_file:
+    - .env
+    # Written by scripts/tunnel.sh while the Cloudflare Tunnel is up (public address).
+    - path: .env.tunnel
+      required: false
   environment:
     POSTGRES_HOST: postgres
     REDIS_URL: redis://redis:6379/0
     STATS_R_URL: http://caddy:8001
-    SMTP_HOST: mailpit
+    # SMTP_HOST comes from .env: mailpit locally, a real provider (e.g. Brevo) later.
     S3_ENDPOINT: http://storage:9000
 
 services:
@@ -148,6 +152,17 @@ services:
     ports:
       - "127.0.0.1:8025:8025"
     networks: [internal, edge]
+
+  # ---- Cloudflare quick tunnel (profile "tunnel"): scripts/tunnel.sh -------------
+  # Gives the local system a temporary https://*.trycloudflare.com address. Free, no
+  # account; the address changes on every start (docs/deploy.md, F0).
+  tunnel:
+    image: cloudflare/cloudflared:2025.9.1
+    profiles: [tunnel]
+    restart: unless-stopped
+    command: tunnel --no-autoupdate --url http://caddy:80
+    depends_on: [caddy]
+    networks: [edge]
 
   # ---- Operations (profile "ops"): encrypted backup and restore (docs/deploy.md) --
   backup:

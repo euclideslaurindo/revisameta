@@ -75,3 +75,16 @@ O backup roda num container próprio (`ops/backup`, perfil `ops` do Compose), co
 - **Linux (F1):** `crontab -e` → `30 3 * * * cd /srv/revisameta && scripts/backup.sh >> backups/backup.log 2>&1`.
 
 **Restauração:** o script para `backend` e `worker`, restaura banco e arquivos numa transação e sobe os dois de novo. O teste `scripts/test-backup.sh` foi executado em 2026-11-14: estado antes do backup e depois da restauração idênticos (usuários, projetos, auditoria e arquivos).
+
+
+## Túnel rápido (F0) — como usar
+
+1. `bash scripts/tunnel.sh start` mostra o endereço `https://….trycloudflare.com`.
+2. O script cria `.env.tunnel` (fora do git) com `APP_BASE_URL`, `ALLOWED_HOSTS`, `CORS_ORIGINS`, `S3_PUBLIC_ENDPOINT` e `COOKIE_SECURE=true` apontando para o túnel e reinicia backend e worker. O `.env` não muda.
+3. `bash scripts/tunnel.sh stop` desliga o túnel e volta a responder só em `localhost`.
+
+Verificado pelo túnel: site, login com cookie seguro, upload de PDF de 25 MB em 3 partes por URL assinada, processamento, progresso (polling e SSE) e download com `Range`. O endereço muda a cada início; para um endereço fixo, use um túnel nomeado com domínio próprio.
+
+## E-mail (Brevo, gratuito)
+
+No `.env`: `SMTP_HOST=smtp-relay.brevo.com`, `SMTP_PORT=587`, `SMTP_TLS=true`, `SMTP_USER` (Login SMTP da aba SMTP do Brevo), `SMTP_PASSWORD` (chave SMTP) e `SMTP_FROM` com um remetente verificado no Brevo. Sem isso, os e-mails vão para o Mailpit local (`http://localhost:8025`).

@@ -37,3 +37,4 @@ desktop.ini
 # Backups and rclone credentials (never commit)
 backups/
 ops/rclone/
+.env.tunnel

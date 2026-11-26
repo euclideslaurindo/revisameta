@@ -17,6 +17,7 @@ from sqlalchemy import select
 
 import app.db.models  # noqa: F401 - registers every table for the foreign keys
 from app.core.config import get_settings
+from app.core.legal import TERMS_VERSION
 from app.core.security import hash_password
 from app.db.session import get_sessionmaker
 from app.modules.auth.models import User
@@ -33,6 +34,9 @@ async def ensure(emails: list[str], password: str, names: list[str]) -> None:
             user.password_hash = hash_password(password)
             user.is_active = True
             user.email_verified_at = user.email_verified_at or datetime.now(UTC)
+            # Test accounts accept the current terms, so the sign-in lands on the projects.
+            user.terms_version = TERMS_VERSION
+            user.terms_accepted_at = datetime.now(UTC)
         await session.commit()
 
 
