@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -9,6 +11,7 @@ from app.modules.audit.recorder import current_user_id_var
 from app.modules.auth.models import User
 
 _bearer = HTTPBearer(auto_error=False)
+logger = logging.getLogger(__name__)
 
 
 async def get_current_user(
@@ -23,6 +26,8 @@ async def get_current_user(
         raise NotAuthenticatedError("auth.session_expired")
     user = await session.get(User, user_id)
     if user is None or user.deleted_at is not None or not user.is_active:
+        reason = "missing" if user is None else "deleted" if user.deleted_at else "inactive"
+        logger.info("access_user_rejected", extra={"extra_fields": {"reason": reason}})
         raise NotAuthenticatedError("auth.session_expired")
     if user.email_verified_at is None:
         raise NotAuthenticatedError("auth.email_not_verified")

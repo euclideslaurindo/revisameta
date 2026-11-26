@@ -1,6 +1,7 @@
 """Password hashing (Argon2id), access tokens (JWT) and opaque single-use tokens (ADR-006)."""
 
 import hashlib
+import logging
 import re
 import secrets
 import uuid
@@ -60,7 +61,12 @@ def create_access_token(user_id: uuid.UUID) -> tuple[str, int]:
 def decode_access_token(token: str) -> uuid.UUID | None:
     try:
         payload = jwt.decode(token, get_settings().jwt_secret, algorithms=[_ALGORITHM])
-    except jwt.PyJWTError:
+    except jwt.PyJWTError as exc:
+        # Why the token was refused (expired, bad signature, not yet valid...): only in
+        # the server log; the person always sees "session expired".
+        logging.getLogger(__name__).info(
+            "access_token_rejected", extra={"extra_fields": {"reason": type(exc).__name__}}
+        )
         return None
     if payload.get("type") != "access":
         return None
