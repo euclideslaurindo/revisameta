@@ -25,7 +25,7 @@ async def seed(email: str) -> str:
         user = (await session.scalars(select(User).where(User.email == email))).first()
         if user is None:
             raise SystemExit(f"no user with e-mail {email}")
-        return str(await create_demo(session, user))
+        return str(await create_demo(session, user, check_quota=False))
 
 
 def main() -> None:

@@ -74,9 +74,15 @@ def normand() -> dict[str, list[object]]:
     return data
 
 
-async def create_demo(session: AsyncSession, user: User, lang: Lang = "pt-BR") -> uuid.UUID:
-    """Creates the demonstration project for `user` (who becomes its admin) and commits."""
-    await ensure_can_create_project(session, user.id)
+async def create_demo(
+    session: AsyncSession, user: User, lang: Lang = "pt-BR", *, check_quota: bool = True
+) -> uuid.UUID:
+    """Creates the demonstration project for `user` (who becomes its admin) and commits.
+
+    The web button respects the project quota; the server-side command does not.
+    """
+    if check_quota:
+        await ensure_can_create_project(session, user.id)
     t = TEXTS[lang]
     data = normand()
     project = Project(
